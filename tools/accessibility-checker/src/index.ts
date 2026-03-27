@@ -436,7 +436,8 @@ class AccessibilityCheckerServer extends McpServerBase {
         issues.push(...fileIssues.filter(i => ariaRules.includes(i.rule)));
       }
       return {
-        content: [{ type: 'text', text: JSON.stringify({ success: true, ariaIssues: issues.length, issues});
+        content: [{ type: 'text', text: JSON.stringify({ success: true, ariaIssues: issues.length, issues }, null, 2) }],
+      };
     } catch (error) {
       return {
         content: [{ type: 'text', text: JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }, null, 2) }],

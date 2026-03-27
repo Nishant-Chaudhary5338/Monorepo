@@ -28,7 +28,7 @@ const VOID_COMPONENTS = ['input', 'img', 'separator', 'divider'] as const;
 
 function isVoidElement(componentName: string): boolean {
   const lowerName = componentName.toLowerCase();
-  return VOID_COMPONENTS.includes(lowerName);
+  return (VOID_COMPONENTS as readonly string[]).includes(lowerName);
 }
 
 // ============================================================================
