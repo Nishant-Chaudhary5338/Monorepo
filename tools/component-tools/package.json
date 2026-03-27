@@ -1,0 +1,19 @@
+{
+  "name": "@repo/component-tools",
+  "version": "1.0.0",
+  "description": "Direct CLI tools for component operations (fix, improve, review)",
+  "type": "module",
+  "bin": {
+    "fix": "build/fix.js",
+    "improve": "build/improve.js",
+    "review": "build/review.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/fix.js', '755'); require('fs').chmodSync('build/improve.js', '755'); require('fs').chmodSync('build/review.js', '755')\"",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

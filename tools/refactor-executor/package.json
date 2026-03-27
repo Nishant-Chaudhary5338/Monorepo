@@ -1,0 +1,24 @@
+{
+  "name": "refactor-executor",
+  "version": "2.0.0",
+  "description": "MCP server for safely executing refactor plans on legacy React codebases",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "@tools/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}

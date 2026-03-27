@@ -10,6 +10,25 @@ import { WidgetActions, DragHandleButton } from "./WidgetActions";
 import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useDraggable } from "../../hooks/useDraggable";
+import { useDashboardStore } from "../../store";
+
+// ============================================================
+// Edit Mode Transition Tracker (Module-level for performance)
+// ============================================================
+
+// Set to track widget IDs that have rendered in edit mode before
+// Using Set with string IDs instead of WeakMap with object references
+// because widgetState objects are recreated on every store update
+const editModeRenderTracker = new Set<string>();
+
+// Track widgets that are currently transitioning to edit mode
+// This prevents CSS transition during the mode switch
+const transitioningToEditMode = new Set<string>();
+
+// Ref to store captured positions for widgets entering edit mode
+// This ensures widgets maintain their visual position when switching modes
+// Using a module-level Map that persists across renders
+const capturedPositionsRef = new Map<string, { x: number; y: number; width: number; height: number }>();
 
 // ============================================================
 // DashboardCard Props
@@ -230,6 +249,74 @@ export const DashboardCard = React.memo(function DashboardCard({
   }, [isEditMode, widgetState?.position?.x, widgetState?.position?.y, widgets, id]);
 
   // ==========================================================
+  // Track Edit Mode Transition (skip transition when entering edit mode)
+  // ==========================================================
+
+  const isFirstEditRender = useRef(false);
+  const prevIsEditModeRef = useRef(isEditMode);
+
+  // Capture position synchronously when entering edit mode
+  // This must happen BEFORE the style calculation to prevent visual jump
+  const isEnteringEditMode = isEditMode && !prevIsEditModeRef.current;
+  
+  if (isEnteringEditMode && containerRef.current) {
+    // Capture the widget's current DOM position synchronously
+    // This ensures the widget stays in place when switching to absolute positioning
+    const widgetElement = containerRef.current;
+    const container = widgetElement.closest('[data-dashcraft-dashboard]');
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const widgetRect = widgetElement.getBoundingClientRect();
+      
+      const capturedPos = {
+        x: widgetRect.left - containerRect.left,
+        y: widgetRect.top - containerRect.top,
+        width: widgetRect.width,
+        height: widgetRect.height,
+      };
+      
+      // Store the captured position for immediate use
+      capturedPositionsRef.set(id, capturedPos);
+      
+      // Mark this widget as transitioning to edit mode
+      // This will prevent CSS transition during the mode switch
+      if (!editModeRenderTracker.has(id)) {
+        isFirstEditRender.current = true;
+        editModeRenderTracker.add(id);
+        transitioningToEditMode.add(id);
+      }
+      
+      // Update the store in the background for persistence
+      // This is fire-and-forget - the captured position will be used immediately
+      requestAnimationFrame(() => {
+        const { updateWidgetPosition, updateWidgetSize } = useDashboardStore.getState();
+        updateWidgetPosition(id, { x: capturedPos.x, y: capturedPos.y });
+        updateWidgetSize(id, { width: capturedPos.width, height: capturedPos.height });
+        
+        // Remove from transitioning set after a frame to allow transition on subsequent interactions
+        transitioningToEditMode.delete(id);
+        
+        // Remove captured position after store is updated
+        // This ensures subsequent renders use the store position (which gets updated on drag)
+        capturedPositionsRef.delete(id);
+      });
+    }
+  }
+  
+  // Update prevIsEditModeRef for next render
+  prevIsEditModeRef.current = isEditMode;
+  
+  // Reset when leaving edit mode
+  useEffect(() => {
+    if (!isEditMode) {
+      isFirstEditRender.current = false;
+      editModeRenderTracker.delete(id);
+      transitioningToEditMode.delete(id);
+      capturedPositionsRef.delete(id);
+    }
+  }, [isEditMode, id]);
+
+  // ==========================================================
   // Computed Styles — VIEW MODE vs EDIT MODE
   // ==========================================================
 
@@ -242,11 +329,26 @@ export const DashboardCard = React.memo(function DashboardCard({
     }
 
     // EDIT MODE: Absolute positioning with drag
-    // Use fallback position if widget is at origin {0, 0}
-    const baseX = fallbackPosition?.x ?? widgetState?.position?.x ?? 0;
-    const baseY = fallbackPosition?.y ?? widgetState?.position?.y ?? 0;
+    // Priority: captured position > fallback position > store position
+    const capturedPos = capturedPositionsRef.get(id);
+    const storePosition = widgetState?.position ?? { x: 0, y: 0 };
+    const storeSize = widgetState?.size ?? defaultSize ?? { width: "auto", height: "auto" };
+    
+    // Use captured position if available (ensures widget stays in place when entering edit mode)
+    const baseX = capturedPos?.x ?? fallbackPosition?.x ?? storePosition.x;
+    const baseY = capturedPos?.y ?? fallbackPosition?.y ?? storePosition.y;
+    const width = capturedPos?.width ?? storeSize.width;
+    const height = capturedPos?.height ?? storeSize.height;
+    
     const dragX = transform?.x ?? 0;
     const dragY = transform?.y ?? 0;
+
+    // Skip transition when:
+    // 1. First render in edit mode (prevent visual jump)
+    // 2. Currently transitioning to edit mode (prevent mode switch glitch)
+    // 3. Currently dragging (for smooth drag)
+    const isTransitioningToEdit = transitioningToEditMode.has(id);
+    const shouldTransition = !isFirstEditRender.current && !isTransitioningToEdit && !isDragging;
 
     return {
       ...style,
@@ -254,12 +356,12 @@ export const DashboardCard = React.memo(function DashboardCard({
       top: 0,
       left: 0,
       zIndex: isDragging ? 9999 : (widgetState?.zIndex ?? 0),
-      width: widgetState?.size?.width ?? defaultSize?.width ?? "auto",
-      height: widgetState?.size?.height ?? defaultSize?.height ?? "auto",
+      width: width,
+      height: height,
       transform: `translate3d(${baseX + dragX}px, ${baseY + dragY}px, 0)`,
       willChange: isDragging ? "transform" : "auto",
       opacity: isDragging ? 0.92 : 1,
-      transition: isDragging ? "none" : "transform 0.2s ease, opacity 0.2s ease",
+      transition: shouldTransition ? "transform 0.2s ease, opacity 0.2s ease" : "none",
     };
   }, [
     style,
@@ -275,6 +377,7 @@ export const DashboardCard = React.memo(function DashboardCard({
     defaultSize?.width,
     defaultSize?.height,
     fallbackPosition,
+    id,
   ]);
 
   // ==========================================================

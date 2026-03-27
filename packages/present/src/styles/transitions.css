@@ -1,45 +1,156 @@
-/* ─── Transitions ───────────────────────────────────────────────────────── */
-.present-transition-enter { opacity: 0; }
-.present-transition-enter-active { opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-exit { opacity: 1; }
-.present-transition-exit-active { opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+/**
+ * Present — Transition styles
+ * Keyframe animations for slide transitions
+ */
 
-.present-transition-fade-enter { opacity: 0; }
-.present-transition-fade-enter-active { opacity: 1; transition: opacity var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-fade-exit { opacity: 1; }
-.present-transition-fade-exit-active { opacity: 0; transition: opacity var(--present-transition-duration) var(--present-transition-easing); }
+/* ─── Fade Transition ────────────────────────────────────────────────── */
+@keyframes present-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-.present-transition-slide-left-enter { transform: translateX(100%); opacity: 0; }
-.present-transition-slide-left-enter-active { transform: translateX(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-slide-left-exit { transform: translateX(0); opacity: 1; }
-.present-transition-slide-left-exit-active { transform: translateX(-100%); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+@keyframes present-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 
-.present-transition-slide-right-enter { transform: translateX(-100%); opacity: 0; }
-.present-transition-slide-right-enter-active { transform: translateX(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-slide-right-exit { transform: translateX(0); opacity: 1; }
-.present-transition-slide-right-exit-active { transform: translateX(100%); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+.present-transition-fade-enter {
+  animation: present-fade-in var(--present-transition-duration, 0.3s) ease-out;
+}
 
-.present-transition-slide-up-enter { transform: translateY(100%); opacity: 0; }
-.present-transition-slide-up-enter-active { transform: translateY(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-slide-up-exit { transform: translateY(0); opacity: 1; }
-.present-transition-slide-up-exit-active { transform: translateY(-100%); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+.present-transition-fade-exit {
+  animation: present-fade-out var(--present-transition-duration, 0.3s) ease-in;
+}
 
-.present-transition-slide-down-enter { transform: translateY(-100%); opacity: 0; }
-.present-transition-slide-down-enter-active { transform: translateY(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-slide-down-exit { transform: translateY(0); opacity: 1; }
-.present-transition-slide-down-exit-active { transform: translateY(100%); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+/* ─── Slide Left Transition ──────────────────────────────────────────── */
+@keyframes present-slide-left-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
 
-.present-transition-zoom-enter { transform: scale(0.8); opacity: 0; }
-.present-transition-zoom-enter-active { transform: scale(1); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-zoom-exit { transform: scale(1); opacity: 1; }
-.present-transition-zoom-exit-active { transform: scale(1.2); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+@keyframes present-slide-left-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
 
-.present-transition-flip-enter { transform: perspective(800px) rotateY(-90deg); opacity: 0; }
-.present-transition-flip-enter-active { transform: perspective(800px) rotateY(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-flip-exit { transform: perspective(800px) rotateY(0); opacity: 1; }
-.present-transition-flip-exit-active { transform: perspective(800px) rotateY(90deg); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+.present-transition-slide-left-enter {
+  animation: present-slide-left-in var(--present-transition-duration, 0.3s) ease-out;
+}
 
-.present-transition-cube-enter { transform: perspective(1200px) translateZ(-400px) rotateY(-90deg); opacity: 0; }
-.present-transition-cube-enter-active { transform: perspective(1200px) translateZ(0) rotateY(0); opacity: 1; transition: all var(--present-transition-duration) var(--present-transition-easing); }
-.present-transition-cube-exit { transform: perspective(1200px) translateZ(0) rotateY(0); opacity: 1; }
-.present-transition-cube-exit-active { transform: perspective(1200px) translateZ(-400px) rotateY(90deg); opacity: 0; transition: all var(--present-transition-duration) var(--present-transition-easing); }
+.present-transition-slide-left-exit {
+  animation: present-slide-left-out var(--present-transition-duration, 0.3s) ease-in;
+}
+
+/* ─── Slide Right Transition ─────────────────────────────────────────── */
+@keyframes present-slide-right-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes present-slide-right-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.present-transition-slide-right-enter {
+  animation: present-slide-right-in var(--present-transition-duration, 0.3s) ease-out;
+}
+
+.present-transition-slide-right-exit {
+  animation: present-slide-right-out var(--present-transition-duration, 0.3s) ease-in;
+}
+
+/* ─── Slide Up Transition ────────────────────────────────────────────── */
+@keyframes present-slide-up-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes present-slide-up-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+.present-transition-slide-up-enter {
+  animation: present-slide-up-in var(--present-transition-duration, 0.3s) ease-out;
+}
+
+.present-transition-slide-up-exit {
+  animation: present-slide-up-out var(--present-transition-duration, 0.3s) ease-in;
+}
+
+/* ─── Slide Down Transition ──────────────────────────────────────────── */
+@keyframes present-slide-down-in {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes present-slide-down-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+.present-transition-slide-down-enter {
+  animation: present-slide-down-in var(--present-transition-duration, 0.3s) ease-out;
+}
+
+.present-transition-slide-down-exit {
+  animation: present-slide-down-out var(--present-transition-duration, 0.3s) ease-in;
+}
+
+/* ─── Zoom Transition ────────────────────────────────────────────────── */
+@keyframes present-zoom-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes present-zoom-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+
+.present-transition-zoom-enter {
+  animation: present-zoom-in var(--present-transition-duration, 0.3s) ease-out;
+}
+
+.present-transition-zoom-exit {
+  animation: present-zoom-out var(--present-transition-duration, 0.3s) ease-in;
+}
+
+/* ─── Flip Transition ────────────────────────────────────────────────── */
+@keyframes present-flip-in {
+  from { transform: perspective(1000px) rotateY(-90deg); opacity: 0; }
+  to { transform: perspective(1000px) rotateY(0); opacity: 1; }
+}
+
+@keyframes present-flip-out {
+  from { transform: perspective(1000px) rotateY(0); opacity: 1; }
+  to { transform: perspective(1000px) rotateY(90deg); opacity: 0; }
+}
+
+.present-transition-flip-enter {
+  animation: present-flip-in var(--present-transition-duration, 0.5s) ease-out;
+}
+
+.present-transition-flip-exit {
+  animation: present-flip-out var(--present-transition-duration, 0.5s) ease-in;
+}
+
+/* ─── Cube Transition ────────────────────────────────────────────────── */
+@keyframes present-cube-in {
+  from { transform: perspective(1000px) translateZ(-500px) rotateY(90deg); opacity: 0; }
+  to { transform: perspective(1000px) translateZ(0) rotateY(0); opacity: 1; }
+}
+
+@keyframes present-cube-out {
+  from { transform: perspective(1000px) translateZ(0) rotateY(0); opacity: 1; }
+  to { transform: perspective(1000px) translateZ(-500px) rotateY(-90deg); opacity: 0; }
+}
+
+.present-transition-cube-enter {
+  animation: present-cube-in var(--present-transition-duration, 0.5s) ease-out;
+}
+
+.present-transition-cube-exit {
+  animation: present-cube-out var(--present-transition-duration, 0.5s) ease-in;
+}

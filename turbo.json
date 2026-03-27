@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "concurrency": "30",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -8,6 +9,11 @@
     },
     "lint": {},
     "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "preview": {
+      "dependsOn": ["build"],
       "cache": false,
       "persistent": true
     }

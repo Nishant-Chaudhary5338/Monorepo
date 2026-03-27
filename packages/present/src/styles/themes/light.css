@@ -1,0 +1,125 @@
+/**
+ * Present — Light Theme
+ * Clean light theme
+ */
+
+.present-theme-light {
+  --present-background: #ffffff;
+  --present-foreground: #1f2937;
+  --present-primary: #3b82f6;
+  --present-secondary: #6366f1;
+  --present-accent: #8b5cf6;
+  --present-muted: #f3f4f6;
+  --present-muted-foreground: #6b7280;
+  --present-border: #e5e7eb;
+  --present-ring: #3b82f6;
+  --present-destructive: #ef4444;
+  --present-success: #22c55e;
+  --present-warning: #f59e0b;
+  --present-info: #3b82f6;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}
+</content>
+<write_to_file>
+<path>packages/present/src/styles/themes/monokai.css</path>
+<content>/**
+ * Present — Monokai Theme
+ * Monokai color scheme
+ */
+
+.present-theme-monokai {
+  --present-background: #272822;
+  --present-foreground: #f8f8f2;
+  --present-primary: #a6e22e;
+  --present-secondary: #f92672;
+  --present-accent: #66d9ef;
+  --present-muted: #3e3d32;
+  --present-muted-foreground: #75715e;
+  --present-border: #49483e;
+  --present-ring: #a6e22e;
+  --present-destructive: #f92672;
+  --present-success: #a6e22e;
+  --present-warning: #e6db74;
+  --present-info: #66d9ef;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}
+</content>
+<write_to_file>
+<path>packages/present/src/styles/themes/nord.css</path>
+<content>/**
+ * Present — Nord Theme
+ * Nord frost palette
+ */
+
+.present-theme-nord {
+  --present-background: #2e3440;
+  --present-foreground: #eceff4;
+  --present-primary: #88c0d0;
+  --present-secondary: #81a1c1;
+  --present-accent: #5e81ac;
+  --present-muted: #3b4252;
+  --present-muted-foreground: #d8dee9;
+  --present-border: #4c566a;
+  --present-ring: #88c0d0;
+  --present-destructive: #bf616a;
+  --present-success: #a3be8c;
+  --present-warning: #ebcb8b;
+  --present-info: #88c0d0;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}
+</content>
+<write_to_file>
+<path>packages/present/src/styles/themes/solarized.css</path>
+<content>/**
+ * Present — Solarized Theme
+ * Solarized dark
+ */
+
+.present-theme-solarized {
+  --present-background: #002b36;
+  --present-foreground: #839496;
+  --present-primary: #268bd2;
+  --present-secondary: #2aa198;
+  --present-accent: #6c71c4;
+  --present-muted: #073642;
+  --present-muted-foreground: #586e75;
+  --present-border: #586e75;
+  --present-ring: #268bd2;
+  --present-destructive: #dc322f;
+  --present-success: #859900;
+  --present-warning: #b58900;
+  --present-info: #268bd2;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}

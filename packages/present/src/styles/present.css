@@ -1,108 +1,136 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   @repo/present — Global Styles
-   Production-grade CSS for React presentation library
-   ═══════════════════════════════════════════════════════════════════════════ */
+/**
+ * Present — Base styles
+ * Core styles for viewport, slide container, and fullscreen
+ */
 
-/* ─── Reset & Root ──────────────────────────────────────────────────────── */
+/* ─── Deck Container ─────────────────────────────────────────────────── */
 .present-deck {
-  --present-primary: #6366f1;
-  --present-bg: #0f172a;
-  --present-fg: #f8fafc;
-  --present-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --present-heading-font: Cal Sans, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --present-code-font: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
-  --present-slide-w: 1280px;
-  --present-slide-h: 720px;
-  --present-transition-duration: 400ms;
-  --present-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
-
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--present-bg);
-  color: var(--present-fg);
-  font-family: var(--present-font);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--present-background, #000);
+  color: var(--present-foreground, #fff);
+  font-family: var(--present-font-family, system-ui, -apple-system, sans-serif);
 }
 
-/* ─── Viewport ──────────────────────────────────────────────────────────── */
-.present-viewport {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ─── Slide Container ───────────────────────────────────────────────────── */
-.present-slide-wrapper {
-  position: relative;
-  width: var(--present-slide-w);
-  height: var(--present-slide-h);
-  transform-origin: center center;
-  flex-shrink: 0;
-}
-
-/* ─── Single Slide ──────────────────────────────────────────────────────── */
+/* ─── Slide Container ────────────────────────────────────────────────── */
 .present-slide {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 3rem 4rem;
+  padding: var(--present-slide-padding, 2rem);
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-.present-slide--center {
+/* ─── Layouts ────────────────────────────────────────────────────────── */
+.present-layout-default {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.present-layout-center {
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
 
-.present-slide--title {
+.present-layout-two-column,
+.present-layout-two-column-left {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.present-layout-two-column-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  direction: rtl;
+}
+
+.present-layout-full-bleed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.present-layout-title {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 4rem;
 }
 
-.present-slide--two-column {
-  flex-direction: row;
-  gap: 3rem;
-  padding: 3rem;
+.present-layout-code {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 }
 
-.present-slide--two-column-left {
-  flex-direction: row;
-  gap: 3rem;
-  padding: 3rem;
-}
-
-.present-slide--two-column-left > :first-child { flex: 1; }
-.present-slide--two-column-left > :last-child { flex: 2; }
-
-.present-slide--two-column-right {
-  flex-direction: row-reverse;
-  gap: 3rem;
-  padding: 3rem;
-}
-
-.present-slide--two-column-right > :first-child { flex: 1; }
-.present-slide--two-column-right > :last-child { flex: 2; }
-
-.present-slide--full-bleed { padding: 0; }
-.present-slide--code { padding: 2rem; overflow: auto; }
-.present-slide--blank { padding: 0; background: transparent; }
-
-.present-slide--grid-2x2 {
+.present-layout-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 2rem;
-  padding: 3rem;
+  gap: 1rem;
+}
+
+.present-layout-grid-3x1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── Fullscreen ─────────────────────────────────────────────────────── */
+.present-deck:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.present-deck:-moz-full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.present-deck:fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ─── Overview Mode ──────────────────────────────────────────────────── */
+.present-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.present-overview .present-slide {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.present-overview .present-slide:hover {
+  border-color: var(--present-accent, #007bff);
+}
+
+.present-overview .present-slide.present-current {
+  border-color: var(--present-primary, #007bff);
 }

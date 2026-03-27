@@ -1,0 +1,23 @@
+{
+  "name": "component-fixer-mcp",
+  "version": "2.0.0",
+  "description": "MCP server for auto-fixing React component issues (import paths, dependencies, etc.)",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "component-fixer": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "dev": "tsc --watch",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@tools/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

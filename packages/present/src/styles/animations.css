@@ -1,0 +1,132 @@
+/**
+ * Present — Animation styles
+ * Shared keyframe definitions and animation utilities
+ */
+
+/* ─── Fade Animations ────────────────────────────────────────────────── */
+@keyframes present-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes present-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ─── Scale Animations ───────────────────────────────────────────────── */
+@keyframes present-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes present-scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.95); opacity: 0; }
+}
+
+/* ─── Slide Animations ───────────────────────────────────────────────── */
+@keyframes present-slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes present-slide-out-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes present-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes present-slide-out-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes present-slide-in-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes present-slide-out-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@keyframes present-slide-in-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes present-slide-out-down {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+/* ─── Bounce Animations ──────────────────────────────────────────────── */
+@keyframes present-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes present-bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ─── Pulse Animations ───────────────────────────────────────────────── */
+@keyframes present-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ─── Shake Animation ────────────────────────────────────────────────── */
+@keyframes present-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ─── Spin Animation ─────────────────────────────────────────────────── */
+@keyframes present-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Animation Utilities ────────────────────────────────────────────── */
+.present-animate-fade-in {
+  animation: present-fade-in 0.3s ease-out;
+}
+
+.present-animate-fade-out {
+  animation: present-fade-out 0.3s ease-in;
+}
+
+.present-animate-scale-in {
+  animation: present-scale-in 0.3s ease-out;
+}
+
+.present-animate-scale-out {
+  animation: present-scale-out 0.3s ease-in;
+}
+
+.present-animate-bounce {
+  animation: present-bounce 1s ease infinite;
+}
+
+.present-animate-pulse {
+  animation: present-pulse 2s ease infinite;
+}
+
+.present-animate-shake {
+  animation: present-shake 0.5s ease;
+}
+
+.present-animate-spin {
+  animation: present-spin 1s linear infinite;
+}

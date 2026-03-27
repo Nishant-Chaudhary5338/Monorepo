@@ -1,6 +1,6 @@
-// utils
-export { setupCounter } from "./utils/counter";
+// shadcn/ui utilities
+export { cn } from "./lib/utils";
 
 // components
-export { Header } from "./components/header";
-export { Counter } from "./components/counter";
+export { Button, buttonVariants } from "./components/Button/Button";
+export type { ButtonProps } from "./components/Button/Button";

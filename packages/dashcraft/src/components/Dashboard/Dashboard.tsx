@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
+import { flushSync } from "react-dom";
 import { DndContext, DragOverlay, type DragStartEvent, type DragEndEvent } from "@dnd-kit/core";
-import type { DashboardConfig, DashboardContextValue } from "../../types";
+import type { DashboardConfig, DashboardContextValue, Position, Size } from "../../types";
 import { DashboardContext } from "./Dashboard.context";
 import { useDashboardStore } from "../../store";
 
@@ -57,12 +58,91 @@ const Dashboard = React.memo(function Dashboard({
     (state) => state.unregisterWidget
   );
   const getWidgetState = useDashboardStore((state) => state.getWidgetState);
+  const batchUpdatePositionsAndSizes = useDashboardStore(
+    (state) => state.batchUpdatePositionsAndSizes
+  );
 
   // ==========================================================
   // Container Ref for DOM Measurement
   // ==========================================================
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // ==========================================================
+  // Capture Widget Positions (Synchronous for immediate mode switch)
+  // ==========================================================
+
+  const captureWidgetPositions = useCallback((): Array<{ id: string; position: Position; size: Size }> => {
+    const container = containerRef.current;
+    if (!container) return [];
+
+    // Capture positions synchronously to prevent race condition
+    // This ensures positions are available immediately when entering edit mode
+    const containerRect = container.getBoundingClientRect();
+    const widgetElements = container.querySelectorAll("[data-widget-id]");
+
+    // Batch DOM reads to avoid layout thrashing
+    const updates: Array<{ id: string; position: Position; size: Size }> = [];
+
+    for (let i = 0; i < widgetElements.length; i++) {
+      const el = widgetElements[i] as HTMLElement;
+      const id = el.dataset.widgetId;
+      if (!id) continue;
+
+      const rect = el.getBoundingClientRect();
+      const position = {
+        x: rect.left - containerRect.left,
+        y: rect.top - containerRect.top,
+      };
+      const size = {
+        width: rect.width,
+        height: rect.height,
+      };
+
+      // Only capture valid positions and sizes
+      if ((position.x !== 0 || position.y !== 0) && size.width > 0 && size.height > 0) {
+        updates.push({ id, position, size });
+      }
+    }
+
+    return updates;
+  }, []);
+
+  // ==========================================================
+  // Wrapped Edit Mode Actions (capture positions before switch)
+  // ==========================================================
+
+  const handleToggleEditMode = useCallback(() => {
+    // Capture positions BEFORE toggling if we're currently in view mode
+    // This ensures positions are available when entering edit mode
+    if (!isEditMode) {
+      // Capture positions and batch update atomically before mode switch
+      const updates = captureWidgetPositions();
+      if (updates.length > 0) {
+        flushSync(() => {
+          batchUpdatePositionsAndSizes(updates);
+        });
+      }
+    }
+    toggleEditMode();
+  }, [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, toggleEditMode]);
+
+  const handleSetEditMode = useCallback(
+    (editMode: boolean) => {
+      // Capture positions BEFORE switching if entering edit mode
+      if (editMode && !isEditMode) {
+        // Capture positions and batch update atomically before mode switch
+        const updates = captureWidgetPositions();
+        if (updates.length > 0) {
+          flushSync(() => {
+            batchUpdatePositionsAndSizes(updates);
+          });
+        }
+      }
+      setEditMode(editMode);
+    },
+    [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, setEditMode]
+  );
 
   // ==========================================================
   // Context Value (memoized)
@@ -72,8 +152,8 @@ const Dashboard = React.memo(function Dashboard({
     () => ({
       isEditMode,
       widgets,
-      toggleEditMode,
-      setEditMode,
+      toggleEditMode: handleToggleEditMode,
+      setEditMode: handleSetEditMode,
       saveLayout: () => {
         if (persistenceKey) {
           saveLayout(persistenceKey);
@@ -98,8 +178,8 @@ const Dashboard = React.memo(function Dashboard({
     [
       isEditMode,
       widgets,
-      toggleEditMode,
-      setEditMode,
+      handleToggleEditMode,
+      handleSetEditMode,
       saveLayout,
       loadLayout,
       resetLayout,
@@ -139,38 +219,14 @@ const Dashboard = React.memo(function Dashboard({
 
     // Capture positions after a short delay to ensure layout is stable
     const timeoutId = setTimeout(() => {
-      const containerRect = container.getBoundingClientRect();
-      const widgetElements = container.querySelectorAll("[data-widget-id]");
-
-      for (let i = 0; i < widgetElements.length; i++) {
-        const el = widgetElements[i] as HTMLElement;
-        const id = el.dataset.widgetId;
-        if (!id) continue;
-
-        const rect = el.getBoundingClientRect();
-        const position = {
-          x: rect.left - containerRect.left,
-          y: rect.top - containerRect.top,
-        };
-
-        // Only update if position is valid (not at origin with zero dimensions)
-        if (position.x !== 0 || position.y !== 0) {
-          updateWidgetPosition(id, position);
-        }
-
-        // Capture widget size to preserve natural dimensions in edit mode
-        const size = {
-          width: rect.width,
-          height: rect.height,
-        };
-        if (size.width > 0 && size.height > 0) {
-          updateWidgetSize(id, size);
-        }
+      const updates = captureWidgetPositions();
+      if (updates.length > 0) {
+        batchUpdatePositionsAndSizes(updates);
       }
     }, 100); // Small delay for layout stabilization
 
     return () => clearTimeout(timeoutId);
-  }, [isEditMode, widgets, updateWidgetPosition, updateWidgetSize]);
+  }, [isEditMode, widgets, captureWidgetPositions, batchUpdatePositionsAndSizes]);
 
   // Load layout on mount
   React.useEffect(() => {

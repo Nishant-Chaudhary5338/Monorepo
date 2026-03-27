@@ -1,15 +1,12 @@
 /**
- * Merge classNames safely, filtering falsy values.
+ * cn — Class name merger (clsx wrapper)
+ *
+ * Conditional class name utility that merges classes efficiently.
  */
-export function cn(...classes: (string | undefined | false | null)[]): string {
-  return classes.filter(Boolean).join(" ");
-}
 
-/**
- * Convert a CSSProperties-like object to an inline style string.
- */
-export function cssToString(style: Record<string, string>): string {
-  return Object.entries(style)
-    .map(([k, v]) => `${k}: ${v}`)
-    .join("; ");
+import { clsx, type ClassValue } from "clsx";
+
+/** Merge class names conditionally */
+export function cn(...inputs: ClassValue[]): string {
+  return clsx(inputs);
 }

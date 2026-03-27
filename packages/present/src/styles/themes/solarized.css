@@ -1,0 +1,29 @@
+/**
+ * Present — Solarized Theme
+ * Solarized dark
+ */
+
+.present-theme-solarized {
+  --present-background: #002b36;
+  --present-foreground: #839496;
+  --present-primary: #268bd2;
+  --present-secondary: #2aa198;
+  --present-accent: #6c71c4;
+  --present-muted: #073642;
+  --present-muted-foreground: #586e75;
+  --present-border: #586e75;
+  --present-ring: #268bd2;
+  --present-destructive: #dc322f;
+  --present-success: #859900;
+  --present-warning: #b58900;
+  --present-info: #268bd2;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}

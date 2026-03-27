@@ -13,6 +13,61 @@
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     },
+    "./core": {
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs",
+      "types": "./dist/core.d.ts"
+    },
+    "./state": {
+      "import": "./dist/state.js",
+      "require": "./dist/state.cjs",
+      "types": "./dist/state.d.ts"
+    },
+    "./animation": {
+      "import": "./dist/animation.js",
+      "require": "./dist/animation.cjs",
+      "types": "./dist/animation.d.ts"
+    },
+    "./gestures": {
+      "import": "./dist/gestures.js",
+      "require": "./dist/gestures.cjs",
+      "types": "./dist/gestures.d.ts"
+    },
+    "./scroll": {
+      "import": "./dist/scroll.js",
+      "require": "./dist/scroll.cjs",
+      "types": "./dist/scroll.d.ts"
+    },
+    "./router": {
+      "import": "./dist/router.js",
+      "require": "./dist/router.cjs",
+      "types": "./dist/router.d.ts"
+    },
+    "./plugins": {
+      "import": "./dist/plugins.js",
+      "require": "./dist/plugins.cjs",
+      "types": "./dist/plugins.d.ts"
+    },
+    "./ui": {
+      "import": "./dist/ui.js",
+      "require": "./dist/ui.cjs",
+      "types": "./dist/ui.d.ts"
+    },
+    "./themes": {
+      "import": "./dist/themes.js",
+      "require": "./dist/themes.cjs",
+      "types": "./dist/themes.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.cjs",
+      "types": "./dist/utils.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs",
+      "types": "./dist/types.d.ts"
+    },
     "./styles": "./dist/styles.css"
   },
   "files": [

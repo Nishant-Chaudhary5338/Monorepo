@@ -1,135 +1,206 @@
-/* ─── Appear animations ────────────────────────────────────────────────── */
-.present-appear {
-  opacity: 0;
-  transition: all 500ms var(--present-transition-easing);
-}
-.present-appear--visible { opacity: 1; }
-.present-appear--fade { transition-property: opacity; }
+/**
+ * Present — Component styles
+ * Styles for progress, controls, code blocks, and other components
+ */
 
-.present-appear--slide-up {
-  transform: translateY(20px);
-  transition-property: opacity, transform;
-}
-.present-appear--slide-up.present-appear--visible { transform: translateY(0); }
-
-.present-appear--slide-left {
-  transform: translateX(40px);
-  transition-property: opacity, transform;
-}
-.present-appear--slide-left.present-appear--visible { transform: translateX(0); }
-
-.present-appear--scale {
-  transform: scale(0.9);
-  transition-property: opacity, transform;
-}
-.present-appear--scale.present-appear--visible { transform: scale(1); }
-
-/* ─── Progress ──────────────────────────────────────────────────────────── */
+/* ─── Progress Bar ───────────────────────────────────────────────────── */
 .present-progress-bar {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3px;
-  background: var(--present-primary);
-  transition: width 300ms var(--present-transition-easing);
-  z-index: 50;
-  border-radius: 0 2px 2px 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
+.present-progress-bar-fill {
+  height: 100%;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+/* ─── Progress Circle ────────────────────────────────────────────────── */
+.present-progress-circle {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+}
+
+.present-progress-circle svg {
+  transform: rotate(-90deg);
+}
+
+.present-progress-circle circle {
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+/* ─── Progress Fraction ──────────────────────────────────────────────── */
+.present-progress-fraction {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: var(--present-font-family, system-ui, sans-serif);
+}
+
+/* ─── Progress Dots ──────────────────────────────────────────────────── */
 .present-progress-dots {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 0.5rem;
-  z-index: 50;
+  gap: 8px;
 }
 
 .present-progress-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.present-progress-dot.active {
+  background-color: currentColor;
+}
+
+/* ─── Controls ───────────────────────────────────────────────────────── */
+.present-controls {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.present-control-button {
+  background: none;
   border: none;
-  padding: 0;
   cursor: pointer;
-  transition: all 200ms var(--present-transition-easing);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  color: inherit;
 }
 
-.present-progress-dot:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: scale(1.3);
+.present-control-button:hover {
+  opacity: 0.8;
 }
 
-.present-progress-dot--active {
-  background: var(--present-primary);
-  transform: scale(1.3);
+.present-control-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
 }
 
-.present-progress-circle {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 50;
+.present-control-button svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
 }
 
-.present-progress-circle svg { transform: rotate(-90deg); }
-
-.present-progress-fraction {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.6;
-  z-index: 50;
-  font-family: var(--present-code-font);
+/* ─── Code Block ─────────────────────────────────────────────────────── */
+.present-code {
+  background-color: var(--present-code-background, #1e1e1e);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--present-code-font-family, "Fira Code", monospace);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-/* ─── Overview Grid ─────────────────────────────────────────────────────── */
-.present-overview {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.92);
-  z-index: 100;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  overflow-y: auto;
-  backdrop-filter: blur(12px);
+.present-code code {
+  display: block;
+  white-space: pre;
+  color: var(--present-code-foreground, #d4d4d4);
 }
 
-.present-overview-slide {
-  aspect-ratio: 16 / 9;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 200ms var(--present-transition-easing);
-  position: relative;
-  background: var(--present-bg);
+.present-code-line {
+  display: block;
+  padding: 0 0.5rem;
 }
 
-.present-overview-slide:hover {
-  border-color: var(--present-primary);
-  transform: scale(1.03);
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+.present-code-line.highlighted {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left: 3px solid var(--present-accent, #007bff);
 }
 
-.present-overview-slide--active {
-  border-color: var(--present-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+.present-code-line-number {
+  display: inline-block;
+  width: 2em;
+  margin-right: 1em;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.3);
+  user-select: none;
 }
 
-.present-overview-slide-number {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-  font-family: var(--present-code-font);
+/* ─── Typography ─────────────────────────────────────────────────────── */
+.present-heading {
+  font-family: var(--present-heading-font-family, system-ui, sans-serif);
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
+}
+
+.present-heading-1 { font-size: 3rem; }
+.present-heading-2 { font-size: 2.5rem; }
+.present-heading-3 { font-size: 2rem; }
+.present-heading-4 { font-size: 1.5rem; }
+.present-heading-5 { font-size: 1.25rem; }
+.present-heading-6 { font-size: 1rem; }
+
+.present-text {
+  font-family: var(--present-font-family, system-ui, sans-serif);
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.present-text-large { font-size: 1.25rem; }
+.present-text-small { font-size: 0.875rem; }
+
+.present-code-inline {
+  font-family: var(--present-code-font-family, "Fira Code", monospace);
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.present-quote {
+  border-left: 4px solid var(--present-accent, #007bff);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: var(--present-muted-foreground, #666);
+}
+
+.present-badge {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+  background-color: var(--present-accent, #007bff);
+  color: white;
+}
+
+/* ─── Notes ──────────────────────────────────────────────────────────── */
+.present-notes {
+  font-size: 14px;
+  padding: 16px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  color: var(--present-muted-foreground, #666);
 }
