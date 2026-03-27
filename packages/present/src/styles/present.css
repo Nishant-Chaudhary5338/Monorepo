@@ -1,0 +1,108 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   @repo/present — Global Styles
+   Production-grade CSS for React presentation library
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Reset & Root ──────────────────────────────────────────────────────── */
+.present-deck {
+  --present-primary: #6366f1;
+  --present-bg: #0f172a;
+  --present-fg: #f8fafc;
+  --present-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --present-heading-font: Cal Sans, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --present-code-font: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  --present-slide-w: 1280px;
+  --present-slide-h: 720px;
+  --present-transition-duration: 400ms;
+  --present-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--present-bg);
+  color: var(--present-fg);
+  font-family: var(--present-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Viewport ──────────────────────────────────────────────────────────── */
+.present-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Slide Container ───────────────────────────────────────────────────── */
+.present-slide-wrapper {
+  position: relative;
+  width: var(--present-slide-w);
+  height: var(--present-slide-h);
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* ─── Single Slide ──────────────────────────────────────────────────────── */
+.present-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 4rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.present-slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.present-slide--title {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem;
+}
+
+.present-slide--two-column {
+  flex-direction: row;
+  gap: 3rem;
+  padding: 3rem;
+}
+
+.present-slide--two-column-left {
+  flex-direction: row;
+  gap: 3rem;
+  padding: 3rem;
+}
+
+.present-slide--two-column-left > :first-child { flex: 1; }
+.present-slide--two-column-left > :last-child { flex: 2; }
+
+.present-slide--two-column-right {
+  flex-direction: row-reverse;
+  gap: 3rem;
+  padding: 3rem;
+}
+
+.present-slide--two-column-right > :first-child { flex: 1; }
+.present-slide--two-column-right > :last-child { flex: 2; }
+
+.present-slide--full-bleed { padding: 0; }
+.present-slide--code { padding: 2rem; overflow: auto; }
+.present-slide--blank { padding: 0; background: transparent; }
+
+.present-slide--grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2rem;
+  padding: 3rem;
+}

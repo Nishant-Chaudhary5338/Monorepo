@@ -1,0 +1,96 @@
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+.present-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem; padding: 2rem;
+  backdrop-filter: blur(12px);
+  transition: all 200ms var(--present-transition-easing);
+}
+
+.present-card:hover {
+  border-color: var(--present-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+}
+
+.present-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+/* ─── List ──────────────────────────────────────────────────────────────── */
+.present-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem; }
+.present-list-item { display: flex; align-items: flex-start; gap: 1rem; font-size: 1.5rem; line-height: 1.5; }
+.present-list-bullet { color: var(--present-primary); font-size: 1.25rem; flex-shrink: 0; margin-top: 0.15em; }
+
+/* ─── Image / Video ─────────────────────────────────────────────────────── */
+.present-image { width: 100%; height: 100%; object-fit: cover; border-radius: 0.75rem; }
+.present-image--contain { object-fit: contain; }
+
+.present-bg-video { position: absolute; inset: 0; z-index: 0; }
+.present-bg-video video { width: 100%; height: 100%; object-fit: cover; }
+.present-bg-video-overlay { position: absolute; inset: 0; background: var(--present-video-overlay, rgba(0, 0, 0, 0.5)); z-index: 1; }
+
+/* ─── Prezi Canvas ──────────────────────────────────────────────────────── */
+.present-canvas { position: absolute; inset: 0; overflow: hidden; background: var(--present-bg); }
+.present-canvas-content {
+  position: absolute; transform-origin: 0 0;
+  transition: transform 800ms var(--present-transition-easing), opacity 400ms var(--present-transition-easing);
+}
+
+/* ─── Badge / Divider / Quote / Table ───────────────────────────────────── */
+.present-badge {
+  display: inline-flex; align-items: center;
+  padding: 0.25rem 0.75rem; border-radius: 999px;
+  font-size: 0.875rem; font-weight: 500;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--present-primary);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.present-divider { width: 64px; height: 4px; background: var(--present-primary); border-radius: 2px; margin: 1.5rem 0; }
+
+.present-quote {
+  font-size: 2rem; font-style: italic; line-height: 1.4;
+  padding-left: 2rem; border-left: 4px solid var(--present-primary); opacity: 0.9;
+}
+.present-quote-author { font-size: 1rem; font-style: normal; opacity: 0.6; margin-top: 1rem; }
+
+.present-table { width: 100%; border-collapse: collapse; font-size: 1.125rem; }
+.present-table th { text-align: left; padding: 0.75rem 1rem; border-bottom: 2px solid var(--present-primary); font-weight: 600; opacity: 0.8; }
+.present-table td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.present-table tr:hover td { background: rgba(255, 255, 255, 0.03); }
+
+/* ─── Keyboard Hint ─────────────────────────────────────────────────────── */
+.present-kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.75rem; height: 1.75rem; padding: 0 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-family: var(--present-code-font); font-size: 0.75rem;
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Fullscreen / Utilities ────────────────────────────────────────────── */
+.present-deck:fullscreen { width: 100vw; height: 100vh; }
+
+.present-gradient-text {
+  background: linear-gradient(135deg, var(--present-primary), #a78bfa, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.present-fade-in { animation: present-fade-in 600ms var(--present-transition-easing) forwards; }
+
+@keyframes present-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.present-stagger > * { opacity: 0; animation: present-fade-in 500ms var(--present-transition-easing) forwards; }
+.present-stagger > *:nth-child(1) { animation-delay: 100ms; }
+.present-stagger > *:nth-child(2) { animation-delay: 200ms; }
+.present-stagger > *:nth-child(3) { animation-delay: 300ms; }
+.present-stagger > *:nth-child(4) { animation-delay: 400ms; }
+.present-stagger > *:nth-child(5) { animation-delay: 500ms; }
+.present-stagger > *:nth-child(6) { animation-delay: 600ms; }
+
+.present-deck ::-webkit-scrollbar { width: 6px; height: 6px; }
+.present-deck ::-webkit-scrollbar-track { background: transparent; }
+.present-deck ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
