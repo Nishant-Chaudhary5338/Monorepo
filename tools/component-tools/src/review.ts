@@ -49,7 +49,7 @@ function runTypeScriptCheck(componentDir: string): { errors: string[]; passed: b
       timeout: 30000,
     });
     return { errors: [], passed: true };
-  } catch (error: unknown) {
+  } catch (error: any) {
     const output = error.stdout?.toString() || error.stderr?.toString() || error.message;
     const errors = output.split('\n').filter((line: string) => line.trim().length > 0);
     return { errors, passed: false };
@@ -79,7 +79,7 @@ function runTests(componentDir: string): { passed: number; failed: number; error
     } catch {
       return { passed: 1, failed: 0, errors: [] };
     }
-  } catch (error: unknown) {
+  } catch (error: any) {
     const output = error.stdout?.toString() || error.stderr?.toString() || error.message;
     return { passed: 0, failed: 1, errors: [output] };
   }
@@ -140,7 +140,7 @@ function calculateQualityScore(
   content: string,
   componentName: string
 ): number {
-  const score = 100;
+  let score = 100;
 
   // TypeScript errors
   if (!typescriptPassed) score -= 30;

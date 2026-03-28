@@ -104,7 +104,7 @@ function checkAccessibility(componentDir, componentName) {
     return issues;
 }
 function calculateQualityScore(typescriptPassed, testResults, a11yIssues, content, componentName) {
-    const score = 100;
+    let score = 100;
     // TypeScript errors
     if (!typescriptPassed)
         score -= 30;
