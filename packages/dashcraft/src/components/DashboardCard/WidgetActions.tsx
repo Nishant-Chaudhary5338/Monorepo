@@ -24,6 +24,8 @@ export interface WidgetActionButtonProps {
   className?: string;
   /** Whether button is visible */
   visible?: boolean;
+  /** Additional props to spread onto the button element (e.g., drag attributes/listeners) */
+  [key: string]: unknown;
 }
 
 // ============================================================
@@ -48,6 +50,7 @@ export const WidgetActionButton = React.memo(function WidgetActionButton({
   tooltip,
   className = "",
   visible = true,
+  ...rest
 }: WidgetActionButtonProps): React.JSX.Element | null {
   if (!visible) {
     return null;
@@ -74,6 +77,7 @@ export const WidgetActionButton = React.memo(function WidgetActionButton({
       onClick={onClick}
       title={tooltip}
       aria-label={tooltip}
+      {...rest}
     >
       {icon}
     </button>
@@ -110,7 +114,7 @@ export const WidgetActions = React.memo(function WidgetActions({
 
   return (
     <div
-      className={`widget-actions absolute inset-1 pointer-events-none transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"} ${className}`}
+      className={`widget-actions absolute inset-1 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"} ${className}`}
       aria-hidden="true"
     >
       {children}
@@ -129,11 +133,19 @@ export interface DragHandleButtonProps {
   visible?: boolean;
   /** Additional className */
   className?: string;
+  /** Drag attributes from useDraggable */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dragAttributes?: Record<string, any> | undefined;
+  /** Drag listeners from useDraggable */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dragListeners?: Record<string, any> | undefined;
 }
 
 export const DragHandleButton = React.memo(function DragHandleButton({
   visible = true,
   className = "",
+  dragAttributes,
+  dragListeners,
 }: DragHandleButtonProps): React.JSX.Element {
   return (
     <WidgetActionButton
@@ -142,6 +154,8 @@ export const DragHandleButton = React.memo(function DragHandleButton({
       tooltip="Drag to move"
       visible={visible}
       className={`cursor-grab active:cursor-grabbing ${className}`}
+      {...(dragAttributes ?? {})}
+      {...(dragListeners ?? {})}
     />
   );
 });
