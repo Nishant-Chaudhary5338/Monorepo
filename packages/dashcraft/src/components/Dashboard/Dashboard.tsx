@@ -67,6 +67,7 @@ const Dashboard = React.memo(function Dashboard({
   // ==========================================================
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasCapturedInitialPositions = useRef(false);
 
   // ==========================================================
   // Capture Widget Positions (Synchronous for immediate mode switch)
@@ -89,6 +90,12 @@ const Dashboard = React.memo(function Dashboard({
       const id = el.dataset.widgetId;
       if (!id) continue;
 
+      // Skip widgets that already have saved positions in the store
+      const existingWidget = widgets[id];
+      if (existingWidget && (existingWidget.position.x !== 0 || existingWidget.position.y !== 0)) {
+        continue;
+      }
+
       const rect = el.getBoundingClientRect();
       const position = {
         x: rect.left - containerRect.left,
@@ -106,42 +113,57 @@ const Dashboard = React.memo(function Dashboard({
     }
 
     return updates;
-  }, []);
+  }, [widgets]);
 
   // ==========================================================
   // Wrapped Edit Mode Actions (capture positions before switch)
   // ==========================================================
 
   const handleToggleEditMode = useCallback(() => {
-    // Capture positions BEFORE toggling if we're currently in view mode
-    // This ensures positions are available when entering edit mode
     if (!isEditMode) {
-      // Capture positions and batch update atomically before mode switch
-      const updates = captureWidgetPositions();
-      if (updates.length > 0) {
-        flushSync(() => {
-          batchUpdatePositionsAndSizes(updates);
-        });
-      }
-    }
-    toggleEditMode();
-  }, [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, toggleEditMode]);
-
-  const handleSetEditMode = useCallback(
-    (editMode: boolean) => {
-      // Capture positions BEFORE switching if entering edit mode
-      if (editMode && !isEditMode) {
-        // Capture positions and batch update atomically before mode switch
+      // Entering edit mode: only capture positions from DOM on first entry.
+      // On subsequent entries, preserve saved positions from the store.
+      if (!hasCapturedInitialPositions.current) {
         const updates = captureWidgetPositions();
         if (updates.length > 0) {
           flushSync(() => {
             batchUpdatePositionsAndSizes(updates);
           });
         }
+        hasCapturedInitialPositions.current = true;
+      }
+    } else {
+      // Save layout when LEAVING edit mode to persist dragged positions
+      if (persistenceKey) {
+        saveLayout(persistenceKey);
+      }
+    }
+    toggleEditMode();
+  }, [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, toggleEditMode, persistenceKey, saveLayout]);
+
+  const handleSetEditMode = useCallback(
+    (editMode: boolean) => {
+      if (editMode && !isEditMode) {
+        // Entering edit mode: only capture positions from DOM on first entry.
+        // On subsequent entries, preserve saved positions from the store.
+        if (!hasCapturedInitialPositions.current) {
+          const updates = captureWidgetPositions();
+          if (updates.length > 0) {
+            flushSync(() => {
+              batchUpdatePositionsAndSizes(updates);
+            });
+          }
+          hasCapturedInitialPositions.current = true;
+        }
+      } else if (!editMode && isEditMode) {
+        // Save layout when LEAVING edit mode to persist dragged positions
+        if (persistenceKey) {
+          saveLayout(persistenceKey);
+        }
       }
       setEditMode(editMode);
     },
-    [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, setEditMode]
+    [isEditMode, captureWidgetPositions, batchUpdatePositionsAndSizes, setEditMode, persistenceKey, saveLayout]
   );
 
   // ==========================================================
@@ -206,27 +228,6 @@ const Dashboard = React.memo(function Dashboard({
       setEditMode(true);
     }
   }, [defaultEditMode, setEditMode]);
-
-  // Capture widget DOM positions during stable VIEW mode rendering.
-  // This ensures positions are available before entering edit mode,
-  // eliminating the race condition that caused widgets to stack at {0, 0}.
-  useEffect(() => {
-    // Skip if in edit mode - we only capture positions in view mode
-    if (isEditMode) return;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    // Capture positions after a short delay to ensure layout is stable
-    const timeoutId = setTimeout(() => {
-      const updates = captureWidgetPositions();
-      if (updates.length > 0) {
-        batchUpdatePositionsAndSizes(updates);
-      }
-    }, 100); // Small delay for layout stabilization
-
-    return () => clearTimeout(timeoutId);
-  }, [isEditMode, widgets, captureWidgetPositions, batchUpdatePositionsAndSizes]);
 
   // Load layout on mount
   React.useEffect(() => {
@@ -303,23 +304,38 @@ const Dashboard = React.memo(function Dashboard({
   }, []);
 
   // ==========================================================
-  // Container Style — view mode vs edit mode
+  // Container Style — computed height for absolute children
   // ==========================================================
 
   const containerStyle = useMemo<React.CSSProperties>(() => {
-    if (!isEditMode) {
-      // View mode: normal CSS flow
+    const widgetEntries = Object.values(widgets);
+    // Check if any widget has a saved (non-default) position
+    const hasSavedPositions = widgetEntries.some(
+      (w) => w.position?.x !== 0 || w.position?.y !== 0
+    );
+
+    if (!hasSavedPositions) {
+      // No saved positions — CSS flow handles layout naturally
       return {
         ...style,
         position: "relative",
       };
     }
-    // Edit mode: relative container for absolute children
+
+    // Has saved positions — compute min-height to encompass all absolute widgets
+    let minHeight = 0;
+    for (const w of widgetEntries) {
+      const bottom = (w.position?.y ?? 0) + (typeof w.size?.height === "number" ? w.size.height : 200);
+      if (bottom > minHeight) minHeight = bottom;
+    }
+    minHeight += 40;
+
     return {
       ...style,
       position: "relative",
+      minHeight: `${minHeight}px`,
     };
-  }, [style, isEditMode]);
+  }, [style, widgets]);
 
   // ==========================================================
   // Drag Overlay Content

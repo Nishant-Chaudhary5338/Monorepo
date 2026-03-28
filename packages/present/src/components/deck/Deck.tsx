@@ -17,12 +17,13 @@ import React, {
 import { sendEvent, createDeckMachineState, type DeckMachineState, type DeckMachineEvent } from "../../state/deck-machine";
 import { useKeyboard } from "../../utils/keyboard";
 import type { DeckState, DeckActions, DeckEvent, Slide } from "../../types";
+import { Progress } from "../progress/Progress";
 
 /** Deck context value */
 interface DeckContextValue {
   state: DeckMachineState;
   actions: DeckActions;
-  slides: Slide[];
+  slides: ReactNode[];
   viewportRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -74,10 +75,11 @@ export const Deck = React.memo(function Deck({
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const slides = useMemo(() => React.Children.toArray(children), [children]);
 
-  // Initialize state machine
-  const [state, setState] = useState<DeckMachineState>(() =>
-    createDeckMachineState(slides.length),
-  );
+  // Initialize state machine — start in "presenting" mode
+  const [state, setState] = useState<DeckMachineState>(() => {
+    const initial = createDeckMachineState(slides.length);
+    return { ...initial, status: "presenting" };
+  });
 
   // Set initial slide
   useEffect(() => {
@@ -228,6 +230,33 @@ export const Deck = React.memo(function Deck({
     { key: "Enter", action: next },
   ]);
 
+  // Fullscreen effect — actually call the browser Fullscreen API
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    if (state.isFullscreen) {
+      if (document.fullscreenElement !== el) {
+        el.requestFullscreen().catch(() => {});
+      }
+    } else {
+      if (document.fullscreenElement === el) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  }, [state.isFullscreen]);
+
+  // Sync state when user exits fullscreen via Escape or browser UI
+  useEffect(() => {
+    const onChange = () => {
+      if (!document.fullscreenElement && state.isFullscreen) {
+        setState((prev) => ({ ...prev, isFullscreen: false }));
+      }
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, [state.isFullscreen]);
+
   // Context value
   const contextValue = useMemo<DeckContextValue>(
     () => ({ state, actions, slides, viewportRef }),
@@ -251,6 +280,22 @@ export const Deck = React.memo(function Deck({
     [theme, className],
   );
 
+  // Render only the current slide + Progress (always visible)
+  const renderedChildren = useMemo(() => {
+    const childArray = React.Children.toArray(children);
+    return childArray.map((child, index) => {
+      // Progress component is always visible
+      if (React.isValidElement(child) && child.type === Progress) {
+        return child;
+      }
+      // Slides: only show the current one
+      if (index === state.current) {
+        return child;
+      }
+      return null;
+    });
+  }, [children, state.current]);
+
   return (
     <DeckContext.Provider value={contextValue}>
       <div
@@ -258,7 +303,7 @@ export const Deck = React.memo(function Deck({
         className={deckClassName}
         style={deckStyle}
       >
-        {children}
+        {renderedChildren}
       </div>
     </DeckContext.Provider>
   );

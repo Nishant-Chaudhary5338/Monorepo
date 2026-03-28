@@ -1,0 +1,9 @@
+/* Present Package - Main Styles Entry */
+/* Import all style modules */
+@import "./present.css";
+@import "./animations.css";
+@import "./components.css";
+@import "./transitions.css";
+@import "./themes/light.css";
+@import "./themes/midnight.css";
+@import "./themes/solarized.css";

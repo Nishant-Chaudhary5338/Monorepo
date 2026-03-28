@@ -70,21 +70,20 @@ export function DeckProvider({
   initialSlide = 0,
   onSlideChange,
 }: DeckProviderProps): React.JSX.Element {
-  const [state, dispatch] = useReducer(
-    deckStateReducer,
-    totalSlides,
-    (total) => {
-      const initial = createDeckMachineState(total);
-      if (initialSlide > 0) {
-        return {
-          ...initial,
-          current: Math.min(initialSlide, total - 1),
-          status: "presenting",
-        };
-      }
-      return { ...initial, status: "presenting" };
-    },
-  );
+  const [state, dispatch] = useReducer<
+    typeof deckStateReducer,
+    number
+  >(deckStateReducer, totalSlides, (total) => {
+    const initial = createDeckMachineState(total);
+    if (initialSlide > 0) {
+      return {
+        ...initial,
+        current: Math.min(initialSlide, total - 1),
+        status: "presenting",
+      };
+    }
+    return { ...initial, status: "presenting" };
+  });
 
   const next = useCallback(() => dispatch({ type: "NEXT" }), []);
   const prev = useCallback(() => dispatch({ type: "PREV" }), []);

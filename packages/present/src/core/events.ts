@@ -1,4 +1,5 @@
-import type { DeckState, DeckAction } from "./reducer";
+import type { DeckState } from "../types";
+import type { DeckAction } from "./reducer";
 import type { DeckEventListener, DeckEvent, DeckPlugin } from "../types";
 
 export class DeckEventBus {

@@ -4,8 +4,8 @@
  * Must be used within a DeckProvider.
  */
 
-import { useContext, type DeckContextValue } from "react";
-import { DeckContext } from "./context";
+import { useContext } from "react";
+import { DeckContext, type DeckContextValue } from "./context";
 
 export function useDeck(): DeckContextValue {
   const context = useContext(DeckContext);

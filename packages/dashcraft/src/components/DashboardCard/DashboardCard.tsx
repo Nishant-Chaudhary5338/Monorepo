@@ -260,46 +260,57 @@ export const DashboardCard = React.memo(function DashboardCard({
   const isEnteringEditMode = isEditMode && !prevIsEditModeRef.current;
   
   if (isEnteringEditMode && containerRef.current) {
-    // Capture the widget's current DOM position synchronously
-    // This ensures the widget stays in place when switching to absolute positioning
-    const widgetElement = containerRef.current;
-    const container = widgetElement.closest('[data-dashcraft-dashboard]');
-    if (container) {
-      const containerRect = container.getBoundingClientRect();
-      const widgetRect = widgetElement.getBoundingClientRect();
-      
-      const capturedPos = {
-        x: widgetRect.left - containerRect.left,
-        y: widgetRect.top - containerRect.top,
-        width: widgetRect.width,
-        height: widgetRect.height,
-      };
-      
-      // Store the captured position for immediate use
-      capturedPositionsRef.set(id, capturedPos);
-      
-      // Mark this widget as transitioning to edit mode
-      // This will prevent CSS transition during the mode switch
-      if (!editModeRenderTracker.has(id)) {
-        isFirstEditRender.current = true;
-        editModeRenderTracker.add(id);
-        transitioningToEditMode.add(id);
-      }
-      
-      // Update the store in the background for persistence
-      // This is fire-and-forget - the captured position will be used immediately
+    // Check if the widget already has a saved position in the store (from loadLayout)
+    const hasSavedPosition = widgetState && (widgetState.position.x !== 0 || widgetState.position.y !== 0);
+
+    // Mark this widget as transitioning to edit mode
+    // This will prevent CSS transition during the mode switch
+    if (!editModeRenderTracker.has(id)) {
+      isFirstEditRender.current = true;
+      editModeRenderTracker.add(id);
+      transitioningToEditMode.add(id);
+    }
+
+    if (hasSavedPosition) {
+      // Widget has saved position from persistence — use it directly, skip DOM capture
+      // Just remove from transitioning set after a frame to allow transitions
       requestAnimationFrame(() => {
-        const { updateWidgetPosition, updateWidgetSize } = useDashboardStore.getState();
-        updateWidgetPosition(id, { x: capturedPos.x, y: capturedPos.y });
-        updateWidgetSize(id, { width: capturedPos.width, height: capturedPos.height });
-        
-        // Remove from transitioning set after a frame to allow transition on subsequent interactions
         transitioningToEditMode.delete(id);
-        
-        // Remove captured position after store is updated
-        // This ensures subsequent renders use the store position (which gets updated on drag)
-        capturedPositionsRef.delete(id);
       });
+    } else {
+      // No saved position — capture the widget's current DOM position
+      // This ensures the widget stays in place when switching to absolute positioning
+      const widgetElement = containerRef.current;
+      const container = widgetElement.closest('[data-dashcraft-dashboard]');
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const widgetRect = widgetElement.getBoundingClientRect();
+        
+        const capturedPos = {
+          x: widgetRect.left - containerRect.left,
+          y: widgetRect.top - containerRect.top,
+          width: widgetRect.width,
+          height: widgetRect.height,
+        };
+        
+        // Store the captured position for immediate use (CSS only)
+        capturedPositionsRef.set(id, capturedPos);
+        
+        // Update the store in the background for persistence
+        // This is fire-and-forget - the captured position will be used immediately
+        requestAnimationFrame(() => {
+          const { updateWidgetPosition, updateWidgetSize } = useDashboardStore.getState();
+          updateWidgetPosition(id, { x: capturedPos.x, y: capturedPos.y });
+          updateWidgetSize(id, { width: capturedPos.width, height: capturedPos.height });
+          
+          // Remove from transitioning set after a frame to allow transition on subsequent interactions
+          transitioningToEditMode.delete(id);
+          
+          // Remove captured position after store is updated
+          // This ensures subsequent renders use the store position (which gets updated on drag)
+          capturedPositionsRef.delete(id);
+        });
+      }
     }
   }
   
@@ -321,8 +332,27 @@ export const DashboardCard = React.memo(function DashboardCard({
   // ==========================================================
 
   const cardStyle = useMemo<React.CSSProperties>(() => {
+    const storePosition = widgetState?.position ?? { x: 0, y: 0 };
+    const storeSize = widgetState?.size ?? defaultSize ?? { width: "auto", height: "auto" };
+
     if (!isEditMode) {
-      // VIEW MODE: Normal CSS flow, no absolute positioning
+      // VIEW MODE: Only use absolute positioning if widget has a saved (non-default) position
+      // If position is {0, 0} (no saved layout), use CSS flow so widgets don't stack
+      const hasSavedPosition = storePosition.x !== 0 || storePosition.y !== 0;
+      if (hasSavedPosition) {
+        return {
+          ...style,
+          position: "absolute" as const,
+          top: 0,
+          left: 0,
+          width: storeSize.width,
+          height: storeSize.height,
+          transform: `translate3d(${storePosition.x}px, ${storePosition.y}px, 0)`,
+          zIndex: widgetState?.zIndex ?? 0,
+          transition: "transform 0.2s ease",
+        };
+      }
+      // No saved position — use CSS flow
       return {
         ...style,
       };
@@ -331,8 +361,6 @@ export const DashboardCard = React.memo(function DashboardCard({
     // EDIT MODE: Absolute positioning with drag
     // Priority: captured position > fallback position > store position
     const capturedPos = capturedPositionsRef.get(id);
-    const storePosition = widgetState?.position ?? { x: 0, y: 0 };
-    const storeSize = widgetState?.size ?? defaultSize ?? { width: "auto", height: "auto" };
     
     // Use captured position if available (ensures widget stays in place when entering edit mode)
     const baseX = capturedPos?.x ?? fallbackPosition?.x ?? storePosition.x;

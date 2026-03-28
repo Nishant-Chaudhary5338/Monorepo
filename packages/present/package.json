@@ -68,7 +68,7 @@
       "require": "./dist/types.cjs",
       "types": "./dist/types.d.ts"
     },
-    "./styles": "./dist/styles.css"
+    "./styles": "./dist/styles/index.css"
   },
   "files": [
     "dist"
@@ -77,7 +77,7 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && cp -r src/styles dist/styles",
     "dev": "tsup --watch",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",

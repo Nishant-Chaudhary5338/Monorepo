@@ -177,6 +177,7 @@ function RechartsTab(): React.JSX.Element {
           { dataKey: "revenue", name: "Revenue", color: "#22c55e" },
         ]}
         xAxisKey="name"
+        className="bg-white rounded-md shadow-2xl"
       />
       <RechartsWidget
         id="rc-line"
@@ -189,6 +190,7 @@ function RechartsTab(): React.JSX.Element {
           { dataKey: "profit", name: "Profit", color: "#f97316" },
         ]}
         xAxisKey="name"
+        className="bg-white rounded-md shadow-2xl"
       />
       <RechartsWidget
         id="rc-area"
@@ -198,6 +200,7 @@ function RechartsTab(): React.JSX.Element {
         data={barLineData}
         series={[{ dataKey: "sales", name: "Sales", color: "#8b5cf6" }]}
         xAxisKey="name"
+        className="bg-white rounded-md shadow-2xl"
       />
       <RechartsWidget
         id="rc-pie"
@@ -207,6 +210,7 @@ function RechartsTab(): React.JSX.Element {
         data={pieData}
         series={[{ dataKey: "value", name: "Value", color: "#3b82f6" }]}
         xAxisKey="name"
+        className="bg-white rounded-md shadow-2xl"
       />
       <RechartsWidget
         id="rc-radar"
@@ -219,6 +223,7 @@ function RechartsTab(): React.JSX.Element {
           { dataKey: "B", name: "Student B", color: "#ef4444" },
         ]}
         xAxisKey="subject"
+        className="bg-white rounded-md shadow-2xl"
       />
       <RechartsWidget
         id="rc-radial"
@@ -228,6 +233,7 @@ function RechartsTab(): React.JSX.Element {
         data={pieData}
         series={[{ dataKey: "value", name: "Value", color: "#22c55e" }]}
         xAxisKey="name"
+        className="bg-white rounded-md shadow-2xl"
       />
     </div>
   );
@@ -242,6 +248,7 @@ function NivoTab(): React.JSX.Element {
         draggable
         chartType="heatmap"
         data={heatmapData}
+        className="bg-white rounded-md shadow-2xl"
       />
       <NivoWidget
         id="nv-treemap"
@@ -249,6 +256,7 @@ function NivoTab(): React.JSX.Element {
         draggable
         chartType="treemap"
         data={treemapData}
+        className="bg-white rounded-md shadow-2xl"
       />
       <NivoWidget
         id="nv-sunburst"
@@ -256,6 +264,7 @@ function NivoTab(): React.JSX.Element {
         draggable
         chartType="sunburst"
         data={sunburstData}
+        className="bg-white rounded-md shadow-2xl"
       />
     </div>
   );
@@ -274,6 +283,7 @@ function KPITab(): React.JSX.Element {
         format="currency"
         currency="USD"
         decimals={0}
+        className="bg-white rounded-md shadow-2xl"
       />
       <KPIWidget
         id="kpi-users"
@@ -284,6 +294,7 @@ function KPITab(): React.JSX.Element {
         previousValue={4200}
         format="number"
         decimals={0}
+        className="bg-white rounded-md shadow-2xl"
       />
       <KPIWidget
         id="kpi-conv"
@@ -294,6 +305,7 @@ function KPITab(): React.JSX.Element {
         previousValue={2.8}
         format="percentage"
         decimals={1}
+        className="bg-white rounded-md shadow-2xl"
       />
       <KPIWidget
         id="kpi-churn"
@@ -304,6 +316,7 @@ function KPITab(): React.JSX.Element {
         previousValue={2.5}
         format="percentage"
         decimals={1}
+        className="bg-white rounded-md shadow-2xl"
       />
       <KPIWidget
         id="kpi-status"
@@ -313,6 +326,7 @@ function KPITab(): React.JSX.Element {
         label="System Status"
         format="text"
         valueColor="#22c55e"
+        className="bg-white rounded-md shadow-2xl"
       />
     </div>
   );
@@ -332,43 +346,56 @@ export default function DashCraftTest(): React.JSX.Element {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-200">
       <Dashboard persistenceKey="dashcraft-grid-test" autoSave>
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 p-4">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                DashCraft — Grid Layout
-              </h1>
-              <p className="text-sm text-gray-500 mt-1">
-                View: CSS grid flow · Edit: absolute positioning for drag/resize
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <WidgetCounter />
-              <EditModeToggle />
-            </div>
+        {/* Sidebar */}
+        <aside className="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 flex flex-col">
+          {/* Logo */}
+          <div className="p-6 border-b border-gray-200">
+            <h1 className="text-2xl font-bold text-gray-900">DashCraft</h1>
+            <p className="text-sm text-gray-500 mt-1">Grid Layout Dashboard</p>
           </div>
-        </header>
 
-        {/* Tabs */}
-        <div className="max-w-7xl mx-auto p-4">
-          <TabBar active={tab} onChange={setTab} />
-        </div>
+          {/* Navigation */}
+          <nav className="flex-1 p-4">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Charts</p>
+            <div className="space-y-1">
+              {(["recharts", "nivo", "kpi"] as Tab[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    tab === t
+                      ? "bg-blue-500 text-white"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  {t === "recharts" ? "Recharts" : t === "nivo" ? "Nivo" : "KPI"}
+                </button>
+              ))}
+            </div>
+          </nav>
 
-        {/* Grid Layout — className controls layout, not absolute positions */}
-        <main className="max-w-7xl mx-auto px-4 pb-8">
+          {/* Controls */}
+          <div className="p-4 border-t border-gray-200 space-y-3">
+            <WidgetCounter />
+            <EditModeToggle />
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="ml-64 p-6">
+          {/* Grid Layout — className controls layout, not absolute positions */}
           {content[tab]}
-        </main>
 
-        {/* Footer */}
-        <footer className="max-w-7xl mx-auto p-4 text-center text-sm text-gray-500">
-          <p>
-            <strong>View mode:</strong> Widgets flow in CSS grid.{" "}
-            <strong>Edit mode:</strong> Drag & resize freely. Positions persist via localStorage.
-          </p>
-        </footer>
+          {/* Footer */}
+          <footer className="mt-8 text-center text-sm text-gray-500">
+            <p>
+              <strong>View mode:</strong> Widgets flow in CSS grid.{" "}
+              <strong>Edit mode:</strong> Drag & resize freely. Positions persist via localStorage.
+            </p>
+          </footer>
+        </main>
       </Dashboard>
     </div>
   );
