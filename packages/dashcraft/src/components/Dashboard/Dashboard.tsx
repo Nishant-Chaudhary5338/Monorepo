@@ -229,12 +229,26 @@ const Dashboard = React.memo(function Dashboard({
     }
   }, [defaultEditMode, setEditMode]);
 
-  // Load layout on mount
+  // Load layout on mount — only if store is empty to avoid overwriting existing widgets
   React.useEffect(() => {
     if (persistenceKey) {
-      loadLayout(persistenceKey);
+      const currentWidgets = useDashboardStore.getState().widgets;
+      // Only load if store has no widgets (first mount or after reset)
+      if (Object.keys(currentWidgets).length === 0) {
+        loadLayout(persistenceKey);
+      }
     }
   }, [persistenceKey, loadLayout]);
+
+  // Save layout on unmount to persist changes made during route navigation
+  React.useEffect(() => {
+    return () => {
+      if (persistenceKey) {
+        // Save on unmount to preserve any unsaved changes
+        useDashboardStore.getState().saveLayout(persistenceKey);
+      }
+    };
+  }, [persistenceKey]);
 
   // Auto-save
   React.useEffect(() => {
@@ -262,10 +276,11 @@ const Dashboard = React.memo(function Dashboard({
   // ==========================================================
 
   const handleDragStart = useCallback(
-    (_event: DragStartEvent) => {
-      // Drag state is handled by CSS transform in DashboardCard
+    (event: DragStartEvent) => {
+      // Bring widget to front when drag starts
+      bringToFront(event.active.id as string);
     },
-    []
+    [bringToFront]
   );
 
   // RAF batching for smooth drag

@@ -134,31 +134,6 @@ const sunburstData = [
 
 type Tab = "recharts" | "nivo" | "kpi";
 
-function TabBar({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "recharts", label: "Recharts" },
-    { key: "nivo", label: "Nivo" },
-    { key: "kpi", label: "KPI" },
-  ];
-  return (
-    <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-      {tabs.map((t) => (
-        <button
-          key={t.key}
-          onClick={() => onChange(t.key)}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            active === t.key
-              ? "bg-white text-gray-900 shadow-sm"
-              : "text-gray-500 hover:text-gray-700"
-          }`}
-        >
-          {t.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 // ============================================================
 // Tab Content
 // ============================================================

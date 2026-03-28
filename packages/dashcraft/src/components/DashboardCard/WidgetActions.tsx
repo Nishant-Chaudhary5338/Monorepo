@@ -1,5 +1,5 @@
 import React from "react";
-import { GripVertical } from "lucide-react";
+import { GripVertical, MoveDiagonal } from "lucide-react";
 
 // ============================================================
 // Action Button Position
@@ -161,3 +161,46 @@ export const DragHandleButton = React.memo(function DragHandleButton({
 });
 
 DragHandleButton.displayName = "DragHandleButton";
+
+// ============================================================
+// ResizeHandleButton (Pre-built resize handle)
+// ============================================================
+
+export interface ResizeHandleButtonProps {
+  /** Whether button is visible */
+  visible?: boolean;
+  /** Button position in the widget */
+  position: ActionButtonPosition;
+  /** Additional className */
+  className?: string;
+  /** Mouse down handler for resize */
+  onMouseDown?: (e: React.MouseEvent) => void;
+  /** Touch start handler for resize */
+  onTouchStart?: (e: React.TouchEvent) => void;
+  /** Custom style to override default positioning */
+  style?: React.CSSProperties;
+}
+
+export const ResizeHandleButton = React.memo(function ResizeHandleButton({
+  visible = true,
+  position,
+  className = "",
+  onMouseDown,
+  onTouchStart,
+  style,
+}: ResizeHandleButtonProps): React.JSX.Element {
+  return (
+    <WidgetActionButton
+      position={position}
+      icon={<MoveDiagonal size={12} />}
+      tooltip="Resize widget"
+      visible={visible}
+      className={`cursor-nwse-resize ${className}`}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      style={style}
+    />
+  );
+});
+
+ResizeHandleButton.displayName = "ResizeHandleButton";

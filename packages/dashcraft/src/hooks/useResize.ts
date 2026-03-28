@@ -27,11 +27,20 @@ export interface ResizeDelta {
 }
 
 /**
+ * Position delta information
+ */
+export interface PositionDelta {
+  x: number;
+  y: number;
+}
+
+/**
  * Resize event information
  */
 export interface ResizeEvent {
   size: Size;
   delta: ResizeDelta;
+  positionDelta: PositionDelta;
   handle: ResizeHandle;
 }
 
@@ -143,11 +152,6 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
   const startSizeRef = useRef<Size>(initialSize);
   const initialSizeRef = useRef<Size>(initialSize);
 
-  // Update initial size ref when it changes
-  useEffect(() => {
-    initialSizeRef.current = initialSize;
-  }, [initialSize]);
-
   /**
    * Constrain size to min/max and grid
    */
@@ -179,6 +183,36 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
     },
     [minSize, maxSize, aspectRatio, gridSize]
   );
+
+  // Sync size state when initialSize prop changes
+  // (but only when not currently resizing to avoid fighting with user input)
+  const prevInitialSizeRef = useRef<Size>(initialSize);
+  useEffect(() => {
+    const prev = prevInitialSizeRef.current;
+    // Only update if the actual values changed (not just object reference)
+    if (prev.width !== initialSize.width || prev.height !== initialSize.height) {
+      initialSizeRef.current = initialSize;
+      prevInitialSizeRef.current = initialSize;
+      if (!isResizing) {
+        // Inline constraint logic to avoid dependency on constrainSize callback
+        let width = Math.max(minSize.width, Math.min(maxSize.width, initialSize.width));
+        let height = Math.max(minSize.height, Math.min(maxSize.height, initialSize.height));
+        if (aspectRatio) {
+          const currentRatio = width / height;
+          if (currentRatio > aspectRatio) {
+            width = height * aspectRatio;
+          } else {
+            height = width / aspectRatio;
+          }
+        }
+        if (gridSize) {
+          width = Math.round(width / gridSize) * gridSize;
+          height = Math.round(height / gridSize) * gridSize;
+        }
+        setSizeState({ width, height });
+      }
+    }
+  }, [initialSize.width, initialSize.height, isResizing, minSize.width, minSize.height, maxSize.width, maxSize.height, aspectRatio, gridSize]);
 
   /**
    * Set size with constraints
@@ -261,9 +295,34 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
         height: constrainedSize.height - startSizeRef.current.height,
       };
 
+      // Calculate position delta for left/top handles
+      // When resizing from left, position needs to shift left as width increases
+      // When resizing from top, position needs to shift up as height increases
+      const positionDelta: PositionDelta = {
+        x: 0,
+        y: 0,
+      };
+
+      switch (activeHandle) {
+        case "left":
+        case "topLeft":
+        case "bottomLeft":
+          positionDelta.x = -delta.width;
+          break;
+      }
+
+      switch (activeHandle) {
+        case "top":
+        case "topRight":
+        case "topLeft":
+          positionDelta.y = -delta.height;
+          break;
+      }
+
       onResize?.({
         size: constrainedSize,
         delta,
+        positionDelta,
         handle: activeHandle,
       });
     },
@@ -296,6 +355,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
    */
   const handleTouchMove = useCallback(
     (e: TouchEvent): void => {
+      e.preventDefault();
       const touch = e.touches[0];
       if (touch) {
         handleMove(touch.clientX, touch.clientY);
@@ -312,7 +372,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleEnd);
-    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleEnd);
 
     return () => {
@@ -344,6 +404,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
         if (disabled) return;
         const touch = e.touches[0];
         if (!touch) return;
+        e.preventDefault();
         e.stopPropagation();
 
         startPosRef.current = { x: touch.clientX, y: touch.clientY };

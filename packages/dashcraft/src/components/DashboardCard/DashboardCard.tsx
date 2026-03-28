@@ -5,8 +5,9 @@ import type {
   Size,
   ViewBreakpoints,
 } from "../../types";
+import type { ResizeHandle } from "../../hooks/useResize";
 import { useDashboardContext } from "../Dashboard/Dashboard.context";
-import { WidgetActions, DragHandleButton } from "./WidgetActions";
+import { WidgetActions, DragHandleButton, ResizeHandleButton } from "./WidgetActions";
 import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useDraggable } from "../../hooks/useDraggable";
@@ -47,6 +48,12 @@ export interface DashboardCardProps {
   settings?: boolean;
   viewCycler?: boolean;
 
+  // Resize handles to show (default: ["bottomRight"])
+  resizeHandles?: ResizeHandle[];
+
+  // Auto-detect resize directions based on widget position (default: false)
+  autoResizeDirections?: boolean;
+
   // Settings Panel
   settingsPanel?: React.ReactNode | boolean;
 
@@ -80,6 +87,7 @@ export const DashboardCard = React.memo(function DashboardCard({
   deletable = true,
   settings: showSettings = true,
   viewCycler: showViewCycler = false,
+  resizeHandles = ["bottomRight"],
   viewBreakpoints,
   defaultSize,
   defaultPosition,
@@ -119,12 +127,29 @@ export const DashboardCard = React.memo(function DashboardCard({
 
   const currentSize = widgetState?.size ?? defaultSize ?? { width: 300, height: 200 };
 
-  const { getHandleProps } = useResize({
+  const currentPosition = widgetState?.position ?? defaultPosition ?? { x: 0, y: 0 };
+  
+  const { getHandleProps, size: resizeSize, isResizing } = useResize({
     initialSize: typeof currentSize.width === "number" && typeof currentSize.height === "number"
       ? currentSize as Size
       : { width: 300, height: 200 },
     minSize: { width: 150, height: 100 },
     disabled: !isEditMode || !draggable,
+    onResizeStart: () => {
+      // Bring widget to front when resize starts
+      bringToFront(id);
+    },
+    onResize: (event) => {
+      // Update both size and position during resize for real-time feedback
+      const { updateWidgetPosition, updateWidgetSize, widgets } = useDashboardStore.getState();
+      updateWidgetSize(id, event.size);
+      // Read current position from store (not stale render-time value) to support left/top resizing
+      const currentPos = widgets[id]?.position ?? { x: 0, y: 0 };
+      updateWidgetPosition(id, {
+        x: currentPos.x + event.positionDelta.x,
+        y: currentPos.y + event.positionDelta.y,
+      });
+    },
     onResizeEnd: (newSize) => {
       storeUpdateWidgetSize(id, newSize);
     },
@@ -385,8 +410,18 @@ export const DashboardCard = React.memo(function DashboardCard({
     // Use captured position if available (ensures widget stays in place when entering edit mode)
     const baseX = capturedPos?.x ?? fallbackPosition?.x ?? storePosition.x;
     const baseY = capturedPos?.y ?? fallbackPosition?.y ?? storePosition.y;
-    const width = capturedPos?.width ?? storeSize.width;
-    const height = capturedPos?.height ?? storeSize.height;
+    
+    // Use resize hook's size during resize for real-time visual feedback
+    // Otherwise use store size or captured position size
+    let width: number | string;
+    let height: number | string;
+    if (isResizing) {
+      width = resizeSize.width;
+      height = resizeSize.height;
+    } else {
+      width = capturedPos?.width ?? storeSize.width;
+      height = capturedPos?.height ?? storeSize.height;
+    }
     
     const dragX = transform?.x ?? 0;
     const dragY = transform?.y ?? 0;
@@ -395,19 +430,20 @@ export const DashboardCard = React.memo(function DashboardCard({
     // 1. First render in edit mode (prevent visual jump)
     // 2. Currently transitioning to edit mode (prevent mode switch glitch)
     // 3. Currently dragging (for smooth drag)
+    // 4. Currently resizing (for smooth resize)
     const isTransitioningToEdit = transitioningToEditMode.has(id);
-    const shouldTransition = !isFirstEditRender.current && !isTransitioningToEdit && !isDragging;
+    const shouldTransition = !isFirstEditRender.current && !isTransitioningToEdit && !isDragging && !isResizing;
 
     return {
       ...style,
       position: "absolute" as const,
       top: 0,
       left: 0,
-      zIndex: isDragging ? 9999 : (widgetState?.zIndex ?? 0),
+      zIndex: isDragging || isResizing ? 9999 : (widgetState?.zIndex ?? 0),
       width: width,
       height: height,
       transform: `translate3d(${baseX + dragX}px, ${baseY + dragY}px, 0)`,
-      willChange: isDragging ? "transform" : "auto",
+      willChange: isDragging || isResizing ? "transform, width, height" : "auto",
       opacity: isDragging ? 0.92 : 1,
       transition: shouldTransition ? "transform 0.2s ease, opacity 0.2s ease" : "none",
     };
@@ -415,6 +451,9 @@ export const DashboardCard = React.memo(function DashboardCard({
     style,
     isEditMode,
     isDragging,
+    isResizing,
+    resizeSize.width,
+    resizeSize.height,
     transform?.x,
     transform?.y,
     widgetState?.zIndex,
@@ -427,6 +466,70 @@ export const DashboardCard = React.memo(function DashboardCard({
     fallbackPosition,
     id,
   ]);
+
+  // ==========================================================
+  // Resize Handle Position Mapping
+  // ==========================================================
+
+  const getResizeHandlePosition = useCallback((handle: ResizeHandle): "top-left" | "top-right" | "bottom-left" | "bottom-right" => {
+    const positionMap: Record<ResizeHandle, "top-left" | "top-right" | "bottom-left" | "bottom-right"> = {
+      top: "top-left",
+      right: "top-right",
+      bottom: "bottom-right",
+      left: "bottom-left",
+      topRight: "top-right",
+      bottomRight: "bottom-right",
+      bottomLeft: "bottom-left",
+      topLeft: "top-left",
+    };
+    return positionMap[handle];
+  }, []);
+
+  // ==========================================================
+  // Auto-detect resize directions based on widget position
+  // ==========================================================
+
+  const effectiveResizeHandles = useMemo<ResizeHandle[]>(() => {
+    // If explicit resizeHandles is provided and not default, use it
+    if (resizeHandles && resizeHandles.length > 0 && !(resizeHandles.length === 1 && resizeHandles[0] === "bottomRight")) {
+      return resizeHandles;
+    }
+
+    // If autoResizeDirections is enabled, detect based on position
+    if (widgetState?.position) {
+      const { x, y } = widgetState.position;
+      const widgetWidth = typeof widgetState.size?.width === "number" ? widgetState.size.width : 300;
+      const widgetHeight = typeof widgetState.size?.height === "number" ? widgetState.size.height : 200;
+
+      // Get container dimensions (default to typical viewport if not available)
+      const containerWidth = containerRef.current?.clientWidth ?? 1200;
+      const containerHeight = containerRef.current?.clientHeight ?? 800;
+
+      // Calculate widget center position
+      const centerX = x + widgetWidth / 2;
+      const centerY = y + widgetHeight / 2;
+
+      // Determine which quadrant the widget is in
+      const isLeft = centerX < containerWidth / 2;
+      const isRight = centerX >= containerWidth / 2;
+      const isTop = centerY < containerHeight / 2;
+      const isBottom = centerY >= containerHeight / 2;
+
+      // Return appropriate resize handles based on position
+      if (isTop && isLeft) {
+        return ["bottomRight", "bottom", "right"];
+      } else if (isTop && isRight) {
+        return ["bottomLeft", "bottom", "left"];
+      } else if (isBottom && isLeft) {
+        return ["topRight", "top", "right"];
+      } else if (isBottom && isRight) {
+        return ["topLeft", "top", "left"];
+      }
+    }
+
+    // Default fallback
+    return ["bottomRight"];
+  }, [resizeHandles, widgetState?.position, widgetState?.size, containerRef]);
 
   // ==========================================================
   // Cleanup observer on unmount
@@ -449,17 +552,19 @@ export const DashboardCard = React.memo(function DashboardCard({
   return (
     <div
       ref={observedRef}
-      className={`dashcraft-card relative p-1 ${isEditMode && draggable ? "cursor-grab active:cursor-grabbing" : ""} ${className ?? ""}`}
+      className={`dashcraft-card relative p-1 ${className ?? ""}`}
       style={cardStyle}
       onClick={handleClick}
       data-widget-id={id}
       data-widget-type={type}
-      {...(isEditMode && draggable ? attributes : {})}
-      {...(isEditMode && draggable ? listeners : {})}
     >
       {/* Widget Actions (visible in edit mode) */}
       <WidgetActions visible={isEditMode}>
-        <DragHandleButton visible={draggable} />
+        <DragHandleButton
+          visible={draggable}
+          dragAttributes={isEditMode && draggable ? attributes : undefined}
+          dragListeners={isEditMode && draggable ? listeners : undefined}
+        />
         <DashboardCardViewCycler
           breakpoints={viewBreakpoints}
           onCycle={handleViewCycle}
@@ -468,30 +573,26 @@ export const DashboardCard = React.memo(function DashboardCard({
       </WidgetActions>
 
       {/* Content — lightweight placeholder when off-screen */}
-      <div className="dashcraft-card-content flex-1 overflow-hidden p-3 pt-8">
-        {isVisible ? content : <div className="w-full h-full min-h-[100px]" />}
+      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-8">
+        <div className="flex-1 min-h-0 min-w-0 w-full h-full">
+          {isVisible ? content : <div className="w-full h-full min-h-[100px]" />}
+        </div>
       </div>
 
-      {/* Resize Handle — visible in edit mode */}
-      {isEditMode && draggable && (
-        <div
-          {...getHandleProps("bottomRight")}
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-0 hover:opacity-100 transition-opacity z-50"
-          style={{
-            ...getHandleProps("bottomRight").style,
-            background: "linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.5) 50%)",
-            borderRadius: "0 0 2px 0",
-          }}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const handleProps = getHandleProps("bottomRight");
-            if (handleProps.onMouseDown) {
-              handleProps.onMouseDown(e as any);
-            }
-          }}
-        />
-      )}
+      {/* Resize Handles — visible in edit mode */}
+      {isEditMode && draggable && effectiveResizeHandles.map((handle) => {
+        const handleProps = getHandleProps(handle);
+        return (
+          <ResizeHandleButton
+            key={handle}
+            visible={true}
+            position={getResizeHandlePosition(handle)}
+            onMouseDown={handleProps.onMouseDown}
+            onTouchStart={handleProps.onTouchStart}
+            style={handleProps.style}
+          />
+        );
+      })}
 
     </div>
   );

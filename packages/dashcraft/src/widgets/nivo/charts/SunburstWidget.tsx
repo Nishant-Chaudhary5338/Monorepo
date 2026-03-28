@@ -52,7 +52,7 @@ export const SunburstWidget = React.memo(function SunburstWidget({
             <br />
             Value: <strong>{e.data.value.toLocaleString()}</strong>
             <br />
-            Share: <strong>{e.data.percentage.toFixed(1)}%</strong>
+            Share: <strong>{e.data.percentage?.toFixed(1) ?? 'N/A'}%</strong>
           </div>
         ),
       })}
