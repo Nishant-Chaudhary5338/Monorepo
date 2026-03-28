@@ -10,6 +10,7 @@ import { WidgetActions, DragHandleButton } from "./WidgetActions";
 import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useDraggable } from "../../hooks/useDraggable";
+import { useResize } from "../../hooks/useResize";
 import { useDashboardStore } from "../../store";
 
 // ============================================================
@@ -104,10 +105,29 @@ export const DashboardCard = React.memo(function DashboardCard({
   // Draggable Hook
   // ==========================================================
 
+  const { updateWidgetSize: storeUpdateWidgetSize } = useDashboardStore();
+
   const disabled = !draggable || !isEditMode;
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id,
     disabled,
+  });
+
+  // ==========================================================
+  // Resize Hook
+  // ==========================================================
+
+  const currentSize = widgetState?.size ?? defaultSize ?? { width: 300, height: 200 };
+
+  const { getHandleProps } = useResize({
+    initialSize: typeof currentSize.width === "number" && typeof currentSize.height === "number"
+      ? currentSize as Size
+      : { width: 300, height: 200 },
+    minSize: { width: 150, height: 100 },
+    disabled: !isEditMode || !draggable,
+    onResizeEnd: (newSize) => {
+      storeUpdateWidgetSize(id, newSize);
+    },
   });
 
   // ==========================================================
@@ -451,6 +471,19 @@ export const DashboardCard = React.memo(function DashboardCard({
       <div className="dashcraft-card-content flex-1 overflow-auto p-3 pt-8">
         {isVisible ? content : <div className="w-full h-full min-h-[100px]" />}
       </div>
+
+      {/* Resize Handle — visible in edit mode */}
+      {isEditMode && draggable && (
+        <div
+          {...getHandleProps("bottomRight")}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-0 hover:opacity-100 transition-opacity"
+          style={{
+            ...getHandleProps("bottomRight").style,
+            background: "linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.5) 50%)",
+            borderRadius: "0 0 2px 0",
+          }}
+        />
+      )}
 
     </div>
   );
