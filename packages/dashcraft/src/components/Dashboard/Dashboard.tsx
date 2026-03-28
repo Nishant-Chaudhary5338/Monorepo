@@ -287,9 +287,11 @@ const Dashboard = React.memo(function Dashboard({
       if (rafId.current) cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
         updateWidgetPosition(event.active.id as string, newPosition);
+        // Bring dropped widget to front
+        bringToFront(event.active.id as string);
       });
     },
-    [getWidgetState, updateWidgetPosition]
+    [getWidgetState, updateWidgetPosition, bringToFront]
   );
 
   const handleDragCancel = useCallback(() => {

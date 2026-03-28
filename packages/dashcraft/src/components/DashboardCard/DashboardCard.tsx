@@ -468,7 +468,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       </WidgetActions>
 
       {/* Content — lightweight placeholder when off-screen */}
-      <div className="dashcraft-card-content flex-1 overflow-auto p-3 pt-8">
+      <div className="dashcraft-card-content flex-1 overflow-hidden p-3 pt-8">
         {isVisible ? content : <div className="w-full h-full min-h-[100px]" />}
       </div>
 
@@ -476,11 +476,19 @@ export const DashboardCard = React.memo(function DashboardCard({
       {isEditMode && draggable && (
         <div
           {...getHandleProps("bottomRight")}
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-0 hover:opacity-100 transition-opacity"
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-0 hover:opacity-100 transition-opacity z-50"
           style={{
             ...getHandleProps("bottomRight").style,
             background: "linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.5) 50%)",
             borderRadius: "0 0 2px 0",
+          }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const handleProps = getHandleProps("bottomRight");
+            if (handleProps.onMouseDown) {
+              handleProps.onMouseDown(e as any);
+            }
           }}
         />
       )}
