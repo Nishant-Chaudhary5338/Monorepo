@@ -89,6 +89,13 @@ export class Logger {
     this.log('trace', message, data);
   }
 
+  withContext(context: Record<string, unknown>): Logger {
+    return new Logger({
+      ...this.config,
+      prefix: this.config.prefix,
+    });
+  }
+
   child(config: Partial<LoggerConfig>): Logger {
     return new Logger({
       ...this.config,

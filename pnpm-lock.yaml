@@ -920,6 +920,9 @@ importers:
       json-viewer-mcp:
         specifier: workspace:*
         version: link:../json-viewer
+      utils-scaffolder-mcp:
+        specifier: workspace:*
+        version: link:../utils-scaffolder
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

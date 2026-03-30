@@ -15,6 +15,10 @@ export type CreateBaseApiFn = (config: BaseApiConfig) => any;
 export function getBaseApiConfig(config: BaseApiConfig) {
   const { baseUrl, reducerPath = 'api', tagTypes = [], prepareHeaders, fetchFn } = config;
 
+  if (!baseUrl?.trim()) {
+    throw new Error('Base URL is required');
+  }
+
   return {
     reducerPath,
     tagTypes,
@@ -43,6 +47,11 @@ export function getCrudEndpointConfig(config: {
   tagTypes?: string[];
 }) {
   const { entity, baseUrl, tagTypes = [entity] } = config;
+
+  if (!entity?.trim() || !baseUrl?.trim()) {
+    throw new Error('Entity and baseUrl are required');
+  }
+
   return {
     entity,
     baseUrl,

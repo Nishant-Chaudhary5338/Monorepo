@@ -21,7 +21,6 @@ export type { FormFieldConfig } from './form-validation';
 
 export {
   isValidEmail,
-  isValidUrl,
   isValidPhone,
   isValidPassword,
   isValidCreditCard,

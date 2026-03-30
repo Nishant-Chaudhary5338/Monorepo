@@ -23,23 +23,25 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(obj: 
 }
 
 export function deepMerge<T extends Record<string, unknown>>(target: T, ...sources: Partial<T>[]): T {
-  if (!sources.length) return target;
+  if (!sources.length) return { ...target };
   const source = sources.shift();
-  if (!source) return target;
+  if (!source) return { ...target };
+
+  const result = { ...target } as T;
 
   for (const key of Object.keys(source) as (keyof T)[]) {
     const sourceVal = source[key];
     const targetVal = target[key];
     if (isPlainObject(sourceVal) && isPlainObject(targetVal)) {
-      target[key] = deepMerge(
+      result[key] = deepMerge(
         targetVal as Record<string, unknown>,
         sourceVal as Record<string, unknown>
       ) as T[keyof T];
     } else if (sourceVal !== undefined) {
-      target[key] = sourceVal as T[keyof T];
+      result[key] = sourceVal as T[keyof T];
     }
   }
-  return deepMerge(target, ...sources);
+  return deepMerge(result, ...sources);
 }
 
 export function deepClone<T>(obj: T): T {

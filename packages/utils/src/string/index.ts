@@ -33,8 +33,6 @@ export {
 export { interpolate, createTemplate } from './template';
 
 export {
-  isValidEmail,
-  isValidUrl,
   isValidSlug,
   isPalindrome,
   generateSlug,

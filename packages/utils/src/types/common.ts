@@ -83,11 +83,7 @@ export interface KeyValuePair<T = unknown> {
   value: T;
 }
 
-export type Nullable<T> = T | null;
-
-export type Optional<T> = T | undefined;
-
-export type Maybe<T> = T | null | undefined;
+export type { Nullable, Optional, Maybe } from './utility-types';
 
 export interface SelectOption<T extends string | number = string> {
   label: string;

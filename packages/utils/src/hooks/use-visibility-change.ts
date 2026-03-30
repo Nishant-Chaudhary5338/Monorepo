@@ -7,6 +7,7 @@ export function useVisibilityChange(): boolean {
   });
 
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     const handler = () => setVisible(!document.hidden);
     document.addEventListener('visibilitychange', handler);
     return () => document.removeEventListener('visibilitychange', handler);

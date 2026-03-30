@@ -17,3 +17,10 @@ export interface TypedStorage<T> {
   remove: () => void;
   clear: () => void;
 }
+
+export interface AsyncTypedStorage<T> {
+  get: () => Promise<T | undefined>;
+  set: (value: T) => Promise<void>;
+  remove: () => void;
+  clear: () => void;
+}

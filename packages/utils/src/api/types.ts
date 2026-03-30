@@ -30,3 +30,11 @@ export interface RetryConfig {
   maxDelay?: number;
   retryCondition?: (error: { status: number }) => boolean;
 }
+
+export interface CrudEndpointsBuilder<T = unknown> {
+  list: () => { url: string; method?: string };
+  get: (id: string | number) => { url: string; method?: string };
+  create: () => { url: string; method?: string };
+  update: (id: string | number) => { url: string; method?: string };
+  delete: (id: string | number) => { url: string; method?: string };
+}

@@ -4,6 +4,10 @@ import type { TokenManagerConfig, TokenPair } from './types';
 export function createTokenManager(config: TokenManagerConfig = {}) {
   const { storageKey = 'auth_tokens', refreshEndpoint, onTokenExpired } = config;
 
+  if (!storageKey?.trim()) {
+    throw new Error('Storage key is required');
+  }
+
   const storage = createStorage<TokenPair | null>({ key: storageKey, defaultValue: null });
   let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -25,7 +29,7 @@ export function createTokenManager(config: TokenManagerConfig = {}) {
   }
 
   async function refreshTokens(): Promise<TokenPair | null> {
-    if (!refreshEndpoint) return null;
+    if (!refreshEndpoint?.trim()) return null;
     const refreshToken = getRefreshToken();
     if (!refreshToken) {
       onTokenExpired?.();
@@ -44,7 +48,8 @@ export function createTokenManager(config: TokenManagerConfig = {}) {
       const tokens: TokenPair = await response.json();
       await setTokens(tokens);
       return tokens;
-    } catch {
+    } catch (error) {
+      console.error('Token refresh failed:', error);
       onTokenExpired?.();
       return null;
     }
@@ -79,6 +84,7 @@ export function createPasswordPolicy(config: import('./types').PasswordPolicyCon
   } = config;
 
   function validate(password: string): { valid: boolean; errors: string[] } {
+    if (!password) return { valid: false, errors: ['Password is required'] };
     const errors: string[] = [];
     if (password.length < minLength) errors.push(`Minimum ${minLength} characters`);
     if (password.length > maxLength) errors.push(`Maximum ${maxLength} characters`);
@@ -90,6 +96,7 @@ export function createPasswordPolicy(config: import('./types').PasswordPolicyCon
   }
 
   function strength(password: string): number {
+    if (!password) return 0;
     let score = 0;
     if (password.length >= minLength) score++;
     if (password.length >= 12) score++;

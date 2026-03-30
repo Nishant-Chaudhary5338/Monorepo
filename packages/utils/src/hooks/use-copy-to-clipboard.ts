@@ -7,6 +7,9 @@ export function useCopyToClipboard(): {
   const [copied, setCopied] = useState(false);
 
   const copy = useCallback(async (text: string): Promise<boolean> => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return false;
+    }
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);

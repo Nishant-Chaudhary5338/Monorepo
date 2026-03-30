@@ -5,6 +5,10 @@ export function createOptimisticUpdate<TArg, TResult>(config: {
 }) {
   const { queryFn, onOptimistic, onError } = config;
 
+  if (typeof queryFn !== 'function') {
+    throw new Error('queryFn must be a function');
+  }
+
   return {
     async query(arg: TArg) {
       try {
@@ -48,6 +52,20 @@ export function createWebSocketEndpointConfig(config: {
   reconnectInterval?: number;
 }) {
   const { url, onMessage, onError, reconnect = true, reconnectInterval = 3000 } = config;
+
+  if (!url?.trim()) {
+    throw new Error('WebSocket URL is required');
+  }
+
+  // SSR guard
+  if (typeof WebSocket === 'undefined') {
+    return {
+      connect: () => {},
+      disconnect: () => {},
+      send: () => {},
+    };
+  }
+
   let ws: WebSocket | null = null;
   let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 

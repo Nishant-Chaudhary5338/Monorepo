@@ -42,11 +42,13 @@ export function createFormSchema(fields: Record<string, FormFieldConfig>): ZodSc
       case 'date':
         fieldSchema = z.string().or(z.date());
         break;
-      case 'number':
-        fieldSchema = z.number();
-        if (config.min !== undefined) fieldSchema = fieldSchema.min(config.min);
-        if (config.max !== undefined) fieldSchema = fieldSchema.max(config.max);
+      case 'number': {
+        let numSchema = z.number();
+        if (config.min !== undefined) numSchema = numSchema.min(config.min);
+        if (config.max !== undefined) numSchema = numSchema.max(config.max);
+        fieldSchema = numSchema;
         break;
+      }
       case 'boolean':
         fieldSchema = z.boolean();
         break;
@@ -58,12 +60,14 @@ export function createFormSchema(fields: Record<string, FormFieldConfig>): ZodSc
         }
         break;
       case 'string':
-      default:
-        fieldSchema = z.string();
-        if (config.minLength) fieldSchema = fieldSchema.min(config.minLength);
-        if (config.maxLength) fieldSchema = fieldSchema.max(config.maxLength);
-        if (config.pattern) fieldSchema = fieldSchema.regex(config.pattern, config.message ?? 'Invalid format');
+      default: {
+        let strSchema = z.string();
+        if (config.minLength) strSchema = strSchema.min(config.minLength);
+        if (config.maxLength) strSchema = strSchema.max(config.maxLength);
+        if (config.pattern) strSchema = strSchema.regex(config.pattern, config.message ?? 'Invalid format');
+        fieldSchema = strSchema;
         break;
+      }
     }
 
     if (!config.required) {
@@ -83,10 +87,11 @@ export function validateField<T>(value: T, schema: ZodSchema<T>): { success: boo
 }
 
 export function sanitizeInput(value: string): string {
+  if (!value) return '';
   return value
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/"/g, '"')
     .replace(/'/g, '&#x27;')
     .replace(/\//g, '&#x2F;');
 }
@@ -95,6 +100,7 @@ export function validateFileUpload(
   file: { size: number; type: string },
   rules: { maxSize?: number; allowedTypes?: string[] }
 ): { valid: boolean; error?: string } {
+  if (!file) return { valid: false, error: 'No file provided' };
   if (rules.maxSize && file.size > rules.maxSize) {
     return { valid: false, error: `File size exceeds ${rules.maxSize} bytes` };
   }

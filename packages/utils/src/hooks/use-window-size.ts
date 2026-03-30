@@ -12,6 +12,7 @@ export function useWindowSize(): WindowSize {
   });
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const handler = () => {
       setSize({ width: window.innerWidth, height: window.innerHeight });
     };

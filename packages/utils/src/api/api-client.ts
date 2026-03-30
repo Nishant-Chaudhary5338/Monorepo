@@ -19,10 +19,23 @@ export interface RequestOptions {
 export function createApiClient(config: ApiClientConfig) {
   const { baseUrl, headers = {}, retry, timeout = 30000 } = config;
 
+  if (!baseUrl?.trim()) {
+    throw new Error('Base URL is required');
+  }
+
   async function request<T = unknown>(path: string, options: RequestOptions = {}): Promise<T> {
     const { method = 'GET', headers: reqHeaders, body, params, signal } = options;
 
-    const url = new URL(path, baseUrl);
+    if (!path?.trim()) {
+      throw new Error('Request path is required');
+    }
+
+    let url: URL;
+    try {
+      url = new URL(path, baseUrl);
+    } catch (error) {
+      throw new Error(`Invalid URL: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
     if (params) {
       for (const [key, value] of Object.entries(params)) {
         if (value !== null && value !== undefined) {
@@ -59,6 +72,9 @@ export function createApiClient(config: ApiClientConfig) {
       return await response.json();
     } catch (error) {
       clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error(`Request timeout after ${timeout}ms`);
+      }
       throw handleApiError(error);
     }
   }

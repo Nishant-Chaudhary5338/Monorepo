@@ -23,6 +23,10 @@ export function createStorage<T>(config: StorageConfig<T>): TypedStorage<T> {
     defaultValue,
   } = config;
 
+  if (!key?.trim()) {
+    throw new Error('Storage key is required');
+  }
+
   const engine = getStorageEngine(storageType);
 
   return {
@@ -31,7 +35,8 @@ export function createStorage<T>(config: StorageConfig<T>): TypedStorage<T> {
         const raw = engine.getItem(key);
         if (raw === null) return defaultValue;
         return deserialize(raw);
-      } catch {
+      } catch (error) {
+        console.warn(`Failed to get storage key "${key}":`, error);
         return defaultValue;
       }
     },
@@ -39,21 +44,32 @@ export function createStorage<T>(config: StorageConfig<T>): TypedStorage<T> {
     set(value: T): void {
       try {
         engine.setItem(key, serialize(value));
-      } catch {
-        // Storage full or unavailable
+      } catch (error) {
+        console.warn(`Failed to set storage key "${key}":`, error);
       }
     },
 
     remove(): void {
-      engine.removeItem(key);
+      try {
+        engine.removeItem(key);
+      } catch (error) {
+        console.warn(`Failed to remove storage key "${key}":`, error);
+      }
     },
 
     clear(): void {
-      engine.removeItem(key);
+      try {
+        engine.removeItem(key);
+      } catch (error) {
+        console.warn(`Failed to clear storage key "${key}":`, error);
+      }
     },
   };
 }
 
 export function createSessionStorage<T>(config: Omit<StorageConfig<T>, 'storage'>): TypedStorage<T> {
+  if (!config?.key?.trim()) {
+    throw new Error('Storage key is required');
+  }
   return createStorage({ ...config, storage: 'session' });
 }

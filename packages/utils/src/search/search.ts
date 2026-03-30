@@ -10,11 +10,12 @@ export function fuzzySearch<T extends Record<string, unknown>>(
   options: FuzzySearchOptions<T>
 ): T[] {
   const { keys, threshold = 0.3, limit = 50 } = options;
-  if (!query.trim()) return items.slice(0, limit);
+  if (!items?.length || !query?.trim() || !keys?.length) return items?.slice(0, limit) ?? [];
 
   const lowerQuery = query.toLowerCase();
 
   function score(item: T): number {
+    if (!item) return 0;
     let bestScore = 0;
     for (const key of keys) {
       const value = String(item[key] ?? '').toLowerCase();
@@ -62,7 +63,9 @@ export function createSearchIndex<T extends Record<string, unknown>>(
   fields: (keyof T)[]
 ): Map<string, T[]> {
   const index = new Map<string, T[]>();
+  if (!items?.length || !fields?.length) return index;
   for (const item of items) {
+    if (!item) continue;
     for (const field of fields) {
       const value = String(item[field] ?? '').toLowerCase();
       const words = value.split(/\s+/);
@@ -78,8 +81,10 @@ export function createSearchIndex<T extends Record<string, unknown>>(
 }
 
 export function highlightMatches(text: string, query: string, highlightTag = 'mark'): string {
-  if (!query.trim()) return text;
+  if (!text || !query?.trim()) return text ?? '';
+  // Sanitize highlightTag to prevent XSS - only allow alphanumeric tags
+  const safeTag = /^[a-z][a-z0-9]*$/i.test(highlightTag) ? highlightTag : 'mark';
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`(${escaped})`, 'gi');
-  return text.replace(regex, `<${highlightTag}>$1</${highlightTag}>`);
+  return text.replace(regex, `<${safeTag}>$1</${safeTag}>`);
 }

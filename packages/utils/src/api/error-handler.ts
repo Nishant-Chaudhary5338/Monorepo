@@ -18,6 +18,13 @@ export function handleApiError(error: unknown): NormalizedApiError {
       code: ERROR_CODES.UNKNOWN,
     };
   }
+  if (error === null || error === undefined) {
+    return {
+      message: 'An unknown error occurred',
+      status: 500,
+      code: ERROR_CODES.UNKNOWN,
+    };
+  }
   return {
     message: 'An unknown error occurred',
     status: 500,

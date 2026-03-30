@@ -7,6 +7,7 @@ export function useOnlineStatus(): boolean {
   });
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const goOnline = () => setOnline(true);
     const goOffline = () => setOnline(false);
     window.addEventListener('online', goOnline);

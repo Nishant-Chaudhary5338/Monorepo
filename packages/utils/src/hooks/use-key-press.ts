@@ -5,6 +5,7 @@ export function useKeyPress(targetKey: string | string[]): boolean {
   const keys = Array.isArray(targetKey) ? targetKey : [targetKey];
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const downHandler = (e: KeyboardEvent) => {
       if (keys.includes(e.key)) setPressed(true);
     };

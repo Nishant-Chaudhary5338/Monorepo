@@ -20,10 +20,14 @@ import {
 } from 'date-fns';
 
 export function isBusinessDay(date: Date): boolean {
+  if (!isValid(date)) return false;
   return !isWeekend(date);
 }
 
 export function addBusinessDays(date: Date, days: number): Date {
+  if (!isValid(date)) return new Date(NaN);
+  if (!Number.isFinite(days)) return new Date(NaN);
+  
   let result = new Date(date);
   let added = 0;
   const direction = days > 0 ? 1 : -1;
@@ -37,6 +41,8 @@ export function addBusinessDays(date: Date, days: number): Date {
 }
 
 export function getBusinessDaysBetween(start: Date, end: Date): number {
+  if (!isValid(start) || !isValid(end)) return 0;
+  
   let count = 0;
   const direction = start < end ? 1 : -1;
   let current = new Date(start);
@@ -53,6 +59,7 @@ export function getBusinessDaysBetween(start: Date, end: Date): number {
 }
 
 export function isDateInRange(date: Date, start: Date, end: Date): boolean {
+  if (!isValid(date) || !isValid(start) || !isValid(end)) return false;
   return date >= start && date <= end;
 }
 
@@ -92,16 +99,19 @@ export function endOfToday(): Date {
 }
 
 export function isToday(date: Date | string): boolean {
+  if (!date) return false;
   const d = typeof date === 'string' ? parseISO(date) : date;
   return isValid(d) && fnsIsToday(d);
 }
 
 export function isPast(date: Date | string): boolean {
+  if (!date) return false;
   const d = typeof date === 'string' ? parseISO(date) : date;
   return isValid(d) && fnsIsPast(d);
 }
 
 export function isFuture(date: Date | string): boolean {
+  if (!date) return false;
   const d = typeof date === 'string' ? parseISO(date) : date;
   return isValid(d) && fnsIsFuture(d);
 }
@@ -109,17 +119,20 @@ export function isFuture(date: Date | string): boolean {
 export function daysBetween(start: Date | string, end: Date | string): number {
   const s = typeof start === 'string' ? parseISO(start) : start;
   const e = typeof end === 'string' ? parseISO(end) : end;
+  if (!isValid(s) || !isValid(e)) return 0;
   return differenceInDays(e, s);
 }
 
 export function weeksBetween(start: Date | string, end: Date | string): number {
   const s = typeof start === 'string' ? parseISO(start) : start;
   const e = typeof end === 'string' ? parseISO(end) : end;
+  if (!isValid(s) || !isValid(e)) return 0;
   return differenceInWeeks(e, s);
 }
 
 export function monthsBetween(start: Date | string, end: Date | string): number {
   const s = typeof start === 'string' ? parseISO(start) : start;
   const e = typeof end === 'string' ? parseISO(end) : end;
+  if (!isValid(s) || !isValid(e)) return 0;
   return differenceInMonths(e, s);
 }

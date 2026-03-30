@@ -22,25 +22,35 @@ export function titleCase(str: string): string {
 }
 
 export function truncate(str: string, maxLength: number, suffix = '...'): string {
-  if (!str || str.length <= maxLength) return str;
-  return str.slice(0, maxLength - suffix.length) + suffix;
+  if (!str) return str;
+  const safeMaxLength = Math.max(0, Math.floor(maxLength) || 0);
+  if (str.length <= safeMaxLength) return str;
+  const safeSuffix = suffix ?? '...';
+  if (safeMaxLength <= safeSuffix.length) return str.slice(0, safeMaxLength);
+  return str.slice(0, safeMaxLength - safeSuffix.length) + safeSuffix;
 }
 
 export function truncateMiddle(str: string, maxLength: number, separator = '...'): string {
-  if (!str || str.length <= maxLength) return str;
-  const charsToShow = maxLength - separator.length;
+  if (!str) return str;
+  const safeMaxLength = Math.max(0, Math.floor(maxLength) || 0);
+  if (str.length <= safeMaxLength) return str;
+  const safeSeparator = separator ?? '...';
+  if (safeMaxLength <= safeSeparator.length) return str.slice(0, safeMaxLength);
+  const charsToShow = safeMaxLength - safeSeparator.length;
   const frontChars = Math.ceil(charsToShow / 2);
   const backChars = Math.floor(charsToShow / 2);
-  return str.slice(0, frontChars) + separator + str.slice(-backChars);
+  return str.slice(0, frontChars) + safeSeparator + str.slice(-backChars);
 }
 
 export function wrapText(str: string, maxWidth: number): string[] {
+  if (!str) return [];
+  const safeMaxWidth = Math.max(1, Math.floor(maxWidth) || 1);
   const words = str.split(' ');
   const lines: string[] = [];
   let currentLine = '';
 
   for (const word of words) {
-    if (currentLine && (currentLine + ' ' + word).length > maxWidth) {
+    if (currentLine && (currentLine + ' ' + word).length > safeMaxWidth) {
       lines.push(currentLine);
       currentLine = word;
     } else {
@@ -52,6 +62,7 @@ export function wrapText(str: string, maxWidth: number): string[] {
 }
 
 export function formatInitials(name: string): string {
+  if (!name?.trim()) return '';
   return name
     .split(' ')
     .filter(Boolean)
@@ -64,8 +75,11 @@ export function maskString(
   str: string,
   options: { showFirst?: number; showLast?: number; maskChar?: string } = {}
 ): string {
+  if (!str) return '';
   const { showFirst = 0, showLast = 4, maskChar = '*' } = options;
-  if (str.length <= showFirst + showLast) return str;
-  const masked = maskChar.repeat(str.length - showFirst - showLast);
-  return str.slice(0, showFirst) + masked + str.slice(-showLast);
+  const safeShowFirst = Math.max(0, Math.floor(showFirst) || 0);
+  const safeShowLast = Math.max(0, Math.floor(showLast) || 0);
+  if (str.length <= safeShowFirst + safeShowLast) return str;
+  const masked = maskChar.repeat(str.length - safeShowFirst - safeShowLast);
+  return str.slice(0, safeShowFirst) + masked + str.slice(-safeShowLast);
 }

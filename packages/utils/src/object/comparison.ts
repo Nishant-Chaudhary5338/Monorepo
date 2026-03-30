@@ -31,11 +31,12 @@ export function diff(
   a: Record<string, unknown>,
   b: Record<string, unknown>
 ): { added: string[]; removed: string[]; changed: string[] } {
+  if (!a || !b) return { added: [], removed: [], changed: [] };
   const keysA = new Set(Object.keys(a));
   const keysB = new Set(Object.keys(b));
-  const added = [...keysB].filter((k) => !keysA.has(k));
-  const removed = [...keysA].filter((k) => !keysB.has(k));
-  const changed = [...keysA]
+  const added = Array.from(keysB).filter((k) => !keysA.has(k));
+  const removed = Array.from(keysA).filter((k) => !keysB.has(k));
+  const changed = Array.from(keysA)
     .filter((k) => keysB.has(k) && !deepEqual(a[k], b[k]));
   return { added, removed, changed };
 }

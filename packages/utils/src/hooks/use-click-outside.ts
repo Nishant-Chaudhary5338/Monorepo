@@ -5,6 +5,7 @@ export function useClickOutside<T extends HTMLElement>(
   handler: (event: MouseEvent | TouchEvent) => void
 ): void {
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!ref.current || ref.current.contains(event.target as Node)) return;
       handler(event);

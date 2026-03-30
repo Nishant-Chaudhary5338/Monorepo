@@ -4,6 +4,10 @@ export function createLazyComponent<T extends ComponentType<any>>(
   importFn: () => Promise<{ default: T }>,
   options: { fallback?: React.ReactNode } = {}
 ) {
+  if (typeof importFn !== 'function') {
+    throw new Error('importFn must be a function');
+  }
+
   const LazyComponent = lazy(importFn);
 
   return function LazyWrapper(props: React.ComponentProps<T>) {

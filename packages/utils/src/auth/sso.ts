@@ -3,6 +3,10 @@ import type { SSOProviderConfig } from './types';
 export function createSSOProvider(config: SSOProviderConfig) {
   const { provider, clientId, redirectUri, scopes = ['openid', 'email', 'profile'] } = config;
 
+  if (!provider?.trim() || !clientId?.trim() || !redirectUri?.trim()) {
+    throw new Error('Provider, clientId, and redirectUri are required');
+  }
+
   function getAuthorizationUrl(state?: string): string {
     if (config.authorizationUrl) {
       const url = new URL(config.authorizationUrl);
@@ -30,6 +34,10 @@ export function createSSOProvider(config: SSOProviderConfig) {
   }
 
   function initiateLogin(state?: string): void {
+    if (typeof window === 'undefined') {
+      console.warn('initiateLogin called in non-browser environment');
+      return;
+    }
     window.location.href = getAuthorizationUrl(state);
   }
 

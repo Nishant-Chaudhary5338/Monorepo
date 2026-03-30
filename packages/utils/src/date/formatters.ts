@@ -8,18 +8,22 @@ import {
 } from 'date-fns';
 
 export function formatDate(date: Date | string, formatStr: string): string {
+  if (!date || !formatStr) return '';
   const d = typeof date === 'string' ? parseISO(date) : date;
   if (!isValid(d)) return '';
   return format(d, formatStr);
 }
 
 export function formatRelativeTime(date: Date | string): string {
+  if (!date) return '';
   const d = typeof date === 'string' ? parseISO(date) : date;
   if (!isValid(d)) return '';
   return formatDistanceToNow(d, { addSuffix: true });
 }
 
 export function formatDuration(ms: number): string {
+  if (!Number.isFinite(ms) || ms < 0) return '0s';
+  
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -39,11 +43,15 @@ export function formatToISO(date: Date): string {
 }
 
 export function formatToLocalString(date: Date | string, locale = 'en-US'): string {
+  if (!date) return '';
   const d = typeof date === 'string' ? parseISO(date) : date;
   if (!isValid(d)) return '';
   return d.toLocaleDateString(locale);
 }
 
 export function formatTimestamp(timestamp: number, formatStr = 'MMM d, yyyy h:mm a'): string {
-  return format(new Date(timestamp), formatStr);
+  if (!Number.isFinite(timestamp)) return '';
+  const d = new Date(timestamp);
+  if (!isValid(d)) return '';
+  return format(d, formatStr);
 }
