@@ -16,11 +16,15 @@ import { DEFAULT_WIDGET_SIZE, DEFAULT_WIDGET_POSITION } from "../utils/constants
 
 export interface DashboardStoreState {
   isEditMode: boolean;
+  isResizing: boolean;
   widgets: Record<string, WidgetState>;
   maxZIndex: number;
+  /** Increments on every resetLayout so DashboardCards can re-register */
+  layoutGeneration: number;
 
   toggleEditMode: () => void;
   setEditMode: (isEditMode: boolean) => void;
+  setIsResizing: (isResizing: boolean) => void;
 
   addWidget: (config: WidgetConfig) => void;
   removeWidget: (id: string) => void;
@@ -51,8 +55,10 @@ export const useDashboardStore = create<DashboardStoreState>()(
   subscribeWithSelector((set, get) => ({
     // Initial State
     isEditMode: false,
+    isResizing: false,
     widgets: {},
     maxZIndex: 0,
+    layoutGeneration: 0,
 
     // Edit Mode Actions
     toggleEditMode: () => {
@@ -61,6 +67,10 @@ export const useDashboardStore = create<DashboardStoreState>()(
 
     setEditMode: (isEditMode: boolean) => {
       set({ isEditMode });
+    },
+
+    setIsResizing: (isResizing: boolean) => {
+      set({ isResizing });
     },
 
     // Widget CRUD Actions
@@ -212,7 +222,7 @@ export const useDashboardStore = create<DashboardStoreState>()(
     },
 
     resetLayout: () => {
-      set({ widgets: {}, maxZIndex: 0 });
+      set((state) => ({ widgets: {}, maxZIndex: 0, layoutGeneration: state.layoutGeneration + 1 }));
     },
 
     // Selectors

@@ -304,7 +304,13 @@ class PerformanceAuditServer extends McpServerBase {
       };
     } catch (error) {
       return {
-        content: [{ type: 'text', text: JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }, null, 2) }],
+        content: [{ type: 'text', text: JSON.stringify({ success: false, error: {
+          error: true,
+          code: error instanceof Error ? error.constructor.name : 'UNKNOWN_ERROR',
+          message: error instanceof Error ? error.message : String(error),
+          suggestion: 'Check input parameters and ensure all required values are provided.',
+          timestamp: new Date().toISOString(),
+        } }, null, 2) }],
         isError: true,
       };
     }

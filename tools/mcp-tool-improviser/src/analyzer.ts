@@ -44,11 +44,11 @@ export function extractToolSource(filePath: string): ToolSource {
   const source = fs.readFileSync(filePath, 'utf-8');
 
   // Extract server name
-  const nameMatch = source.match(/name:\s*['"]([^'"]+)['"]/);
+  const nameMatch = source.match(/name:\s*['\"]([^'\"]+)['\"]/)
   const serverName = nameMatch ? nameMatch[1] : path.basename(path.dirname(filePath));
 
   // Extract server version
-  const versionMatch = source.match(/version:\s*['"]([^'"]+)['"]/);
+  const versionMatch = source.match(/version:\s*['\"]([^'\"]+)['\"]/)
   const serverVersion = versionMatch ? versionMatch[1] : '1.0.0';
 
   // Extract class name
@@ -57,8 +57,8 @@ export function extractToolSource(filePath: string): ToolSource {
 
   // Extract imports
   const imports: string[] = [];
-  const importRegex = /import\s+.*?from\s+['"]([^'"]+)['"]/g;
-  let m;
+  const importRegex = /import\s+.*?from\s+['\"]([^'\"]+)['\"]/g;
+  let m: RegExpExecArray | null;
   while ((m = importRegex.exec(source)) !== null) {
     imports.push(m[1]);
   }
@@ -92,9 +92,9 @@ function extractToolsFromSource(source: string): ExtractedTool[] {
 
   // Extract individual tool objects
   // Match each { name: '...', description: '...', inputSchema: { ... } }
-  const toolRegex = /\{\s*name:\s*['"]([^'"]+)['"],\s*description:\s*(['"])([\s\S]*?)\2\s*,\s*inputSchema:\s*(\{[\s\S]*?\})\s*\}/g;
+  const toolRegex = /\{\s*name:\s*['\"]([^'\"]+)['\"],\s*description:\s*(['\"])([\s\S]*?)\2\s*,\s*inputSchema:\s*(\{[\s\S]*?\})\s*\}/g;
   
-  let match;
+  let match: RegExpExecArray | null;
   while ((match = toolRegex.exec(toolsBlock)) !== null) {
     const toolName = match[1];
     const toolDesc = match[3];
@@ -130,18 +130,19 @@ function extractToolsFromSource(source: string): ExtractedTool[] {
 
   // If regex didn't work, try a simpler approach - find tool names and descriptions
   if (tools.length === 0) {
-    const simpleToolRegex = /name:\s*['"](\w+)['"],\s*description:\s*['"]([^'"]+)['"]/g;
-    while ((match = simpleToolRegex.exec(source)) !== null) {
-      const toolName = match[1];
+    const simpleToolRegex = /name:\s*['\"](\w+)['\"],\s*description:\s*['\"]([^'\"]+)['\"]/g;
+    let simpleMatch: RegExpExecArray | null;
+    while ((simpleMatch = simpleToolRegex.exec(source)) !== null) {
+      const toolName = simpleMatch[1];
       const handlerName = findHandlerForTool(source, toolName);
       
       tools.push({
         name: toolName,
-        description: match[2],
+        description: simpleMatch[2],
         inputSchema: {},
         handlerName,
         handlerCode: '',
-        lineNumber: source.slice(0, match.index).split('\n').length,
+        lineNumber: simpleMatch.index ? source.slice(0, simpleMatch.index).split('\n').length : 0,
       });
     }
   }
@@ -151,9 +152,9 @@ function extractToolsFromSource(source: string): ExtractedTool[] {
 
 function findHandlerForTool(source: string, toolName: string): string {
   // Look for case 'toolName': patterns
-  const casePattern = new RegExp(`case\\s+['"]${toolName}['"]`);
+  const casePattern = new RegExp(`case\\s+['\"]${toolName}['\"]`);
   const match = source.match(casePattern);
-  if (match) {
+  if (match && match.index !== undefined) {
     // Find the nearest method name before this case
     const beforeCase = source.slice(0, match.index);
     const methodMatch = beforeCase.match(/(?:private\s+)?(?:async\s+)?(handle\w+)\s*\(/g);
@@ -177,7 +178,7 @@ function findHandlerForTool(source: string, toolName: string): string {
 function extractMethods(source: string, className: string): string[] {
   const methods: string[] = [];
   const methodRegex = /(?:private\s+)?(?:async\s+)?(\w+)\s*\([^)]*\)/g;
-  let match;
+  let match: RegExpExecArray | null;
   while ((match = methodRegex.exec(source)) !== null) {
     if (match[1] !== 'constructor' && match[1] !== 'run') {
       methods.push(match[1]);

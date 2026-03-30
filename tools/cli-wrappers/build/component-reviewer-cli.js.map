@@ -1,1 +1,1 @@
-{"version":3,"file":"component-reviewer-cli.js","sourceRoot":"","sources":["../src/component-reviewer-cli.ts"],"names":[],"mappings":"AACE,CAAC,QAAQ,GAAC,GAAG,CAAA;AAAC,IAAI,CAAA;AACpB,OAAO,EAAE,gBAAgB,EAAE,MAAM,iBAAiB,CAAC;AAEnD,gBAAgB,CAAC,oBAAoB,EAAE,QAAQ,CAAC,CAAC"}
+{"version":3,"file":"component-reviewer-cli.js","sourceRoot":"","sources":["../src/component-reviewer-cli.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,gBAAgB,EAAE,MAAM,iBAAiB,CAAC;AAEnD,gBAAgB,CAAC,oBAAoB,EAAE,QAAQ,CAAC,CAAC"}

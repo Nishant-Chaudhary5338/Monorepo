@@ -1,0 +1,19 @@
+{
+  "name": "json-viewer-mcp",
+  "version": "1.0.0",
+  "description": "MCP tool for visualizing JSON responses in a browser",
+  "type": "module",
+  "main": "build/json-viewer/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@tools/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

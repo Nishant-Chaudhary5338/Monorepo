@@ -62,7 +62,7 @@ function parseArgs(): GenerateOptions {
   }
   
   // Parse all arguments
-  for (const i = startIndex; i < args.length; i++) {
+  for (let i = startIndex; i < args.length; i++) {
     const arg = args[i];
     
     // Skip $npm_config_* literal strings (pnpm doesn't expand them)
@@ -166,8 +166,9 @@ async function main() {
       process.exit(1);
     }
   } catch (error: unknown) {
-    console.error('[DEBUG] Error:', error.message);
-    console.error('[DEBUG] Stack:', error.stack);
+    const err = error as Error;
+    console.error('[DEBUG] Error:', err.message);
+    console.error('[DEBUG] Stack:', err.stack);
     process.exit(1);
   }
 }

@@ -5,25 +5,25 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 50 to a named constant (e.g., CONSTANT_50) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 50 to a named constant (e.g., CONSTANT_50) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 50 to a named constant (e.g., CONSTANT_50) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4)
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90", // TODO: Extract 90 to a named constant (e.g., CONSTANT_90) // TODO: Extract 90 to a named constant (e.g., CONSTANT_90) // TODO: Extract 90 to a named constant (e.g., CONSTANT_90)
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90", // TODO: Extract 90 to a named constant (e.g., CONSTANT_90) // TODO: Extract 90 to a named constant (e.g., CONSTANT_90) // TODO: Extract 90 to a named constant (e.g., CONSTANT_90)
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80", // TODO: Extract 80 to a named constant (e.g., CONSTANT_80) // TODO: Extract 80 to a named constant (e.g., CONSTANT_80) // TODO: Extract 80 to a named constant (e.g., CONSTANT_80)
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-primary underline-offset-4 hover:underline", // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4)
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: "h-10 px-4 py-2", // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 4 to a named constant (e.g., CONSTANT_4) // TODO: Extract 2 to a named constant (e.g., CONSTANT_2)
+        sm: "h-9 rounded-md px-3", // TODO: Extract 9 to a named constant (e.g., CONSTANT_9) // TODO: Extract 3 to a named constant (e.g., CONSTANT_3) // TODO: Extract 9 to a named constant (e.g., CONSTANT_9) // TODO: Extract 3 to a named constant (e.g., CONSTANT_3) // TODO: Extract 9 to a named constant (e.g., CONSTANT_9) // TODO: Extract 3 to a named constant (e.g., CONSTANT_3)
+        lg: "h-11 rounded-md px-8", // TODO: Extract 11 to a named constant (e.g., CONSTANT_11) // TODO: Extract 8 to a named constant (e.g., CONSTANT_8) // TODO: Extract 11 to a named constant (e.g., CONSTANT_11) // TODO: Extract 8 to a named constant (e.g., CONSTANT_8) // TODO: Extract 11 to a named constant (e.g., CONSTANT_11) // TODO: Extract 8 to a named constant (e.g., CONSTANT_8)
+        icon: "h-10 w-10", // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10) // TODO: Extract 10 to a named constant (e.g., CONSTANT_10)
       },
     },
     defaultVariants: {

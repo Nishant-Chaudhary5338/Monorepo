@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useCallback, useState, useRef } from "react";
+import { Settings, Trash2 } from "lucide-react";
 import type {
   WidgetConfig,
   Position,
   Size,
   ViewBreakpoints,
+  WidgetSettings,
 } from "../../types";
 import type { ResizeHandle } from "../../hooks/useResize";
 import { useDashboardContext } from "../Dashboard/Dashboard.context";
 import { WidgetActions, DragHandleButton, ResizeHandleButton } from "./WidgetActions";
+import { SettingsPanel } from "../Settings/SettingsPanel";
 import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useDraggable } from "../../hooks/useDraggable";
@@ -56,6 +59,10 @@ export interface DashboardCardProps {
 
   // Settings Panel
   settingsPanel?: React.ReactNode | boolean;
+  /** When to show the settings gear icon. "edit-mode" = only while editing (default), "always" = always visible */
+  settingsVisibility?: "edit-mode" | "always";
+  /** Callback fired whenever a setting is changed */
+  onSettingsChange?: (settings: WidgetSettings) => void;
 
   // Responsive Views
   viewBreakpoints?: ViewBreakpoints;
@@ -86,6 +93,8 @@ export const DashboardCard = React.memo(function DashboardCard({
   draggable = true,
   deletable = true,
   settings: showSettings = true,
+  settingsVisibility = "edit-mode",
+  onSettingsChange,
   viewCycler: showViewCycler = false,
   resizeHandles = ["bottomRight"],
   viewBreakpoints,
@@ -93,14 +102,14 @@ export const DashboardCard = React.memo(function DashboardCard({
   defaultPosition,
   className,
   style,
-  onDelete: _onDelete,
+  onDelete,
   children,
 }: DashboardCardProps): React.JSX.Element | null {
   // ==========================================================
   // Context
   // ==========================================================
 
-  const { registerWidget, unregisterWidget, isEditMode, widgets, bringToFront } =
+  const { registerWidget, removeWidget, isEditMode, widgets, bringToFront } =
     useDashboardContext();
 
   // ==========================================================
@@ -114,6 +123,7 @@ export const DashboardCard = React.memo(function DashboardCard({
   // ==========================================================
 
   const { updateWidgetSize: storeUpdateWidgetSize } = useDashboardStore();
+  const layoutGeneration = useDashboardStore((state) => state.layoutGeneration);
 
   const disabled = !draggable || !isEditMode;
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -127,8 +137,10 @@ export const DashboardCard = React.memo(function DashboardCard({
 
   const currentSize = widgetState?.size ?? defaultSize ?? { width: 300, height: 200 };
 
-  const currentPosition = widgetState?.position ?? defaultPosition ?? { x: 0, y: 0 };
-  
+  // Capture the widget's position at the moment resize starts so we can apply
+  // cumulative positionDelta relative to a fixed origin (not the per-frame store value).
+  const resizeStartPositionRef = useRef<Position>({ x: 0, y: 0 });
+
   const { getHandleProps, size: resizeSize, isResizing } = useResize({
     initialSize: typeof currentSize.width === "number" && typeof currentSize.height === "number"
       ? currentSize as Size
@@ -138,16 +150,18 @@ export const DashboardCard = React.memo(function DashboardCard({
     onResizeStart: () => {
       // Bring widget to front when resize starts
       bringToFront(id);
+      // Snapshot the current position so onResize can apply absolute offsets
+      const { widgets: storeWidgets } = useDashboardStore.getState();
+      resizeStartPositionRef.current = storeWidgets[id]?.position ?? { x: 0, y: 0 };
     },
     onResize: (event) => {
-      // Update both size and position during resize for real-time feedback
-      const { updateWidgetPosition, updateWidgetSize, widgets } = useDashboardStore.getState();
+      // positionDelta is cumulative from resize start, so add it to the *start* position
+      // (not the current store position) to avoid compounding each frame.
+      const { updateWidgetPosition, updateWidgetSize } = useDashboardStore.getState();
       updateWidgetSize(id, event.size);
-      // Read current position from store (not stale render-time value) to support left/top resizing
-      const currentPos = widgets[id]?.position ?? { x: 0, y: 0 };
       updateWidgetPosition(id, {
-        x: currentPos.x + event.positionDelta.x,
-        y: currentPos.y + event.positionDelta.y,
+        x: resizeStartPositionRef.current.x + event.positionDelta.x,
+        y: resizeStartPositionRef.current.y + event.positionDelta.y,
       });
     },
     onResizeEnd: (newSize) => {
@@ -178,8 +192,11 @@ export const DashboardCard = React.memo(function DashboardCard({
 
   useEffect(() => {
     registerWidget(id, widgetConfig);
-    return () => unregisterWidget(id);
-  }, [id, registerWidget, unregisterWidget, widgetConfig]);
+    // Intentionally no cleanup: widgets persist in the store across tab switches
+    // so drag positions, sizes, and settings survive navigation without a full page reload.
+    // layoutGeneration is included so that resetLayout() (which bumps the counter)
+    // causes all mounted DashboardCards to re-register and repopulate the cleared store.
+  }, [id, registerWidget, widgetConfig, layoutGeneration]);
 
   // ==========================================================
   // Visibility (IntersectionObserver) — skip rendering chart when off-screen
@@ -257,6 +274,11 @@ export const DashboardCard = React.memo(function DashboardCard({
   const handleClick = useCallback(() => {
     bringToFront(id);
   }, [id, bringToFront]);
+
+  const handleDelete = useCallback(() => {
+    removeWidget(id);
+    onDelete?.();
+  }, [id, removeWidget, onDelete]);
 
   // ==========================================================
   // Fallback Grid Position — prevents stacking at {0, 0}
@@ -380,6 +402,18 @@ export const DashboardCard = React.memo(function DashboardCard({
     const storePosition = widgetState?.position ?? { x: 0, y: 0 };
     const storeSize = widgetState?.size ?? defaultSize ?? { width: "auto", height: "auto" };
 
+    // Settings-driven appearance — applied in both view and edit mode
+    const settingsOpacity = (widgetState?.settings?.opacity as number | undefined) ?? 1;
+    const highlight = widgetState?.settings?.highlight as boolean | undefined;
+    const highlightColor = (widgetState?.settings?.highlightColor as string | undefined) ?? "#3b82f6";
+    const widgetTheme = widgetState?.settings?.theme as string | undefined;
+    const settingsStyles: React.CSSProperties = {
+      ...(widgetTheme === "dark" && { backgroundColor: "#111827", color: "#f9fafb" }),
+      ...(widgetTheme === "light" && { backgroundColor: "#ffffff", color: "#111827" }),
+      ...(settingsOpacity !== 1 && { opacity: settingsOpacity }),
+      ...(highlight && { outline: `2px solid ${highlightColor}`, outlineOffset: "1px" }),
+    };
+
     if (!isEditMode) {
       // VIEW MODE: Only use absolute positioning if widget has a saved (non-default) position
       // If position is {0, 0} (no saved layout), use CSS flow so widgets don't stack
@@ -387,6 +421,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       if (hasSavedPosition) {
         return {
           ...style,
+          ...settingsStyles,
           position: "absolute" as const,
           top: 0,
           left: 0,
@@ -394,23 +429,24 @@ export const DashboardCard = React.memo(function DashboardCard({
           height: storeSize.height,
           transform: `translate3d(${storePosition.x}px, ${storePosition.y}px, 0)`,
           zIndex: widgetState?.zIndex ?? 0,
-          transition: "transform 0.2s ease",
+          transition: "transform 0.2s ease, opacity 0.2s ease",
         };
       }
       // No saved position — use CSS flow
       return {
         ...style,
+        ...settingsStyles,
       };
     }
 
     // EDIT MODE: Absolute positioning with drag
     // Priority: captured position > fallback position > store position
     const capturedPos = capturedPositionsRef.get(id);
-    
+
     // Use captured position if available (ensures widget stays in place when entering edit mode)
     const baseX = capturedPos?.x ?? fallbackPosition?.x ?? storePosition.x;
     const baseY = capturedPos?.y ?? fallbackPosition?.y ?? storePosition.y;
-    
+
     // Use resize hook's size during resize for real-time visual feedback
     // Otherwise use store size or captured position size
     let width: number | string;
@@ -422,7 +458,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       width = capturedPos?.width ?? storeSize.width;
       height = capturedPos?.height ?? storeSize.height;
     }
-    
+
     const dragX = transform?.x ?? 0;
     const dragY = transform?.y ?? 0;
 
@@ -436,6 +472,7 @@ export const DashboardCard = React.memo(function DashboardCard({
 
     return {
       ...style,
+      ...settingsStyles,
       position: "absolute" as const,
       top: 0,
       left: 0,
@@ -444,7 +481,8 @@ export const DashboardCard = React.memo(function DashboardCard({
       height: height,
       transform: `translate3d(${baseX + dragX}px, ${baseY + dragY}px, 0)`,
       willChange: isDragging || isResizing ? "transform, width, height" : "auto",
-      opacity: isDragging ? 0.92 : 1,
+      // During drag, override settings opacity with drag feedback value
+      opacity: isDragging ? 0.92 : settingsOpacity,
       transition: shouldTransition ? "transform 0.2s ease, opacity 0.2s ease" : "none",
     };
   }, [
@@ -461,6 +499,10 @@ export const DashboardCard = React.memo(function DashboardCard({
     widgetState?.size?.height,
     widgetState?.position?.x,
     widgetState?.position?.y,
+    widgetState?.settings?.opacity,
+    widgetState?.settings?.highlight,
+    widgetState?.settings?.highlightColor,
+    widgetState?.settings?.theme,
     defaultSize?.width,
     defaultSize?.height,
     fallbackPosition,
@@ -572,15 +614,73 @@ export const DashboardCard = React.memo(function DashboardCard({
         />
       </WidgetActions>
 
+      {/* Settings gear — visibility controlled by settingsVisibility prop */}
+      {showSettings && (settingsVisibility === "always" || isEditMode) && widgetState && (
+        <SettingsPanel
+          id={id}
+          settings={widgetState.settings}
+          {...(onSettingsChange !== undefined && { onSettingsChange })}
+          trigger={
+            <button
+              type="button"
+              className="widget-action-btn absolute top-2 right-2
+                flex items-center justify-center
+                w-6 h-6 rounded-md
+                bg-white/80 dark:bg-gray-800/80
+                border border-gray-200/50 dark:border-gray-700/50
+                text-gray-500 dark:text-gray-400
+                hover:text-gray-700 dark:hover:text-gray-200
+                hover:bg-white dark:hover:bg-gray-800
+                hover:border-gray-300 dark:hover:border-gray-600
+                shadow-sm hover:shadow-md
+                transition-all duration-200 ease-in-out
+                opacity-60 hover:opacity-100
+                cursor-pointer pointer-events-auto z-10"
+              title="Widget settings"
+              aria-label="Widget settings"
+            >
+              <Settings size={14} />
+            </button>
+          }
+        />
+      )}
+
+      {/* Delete button — visible in edit mode when deletable */}
+      {isEditMode && deletable && (
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="widget-action-btn absolute top-2 right-10
+            flex items-center justify-center
+            w-6 h-6 rounded-md
+            bg-white/80
+            border border-gray-200/50
+            text-red-400
+            hover:text-red-600
+            hover:bg-red-50
+            hover:border-red-300
+            shadow-sm hover:shadow-md
+            transition-all duration-200 ease-in-out
+            opacity-60 hover:opacity-100
+            cursor-pointer pointer-events-auto z-10"
+          title="Delete widget"
+          aria-label="Delete widget"
+        >
+          <Trash2 size={13} />
+        </button>
+      )}
+
       {/* Content — lightweight placeholder when off-screen */}
       <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-8">
         <div className="flex-1 min-h-0 min-w-0 w-full h-full">
-          {isVisible ? content : <div className="w-full h-full min-h-[100px]" />}
+          {isVisible ? content : <div className="w-full h-full min-h-25" />}
         </div>
       </div>
 
-      {/* Resize Handles — visible in edit mode */}
-      {isEditMode && draggable && effectiveResizeHandles.map((handle) => {
+      {/* Resize Handles — corners only, visible in edit mode */}
+      {isEditMode && draggable && effectiveResizeHandles.filter((handle) =>
+        handle === "topLeft" || handle === "topRight" || handle === "bottomLeft" || handle === "bottomRight"
+      ).map((handle) => {
         const handleProps = getHandleProps(handle);
         return (
           <ResizeHandleButton

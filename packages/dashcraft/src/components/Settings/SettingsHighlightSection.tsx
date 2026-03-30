@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import * as Switch from "@radix-ui/react-switch";
-import { motion } from "framer-motion";
 
 // ============================================================
 // Props
@@ -24,12 +23,25 @@ export const SettingsHighlightSection = React.memo(
     onToggle,
     onColorChange,
   }: SettingsHighlightSectionProps): React.JSX.Element {
+    // Local draft — only flushes to the store on blur to avoid hammering state
+    // on every mouse-move tick of the native color picker.
+    const [colorDraft, setColorDraft] = useState(color);
+
+    // Keep draft in sync when an external update arrives (e.g. panel re-open)
+    useEffect(() => {
+      setColorDraft(color);
+    }, [color]);
+
     const handleColorChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        onColorChange(e.target.value);
+        setColorDraft(e.target.value);
       },
-      [onColorChange]
+      []
     );
+
+    const handleColorBlur = useCallback(() => {
+      onColorChange(colorDraft);
+    }, [colorDraft, onColorChange]);
 
     return (
       <div className="mb-4">
@@ -47,21 +59,17 @@ export const SettingsHighlightSection = React.memo(
         </div>
 
         {isEnabled && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-2 flex items-center gap-2"
-          >
+          <div className="mt-2 flex items-center gap-2">
             <label className="text-xs text-gray-500">Color:</label>
             <input
               type="color"
-              value={color}
+              value={colorDraft}
               onChange={handleColorChange}
-              className="w-8 h-8 rounded cursor-pointer"
+              onBlur={handleColorBlur}
+              className="w-8 h-8 rounded cursor-pointer border border-gray-200"
             />
-            <span className="text-xs text-gray-500">{color}</span>
-          </motion.div>
+            <span className="text-xs text-gray-500 font-mono">{colorDraft}</span>
+          </div>
         )}
       </div>
     );

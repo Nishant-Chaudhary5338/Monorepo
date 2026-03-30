@@ -7,17 +7,20 @@
     "component-factory": "build/component-factory-cli.js",
     "component-fixer": "build/component-fixer-cli.js",
     "component-improver": "build/component-improver-cli.js",
-    "component-reviewer": "build/component-reviewer-cli.js"
+    "component-reviewer": "build/component-reviewer-cli.js",
+    "json-viewer": "build/json-viewer-cli.js",
+    "review-and-fix": "build/review-and-fix-cli.js"
   },
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/component-factory-cli.js', '755'); require('fs').chmodSync('build/component-fixer-cli.js', '755'); require('fs').chmodSync('build/component-improver-cli.js', '755'); require('fs').chmodSync('build/component-reviewer-cli.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/component-factory-cli.js', '755'); require('fs').chmodSync('build/component-fixer-cli.js', '755'); require('fs').chmodSync('build/component-improver-cli.js', '755'); require('fs').chmodSync('build/component-reviewer-cli.js', '755'); require('fs').chmodSync('build/review-and-fix-cli.js', '755')\"",
     "dev": "tsc --watch"
   },
   "dependencies": {
     "component-factory-mcp": "workspace:*",
     "component-fixer-mcp": "workspace:*",
     "component-improver-mcp": "workspace:*",
-    "component-reviewer-mcp": "workspace:*"
+    "component-reviewer-mcp": "workspace:*",
+    "json-viewer-mcp": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

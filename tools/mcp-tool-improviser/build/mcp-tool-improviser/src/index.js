@@ -162,11 +162,11 @@ class McpToolImproviserServer extends McpServerBase {
                 return sum + count;
             }, 0),
             lowIssues: toolResults.reduce((sum, r) => {
-                let count = 0;
+                let lowCount = 0;
                 for (const dim of Object.values(r.scores)) {
-                    count += dim.issues.filter((i) => i.severity === 'low').length;
+                    lowCount += dim.issues.filter((i) => i.severity === 'low').length;
                 }
-                return sum + count;
+                return sum + lowCount;
             }, 0),
             totalDiffs: allDiffs.length,
         };

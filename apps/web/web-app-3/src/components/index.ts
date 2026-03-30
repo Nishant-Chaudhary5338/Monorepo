@@ -5,3 +5,5 @@ export { SlideHeader } from "./SlideHeader";
 export { BenefitItem } from "./BenefitItem";
 export { CTAButton } from "./CTAButton";
 export { ProgressBar } from "./ProgressBar";
+export { BarChart } from "./BarChart";
+export { ExpandableCard } from "./ExpandableCard";

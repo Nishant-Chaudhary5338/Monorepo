@@ -8,3 +8,5 @@ export { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 export type { DashboardCardViewCyclerProps } from "./DashboardCardViewCycler";
 export { WidgetActions, WidgetActionButton, DragHandleButton } from "./WidgetActions";
 export type { WidgetActionsProps, WidgetActionButtonProps, DragHandleButtonProps, ActionButtonPosition } from "./WidgetActions";
+export { SettingsPanel } from "../Settings/SettingsPanel";
+export type { SettingsPanelProps } from "../Settings/SettingsPanel";

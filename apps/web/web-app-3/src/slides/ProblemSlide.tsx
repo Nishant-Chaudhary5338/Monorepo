@@ -1,25 +1,17 @@
 import { SlideComponent as Slide } from "@repo/present";
-import { Card, SlideHeader } from "../components";
+import { BarChart, SlideHeader } from "../components";
 
-const problems = [
-  {
-    icon: "🔴",
-    title: "Scattered Codebase",
-    desc: "Teams working in silos — duplicated effort, zero reuse",
-    variant: "red" as const,
-  },
-  {
-    icon: "💰",
-    title: "High Costs",
-    desc: "5× infra · 3× QA cycles · 2× engineers for same output",
-    variant: "red" as const,
-  },
-  {
-    icon: "🐌",
-    title: "Slow Delivery",
-    desc: "Weeks to ship features · Months for cross-team work",
-    variant: "amber" as const,
-  },
+const costData = [
+  { label: "Infrastructure", value: 5, maxValue: 5, color: "red" as const, suffix: "×" },
+  { label: "QA Cycles", value: 3, maxValue: 5, color: "amber" as const, suffix: "×" },
+  { label: "Engineers", value: 2, maxValue: 5, color: "amber" as const, suffix: "×" },
+  { label: "Build Time", value: 4, maxValue: 5, color: "red" as const, suffix: "×" },
+];
+
+const deliveryData = [
+  { label: "Feature Ship", value: 3, maxValue: 5, color: "amber" as const, suffix: "wks" },
+  { label: "Cross-team", value: 5, maxValue: 5, color: "red" as const, suffix: "mos" },
+  { label: "Bug Fix", value: 2, maxValue: 5, color: "amber" as const, suffix: "days" },
 ];
 
 export function ProblemSlide() {
@@ -30,19 +22,39 @@ export function ProblemSlide() {
           title="Why We"
           highlight="Need This"
           highlightColor="amber"
+          subtitle="The hidden costs of a scattered codebase"
         />
-        <div className="mt-8 grid w-full max-w-4xl grid-cols-3 gap-8">
-          {problems.map((p) => (
-            <Card
-              key={p.title}
-              variant={p.variant}
-              className="flex flex-col items-center gap-4 p-8 text-center"
-            >
-              <div className="animate-pulse-slow text-5xl">{p.icon}</div>
-              <h3 className="text-xl font-bold text-gray-800">{p.title}</h3>
-              <p className="text-sm text-gray-500">{p.desc}</p>
-            </Card>
-          ))}
+
+        {/* Key Stats */}
+        <div className="mt-6 flex gap-8">
+          <div className="flex flex-col items-center rounded-xl bg-red-500/10 px-8 py-4">
+            <span className="animate-trend text-4xl font-extrabold text-red-600">$500K+</span>
+            <span className="text-sm text-gray-500">Annual Waste</span>
+          </div>
+          <div className="flex flex-col items-center rounded-xl bg-amber-500/10 px-8 py-4">
+            <span className="animate-trend text-4xl font-extrabold text-amber-600">40%</span>
+            <span className="text-sm text-gray-500">Duplicated Code</span>
+          </div>
+          <div className="flex flex-col items-center rounded-xl bg-red-500/10 px-8 py-4">
+            <span className="animate-trend text-4xl font-extrabold text-red-600">3×</span>
+            <span className="text-sm text-gray-500">Slower Delivery</span>
+          </div>
+        </div>
+
+        {/* Bar Charts */}
+        <div className="mt-8 flex w-full max-w-4xl gap-12">
+          <div className="flex-1 rounded-xl bg-white/5 p-6 backdrop-blur-sm">
+            <BarChart data={costData} title="Cost Multipliers" />
+          </div>
+          <div className="flex-1 rounded-xl bg-white/5 p-6 backdrop-blur-sm">
+            <BarChart data={deliveryData} title="Delivery Delays" />
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-full border border-red-300 bg-red-50 px-8 py-3">
+          <span className="text-lg font-bold text-red-700">
+            ⚠️ Every month of delay = <span className="text-red-600">$40K+ in lost productivity</span>
+          </span>
         </div>
       </div>
     </Slide>

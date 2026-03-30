@@ -5,3 +5,8 @@ export { SolutionSlide } from "./SolutionSlide";
 export { FrontendAutomationSlide } from "./FrontendAutomationSlide";
 export { CreativitySlide } from "./CreativitySlide";
 export { CallToActionSlide } from "./CallToActionSlide";
+export { MonorepoExplainerSlide } from "./MonorepoExplainerSlide";
+export { ArchitectureSlide } from "./ArchitectureSlide";
+export { TurborepoSlide } from "./TurborepoSlide";
+export { BeforeAfterSlide } from "./BeforeAfterSlide";
+export { TimelineSlide } from "./TimelineSlide";

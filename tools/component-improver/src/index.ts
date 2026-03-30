@@ -471,13 +471,25 @@ class ComponentImproverServer extends McpServerBase {
   }
 
   protected registerTools(): void {
-    
-
-    
+    this.addTool(
+      'improve',
+      'Improve a React component with extended tests, stories, and variants. Rewrites test and story files with comprehensive coverage.',
+      {
+        type: 'object' as const,
+        properties: {
+          path: {
+            type: 'string',
+            description: 'Path to the component directory to improve (e.g. packages/ui/components/Button)',
+          },
+        },
+        required: ['path'],
+      },
+      this.handleImprove.bind(this)
+    );
   }
 
-  private async handleImprove(args: unknown) {
-    const { path: componentPath } = args;
+  private async handleImprove(args: unknown): Promise<ToolResult> {
+    const { path: componentPath } = args as { path: string };
     try {
       if (!fs.existsSync(componentPath)) {
         throw new Error(`Component path does not exist: ${componentPath}`);

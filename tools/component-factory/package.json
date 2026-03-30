@@ -2,9 +2,9 @@
   "name": "component-factory-mcp",
   "version": "2.0.0",
   "type": "module",
-  "main": "build/index.js",
+  "main": "build/component-factory/src/index.js",
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/component-factory/src/index.js', '755')\"",
     "dev": "tsc --watch"
   },
   "dependencies": {

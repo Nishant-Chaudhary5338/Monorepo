@@ -82,7 +82,7 @@ function runPerformanceStage(projectRoot: string): PipelineStage {
   const start = Date.now();
   try {
     const files = scanDirectory(projectRoot, ['.ts', '.tsx', '.js', '.jsx']);
-    const issues: unknown[] = [];
+    const issues: Array<{ file: string; line: number; type: string; lib?: string; impact?: string }> = [];
 
     for (const file of files) {
       const content = fs.readFileSync(file, 'utf-8');
@@ -137,7 +137,7 @@ function runAccessibilityStage(projectRoot: string): PipelineStage {
   const start = Date.now();
   try {
     const files = scanDirectory(projectRoot, ['.tsx', '.jsx', '.html']);
-    const issues: unknown[] = [];
+    const issues: Array<{ file: string; line: number; rule: string; impact: string }> = [];
 
     for (const file of files) {
       const content = fs.readFileSync(file, 'utf-8');
@@ -189,7 +189,7 @@ function runDesignTokensStage(projectRoot: string): PipelineStage {
   const start = Date.now();
   try {
     const files = scanDirectory(projectRoot, ['.ts', '.tsx', '.js', '.jsx', '.css']);
-    const violations: unknown[] = [];
+    const violations: Array<{ file: string; line: number; type: string; value: string }> = [];
 
     const knownColors = ['#ffffff', '#fff', '#000000', '#000', '#f5f5f5', '#e5e5e5', '#3b82f6', '#22c55e', '#ef4444', '#eab308'] as const;
     const knownSpacing = ['4px', '8px', '12px', '16px', '24px', '32px', '48px'] as const;
@@ -199,7 +199,7 @@ function runDesignTokensStage(projectRoot: string): PipelineStage {
       const content = fs.readFileSync(file, 'utf-8');
       const lines = content.split('\n');
 
-      for (const i = 0; i < lines.length; i++) {
+      for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (line.trim().startsWith('import ') || line.trim().startsWith('//')) continue;
 
@@ -288,6 +288,7 @@ function calculateGrade(stages: PipelineStage[]): string {
 class QualityPipelineServer extends McpServerBase {
 
   constructor() {
+    super({ name: 'quality-pipeline', version: '1.0.0' });
     process.on('SIGINT', async () => {
       await this.server.close();
       process.exit(0);
@@ -295,13 +296,46 @@ class QualityPipelineServer extends McpServerBase {
   }
 
   protected registerTools(): void {
-    
+    this.addTool(
+      'run_full_pipeline',
+      'Run the complete quality pipeline (tests, performance, accessibility, design tokens)',
+      {
+        type: 'object',
+        properties: {
+          projectRoot: { type: 'string', description: 'Root directory of the project to analyze' },
+          skipStages: { 
+            type: 'array', 
+            items: { type: 'string' }, 
+            description: 'Stages to skip (tests, performance, accessibility, design)',
+            default: []
+          },
+        },
+        required: ['projectRoot'],
+      },
+      this.handleFullPipeline.bind(this)
+    );
 
-    
+    this.addTool(
+      'run_partial_pipeline',
+      'Run specific stages of the quality pipeline',
+      {
+        type: 'object',
+        properties: {
+          projectRoot: { type: 'string', description: 'Root directory of the project to analyze' },
+          stages: { 
+            type: 'array', 
+            items: { type: 'string' }, 
+            description: 'Stages to run (tests, performance, accessibility, design)'
+          },
+        },
+        required: ['projectRoot', 'stages'],
+      },
+      this.handlePartialPipeline.bind(this)
+    );
   }
 
-  private async handleFullPipeline(args: unknown) {
-    const { projectRoot, skipStages = [] } = args;
+  private async handleFullPipeline(args: unknown): Promise<ToolResult> {
+    const { projectRoot, skipStages = [] } = args as { projectRoot: string; skipStages?: string[] };
     try {
       const stages: PipelineStage[] = [];
       const totalStart = Date.now();
@@ -344,15 +378,12 @@ class QualityPipelineServer extends McpServerBase {
 
       return this.success({result});
     } catch (error) {
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }, null, 2) }],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 
-  private async handlePartialPipeline(args: unknown) {
-    const { projectRoot, stages: stageNames } = args;
+  private async handlePartialPipeline(args: unknown): Promise<ToolResult> {
+    const { projectRoot, stages: stageNames } = args as { projectRoot: string; stages: string[] };
     try {
       const stages: PipelineStage[] = [];
       const totalStart = Date.now();
@@ -390,10 +421,7 @@ class QualityPipelineServer extends McpServerBase {
 
       return this.success({result});
     } catch (error) {
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }, null, 2) }],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 }

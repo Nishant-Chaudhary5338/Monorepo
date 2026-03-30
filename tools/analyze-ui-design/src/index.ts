@@ -12,6 +12,7 @@ import { analyzeUI } from './orchestrator.js';
 class AnalyzeUIDesignServer extends McpServerBase {
 
   constructor() {
+    super({ name: 'analyze-ui-design', version: '1.0.0' });
     process.on('SIGINT', async () => {
       await this.server.close();
       process.exit(0);
@@ -19,13 +20,54 @@ class AnalyzeUIDesignServer extends McpServerBase {
   }
 
   protected registerTools(): void {
-    
+    this.addTool(
+      'analyze',
+      'Analyze a UI design file (image or PDF) and extract components, layout, and design tokens',
+      {
+        type: 'object',
+        properties: {
+          file: { type: 'string', description: 'Path to the image or PDF file to analyze' },
+          platform: { type: 'string', enum: ['web', 'mobile'], description: 'Target platform', default: 'web' },
+          confidenceThreshold: { type: 'number', description: 'Minimum confidence threshold for detections', default: 0.3 },
+          maxImageWidth: { type: 'number', description: 'Maximum image width for processing', default: 1920 },
+          outputPath: { type: 'string', description: 'Optional path to save the analysis JSON' },
+        },
+        required: ['file'],
+      },
+      this.handleAnalyze.bind(this)
+    );
 
-    
+    this.addTool(
+      'analyze_and_save',
+      'Analyze a UI design file and save the blueprint to a JSON file',
+      {
+        type: 'object',
+        properties: {
+          file: { type: 'string', description: 'Path to the image or PDF file to analyze' },
+          outputPath: { type: 'string', description: 'Path to save the analysis JSON (must end with .json)' },
+          platform: { type: 'string', enum: ['web', 'mobile'], description: 'Target platform', default: 'web' },
+        },
+        required: ['file', 'outputPath'],
+      },
+      this.handleAnalyzeAndSave.bind(this)
+    );
+
+    this.addTool(
+      'get_formats',
+      'Get supported file formats and configuration options',
+      { type: 'object', properties: {} },
+      this.handleGetFormats.bind(this)
+    );
   }
 
-  private async handleAnalyze(args: unknown) {
-    const { file, platform = 'web', confidenceThreshold = 0.3, maxImageWidth = 1920, outputPath } = args;
+  private async handleAnalyze(args: unknown): Promise<ToolResult> {
+    const { file, platform = 'web', confidenceThreshold = 0.3, maxImageWidth = 1920, outputPath } = args as {
+      file: string;
+      platform?: 'web' | 'mobile';
+      confidenceThreshold?: number;
+      maxImageWidth?: number;
+      outputPath?: string;
+    };
 
     try {
       this.validateFilePath(file);
@@ -36,7 +78,6 @@ class AnalyzeUIDesignServer extends McpServerBase {
         maxImageWidth,
       });
 
-      // Optionally save to file
       if (outputPath) {
         const dir = path.dirname(outputPath);
         if (!fs.existsSync(dir)) {
@@ -45,38 +86,22 @@ class AnalyzeUIDesignServer extends McpServerBase {
         fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
       }
 
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify(blueprint, null, 2),
-          },
-        ],
-      };
+      return this.success({
+        blueprint,
+        file,
+        message: `Analysis complete. ${blueprint.components.length} components detected.`,
+      });
     } catch (error) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              error: {
-          error: true,
-          code: error instanceof Error ? error.constructor.name : 'UNKNOWN_ERROR',
-          message: error instanceof Error ? error.message : String(error),
-          suggestion: 'Check input parameters and ensure all required values are provided.',
-          timestamp: new Date().toISOString(),
-        },
-              file,
-            }),
-          },
-        ],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 
-  private async handleAnalyzeAndSave(args: unknown) {
-    const { file, outputPath, platform = 'web' } = args;
+  private async handleAnalyzeAndSave(args: unknown): Promise<ToolResult> {
+    const { file, outputPath, platform = 'web' } = args as {
+      file: string;
+      outputPath: string;
+      platform?: 'web' | 'mobile';
+    };
 
     try {
       this.validateFilePath(file);
@@ -90,56 +115,29 @@ class AnalyzeUIDesignServer extends McpServerBase {
       }
       fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
 
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              success: true,
-              file,
-              outputPath,
-              componentCount: blueprint.components.length,
-              screenType: blueprint.meta.screenType,
-              confidence: blueprint.meta.confidence,
-              message: `Analysis complete. ${blueprint.components.length} components detected. Blueprint saved to ${outputPath}`,
-            }),
-          },
-        ],
-      };
+      return this.success({
+        file,
+        outputPath,
+        componentCount: blueprint.components.length,
+        screenType: blueprint.meta.screenType,
+        confidence: blueprint.meta.confidence,
+        message: `Analysis complete. ${blueprint.components.length} components detected. Blueprint saved to ${outputPath}`,
+      });
     } catch (error) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              error: error instanceof Error ? error.message : 'Unknown error',
-              file,
-              outputPath,
-            }),
-          },
-        ],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 
-  private async handleGetFormats() {
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify({
-            supportedFormats: {
-              images: ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.tiff'],
-              documents: ['.pdf'],
-            },
-            maxImageWidth: 1920,
-            defaultPlatform: 'web',
-            platforms: ['web', 'mobile'],
-          }),
-        },
-      ],
-    };
+  private async handleGetFormats(): Promise<ToolResult> {
+    return this.success({
+      supportedFormats: {
+        images: ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.tiff'],
+        documents: ['.pdf'],
+      },
+      maxImageWidth: 1920,
+      defaultPlatform: 'web',
+      platforms: ['web', 'mobile'],
+    });
   }
 
   private validateFilePath(filePath: string): void {
@@ -151,7 +149,7 @@ class AnalyzeUIDesignServer extends McpServerBase {
     }
     const ext = path.extname(filePath).toLowerCase();
     const supported = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.tiff', '.pdf'] as const;
-    if (!supported.includes(ext)) {
+    if (!supported.includes(ext as typeof supported[number])) {
       throw new Error(
         `Unsupported file format: ${ext}. Supported: ${supported.join(', ')}`,
       );
@@ -167,10 +165,6 @@ class AnalyzeUIDesignServer extends McpServerBase {
     }
   }
 }
-
-// ============================================================================
-// ENTRY POINT
-// ============================================================================
 
 // ============================================================================
 // ENTRY POINT

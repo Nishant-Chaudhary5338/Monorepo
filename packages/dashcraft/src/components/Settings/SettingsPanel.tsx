@@ -1,13 +1,16 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import * as Popover from "@radix-ui/react-popover";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { WidgetSettings, WidgetTheme, CustomFieldConfig } from "../../types";
 import { useDashboardContext } from "../Dashboard/Dashboard.context";
 import { SettingsHeader } from "./SettingsHeader";
 import { SettingsThemeSection } from "./SettingsThemeSection";
 import { SettingsHighlightSection } from "./SettingsHighlightSection";
 import { SettingsEndpointSection } from "./SettingsEndpointSection";
+import { SettingsMethodSection } from "./SettingsMethodSection";
+import { SettingsHeadersSection } from "./SettingsHeadersSection";
 import { SettingsPollingSection } from "./SettingsPollingSection";
+import { SettingsBehaviorSection } from "./SettingsBehaviorSection";
 import { SettingsCustomFields } from "./SettingsCustomFields";
 
 // ============================================================
@@ -17,6 +20,7 @@ import { SettingsCustomFields } from "./SettingsCustomFields";
 export interface SettingsPanelProps {
   id: string;
   settings: WidgetSettings;
+  /** Element that opens the popover (must be a DOM element or use forwardRef) */
   trigger: React.ReactNode;
   onSettingsChange?: (settings: WidgetSettings) => void;
 }
@@ -56,45 +60,50 @@ export const SettingsPanel = React.memo(function SettingsPanel({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [localSettings, setLocalSettings] = useState<WidgetSettings>(settings);
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsOpen(open);
-  }, []);
+  // Re-sync localSettings when the settings prop changes (e.g. persisted layout loads)
+  // but only while the panel is closed so we don't overwrite in-progress user edits.
+  useEffect(() => {
+    if (!isOpen) {
+      setLocalSettings(settings);
+    }
+  }, [settings, isOpen]);
 
-  const handleThemeChange = useCallback(
-    (theme: WidgetTheme) => {
-      const newSettings: WidgetSettings = { ...localSettings, theme };
-      setLocalSettings(newSettings);
-      updateWidgetSettings(id, { theme });
-      onSettingsChange?.(newSettings);
+  // ── Helpers ────────────────────────────────────────────────
+
+  const applyChange = useCallback(
+    (patch: Partial<WidgetSettings>) => {
+      const next: WidgetSettings = { ...localSettings, ...patch };
+      setLocalSettings(next);
+      updateWidgetSettings(id, patch);
+      onSettingsChange?.(next);
     },
     [id, localSettings, updateWidgetSettings, onSettingsChange]
+  );
+
+  // ── Handlers ───────────────────────────────────────────────
+
+  const handleOpenChange = useCallback((open: boolean) => setIsOpen(open), []);
+
+  const handleThemeChange = useCallback(
+    (theme: WidgetTheme) => applyChange({ theme }),
+    [applyChange]
   );
 
   const handleHighlightToggle = useCallback(
-    (checked: boolean) => {
-      const newSettings: WidgetSettings = { ...localSettings, highlight: checked };
-      setLocalSettings(newSettings);
-      updateWidgetSettings(id, { highlight: checked });
-      onSettingsChange?.(newSettings);
-    },
-    [id, localSettings, updateWidgetSettings, onSettingsChange]
+    (highlight: boolean) => applyChange({ highlight }),
+    [applyChange]
   );
 
   const handleHighlightColorChange = useCallback(
-    (color: string) => {
-      const newSettings: WidgetSettings = { ...localSettings, highlightColor: color };
-      setLocalSettings(newSettings);
-      updateWidgetSettings(id, { highlightColor: color });
-      onSettingsChange?.(newSettings);
-    },
-    [id, localSettings, updateWidgetSettings, onSettingsChange]
+    (highlightColor: string) => applyChange({ highlightColor }),
+    [applyChange]
   );
 
+  // Endpoint: draft pattern — update local on change, flush on blur
   const handleEndpointChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalSettings({ ...localSettings, endpoint: e.target.value });
-    },
-    [localSettings]
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      setLocalSettings((prev) => ({ ...prev, endpoint: e.target.value })),
+    []
   );
 
   const handleEndpointBlur = useCallback(() => {
@@ -104,66 +113,77 @@ export const SettingsPanel = React.memo(function SettingsPanel({
     onSettingsChange?.(localSettings);
   }, [id, localSettings, updateWidgetSettings, onSettingsChange]);
 
+  const handleMethodChange = useCallback(
+    (method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE") =>
+      applyChange({ method }),
+    [applyChange]
+  );
+
+  const handleHeadersChange = useCallback(
+    (headers: Record<string, string>) => applyChange({ headers }),
+    [applyChange]
+  );
+
   const handlePollingChange = useCallback(
     (value: number[]) => {
       const pollingInterval = value[0];
-      const newSettings: WidgetSettings = {
-        ...localSettings,
-        ...(pollingInterval !== undefined && { pollingInterval }),
-      };
-      setLocalSettings(newSettings);
-      if (pollingInterval !== undefined) {
-        updateWidgetSettings(id, { pollingInterval });
-      }
-      onSettingsChange?.(newSettings);
+      if (pollingInterval !== undefined) applyChange({ pollingInterval });
     },
-    [id, localSettings, updateWidgetSettings, onSettingsChange]
+    [applyChange]
+  );
+
+  const handleOpacityChange = useCallback(
+    (opacity: number) => applyChange({ opacity }),
+    [applyChange]
+  );
+
+  const handleRequestTimeoutChange = useCallback(
+    (requestTimeout: number | undefined) =>
+      applyChange({ requestTimeout } as Partial<WidgetSettings>),
+    [applyChange]
+  );
+
+  const handleRefreshOnFocusChange = useCallback(
+    (refreshOnFocus: boolean) => applyChange({ refreshOnFocus }),
+    [applyChange]
+  );
+
+  const handleCacheEnabledChange = useCallback(
+    (cacheEnabled: boolean) => applyChange({ cacheEnabled }),
+    [applyChange]
+  );
+
+  const handleCacheDurationChange = useCallback(
+    (cacheDuration: number | undefined) =>
+      applyChange({ cacheDuration } as Partial<WidgetSettings>),
+    [applyChange]
+  );
+
+  const handleDescriptionChange = useCallback(
+    (description: string) => applyChange({ description }),
+    [applyChange]
   );
 
   const handleCustomFieldChange = useCallback(
-    (fieldKey: string, _value: unknown) => {
-      const existingCustomFields = localSettings.customFields ?? {};
-      const existingField = existingCustomFields[fieldKey];
+    (fieldKey: string, value: unknown) => {
+      const existing = localSettings.customFields ?? {};
+      const existingField = existing[fieldKey];
       const updatedField: CustomFieldConfig = existingField
         ? { ...existingField }
         : { type: "text", label: fieldKey };
-
-      const customFields: Record<string, CustomFieldConfig> = {
-        ...existingCustomFields,
-        [fieldKey]: updatedField,
-      };
-
-      const newSettings: WidgetSettings = { ...localSettings, customFields };
-      setLocalSettings(newSettings);
-      updateWidgetSettings(id, { customFields });
-      onSettingsChange?.(newSettings);
+      applyChange({
+        customFields: { ...existing, [fieldKey]: updatedField },
+        [fieldKey]: value,
+      });
     },
-    [id, localSettings, updateWidgetSettings, onSettingsChange]
+    [applyChange, localSettings.customFields]
   );
+
+  // ── Derived values ─────────────────────────────────────────
 
   const currentTheme = useMemo<WidgetTheme>(
     () => localSettings.theme ?? "light",
     [localSettings.theme]
-  );
-
-  const isHighlightEnabled = useMemo<boolean>(
-    () => localSettings.highlight ?? false,
-    [localSettings.highlight]
-  );
-
-  const highlightColor = useMemo<string>(
-    () => localSettings.highlightColor ?? "#3b82f6",
-    [localSettings.highlightColor]
-  );
-
-  const endpoint = useMemo<string>(
-    () => localSettings.endpoint ?? "",
-    [localSettings.endpoint]
-  );
-
-  const pollingInterval = useMemo<number>(
-    () => localSettings.pollingInterval ?? 0,
-    [localSettings.pollingInterval]
   );
 
   const customFields = useMemo<Record<string, CustomFieldConfig>>(
@@ -171,49 +191,86 @@ export const SettingsPanel = React.memo(function SettingsPanel({
     [localSettings.customFields]
   );
 
+  // ── Render ─────────────────────────────────────────────────
+
   return (
     <Popover.Root open={isOpen} onOpenChange={handleOpenChange}>
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="z-50" sideOffset={5} align="end" asChild>
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                className="w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-4"
-                variants={popoverVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <SettingsHeader />
-                <SettingsThemeSection
-                  currentTheme={currentTheme}
-                  onThemeChange={handleThemeChange}
-                />
-                <SettingsHighlightSection
-                  isEnabled={isHighlightEnabled}
-                  color={highlightColor}
-                  onToggle={handleHighlightToggle}
-                  onColorChange={handleHighlightColorChange}
-                />
-                <SettingsEndpointSection
-                  endpoint={endpoint}
-                  onChange={handleEndpointChange}
-                  onBlur={handleEndpointBlur}
-                />
-                <SettingsPollingSection
-                  pollingInterval={pollingInterval}
-                  onChange={handlePollingChange}
-                />
-                <SettingsCustomFields
-                  fields={customFields}
-                  values={localSettings}
-                  onChange={handleCustomFieldChange}
-                />
-                <Popover.Arrow className="fill-white" />
+        {/* No asChild — Popover.Content must be a real DOM boundary so Radix can
+            correctly detect pointer-down-outside. Using asChild with a non-DOM
+            wrapper (AnimatePresence) loses that boundary and every internal click
+            is treated as "outside", instantly closing the panel. */}
+        <Popover.Content
+          sideOffset={6}
+          align="end"
+          collisionPadding={8}
+          style={{ zIndex: 10000 }}
+          className="outline-none"
+        >
+          <motion.div
+            className="w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
+            initial="initial"
+            animate="animate"
+            variants={popoverVariants}
+          >
+            {/* Sticky header */}
+            <div className="px-4 pt-4 pb-3 border-b border-gray-100 bg-white sticky top-0 z-10">
+              <SettingsHeader />
+            </div>
+
+            {/* Scrollable sections */}
+            <div className="overflow-y-auto max-h-110 px-4 py-3 space-y-0">
+                  <SettingsThemeSection
+                    currentTheme={currentTheme}
+                    onThemeChange={handleThemeChange}
+                  />
+                  <SettingsHighlightSection
+                    isEnabled={localSettings.highlight ?? false}
+                    color={localSettings.highlightColor ?? "#3b82f6"}
+                    onToggle={handleHighlightToggle}
+                    onColorChange={handleHighlightColorChange}
+                  />
+                  <SettingsEndpointSection
+                    endpoint={localSettings.endpoint ?? ""}
+                    onChange={handleEndpointChange}
+                    onBlur={handleEndpointBlur}
+                  />
+                  <SettingsMethodSection
+                    method={localSettings.method ?? "GET"}
+                    onChange={handleMethodChange}
+                  />
+                  <SettingsHeadersSection
+                    headers={(localSettings.headers as Record<string, string>) ?? {}}
+                    onChange={handleHeadersChange}
+                  />
+                  <SettingsPollingSection
+                    pollingInterval={localSettings.pollingInterval ?? 0}
+                    onChange={handlePollingChange}
+                  />
+                  <SettingsBehaviorSection
+                    opacity={localSettings.opacity as number ?? 1}
+                    requestTimeout={localSettings.requestTimeout as number | undefined}
+                    refreshOnFocus={localSettings.refreshOnFocus as boolean ?? false}
+                    cacheEnabled={localSettings.cacheEnabled as boolean ?? false}
+                    cacheDuration={localSettings.cacheDuration as number | undefined}
+                    description={localSettings.description as string ?? ""}
+                    onOpacityChange={handleOpacityChange}
+                    onRequestTimeoutChange={handleRequestTimeoutChange}
+                    onRefreshOnFocusChange={handleRefreshOnFocusChange}
+                    onCacheEnabledChange={handleCacheEnabledChange}
+                    onCacheDurationChange={handleCacheDurationChange}
+                    onDescriptionChange={handleDescriptionChange}
+                  />
+                  <SettingsCustomFields
+                    fields={customFields}
+                    values={localSettings}
+                    onChange={handleCustomFieldChange}
+                  />
+                </div>
+
+                <Popover.Arrow className="fill-white drop-shadow-sm" />
               </motion.div>
-            )}
-          </AnimatePresence>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

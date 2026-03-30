@@ -30,6 +30,18 @@ export interface WidgetSettings {
   readonly highlightColor?: string;
   /** Custom field configurations for dynamic settings */
   readonly customFields?: Record<string, CustomFieldConfig>;
+  /** Widget opacity (0–1, default 1) */
+  readonly opacity?: number;
+  /** HTTP request timeout in milliseconds */
+  readonly requestTimeout?: number;
+  /** Re-fetch data when the browser window regains focus */
+  readonly refreshOnFocus?: boolean;
+  /** Whether to cache API responses */
+  readonly cacheEnabled?: boolean;
+  /** Cache TTL in milliseconds */
+  readonly cacheDuration?: number;
+  /** Developer notes about this widget */
+  readonly description?: string;
   /** Allow additional custom settings */
   readonly [key: string]: unknown;
 }

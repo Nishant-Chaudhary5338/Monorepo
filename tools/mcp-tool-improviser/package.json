@@ -2,9 +2,9 @@
   "name": "mcp-tool-improviser-mcp",
   "version": "2.0.0",
   "type": "module",
-  "main": "build/index.js",
+  "main": "build/mcp-tool-improviser/src/index.js",
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/mcp-tool-improviser/src/index.js', '755')\"",
     "dev": "tsc --watch"
   },
   "dependencies": {

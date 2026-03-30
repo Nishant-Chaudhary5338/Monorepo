@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import { flushSync } from "react-dom";
-import { DndContext, DragOverlay, type DragStartEvent, type DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragStartEvent, type DragEndEvent } from "@dnd-kit/core";
 import type { DashboardConfig, DashboardContextValue, Position, Size } from "../../types";
 import { DashboardContext } from "./Dashboard.context";
 import { useDashboardStore } from "../../store";
@@ -68,6 +68,13 @@ const Dashboard = React.memo(function Dashboard({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const hasCapturedInitialPositions = useRef(false);
+
+  // Snapshot of widgets captured on every render — used in unmount cleanup to avoid
+  // saving an empty store (children call unregisterWidget before the parent unmounts).
+  const widgetsSnapshotRef = useRef(widgets);
+  useEffect(() => {
+    widgetsSnapshotRef.current = widgets;
+  }, [widgets]);
 
   // ==========================================================
   // Capture Widget Positions (Synchronous for immediate mode switch)
@@ -170,6 +177,17 @@ const Dashboard = React.memo(function Dashboard({
   // Context Value (memoized)
   // ==========================================================
 
+  const handleResetLayout = useCallback(() => {
+    if (persistenceKey) {
+      try {
+        localStorage.removeItem(`dashcraft-layout-${persistenceKey}`);
+      } catch {}
+    }
+    resetLayout();
+    setEditMode(false);
+    hasCapturedInitialPositions.current = false;
+  }, [persistenceKey, resetLayout, setEditMode]);
+
   const contextValue = useMemo<DashboardContextValue>(
     () => ({
       isEditMode,
@@ -186,7 +204,7 @@ const Dashboard = React.memo(function Dashboard({
           loadLayout(persistenceKey);
         }
       },
-      resetLayout,
+      resetLayout: handleResetLayout,
       addWidget,
       removeWidget,
       updateWidgetPosition,
@@ -204,7 +222,7 @@ const Dashboard = React.memo(function Dashboard({
       handleSetEditMode,
       saveLayout,
       loadLayout,
-      resetLayout,
+      handleResetLayout,
       addWidget,
       removeWidget,
       updateWidgetPosition,
@@ -229,30 +247,45 @@ const Dashboard = React.memo(function Dashboard({
     }
   }, [defaultEditMode, setEditMode]);
 
-  // Load layout on mount — only if store is empty to avoid overwriting existing widgets
+  // Load layout on mount — always load so each Dashboard instance starts from the
+  // persisted state, not from stale widgets left in the store by a previous instance.
+  // loadLayout replaces the entire widgets map, so it is safe to call unconditionally.
   React.useEffect(() => {
     if (persistenceKey) {
-      const currentWidgets = useDashboardStore.getState().widgets;
-      // Only load if store has no widgets (first mount or after reset)
-      if (Object.keys(currentWidgets).length === 0) {
-        loadLayout(persistenceKey);
-      }
+      loadLayout(persistenceKey);
     }
   }, [persistenceKey, loadLayout]);
 
-  // Save layout on unmount to persist changes made during route navigation
+  // On unmount: save the last known layout (handles "navigated away while still in
+  // edit mode" — the explicit leave-edit-mode save in handleToggleEditMode only runs
+  // when the user clicks the toggle, not on navigation) and always exit edit mode so
+  // the next Dashboard on a new route starts without edit mode active.
+  // We read from widgetsSnapshotRef rather than the live store because loadLayout may
+  // have replaced the store after the snapshot was taken on an earlier render.
   React.useEffect(() => {
     return () => {
       if (persistenceKey) {
-        // Save on unmount to preserve any unsaved changes
-        useDashboardStore.getState().saveLayout(persistenceKey);
+        const snapshot = widgetsSnapshotRef.current;
+        if (Object.keys(snapshot).length > 0) {
+          try {
+            localStorage.setItem(
+              `dashcraft-layout-${persistenceKey}`,
+              JSON.stringify(snapshot)
+            );
+          } catch {}
+        }
       }
+      useDashboardStore.getState().setEditMode(false);
     };
   }, [persistenceKey]);
 
   // Auto-save
   React.useEffect(() => {
     if (!autoSave || !persistenceKey) return;
+    // Never overwrite a saved layout with an empty store — this can happen when
+    // widgets from a tab unmount and briefly leave the store empty before the
+    // new tab's widgets register.
+    if (Object.keys(widgets).length === 0) return;
 
     const timeoutId = setTimeout(() => {
       saveLayout(persistenceKey);
@@ -277,6 +310,7 @@ const Dashboard = React.memo(function Dashboard({
 
   const handleDragStart = useCallback(
     (event: DragStartEvent) => {
+      console.log("[DEBUG] Dashboard: DRAG START triggered for widget:", event.active.id);
       // Bring widget to front when drag starts
       bringToFront(event.active.id as string);
     },
@@ -319,6 +353,20 @@ const Dashboard = React.memo(function Dashboard({
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
+
+  // ==========================================================
+  // DnD Sensors — require minimum distance to activate drag
+  // This prevents accidental drags when clicking resize handles
+  // ==========================================================
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    })
+  );
+
 
   // ==========================================================
   // Container Style — computed height for absolute children
@@ -367,6 +415,7 @@ const Dashboard = React.memo(function Dashboard({
   return (
     <DashboardContext.Provider value={contextValue}>
       <DndContext
+        sensors={sensors}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragCancel={handleDragCancel}

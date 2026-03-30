@@ -1,1 +1,1 @@
-{"version":3,"file":"quality-pipeline-cli.js","sourceRoot":"","sources":["../src/quality-pipeline-cli.ts"],"names":[],"mappings":";AACA,OAAO,EAAE,gBAAgB,EAAE,MAAM,iBAAiB,CAAC;AAEnD,gBAAgB,CAAC,kBAAkB,EAAE,cAAc,CAAC,CAAC"}
+{"version":3,"file":"quality-pipeline-cli.js","sourceRoot":"","sources":["../src/quality-pipeline-cli.ts"],"names":[],"mappings":";AACA,OAAO,EAAE,gBAAgB,EAAE,MAAM,iBAAiB,CAAC;AAEnD,gBAAgB,CAAC,kBAAkB,EAAE,mBAAmB,CAAC,CAAC"}

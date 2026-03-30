@@ -1,5 +1,6 @@
 import React from "react";
 import { GripVertical, MoveDiagonal } from "lucide-react";
+import { useDashboardStore } from "../../store";
 
 // ============================================================
 // Action Button Position
@@ -181,6 +182,37 @@ export interface ResizeHandleButtonProps {
   style?: React.CSSProperties;
 }
 
+// Document-level pointerdown listener to block dnd-kit before it sees the event.
+// dnd-kit's PointerSensor listens at document level, so we must also listen there
+// and fire BEFORE it does (both use capture phase, first registered wins).
+let documentListenerRegistered = false;
+
+function ensureDocumentListener(): void {
+  if (documentListenerRegistered) return;
+  documentListenerRegistered = true;
+
+  document.addEventListener(
+    "pointerdown",
+    (e: PointerEvent): void => {
+      const target = e.target as HTMLElement;
+      // Check if the click is on a resize handle button
+      const resizeBtn = target.closest?.("[data-resize-handle-btn]");
+      if (resizeBtn) {
+        console.log("[DEBUG] Document listener: resize handle detected, blocking dnd-kit");
+        e.stopImmediatePropagation();
+        // Also set isResizing in the store immediately
+        useDashboardStore.getState().setIsResizing(true);
+      }
+    },
+    { capture: true }
+  );
+  console.log("[DEBUG] Document-level pointerdown listener registered");
+}
+
+// Register at module load time — before any component renders,
+// ensuring this listener fires before dnd-kit's listener.
+ensureDocumentListener();
+
 export const ResizeHandleButton = React.memo(function ResizeHandleButton({
   visible = true,
   position,
@@ -189,17 +221,38 @@ export const ResizeHandleButton = React.memo(function ResizeHandleButton({
   onTouchStart,
   style,
 }: ResizeHandleButtonProps): React.JSX.Element {
+
+  if (!visible) {
+    return <></> as unknown as React.JSX.Element;
+  }
+
   return (
-    <WidgetActionButton
-      position={position}
-      icon={<MoveDiagonal size={12} />}
-      tooltip="Resize widget"
-      visible={visible}
-      className={`cursor-nwse-resize ${className}`}
+    <button
+      type="button"
+      data-resize-handle-btn=""
+      className={`widget-action-btn absolute ${positionStyles[position]} 
+        flex items-center justify-center 
+        w-6 h-6 rounded-md
+        bg-white/80 dark:bg-gray-800/80
+        border border-gray-200/50 dark:border-gray-700/50
+        text-gray-500 dark:text-gray-400
+        hover:text-gray-700 dark:hover:text-gray-200
+        hover:bg-white dark:hover:bg-gray-800
+        hover:border-gray-300 dark:hover:border-gray-600
+        shadow-sm hover:shadow-md
+        transition-all duration-200 ease-in-out
+        opacity-60 hover:opacity-100
+        cursor-pointer
+        pointer-events-auto
+        cursor-nwse-resize ${className}`}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
+      title="Resize widget"
+      aria-label="Resize widget"
       style={style}
-    />
+    >
+      <MoveDiagonal size={12} />
+    </button>
   );
 });
 

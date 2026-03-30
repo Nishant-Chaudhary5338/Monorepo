@@ -45,7 +45,7 @@ function parseArgs() {
         startIndex = 1;
     }
     // Parse all arguments
-    for (const i = startIndex; i < args.length; i++) {
+    for (let i = startIndex; i < args.length; i++) {
         const arg = args[i];
         // Skip $npm_config_* literal strings (pnpm doesn't expand them)
         if (arg.startsWith('$npm_config_')) {
@@ -137,8 +137,9 @@ async function main() {
         }
     }
     catch (error) {
-        console.error('[DEBUG] Error:', error.message);
-        console.error('[DEBUG] Stack:', error.stack);
+        const err = error;
+        console.error('[DEBUG] Error:', err.message);
+        console.error('[DEBUG] Stack:', err.stack);
         process.exit(1);
     }
 }

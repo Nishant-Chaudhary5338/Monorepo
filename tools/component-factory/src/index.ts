@@ -16,6 +16,32 @@ const __dirname = dirname(__filename);
 const TEMPLATES_DIR = path.join(__dirname, '..', 'templates');
 
 // ============================================================================
+// NAME VALIDATION
+// ============================================================================
+
+function validateComponentName(name: string): { valid: boolean; suggestion?: string; error?: string } {
+  // Check for hyphens (invalid JavaScript identifier)
+  if (name.includes('-')) {
+    const suggestion = name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    return {
+      valid: false,
+      suggestion,
+      error: `Component name "${name}" contains hyphens which are invalid JavaScript identifiers. Use "${suggestion}" instead.`,
+    };
+  }
+
+  // Check for other invalid characters
+  if (!/^[A-Z][a-zA-Z0-9]*$/.test(name)) {
+    return {
+      valid: false,
+      error: `Component name "${name}" must be in PascalCase (start with uppercase letter, contain only alphanumeric characters)`,
+    };
+  }
+
+  return { valid: true };
+}
+
+// ============================================================================
 // TEMPLATE READER
 // ============================================================================
 
@@ -669,15 +695,45 @@ class ComponentFactoryServer extends McpServerBase {
       includeTypes?: boolean;
       includeDocs?: boolean;
     };
+
+    // Validate component name
+    const validation = validateComponentName(name);
+    if (!validation.valid) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            success: false,
+            error: {
+              code: 'INVALID_NAME',
+              message: validation.error,
+              suggestion: validation.suggestion,
+            },
+          }, null, 2),
+        }],
+        isError: true,
+      };
+    }
+
     const componentName = name.toLowerCase();
 
     const templateContent = readTemplate(componentName);
     const componentDir = path.join(outputPath, name);
 
     const resolvedDir = path.resolve(componentDir);
-    if (!fs.existsSync(resolvedDir)) {
-      fs.mkdirSync(resolvedDir, { recursive: true });
+    
+    // Ensure parent directory exists first
+    const parentDir = path.dirname(resolvedDir);
+    if (!fs.existsSync(parentDir)) {
+      fs.mkdirSync(parentDir, { recursive: true });
     }
+    
+    // Create component directory (clear if exists to ensure clean generation)
+    if (fs.existsSync(resolvedDir)) {
+      // Clear existing directory for fresh generation
+      fs.rmSync(resolvedDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(resolvedDir, { recursive: true });
 
     const files: string[] = [];
 

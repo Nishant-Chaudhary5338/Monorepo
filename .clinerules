@@ -1,0 +1,18 @@
+## Memory Instructions
+- At the START of every session, call the memory tool to search for context about this project
+- Search for: project structure, recent decisions, file patterns, known issues
+- After completing any significant task, save key decisions and patterns to memory
+- Before reading a file you've read in a previous session, check memory first
+- Save to memory: important file locations, architectural decisions, naming conventions, Redux slice patterns, Turborepo workspace layout
+
+## Project Stack
+- Monorepo with Turborepo (check turbo.json for workspace config)
+- Apps in /apps, shared packages in /packages
+- React + Next.js + TypeScript + Tailwind CSS + Redux
+- Custom MCP tools are available - check what tools are connected before starting tasks
+
+## Token Saving Rules
+- Do not read a file unless it is directly needed for the current task
+- Do not explore directory trees unless asked
+- Use memory context instead of re-reading files already seen this session
+- Prefer targeted reads (specific line ranges) over reading entire files

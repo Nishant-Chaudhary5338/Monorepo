@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import type { Size, Position } from "../types";
+import { useDashboardStore } from "../store";
 
 // ============================================================
 // useResize Hook
@@ -284,6 +285,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
 
       const deltaX = clientX - startPosRef.current.x;
       const deltaY = clientY - startPosRef.current.y;
+      console.log("[DEBUG] handleMove: handle=", activeHandle, "delta=", deltaX, deltaY, "startPos=", startPosRef.current.x, startPosRef.current.y);
 
       const newSize = calculateNewSize(deltaX, deltaY, activeHandle);
       const constrainedSize = constrainSize(newSize);
@@ -337,6 +339,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
 
     setIsResizing(false);
     setActiveHandle(null);
+    useDashboardStore.getState().setIsResizing(false);
     onResizeEnd?.(size);
   }, [activeHandle, size, onResizeEnd]);
 
@@ -384,7 +387,7 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
   }, [isResizing, handleMouseMove, handleTouchMove, handleEnd]);
 
   /**
-   * Get props for resize handle
+   * Handle mouse/touch down
    */
   const getHandleProps = useCallback(
     (handle: ResizeHandle): ResizeHandleProps => {
@@ -397,6 +400,8 @@ export function useResize(options: UseResizeOptions): UseResizeReturn {
         startSizeRef.current = size;
         setActiveHandle(handle);
         setIsResizing(true);
+        useDashboardStore.getState().setIsResizing(true);
+        console.log("[DEBUG] useResize: RESIZE START, handle=", handle);
         onResizeStart?.(handle);
       };
 

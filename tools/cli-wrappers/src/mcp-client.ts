@@ -37,13 +37,13 @@ export class MCPClient {
 
   async callTool(toolName: string, args: Record<string, unknown>): Promise<MCPResponse> {
     return new Promise((resolve, reject) => {
-      console.log('[MCP DEBUG] Spawning MCP server:', this.serverPath);
+      console.error('[MCP DEBUG] Spawning MCP server:', this.serverPath);
       const childProcess: ChildProcess = spawn('node', [this.serverPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
 
-      const stdoutData = '';
-      const stderrData = '';
+      let stdoutData = '';
+      let stderrData = '';
       let responseReceived = false;
 
       let initialized = false;
@@ -51,7 +51,7 @@ export class MCPClient {
       // Handle stdout data
       childProcess.stdout?.on('data', (data: Buffer) => {
         const chunk = data.toString();
-        console.log('[MCP DEBUG] stdout chunk:', chunk);
+        console.error('[MCP DEBUG] stdout chunk:', chunk);
         stdoutData += chunk;
         
         // Try to parse JSON-RPC response
@@ -60,11 +60,11 @@ export class MCPClient {
           if (line.trim() && line.includes('"jsonrpc"')) {
             try {
               const response = JSON.parse(line);
-              console.log('[MCP DEBUG] Parsed response:', response);
+              console.error('[MCP DEBUG] Parsed response:', response);
               
               // Handle initialize response - send initialized notification
               if (response.id === 1 && response.result && !initialized) {
-                console.log('[MCP DEBUG] Received initialize response, sending initialized notification');
+                console.error('[MCP DEBUG] Received initialize response, sending initialized notification');
                 initialized = true;
                 // Send initialized notification (required by MCP protocol)
                 const initializedNotification = {
@@ -75,7 +75,7 @@ export class MCPClient {
                 childProcess.stdin?.write(JSON.stringify(initializedNotification) + '\n');
                 
                 // Now send the tool call request
-                console.log('[MCP DEBUG] Sending tool call request:', toolName, args);
+                console.error('[MCP DEBUG] Sending tool call request:', toolName, args);
                 setTimeout(() => {
                   const toolRequest = {
                     jsonrpc: '2.0',
@@ -93,7 +93,7 @@ export class MCPClient {
               
               // Handle tool call response
               if (response.id === this.requestId && response.result) {
-                console.log('[MCP DEBUG] Received tool call response');
+                console.error('[MCP DEBUG] Received tool call response');
                 responseReceived = true;
                 const content = response.result.content?.[0]?.text;
                 if (content) {
@@ -109,7 +109,7 @@ export class MCPClient {
                 childProcess.kill();
                 return;
               } else if (response.error) {
-                console.log('[MCP DEBUG] Received error:', response.error);
+                console.error('[MCP DEBUG] Received error:', response.error);
                 reject(new Error(response.error.message || 'MCP error'));
                 childProcess.kill();
                 return;
@@ -158,13 +158,13 @@ export class MCPClient {
       };
       childProcess.stdin?.write(JSON.stringify(initRequest) + '\n');
 
-      // Set timeout
+      // Set timeout (120 seconds for complex operations)
       setTimeout(() => {
         if (!responseReceived) {
           childProcess.kill();
           reject(new Error('Timeout waiting for MCP server response'));
         }
-      }, 60000);
+      }, 120000);
     });
   }
 }
