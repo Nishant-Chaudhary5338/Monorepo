@@ -5,10 +5,7 @@
   "exports": {
     ".": "./index.ts",
     "./styles.css": "./dist/index.css",
-    "./lib/utils": "./lib/utils.ts",
-    "./counter": "./components/counter.ts",
-    "./header": "./components/header.ts",
-    "./setup-counter": "./utils/counter.ts"
+    "./lib/utils": "./lib/utils.ts"
   },
   "license": "MIT",
   "scripts": {

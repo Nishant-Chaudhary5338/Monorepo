@@ -6,14 +6,9 @@ const meta: Meta<typeof Input> = {
   component: Input,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
-      control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
-    },
-    size: {
-      control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
-    },
+    type: { control: 'select', options: ['text', 'email', 'password', 'number', 'search', 'tel', 'url'] },
+    disabled: { control: "boolean" },
+    placeholder: { control: "text" },
   },
 }
 
@@ -21,21 +16,25 @@ export default meta
 type Story = StoryObj<typeof Input>
 
 export const Default: Story = {
-  args: { children: 'Input', variant: 'default', size: 'default' },
+  args: { placeholder: 'Enter text...' },
 }
 
-export const Destructive: Story = {
-  args: { children: 'Input', variant: 'destructive' },
+export const Email: Story = {
+  args: { type: 'email', placeholder: 'Enter your email' },
 }
 
-export const Outline: Story = {
-  args: { children: 'Input', variant: 'outline' },
+export const Password: Story = {
+  args: { type: 'password', placeholder: 'Enter password' },
 }
 
-export const Small: Story = {
-  args: { children: 'Input', size: 'sm' },
+export const Search: Story = {
+  args: { type: 'search', placeholder: 'Search...' },
 }
 
-export const Large: Story = {
-  args: { children: 'Input', size: 'lg' },
+export const Disabled: Story = {
+  args: { placeholder: 'Disabled input', disabled: true },
+}
+
+export const WithValue: Story = {
+  args: { value: 'Pre-filled value', readOnly: true },
 }

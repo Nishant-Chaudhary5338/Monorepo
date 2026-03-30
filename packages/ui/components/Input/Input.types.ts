@@ -1,11 +1,6 @@
 import * as React from "react"
-import { type VariantProps } from "class-variance-authority"
 
-export interface InputProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string
-  children?: React.ReactNode
+  type?: string
 }
-
-export type InputVariant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
-export type InputSize = "default" | "sm" | "lg" | "icon"

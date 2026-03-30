@@ -1,10 +1,13 @@
 import * as React from "react"
-import { type VariantProps } from "class-variance-authority"
 
-export interface ButtonProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+// This file mirrors the ButtonProps type for type-only imports.
+// Prefer importing ButtonProps directly from ./Button.
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string
   children?: React.ReactNode
+  asChild?: boolean
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+  size?: "default" | "sm" | "lg" | "icon"
 }
 
 export type ButtonVariant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"

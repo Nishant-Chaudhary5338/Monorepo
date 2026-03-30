@@ -1,10 +1,20 @@
 {
   "extends": "@repo/typescript-config/base.json",
-  "include": ["."],
-  "exclude": ["node_modules"],
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.stories.tsx",
+    "**/*.stories.ts"
+  ],
   "compilerOptions": {
     "strictNullChecks": true,
     "jsx": "react-jsx",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ]
   }
 }
