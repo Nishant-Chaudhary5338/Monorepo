@@ -1,0 +1,1305 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Calendar > Snapshot Tests > matches snapshot for calendar with selected date 1`] = `
+<div
+  class="rdp-root p-3"
+  data-mode="single"
+  lang="en-US"
+>
+  <div
+    class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0"
+  >
+    <nav
+      aria-label="Navigation bar"
+      class="space-x-1 flex items-center"
+    >
+      <button
+        aria-label="Go to the Previous Month"
+        class="rdp-button_previous"
+        type="button"
+      >
+        <svg
+          class="rdp-chevron"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <polygon
+            points="16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Go to the Next Month"
+        class="rdp-button_next"
+        type="button"
+      >
+        <svg
+          class="rdp-chevron"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <polygon
+            points="8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20"
+          />
+        </svg>
+      </button>
+    </nav>
+    <div
+      class="space-y-4"
+    >
+      <div
+        class="rdp-month_caption"
+      >
+        <span
+          aria-live="polite"
+          class="text-sm font-medium"
+          role="status"
+        >
+          March 2026
+        </span>
+      </div>
+      <table
+        aria-label="March 2026"
+        aria-multiselectable="false"
+        class="rdp-month_grid"
+        role="grid"
+      >
+        <thead
+          aria-hidden="true"
+        >
+          <tr
+            class="rdp-weekdays"
+          >
+            <th
+              aria-label="Sunday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Su
+            </th>
+            <th
+              aria-label="Monday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Mo
+            </th>
+            <th
+              aria-label="Tuesday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Tu
+            </th>
+            <th
+              aria-label="Wednesday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              We
+            </th>
+            <th
+              aria-label="Thursday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Th
+            </th>
+            <th
+              aria-label="Friday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Fr
+            </th>
+            <th
+              aria-label="Saturday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Sa
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="rdp-weeks"
+        >
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-01"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 1st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                1
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-02"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 2nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                2
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-03"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 3rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                3
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-04"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 4th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                4
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-05"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 5th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                5
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-06"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 6th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                6
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-07"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 7th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                7
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-08"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 8th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                8
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-09"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 9th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                9
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-10"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 10th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                10
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-11"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 11th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                11
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-12"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 12th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                12
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-13"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 13th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                13
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-14"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 14th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                14
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-15"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 15th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                15
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-16"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 16th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                16
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-17"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 17th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                17
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-18"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 18th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                18
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-19"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 19th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                19
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-20"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 20th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                20
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-21"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 21st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                21
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-22"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 22nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                22
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-23"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 23rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                23
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-24"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 24th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                24
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-25"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 25th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                25
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-26"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 26th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                26
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-27"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 27th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                27
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-28"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 28th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                28
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-29"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 29th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                29
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-30"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 30th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                30
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-today"
+              data-day="2026-03-31"
+              data-today="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Today, Tuesday, March 31st, 2026"
+                class="rdp-day_button"
+                tabindex="0"
+                type="button"
+              >
+                31
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-01"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, April 1st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                1
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-02"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, April 2nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                2
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-03"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, April 3rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                3
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-04"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, April 4th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                4
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Calendar > Snapshot Tests > matches snapshot for default calendar 1`] = `
+<div
+  class="rdp-root p-3"
+  data-mode="single"
+  lang="en-US"
+>
+  <div
+    class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0"
+  >
+    <nav
+      aria-label="Navigation bar"
+      class="space-x-1 flex items-center"
+    >
+      <button
+        aria-label="Go to the Previous Month"
+        class="rdp-button_previous"
+        type="button"
+      >
+        <svg
+          class="rdp-chevron"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <polygon
+            points="16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Go to the Next Month"
+        class="rdp-button_next"
+        type="button"
+      >
+        <svg
+          class="rdp-chevron"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <polygon
+            points="8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20"
+          />
+        </svg>
+      </button>
+    </nav>
+    <div
+      class="space-y-4"
+    >
+      <div
+        class="rdp-month_caption"
+      >
+        <span
+          aria-live="polite"
+          class="text-sm font-medium"
+          role="status"
+        >
+          March 2026
+        </span>
+      </div>
+      <table
+        aria-label="March 2026"
+        aria-multiselectable="false"
+        class="rdp-month_grid"
+        role="grid"
+      >
+        <thead
+          aria-hidden="true"
+        >
+          <tr
+            class="rdp-weekdays"
+          >
+            <th
+              aria-label="Sunday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Su
+            </th>
+            <th
+              aria-label="Monday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Mo
+            </th>
+            <th
+              aria-label="Tuesday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Tu
+            </th>
+            <th
+              aria-label="Wednesday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              We
+            </th>
+            <th
+              aria-label="Thursday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Th
+            </th>
+            <th
+              aria-label="Friday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Fr
+            </th>
+            <th
+              aria-label="Saturday"
+              class="rdp-weekday"
+              scope="col"
+            >
+              Sa
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="rdp-weeks"
+        >
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-01"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 1st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                1
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-02"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 2nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                2
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-03"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 3rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                3
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-04"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 4th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                4
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-05"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 5th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                5
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-06"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 6th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                6
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-07"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 7th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                7
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-08"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 8th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                8
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-09"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 9th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                9
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-10"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 10th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                10
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-11"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 11th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                11
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-12"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 12th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                12
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-13"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 13th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                13
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-14"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 14th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                14
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-15"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 15th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                15
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-16"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 16th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                16
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-17"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 17th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                17
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-18"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 18th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                18
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-19"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 19th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                19
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-20"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 20th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                20
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-21"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 21st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                21
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-22"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 22nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                22
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-23"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 23rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                23
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-24"
+              role="gridcell"
+            >
+              <button
+                aria-label="Tuesday, March 24th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                24
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-25"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, March 25th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                25
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-26"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, March 26th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                26
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-27"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, March 27th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                27
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-28"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, March 28th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                28
+              </button>
+            </td>
+          </tr>
+          <tr
+            class="rdp-week"
+          >
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-29"
+              role="gridcell"
+            >
+              <button
+                aria-label="Sunday, March 29th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                29
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+              data-day="2026-03-30"
+              role="gridcell"
+            >
+              <button
+                aria-label="Monday, March 30th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                30
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-today"
+              data-day="2026-03-31"
+              data-today="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Today, Tuesday, March 31st, 2026"
+                class="rdp-day_button"
+                tabindex="0"
+                type="button"
+              >
+                31
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-01"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Wednesday, April 1st, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                1
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-02"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Thursday, April 2nd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                2
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-03"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Friday, April 3rd, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                3
+              </button>
+            </td>
+            <td
+              class="inline-flex items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 rdp-outside"
+              data-day="2026-04-04"
+              data-month="2026-04"
+              data-outside="true"
+              role="gridcell"
+            >
+              <button
+                aria-label="Saturday, April 4th, 2026"
+                class="rdp-day_button"
+                tabindex="-1"
+                type="button"
+              >
+                4
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;

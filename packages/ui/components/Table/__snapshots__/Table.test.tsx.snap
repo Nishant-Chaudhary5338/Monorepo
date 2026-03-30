@@ -1,0 +1,155 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Table > Snapshot Tests > matches snapshot for basic table 1`] = `
+<div
+  class="relative w-full overflow-auto"
+>
+  <table
+    class="w-full caption-bottom text-sm"
+  >
+    <thead
+      class="[&_tr]:border-b"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <th
+          class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+        >
+          Name
+        </th>
+        <th
+          class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+        >
+          Email
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="[&_tr:last-child]:border-0"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          John Doe
+        </td>
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          john@example.com
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Table > Snapshot Tests > matches snapshot for table with caption 1`] = `
+<div
+  class="relative w-full overflow-auto"
+>
+  <table
+    class="w-full caption-bottom text-sm"
+  >
+    <caption
+      class="mt-4 text-sm text-muted-foreground"
+    >
+      User List
+    </caption>
+    <thead
+      class="[&_tr]:border-b"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <th
+          class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+        >
+          Name
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="[&_tr:last-child]:border-0"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          John
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Table > Snapshot Tests > matches snapshot for table with footer 1`] = `
+<div
+  class="relative w-full overflow-auto"
+>
+  <table
+    class="w-full caption-bottom text-sm"
+  >
+    <thead
+      class="[&_tr]:border-b"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <th
+          class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+        >
+          Item
+        </th>
+        <th
+          class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+        >
+          Price
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="[&_tr:last-child]:border-0"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          Product
+        </td>
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          $100
+        </td>
+      </tr>
+    </tbody>
+    <tfoot
+      class="border-t bg-muted/50 font-medium [&>tr]:last:border-b-0"
+    >
+      <tr
+        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          Total
+        </td>
+        <td
+          class="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+        >
+          $100
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+`;

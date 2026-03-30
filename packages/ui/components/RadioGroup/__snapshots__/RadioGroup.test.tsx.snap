@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RadioGroup > Snapshot Tests > matches snapshot for default radio group 1`] = `
+<div
+  aria-required="false"
+  class="grid gap-2"
+  dir="ltr"
+  role="radiogroup"
+  style="outline: none;"
+  tabindex="0"
+>
+  <button
+    aria-checked="false"
+    class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    data-radix-collection-item=""
+    data-state="unchecked"
+    role="radio"
+    tabindex="-1"
+    type="button"
+    value="option1"
+  />
+  <button
+    aria-checked="false"
+    class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    data-radix-collection-item=""
+    data-state="unchecked"
+    role="radio"
+    tabindex="-1"
+    type="button"
+    value="option2"
+  />
+</div>
+`;
+
+exports[`RadioGroup > Snapshot Tests > matches snapshot for radio group with labels 1`] = `
+<div
+  aria-required="false"
+  class="grid gap-2"
+  dir="ltr"
+  role="radiogroup"
+  style="outline: none;"
+  tabindex="0"
+>
+  <div>
+    <button
+      aria-checked="false"
+      class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      data-radix-collection-item=""
+      data-state="unchecked"
+      id="r1"
+      role="radio"
+      tabindex="-1"
+      type="button"
+      value="option1"
+    />
+    <label
+      for="r1"
+    >
+      Option 1
+    </label>
+  </div>
+  <div>
+    <button
+      aria-checked="false"
+      class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      data-radix-collection-item=""
+      data-state="unchecked"
+      id="r2"
+      role="radio"
+      tabindex="-1"
+      type="button"
+      value="option2"
+    />
+    <label
+      for="r2"
+    >
+      Option 2
+    </label>
+  </div>
+</div>
+`;

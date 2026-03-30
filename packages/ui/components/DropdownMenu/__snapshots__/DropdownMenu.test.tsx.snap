@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DropdownMenu > Snapshot Tests > matches snapshot for default dropdown menu 1`] = `
+<div>
+  <button
+    aria-expanded="false"
+    aria-haspopup="menu"
+    data-state="closed"
+    id="radix-_r_0_"
+    type="button"
+  >
+    Open
+  </button>
+</div>
+`;

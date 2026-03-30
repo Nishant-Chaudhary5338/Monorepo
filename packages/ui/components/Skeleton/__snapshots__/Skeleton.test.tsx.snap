@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Skeleton > Snapshot Tests > matches snapshot for default skeleton 1`] = `
+<div
+  class="animate-pulse rounded-md bg-muted"
+/>
+`;
+
+exports[`Skeleton > Snapshot Tests > matches snapshot for skeleton with custom dimensions 1`] = `
+<div
+  class="animate-pulse rounded-md bg-muted w-48 h-4"
+/>
+`;

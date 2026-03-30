@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Card > Snapshot Tests > matches snapshot for basic card 1`] = `
+<div
+  class="rounded-lg border bg-card text-card-foreground shadow-sm"
+>
+  <div
+    class="flex flex-col space-y-1.5 p-6"
+  >
+    <div
+      class="text-2xl font-semibold leading-none tracking-tight"
+    >
+      Card Title
+    </div>
+  </div>
+  <div
+    class="p-6 pt-0"
+  >
+    Card content
+  </div>
+</div>
+`;
+
+exports[`Card > Snapshot Tests > matches snapshot for card with custom className 1`] = `
+<div
+  class="rounded-lg border bg-card text-card-foreground shadow-sm custom-card"
+>
+  <div
+    class="p-6 pt-0"
+  >
+    Content
+  </div>
+</div>
+`;
+
+exports[`Card > Snapshot Tests > matches snapshot for complete card 1`] = `
+<div
+  class="rounded-lg border bg-card text-card-foreground shadow-sm"
+>
+  <div
+    class="flex flex-col space-y-1.5 p-6"
+  >
+    <div
+      class="text-2xl font-semibold leading-none tracking-tight"
+    >
+      Title
+    </div>
+    <div
+      class="text-sm text-muted-foreground"
+    >
+      Description
+    </div>
+  </div>
+  <div
+    class="p-6 pt-0"
+  >
+    Content
+  </div>
+  <div
+    class="flex items-center p-6 pt-0"
+  >
+    Footer
+  </div>
+</div>
+`;

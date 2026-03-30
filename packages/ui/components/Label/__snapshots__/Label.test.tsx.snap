@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Label > Snapshot Tests > matches snapshot for default label 1`] = `
+<label
+  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+>
+  Label Text
+</label>
+`;
+
+exports[`Label > Snapshot Tests > matches snapshot for label with htmlFor 1`] = `
+<label
+  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+  for="input-id"
+>
+  Email
+</label>
+`;

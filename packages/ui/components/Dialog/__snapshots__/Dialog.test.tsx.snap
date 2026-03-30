@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Dialog > Snapshot Tests > matches snapshot for closed dialog 1`] = `
+<div>
+  <button
+    aria-controls="radix-_r_0_"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    data-state="closed"
+    type="button"
+  >
+    Open
+  </button>
+</div>
+`;
+
+exports[`Dialog > Snapshot Tests > matches snapshot for dialog with footer 1`] = `
+<div
+  aria-hidden="true"
+  data-aria-hidden="true"
+/>
+`;
+
+exports[`Dialog > Snapshot Tests > matches snapshot for open dialog 1`] = `
+<div
+  aria-hidden="true"
+  data-aria-hidden="true"
+/>
+`;

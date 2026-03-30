@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HoverCard > Snapshot Tests > matches snapshot for default hover card 1`] = `
+<div>
+  <a
+    data-state="closed"
+  >
+    Hover me
+  </a>
+</div>
+`;
