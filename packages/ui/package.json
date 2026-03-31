@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build": "pnpm build:components && pnpm build:styles",
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
     "build:components": "tsc",
     "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
