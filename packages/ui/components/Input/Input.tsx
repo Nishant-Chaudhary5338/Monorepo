@@ -1,8 +1,7 @@
 import * as React from "react"
 
 import { cn } from "../../lib/utils"
-
-export type InputProps = React.ComponentProps<"input">
+import type { InputProps } from "./Input.types"
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = "text", ...props }, ref) => {

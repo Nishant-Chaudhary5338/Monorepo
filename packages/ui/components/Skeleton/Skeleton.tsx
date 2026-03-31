@@ -1,12 +1,23 @@
+import * as React from "react"
+
 import { cn } from "../../lib/utils"
+import type { SkeletonProps } from "./Skeleton.types"
 
 function Skeleton({
   className,
+  variant = "default",
+  animate = true,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: SkeletonProps) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
+      className={cn(
+        "rounded-md bg-muted",
+        variant === "shimmer" && "animate-shimmer",
+        variant === "pulse" && "animate-pulse",
+        variant === "default" && animate && "animate-pulse",
+        className
+      )}
       {...props}
     />
   )

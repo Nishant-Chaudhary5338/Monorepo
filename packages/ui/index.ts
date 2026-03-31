@@ -3,10 +3,10 @@ export { cn } from "./lib/utils";
 
 // Core components
 export { Button, buttonVariants } from "./components/Button/Button";
-export type { ButtonProps } from "./components/Button/Button";
+export type { ButtonProps } from "./components/Button/Button.types";
 
 export { Input } from "./components/Input/Input";
-export type { InputProps } from "./components/Input/Input";
+export type { InputProps } from "./components/Input/Input.types";
 
 // Layout & Structure
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/Card/Card";
