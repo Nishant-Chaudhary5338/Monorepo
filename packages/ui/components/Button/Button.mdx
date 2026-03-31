@@ -1,0 +1,178 @@
+import { Meta, Story, Canvas, Controls, Description } from '@storybook/blocks';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A versatile button component with multiple variants and sizes, built with shadcn/ui patterns and class-variance-authority.
+
+## Overview
+
+The Button component is a fundamental UI element that supports:
+- **6 visual variants**: default, destructive, outline, secondary, ghost, link
+- **4 size options**: default, sm, lg, icon
+- **Polymorphic rendering** via the `asChild` prop
+- **Full accessibility** with keyboard navigation and focus management
+- **Icon integration** with automatic sizing
+
+## Import
+
+```tsx
+import { Button } from '@repo/ui'
+```
+
+## Usage
+
+### Basic Button
+
+<Canvas of={ButtonStories.Default} />
+
+### Variants
+
+<Canvas of={ButtonStories.AllVariants} />
+
+### Sizes
+
+<Canvas of={ButtonStories.AllSizes} />
+
+### With Icons
+
+<Canvas of={ButtonStories.WithIcon} />
+
+### Icon Only
+
+<Canvas of={ButtonStories.IconOnly} />
+
+### As Link (Polymorphic)
+
+<Canvas of={ButtonStories.AsChild} />
+
+### Disabled State
+
+<Canvas of={ButtonStories.Disabled} />
+
+## Props
+
+<Controls of={ButtonStories.Default} />
+
+## API Reference
+
+### ButtonProps
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'` | `'default'` | Visual style variant |
+| `size` | `'default' \| 'sm' \| 'lg' \| 'icon'` | `'default'` | Button size |
+| `asChild` | `boolean` | `false` | Render as child element (polymorphic) |
+| `className` | `string` | - | Additional CSS classes |
+| `disabled` | `boolean` | - | Disabled state |
+| `children` | `React.ReactNode` | - | Button content |
+
+## Variants
+
+### Default
+Primary action button with solid background.
+
+### Destructive
+For dangerous or irreversible actions like delete.
+
+### Outline
+Bordered button for secondary actions.
+
+### Secondary
+Subtle button for less prominent actions.
+
+### Ghost
+Transparent button with hover state.
+
+### Link
+Text-only button styled as a link.
+
+## Sizes
+
+| Size | Height | Padding | Use Case |
+|------|--------|---------|----------|
+| `sm` | 36px | 12px horizontal | Compact UIs, tables |
+| `default` | 40px | 16px horizontal | Standard actions |
+| `lg` | 44px | 32px horizontal | Prominent CTAs |
+| `icon` | 40px × 40px | none | Icon-only buttons |
+
+## Accessibility
+
+- Uses semantic `<button>` element by default
+- Supports keyboard navigation (Enter/Space)
+- Includes visible focus ring (`focus-visible`)
+- Disabled state removes pointer events and reduces opacity
+- Proper ARIA attributes for icon-only buttons
+
+## Examples
+
+### Form Submit Button
+
+```tsx
+<Button type="submit" variant="default">
+  Save Changes
+</Button>
+```
+
+### Icon Button with Label
+
+```tsx
+<Button variant="outline">
+  <SettingsIcon className="mr-2 h-4 w-4" />
+  Settings
+</Button>
+```
+
+### Icon-Only Button
+
+```tsx
+<Button variant="ghost" size="icon" aria-label="Close dialog">
+  <XIcon className="h-4 w-4" />
+</Button>
+```
+
+### As Navigation Link
+
+```tsx
+<Button asChild>
+  <a href="/dashboard">
+    Go to Dashboard
+  </a>
+</Button>
+```
+
+### Loading State
+
+```tsx
+<Button disabled>
+  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  Please wait
+</Button>
+```
+
+## Design Tokens
+
+The component uses CSS variables from your Tailwind theme:
+
+- `--primary` / `--primary-foreground`: Default variant colors
+- `--destructive` / `--destructive-foreground`: Destructive variant
+- `--secondary` / `--secondary-foreground`: Secondary variant
+- `--accent` / `--accent-foreground`: Hover states
+- `--ring`: Focus ring color
+- `--background` / `--foreground`: Base colors
+
+## Best Practices
+
+1. **Use semantic variants**: Choose variant based on action importance
+2. **Provide aria-labels**: For icon-only buttons
+3. **Consider loading states**: Disable and show spinner during async actions
+4. **Maintain consistency**: Use same variant for similar actions across app
+5. **Test keyboard navigation**: Ensure all buttons are accessible via keyboard
+
+## Related Components
+
+- `IconButton`: Dedicated icon button component
+- `ButtonGroup`: Group of related buttons
+- `Toggle`: Toggleable button state
