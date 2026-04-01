@@ -98,6 +98,32 @@ jobs:
           cache: 'pnpm'         # Cache pnpm's global store
       
       # -----------------------------------------------------------------------
+      # ENHANCEMENT 1: Cache Turbo Build Setup
+      # -----------------------------------------------------------------------
+      # Caches the .turbo folder between CI runs
+      #
+      # WHAT'S IN .turbo?
+      # - Task execution hashes
+      # - Cache metadata
+      # - Build logs
+      #
+      # HOW CACHING WORKS:
+      # - key: Unique identifier for this cache (uses commit SHA)
+      # - restore-keys: Fallback pattern to match older caches
+      #
+      # FIRST RUN: Creates cache with key "ubuntu-turbo-abc123"
+      # SECOND RUN: Looks for "ubuntu-turbo-xyz789", falls back to "ubuntu-turbo-"
+      # RESULT: Faster cache lookups and build decisions!
+      # -----------------------------------------------------------------------
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+      
+      # -----------------------------------------------------------------------
       # STEP 4: Install Dependencies
       # -----------------------------------------------------------------------
       # Installs all packages from pnpm-lock.yaml
@@ -130,37 +156,44 @@ jobs:
         run: pnpm lint
       
       # -----------------------------------------------------------------------
-      # STEP 6: Build All Packages
+      # STEP 6: Build Affected Packages
       # -----------------------------------------------------------------------
-      # Builds all packages in dependency order
+      # Builds only packages that have changes (using git history)
       #
-      # TURBOMAGIC:
-      # 1. Reads turbo.json: "build": { "dependsOn": ["^build"] }
-      # 2. Builds packages in correct order:
-      #    - packages/utils (no deps) → builds first
-      #    - packages/ui (depends on utils) → builds after utils
-      #    - apps/web (depends on ui) → builds last
-      # 3. Caches results in .turbo/cache
+      # ENHANCEMENT: --affected FLAG
+      # - Compares current commit vs previous commit
+      # - Only builds packages with code changes
+      # - Skips unchanged packages (saves time!)
       #
-      # PARALLELIZATION:
-      # - Independent packages build simultaneously
-      # - Dependent packages wait for their dependencies
+      # HOW IT WORKS:
+      # 1. Turbo checks git history (fetch-depth: 2 makes this possible)
+      # 2. Finds which files changed
+      # 3. Determines which packages are affected
+      # 4. Builds only those packages
+      #
+      # EXAMPLE:
+      # You changed: packages/ui/Button.tsx
+      # turbo run build --affected → Only builds packages/ui
+      # Skips: packages/utils, packages/router (if no changes)
       # -----------------------------------------------------------------------
-      - name: Build
-        run: pnpm build
+      - name: Build affected packages
+        run: turbo run build --affected
       
       # -----------------------------------------------------------------------
-      # STEP 7: Run Tests (Optional - uncomment when ready)
+      # STEP 7: Run Tests
       # -----------------------------------------------------------------------
       # Runs test suites across all packages
       #
-      # WHEN TO ENABLE:
-      # - After you add tests to your packages
-      # - Tests use Vitest (see packages/*/vitest.config.ts)
+      # WHAT IT DOES:
+      # - Runs Vitest in each package that has tests
+      # - Same tests you run locally with 'pnpm test'
+      # - Catches bugs before code is merged
       #
-      # UNCOMMENT WHEN READY:
-      # - name: Test
-      #   run: pnpm test
+      # TEST LOCATIONS:
+      # - packages/ui/vitest.config.ts
+      # - packages/utils/vitest.config.ts
+      # - packages/dashcraft/vitest.config.ts
+      # - packages/present/vitest.config.ts
       # -----------------------------------------------------------------------
-      # - name: Test
-      #   run: pnpm test
+      - name: Run tests
+        run: pnpm test
