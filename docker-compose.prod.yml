@@ -1,0 +1,91 @@
+# Production compose — builds optimized nginx images from each app's Dockerfile.
+# Each app is isolated: separate build context, separate image, separate container.
+#
+# Build all:   docker compose -f docker-compose.prod.yml build
+# Run all:     docker compose -f docker-compose.prod.yml up -d
+# Single app:  docker compose -f docker-compose.prod.yml up web-app-1
+
+services:
+  web-app-1:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-1/Dockerfile
+    ports:
+      - "3001:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  web-app-2:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-2/Dockerfile
+    ports:
+      - "3002:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  web-app-3:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-3/Dockerfile
+    ports:
+      - "3003:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  web-app-4:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-4/Dockerfile
+    ports:
+      - "3004:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  3d-portfolio:
+    build:
+      context: .
+      dockerfile: apps/web/3d-portfolio/Dockerfile
+    ports:
+      - "3005:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  award-winning-website:
+    build:
+      context: .
+      dockerfile: apps/web/award-winning-website/Dockerfile
+    ports:
+      - "3006:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,71 @@
+services:
+  web-app-1:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-1/Dockerfile.dev
+    ports:
+      - "3001:5173"
+    volumes:
+      - ./apps/web/web-app-1/src:/app/apps/web/web-app-1/src
+      - ./apps/web/web-app-1/index.html:/app/apps/web/web-app-1/index.html
+    environment:
+      - NODE_ENV=development
+
+  web-app-2:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-2/Dockerfile.dev
+    ports:
+      - "3002:5173"
+    volumes:
+      - ./apps/web/web-app-2/src:/app/apps/web/web-app-2/src
+      - ./apps/web/web-app-2/index.html:/app/apps/web/web-app-2/index.html
+    environment:
+      - NODE_ENV=development
+
+  web-app-3:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-3/Dockerfile.dev
+    ports:
+      - "3003:5173"
+    volumes:
+      - ./apps/web/web-app-3/src:/app/apps/web/web-app-3/src
+      - ./apps/web/web-app-3/index.html:/app/apps/web/web-app-3/index.html
+    environment:
+      - NODE_ENV=development
+
+  web-app-4:
+    build:
+      context: .
+      dockerfile: apps/web/web-app-4/Dockerfile.dev
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./apps/web/web-app-4/src:/app/apps/web/web-app-4/src
+    environment:
+      - NODE_ENV=development
+
+  3d-portfolio:
+    build:
+      context: .
+      dockerfile: apps/web/3d-portfolio/Dockerfile.dev
+    ports:
+      - "3005:5173"
+    volumes:
+      - ./apps/web/3d-portfolio/src:/app/apps/web/3d-portfolio/src
+      - ./apps/web/3d-portfolio/index.html:/app/apps/web/3d-portfolio/index.html
+    environment:
+      - NODE_ENV=development
+
+  award-winning-website:
+    build:
+      context: .
+      dockerfile: apps/web/award-winning-website/Dockerfile.dev
+    ports:
+      - "3006:5173"
+    volumes:
+      - ./apps/web/award-winning-website/src:/app/apps/web/award-winning-website/src
+      - ./apps/web/award-winning-website/index.html:/app/apps/web/award-winning-website/index.html
+    environment:
+      - NODE_ENV=development

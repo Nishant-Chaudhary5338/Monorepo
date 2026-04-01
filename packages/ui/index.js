@@ -54,3 +54,7 @@ export { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, Comman
 export { Calendar } from "./components/Calendar/Calendar";
 // Toast notifications
 export { Toaster } from "./components/Sonner/Sonner";
+// Advanced Form
+export { AutoForm } from "./components/AutoForm/AutoForm";
+// Advanced Table
+export { DataTable } from "./components/DataTable/DataTable";

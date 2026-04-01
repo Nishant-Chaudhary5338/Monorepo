@@ -70,3 +70,27 @@ export { Calendar } from "./components/Calendar/Calendar";
 
 // Toast notifications
 export { Toaster } from "./components/Sonner/Sonner";
+
+// Advanced Form
+export { AutoForm } from "./components/AutoForm/AutoForm";
+export type {
+  AutoFormProps,
+  AutoFormFieldProps,
+  FieldConfig,
+  FieldsConfig,
+  FieldType,
+  UseAutoFormReturn,
+} from "./components/AutoForm/AutoForm.types";
+
+// Advanced Table
+export { DataTable } from "./components/DataTable/DataTable";
+export type {
+  DataTableProps,
+  DataTableFeatures,
+  PaginationOptions,
+  ZoomOptions,
+  DataTableToolbarProps,
+  DataTablePaginationProps,
+  DraggableColumnHeaderProps,
+  DataTableState,
+} from "./components/DataTable/DataTable.types";

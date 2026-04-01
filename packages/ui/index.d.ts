@@ -42,4 +42,8 @@ export { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuC
 export { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandShortcut, CommandSeparator } from "./components/Command/Command";
 export { Calendar } from "./components/Calendar/Calendar";
 export { Toaster } from "./components/Sonner/Sonner";
+export { AutoForm } from "./components/AutoForm/AutoForm";
+export type { AutoFormProps, AutoFormFieldProps, FieldConfig, FieldsConfig, FieldType, UseAutoFormReturn, } from "./components/AutoForm/AutoForm.types";
+export { DataTable } from "./components/DataTable/DataTable";
+export type { DataTableProps, DataTableFeatures, PaginationOptions, ZoomOptions, DataTableToolbarProps, DataTablePaginationProps, DraggableColumnHeaderProps, DataTableState, } from "./components/DataTable/DataTable.types";
 //# sourceMappingURL=index.d.ts.map

@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1
+# ─────────────────────────────────────────────────────────────────────────────
+# Development — web-app-4  (Create React App, port 3000)
+# NOTE: CRA uses HOST env var for binding, not --host flag.
+#       No workspace deps — standalone CRA app.
+# Build: docker build -f apps/web/web-app-4/Dockerfile.dev .
+# ─────────────────────────────────────────────────────────────────────────────
+
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare pnpm@8.15.6 --activate
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN pnpm add -g turbo@2
+
+FROM base AS pruner
+WORKDIR /app
+COPY . .
+RUN turbo prune web-app-4 --docker
+
+FROM base AS dev
+WORKDIR /app
+COPY --from=pruner /app/out/json/ .
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+COPY --from=pruner /app/out/full/ .
+WORKDIR /app/apps/web/web-app-4
+# CRA binds to HOST env var instead of --host flag
+ENV HOST=0.0.0.0
+EXPOSE 3000
+CMD ["pnpm", "start"]

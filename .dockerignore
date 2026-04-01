@@ -1,0 +1,59 @@
+# ── Node modules & pnpm store ────────────────────────────────────────────────
+node_modules
+.pnpm-store
+
+# ── Turbo cache ───────────────────────────────────────────────────────────────
+.turbo
+
+# ── Build artefacts ───────────────────────────────────────────────────────────
+dist
+build
+.next
+.output
+.vercel
+storybook-static
+
+# ── Test / coverage ───────────────────────────────────────────────────────────
+coverage
+.nyc_output
+
+# ── TypeScript incremental info (can be 100s of MB in a large monorepo) ───────
+*.tsbuildinfo
+
+# ── Lint caches ───────────────────────────────────────────────────────────────
+.eslintcache
+
+# ── Log files ─────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode
+.idea
+*.swp
+*.swo
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Git ───────────────────────────────────────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── Secrets — never bake into images ─────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Docker files themselves ───────────────────────────────────────────────────
+docker-compose*.yml
+Dockerfile*
+
+# ── Docs / static assets ──────────────────────────────────────────────────────
+*.md
+LICENSE
+assets/
