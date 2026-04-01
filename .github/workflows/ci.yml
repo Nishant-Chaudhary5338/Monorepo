@@ -1,0 +1,166 @@
+# =============================================================================
+# CI (Continuous Integration) Workflow
+# =============================================================================
+# This workflow runs automatically on every push and pull request.
+# It validates your code by running lint, build, and tests.
+#
+# LEARNING NOTES:
+# - 'name': Display name in GitHub Actions UI
+# - 'on': Events that trigger this workflow
+# - 'jobs': Collection of tasks to run
+# - 'steps': Individual commands within a job
+# =============================================================================
+
+name: CI
+
+# -----------------------------------------------------------------------------
+# TRIGGERS: When should this workflow run?
+# -----------------------------------------------------------------------------
+# 'push': Runs when you git push to these branches
+# 'pull_request': Runs when PRs are created or updated
+# -----------------------------------------------------------------------------
+on:
+  push:
+    branches: ["main", "develop"]  # Run on pushes to main and develop
+  pull_request:
+    types: [opened, synchronize]   # Run on PR creation and new commits
+
+# -----------------------------------------------------------------------------
+# JOBS: What tasks to execute
+# -----------------------------------------------------------------------------
+jobs:
+  build-and-test:
+    # Job display name (shows in GitHub UI)
+    name: Build and Test
+    
+    # Timeout: Kill job if it takes longer than 15 minutes
+    # Prevents runaway processes from burning CI minutes
+    timeout-minutes: 15
+    
+    # Where to run: Ubuntu Linux virtual machine
+    # 'ubuntu-latest' = latest stable Ubuntu (currently 22.04)
+    # Why Ubuntu? Free, fast, and most CI actions support it
+    runs-on: ubuntu-latest
+    
+    # -------------------------------------------------------------------------
+    # STEPS: Sequential tasks to execute
+    # -------------------------------------------------------------------------
+    steps:
+      
+      # -----------------------------------------------------------------------
+      # STEP 1: Checkout Code
+      # -----------------------------------------------------------------------
+      # Downloads your repository to the CI machine
+      #
+      # KEY CONCEPT: The CI machine starts EMPTY - no code, no files.
+      # This step brings your code into the CI environment.
+      #
+      # 'fetch-depth: 2' - Fetches last 2 commits
+      # WHY? Turborepo's --affected flag uses git history to detect
+      # which packages changed. Without history, it builds EVERYTHING.
+      # -----------------------------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      # -----------------------------------------------------------------------
+      # STEP 2: Setup pnpm
+      # -----------------------------------------------------------------------
+      # Installs pnpm package manager on the CI machine
+      #
+      # WHY pnpm? Your project uses pnpm (see package.json).
+      # CI machines are blank - they don't have pnpm pre-installed!
+      #
+      # 'version: 8' matches your package.json: "packageManager": "pnpm@8.15.6"
+      # -----------------------------------------------------------------------
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      
+      # -----------------------------------------------------------------------
+      # STEP 3: Setup Node.js + Cache pnpm Store
+      # -----------------------------------------------------------------------
+      # Installs Node.js and caches downloaded packages
+      #
+      # KEY CONCEPT: CACHING
+      # - First run: Downloads all packages from npm (slow: 2-5 min)
+      # - Second run: Uses cached packages (fast: 10-30 sec)
+      #
+      # 'cache: pnpm' tells GitHub to cache ~/.local/share/pnpm/store
+      # This store contains all downloaded npm packages
+      # -----------------------------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20      # Match your local Node version
+          cache: 'pnpm'         # Cache pnpm's global store
+      
+      # -----------------------------------------------------------------------
+      # STEP 4: Install Dependencies
+      # -----------------------------------------------------------------------
+      # Installs all packages from pnpm-lock.yaml
+      #
+      # WHAT HAPPENS:
+      # 1. pnpm reads pnpm-workspace.yaml
+      # 2. Installs deps for root, apps/*, packages/*, tools/*
+      # 3. Creates node_modules with symlinks
+      #
+      # WITH CACHING: Uses cached store from Step 3 (fast!)
+      # WITHOUT CACHING: Downloads everything from npm (slow)
+      # -----------------------------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+      
+      # -----------------------------------------------------------------------
+      # STEP 5: Lint Code
+      # -----------------------------------------------------------------------
+      # Runs ESLint across all packages
+      #
+      # WHAT IT CHECKS:
+      # - Code style consistency
+      # - Potential bugs (unused variables, etc.)
+      # - TypeScript errors
+      #
+      # YOUR turbo.json: "lint": {} (no special config)
+      # This runs 'pnpm lint' which calls 'turbo run lint'
+      # -----------------------------------------------------------------------
+      - name: Lint
+        run: pnpm lint
+      
+      # -----------------------------------------------------------------------
+      # STEP 6: Build All Packages
+      # -----------------------------------------------------------------------
+      # Builds all packages in dependency order
+      #
+      # TURBOMAGIC:
+      # 1. Reads turbo.json: "build": { "dependsOn": ["^build"] }
+      # 2. Builds packages in correct order:
+      #    - packages/utils (no deps) → builds first
+      #    - packages/ui (depends on utils) → builds after utils
+      #    - apps/web (depends on ui) → builds last
+      # 3. Caches results in .turbo/cache
+      #
+      # PARALLELIZATION:
+      # - Independent packages build simultaneously
+      # - Dependent packages wait for their dependencies
+      # -----------------------------------------------------------------------
+      - name: Build
+        run: pnpm build
+      
+      # -----------------------------------------------------------------------
+      # STEP 7: Run Tests (Optional - uncomment when ready)
+      # -----------------------------------------------------------------------
+      # Runs test suites across all packages
+      #
+      # WHEN TO ENABLE:
+      # - After you add tests to your packages
+      # - Tests use Vitest (see packages/*/vitest.config.ts)
+      #
+      # UNCOMMENT WHEN READY:
+      # - name: Test
+      #   run: pnpm test
+      # -----------------------------------------------------------------------
+      # - name: Test
+      #   run: pnpm test
