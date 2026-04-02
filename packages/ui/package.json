@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": "./index.ts",
+    ".": "./dist/src/index.js",
     "./styles.css": "./dist/index.css",
-    "./lib/utils": "./lib/utils.ts"
+    "./lib/utils": "./dist/lib/utils.js"
   },
   "license": "MIT",
   "scripts": {
     "build": "pnpm build:components && pnpm build:styles",
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
-    "build:components": "tsc",
+    "build:components": "tsup",
     "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
-    "dev:components": "tsc --watch",
+    "dev:components": "tsup --watch",
     "lint": "eslint \"**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -103,6 +103,7 @@
     "playwright": "^1.58.2",
     "storybook": "^10.3.3",
     "tailwindcss": "^4.1.5",
+    "tsup": "^8.3.5",
     "typescript": "5.5.4",
     "vitest": "^4.1.0"
   }

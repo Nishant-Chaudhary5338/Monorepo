@@ -25,7 +25,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * Props for the CardHeader component.
  */
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>
 
 /**
  * Props for the CardTitle component.
@@ -41,14 +41,14 @@ export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
 /**
  * Props for the CardDescription component.
  */
-export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>
 
 /**
  * Props for the CardContent component.
  */
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CardContentProps = React.HTMLAttributes<HTMLDivElement>
 
 /**
  * Props for the CardFooter component.
  */
-export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type CardFooterProps = React.HTMLAttributes<HTMLDivElement>

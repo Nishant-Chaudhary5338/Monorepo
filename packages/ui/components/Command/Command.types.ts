@@ -16,7 +16,7 @@ export type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitiv
  * Props for the CommandDialog component.
  * Extends DialogProps from Radix UI.
  */
-export interface CommandDialogProps extends DialogProps {}
+export type CommandDialogProps = DialogProps
 
 /**
  * Props for the CommandInput component.
@@ -51,4 +51,4 @@ export type CommandItemProps = React.ComponentPropsWithoutRef<typeof CommandPrim
 /**
  * Props for the CommandShortcut component.
  */
-export interface CommandShortcutProps extends React.HTMLAttributes<HTMLSpanElement> {}
+export type CommandShortcutProps = React.HTMLAttributes<HTMLSpanElement>

@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@repo/tailwind-config";
+@import "../../../../packages/ui/dist/index.css";
+
+/* Builder-specific overrides */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}

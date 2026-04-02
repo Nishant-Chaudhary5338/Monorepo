@@ -1,0 +1,75 @@
+{
+  "projectWideAvgLeadTime": 51.93,
+  "annotators": [
+    {
+      "annotatorId": "Cx121",
+      "totalAnnotations": 12,
+      "avgLeadTime": 50.41,
+      "leadTimeDiffVsAverage": -1.53,
+      "avgAgreement": 75
+    },
+    {
+      "annotatorId": "RWIej",
+      "totalAnnotations": 11,
+      "avgLeadTime": 53.86,
+      "leadTimeDiffVsAverage": 1.92,
+      "avgAgreement": 77.27
+    },
+    {
+      "annotatorId": "zkyxz",
+      "totalAnnotations": 11,
+      "avgLeadTime": 51.48,
+      "leadTimeDiffVsAverage": -0.45,
+      "avgAgreement": 86.36
+    },
+    {
+      "annotatorId": "xpkWQ",
+      "totalAnnotations": 9,
+      "avgLeadTime": 55.41,
+      "leadTimeDiffVsAverage": 3.48,
+      "avgAgreement": 72.22
+    },
+    {
+      "annotatorId": "76lWW",
+      "totalAnnotations": 9,
+      "avgLeadTime": 51.14,
+      "leadTimeDiffVsAverage": -0.79,
+      "avgAgreement": 77.78
+    },
+    {
+      "annotatorId": "2w04p",
+      "totalAnnotations": 9,
+      "avgLeadTime": 48.79,
+      "leadTimeDiffVsAverage": -3.14,
+      "avgAgreement": 66.67
+    },
+    {
+      "annotatorId": "azEvj",
+      "totalAnnotations": 8,
+      "avgLeadTime": 40.66,
+      "leadTimeDiffVsAverage": -11.27,
+      "avgAgreement": 81.25
+    },
+    {
+      "annotatorId": "7JMHx",
+      "totalAnnotations": 8,
+      "avgLeadTime": 56.68,
+      "leadTimeDiffVsAverage": 4.75,
+      "avgAgreement": 68.75
+    },
+    {
+      "annotatorId": "wcLJ8",
+      "totalAnnotations": 8,
+      "avgLeadTime": 58.18,
+      "leadTimeDiffVsAverage": 6.25,
+      "avgAgreement": 62.5
+    },
+    {
+      "annotatorId": "kabTG",
+      "totalAnnotations": 5,
+      "avgLeadTime": 53.61,
+      "leadTimeDiffVsAverage": 1.68,
+      "avgAgreement": 80
+    }
+  ]
+}

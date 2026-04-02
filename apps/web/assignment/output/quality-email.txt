@@ -1,0 +1,43 @@
+To: Quality Team
+From: Field Engineering
+Subject: Annotation Quality Review — FE Assessment Batch
+
+Hi team,
+
+I've completed a review of the latest annotation batch (45 tasks, 10 annotators).
+Below is a summary of findings based on comparison against the 9 available ground truth tasks.
+
+PROJECT SUMMARY
+- Total annotators reviewed: 9
+- Average accuracy vs. ground truth: 57.41%
+- Accuracy threshold for flagging: 70%
+
+FLAGGED ANNOTATORS (accuracy below 70%)
+  - 2w04p: 0% accuracy
+  - RWIej: 0% accuracy
+  - zkyxz: 25% accuracy
+  - kabTG: 50% accuracy
+  - 76lWW: 66.67% accuracy
+
+These annotators had meaningful disagreements with ground truth on both Q1 (more than one option?)
+and Q2 (are selections distinct?). Even a single misalignment on a ground truth task counts against
+their score, so flagged annotators should be reviewed carefully rather than dismissed outright.
+
+PATTERNS OF NOTE
+- The most common disagreement was on Q2 (distinct/not-distinct), particularly for tasks where
+  the category list contained overlapping but not identical terms.
+- Some annotators answered Q1=No (only one option) on tasks the ground truth marked Q1=Yes,
+  suggesting possible misreading of the selections format.
+- Lead times varied significantly (range: ~5s to 200s+), which may indicate inconsistent
+  attention levels.
+
+RECOMMENDATION
+We recommend a calibration session for flagged annotators using a small set of pre-labeled
+"gold" tasks before they continue on the next batch. Additionally, adding inline guidance on
+how to interpret the selections format (e.g., "Category: [Option A, Option B]") would reduce
+interpretation errors on Q1 without requiring rework.
+
+Let me know if you'd like a deeper breakdown per annotator or per task.
+
+Best,
+Field Engineering

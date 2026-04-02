@@ -4,11 +4,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "scan": "npx tsx tools/cli-wrappers/src/scan-all.ts",
     "scan:ui": "npx tsx tools/cli-wrappers/src/scan-all.ts packages/ui/components"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "turbo": "^2.8.20"
