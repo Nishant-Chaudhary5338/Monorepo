@@ -38,7 +38,7 @@ export default function AnnotatorTable({ data }: Props) {
                 </td>
                 <td className="px-4 py-3 text-center text-foreground">{a.avgAgreement.toFixed(1)}%</td>
                 <td className="px-4 py-3 text-center">
-                  <span className={`font-semibold ${a.accuracyPercent === null ? "text-muted-foreground" : a.flagged ? "text-destructive" : "text-emerald-600"}`}>
+                  <span className={`font-semibold ${a.accuracyPercent === null ? "text-muted-foreground" : a.flagged ? "text-[#e07070]" : "text-[#c97a6a]"}`}>
                     {a.accuracyPercent !== null ? `${a.accuracyPercent}%` : "—"}
                   </span>
                 </td>
@@ -47,11 +47,11 @@ export default function AnnotatorTable({ data }: Props) {
                 </td>
                 <td className="px-4 py-3 text-center">
                   {a.accuracyPercent === null ? (
-                    <span className="inline-block px-2.5 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-500">No GT</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-medium rounded-full bg-stone-100 text-stone-400">No GT</span>
                   ) : a.flagged ? (
-                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full bg-red-50 text-red-600 ring-1 ring-red-200">Flagged</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full" style={{ background: "#fdf0ee", color: "#e07070", outline: "1px solid #f5c4bc" }}>Flagged</span>
                   ) : (
-                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">Passing</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full" style={{ background: "#f0faf4", color: "#4a9e6b", outline: "1px solid #a8d5b8" }}>Passing</span>
                   )}
                 </td>
               </tr>

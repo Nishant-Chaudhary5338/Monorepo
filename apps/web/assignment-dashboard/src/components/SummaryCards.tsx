@@ -19,10 +19,10 @@ export default function SummaryCards({ data }: Props) {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
-        <div key={card.label} className="widget-card">
-          <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
+        <div key={card.label} className="widget-card border-l-4 border-l-[#e8a598]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{card.label}</p>
           <p className="mt-2 text-3xl font-bold text-foreground">{card.value}</p>
           <p className="mt-1 text-xs text-muted-foreground">{card.sub}</p>
         </div>
