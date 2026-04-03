@@ -90,7 +90,7 @@ for (const task of tasks) {
 }
 
 mkdirSync(join(__dirname, "../output"), { recursive: true });
-const outPath = join(__dirname, "../output/annotations.csv");
+const outPath = join(__dirname, "../output/annotations-1.csv");
 writeFileSync(outPath, rows.join("\n"), "utf-8");
 
 console.log(`✓ Wrote ${rows.length - 1} annotations → ${outPath}`);

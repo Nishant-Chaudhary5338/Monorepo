@@ -4,11 +4,10 @@
   "private": true,
   "description": "WeloData Frontend Engineering Assessment - Annotation Quality Analysis",
   "scripts": {
-    "convert": "tsx scripts/convert.ts",
-    "analytics": "tsx scripts/analytics.ts",
-    "accuracy": "tsx scripts/accuracy.ts",
-    "qa-prompt": "tsx scripts/qa-prompt.ts",
-    "all": "npm run convert && npm run analytics && npm run accuracy && npm run qa-prompt"
+    "convert": "tsx scripts/convert-1.ts",
+    "analytics": "tsx scripts/analytics-2.ts",
+    "accuracy": "tsx scripts/accuracy-3.ts",
+    "all": "npm run convert && npm run analytics && npm run accuracy"
   },
   "devDependencies": {
     "tsx": "^4.7.0",

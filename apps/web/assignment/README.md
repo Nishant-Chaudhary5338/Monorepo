@@ -14,8 +14,7 @@ npm install
 |---------|-------------|
 | `npm run convert` | Part 1: Convert JSON → CSV |
 | `npm run analytics` | Part 2: Per-annotator performance stats |
-| `npm run accuracy` | Part 3: Ground truth accuracy + quality email |
-| `npm run qa-prompt` | Part 4: Generate LLM QA prompt |
+| `npm run accuracy` | Part 3: Ground truth accuracy |
 | `npm run all` | Run all scripts in sequence |
 
 All outputs are written to `output/`.
@@ -25,11 +24,10 @@ All outputs are written to `output/`.
 ```
 ├── fe_assessment.json       # Raw annotation data
 ├── scripts/
-│   ├── convert.ts           # JSON → CSV conversion
-│   ├── analytics.ts         # Annotator performance metrics
-│   ├── accuracy.ts          # Ground truth comparison + quality email
-│   └── qa-prompt.ts         # LLM-powered QA prompt generator
-└── output/                  # Generated CSVs, JSONs, and reports
+│   ├── convert-1.ts         # JSON → CSV conversion
+│   ├── analytics-2.ts       # Annotator performance metrics
+│   └── accuracy-3.ts        # Ground truth comparison
+└── output/                  # Generated CSVs, JSONs, and static deliverables
 ```
 
 ## Data Schema

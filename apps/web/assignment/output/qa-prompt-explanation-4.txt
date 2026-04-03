@@ -1,0 +1,11 @@
+Why I picked these three signals
+
+The core idea was to focus on things that are objectively wrong rather than subjectively questionable. Internal consistency is the clearest case — if Q2 = No but Q3 and Q4 are empty, the annotation is just incomplete. No model judgment needed, that's a definite flag. Free-text quality is a step trickier: an answer like "some of them" technically fills in the field but tells you nothing useful. I wanted the model to catch those cases even though they pass schema validation. Lead time is more of a behavioral signal — it's not a perfect indicator, but under 5 seconds really isn't enough time to read and think about a task, so it's worth surfacing.
+
+On the tradeoffs
+
+The lead-time floor at 5 seconds is deliberately conservative. Some tasks are simple enough that a fast answer is genuinely fine, and I didn't want to create noise by flagging too aggressively. I could have set it higher — 10 seconds is defensible — but 5 felt like the threshold where you'd have a hard time arguing the annotator actually read the task. The confidence score is there precisely because some of these calls are judgment calls. A model that's uncertain should say so rather than guessing.
+
+How I'd tune it with real data
+
+If I had a labeled set of known-good and known-bad annotations, I'd look at precision and recall on the flag signal and adjust from there. Too many false positives would push me to raise the lead-time floor or tighten what counts as a vague free-text answer. Too many missed issues and I'd add more signal — for example, checking whether the items named in Q3 actually appear in the selections string, which is a pretty reliable sign that an annotator wasn't paying attention.

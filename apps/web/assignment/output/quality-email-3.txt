@@ -1,0 +1,23 @@
+Subject: Annotation quality check — FE assessment batch
+
+Hi team,
+
+Wrapped up the review of the latest batch — 45 tasks, 10 annotators, 9 tasks with ground truth to compare against. Overall accuracy came in at 57.41%, which is below our 70% threshold, so this batch has a fair number of flagged annotators.
+
+The following came in below 70%:
+  - 2w04p: 0% accuracy
+  - RWIej: 0% accuracy
+  - zkyxz: 25% accuracy
+  - kabTG: 50% accuracy
+  - 76lWW: 66.67% accuracy
+
+Worth keeping in mind that 3 of these annotators only appeared on one or two ground truth tasks, so a single wrong answer hits their score hard. I'd treat those as "needs a closer look" rather than a definitive fail.
+
+The most common disagreement with ground truth was on Q1 (whether the list had more than one option) — 2 cases out of 18 total comparisons.
+
+My recommendation: run a short calibration session with the flagged annotators before the next batch — a small set of pre-labeled tasks should make it clear whether this is a training gap or just an off round. A quick note in the task interface on how to read the selections format would also help cut down on that second type of error without requiring any rework.
+
+Happy to pull a per-task breakdown if that would help.
+
+Thanks,
+Field Engineering

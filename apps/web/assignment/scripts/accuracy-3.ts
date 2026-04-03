@@ -112,6 +112,7 @@ for (const [id, { compared, correct }] of annotatorMap) {
 records.sort((a, b) => a.accuracyPercent - b.accuracyPercent);
 
 const flagged = records.filter((r) => r.flaggedForReview);
+
 const avgAccuracy = round2(
   records.reduce((a, b) => a + b.accuracyPercent, 0) / records.length
 );
@@ -127,7 +128,7 @@ const jsonOut = {
   annotators: records,
 };
 
-const jsonPath = join(__dirname, "../output/accuracy.json");
+const jsonPath = join(__dirname, "../output/accuracy-3.json");
 writeFileSync(jsonPath, JSON.stringify(jsonOut, null, 2), "utf-8");
 console.log(`✓ Wrote accuracy JSON → ${jsonPath}`);
 
@@ -155,47 +156,7 @@ for (const r of records) {
   );
 }
 
-const csvPath = join(__dirname, "../output/accuracy.csv");
+const csvPath = join(__dirname, "../output/accuracy-3.csv");
 writeFileSync(csvPath, csvRows.join("\n"), "utf-8");
 console.log(`✓ Wrote accuracy CSV → ${csvPath}`);
 
-// ── Write internal quality email ───────────────────────────────────────────
-
-const flaggedList =
-  flagged.length > 0
-    ? flagged.map((r) => `  - ${r.annotatorId}: ${r.accuracyPercent}% accuracy`).join("\n")
-    : "  None — all annotators met the threshold.";
-
-const email = `
-To: Quality Team
-From: Field Engineering
-Subject: Annotation quality check — FE assessment batch
-
-Hi team,
-
-Finished going through the latest batch — 45 tasks across 10 annotators, with 9 of those tasks having ground truth we could compare against. Here's where things landed.
-
-Overall the project averaged ${avgAccuracy}% accuracy against ground truth. We're using ${FLAG_THRESHOLD}% as our cutoff for flagging, so anything below that got marked for review.
-
-Annotators flagged this round:
-${flaggedList}
-
-A quick note on those numbers — since we only had ground truth on a handful of tasks per annotator, even one wrong answer can tank the percentage pretty hard. So "flagged" doesn't necessarily mean the annotator is bad, just that they disagreed with ground truth on the tasks we could actually check. Worth a closer look before drawing any conclusions.
-
-A few patterns I noticed while going through the data:
-
-The trickiest questions were around Q2 (distinct vs. not distinct), especially on tasks where the options were similar but technically different — those seemed to trip people up the most. There were also a few cases where annotators marked Q1 as "no" on tasks the ground truth said "yes," which usually came down to how the selections were formatted rather than carelessness.
-
-Lead times were all over the place too — some annotations under 10 seconds, some pushing several minutes. Hard to know what to make of the fast ones without more context, but it's probably worth flagging extreme outliers in future batches.
-
-My suggestion would be to run a quick calibration round with the flagged annotators before the next batch kicks off — a small set of pre-labeled tasks would help surface whether this was a one-off or a consistent pattern. Also, if we can add a short note in the task interface about how to read the selections format, I think that would cut down on the Q1 errors without needing to rework anything major.
-
-Happy to pull a more detailed breakdown per annotator or per task if that would help.
-
-Thanks,
-Field Engineering
-`.trim();
-
-const emailPath = join(__dirname, "../output/quality-email.txt");
-writeFileSync(emailPath, email, "utf-8");
-console.log(`✓ Wrote quality email → ${emailPath}`);

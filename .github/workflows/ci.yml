@@ -20,10 +20,7 @@ name: CI
 # 'pull_request': Runs when PRs are created or updated
 # -----------------------------------------------------------------------------
 on:
-  push:
-    branches: ["main", "develop"]  # Run on pushes to main and develop
-  pull_request:
-    types: [opened, synchronize]   # Run on PR creation and new commits
+  workflow_dispatch: # manually triggered only
 
 # -----------------------------------------------------------------------------
 # JOBS: What tasks to execute

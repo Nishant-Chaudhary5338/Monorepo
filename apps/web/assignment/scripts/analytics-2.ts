@@ -101,7 +101,7 @@ const jsonOut = {
 
 mkdirSync(join(__dirname, "../output"), { recursive: true });
 
-const jsonPath = join(__dirname, "../output/analytics.json");
+const jsonPath = join(__dirname, "../output/analytics-2.json");
 writeFileSync(jsonPath, JSON.stringify(jsonOut, null, 2), "utf-8");
 console.log(`✓ Wrote analytics JSON → ${jsonPath}`);
 
@@ -137,6 +137,6 @@ for (const s of stats) {
 // Append a summary row at the bottom
 csvRows.push(toRow(["PROJECT AVERAGE", "", String(round2(globalAvgLeadTime)), "—", ""]));
 
-const csvPath = join(__dirname, "../output/analytics.csv");
+const csvPath = join(__dirname, "../output/analytics-2.csv");
 writeFileSync(csvPath, csvRows.join("\n"), "utf-8");
 console.log(`✓ Wrote analytics CSV → ${csvPath}`);
