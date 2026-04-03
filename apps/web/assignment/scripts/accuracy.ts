@@ -169,42 +169,30 @@ const flaggedList =
 const email = `
 To: Quality Team
 From: Field Engineering
-Subject: Annotation Quality Review — FE Assessment Batch
+Subject: Annotation quality check — FE assessment batch
 
 Hi team,
 
-I've completed a review of the latest annotation batch (45 tasks, 10 annotators).
-Below is a summary of findings based on comparison against the 9 available ground truth tasks.
+Finished going through the latest batch — 45 tasks across 10 annotators, with 9 of those tasks having ground truth we could compare against. Here's where things landed.
 
-PROJECT SUMMARY
-- Total annotators reviewed: ${records.length}
-- Average accuracy vs. ground truth: ${avgAccuracy}%
-- Accuracy threshold for flagging: ${FLAG_THRESHOLD}%
+Overall the project averaged ${avgAccuracy}% accuracy against ground truth. We're using ${FLAG_THRESHOLD}% as our cutoff for flagging, so anything below that got marked for review.
 
-FLAGGED ANNOTATORS (accuracy below ${FLAG_THRESHOLD}%)
+Annotators flagged this round:
 ${flaggedList}
 
-These annotators had meaningful disagreements with ground truth on both Q1 (more than one option?)
-and Q2 (are selections distinct?). Even a single misalignment on a ground truth task counts against
-their score, so flagged annotators should be reviewed carefully rather than dismissed outright.
+A quick note on those numbers — since we only had ground truth on a handful of tasks per annotator, even one wrong answer can tank the percentage pretty hard. So "flagged" doesn't necessarily mean the annotator is bad, just that they disagreed with ground truth on the tasks we could actually check. Worth a closer look before drawing any conclusions.
 
-PATTERNS OF NOTE
-- The most common disagreement was on Q2 (distinct/not-distinct), particularly for tasks where
-  the category list contained overlapping but not identical terms.
-- Some annotators answered Q1=No (only one option) on tasks the ground truth marked Q1=Yes,
-  suggesting possible misreading of the selections format.
-- Lead times varied significantly (range: ~5s to 200s+), which may indicate inconsistent
-  attention levels.
+A few patterns I noticed while going through the data:
 
-RECOMMENDATION
-We recommend a calibration session for flagged annotators using a small set of pre-labeled
-"gold" tasks before they continue on the next batch. Additionally, adding inline guidance on
-how to interpret the selections format (e.g., "Category: [Option A, Option B]") would reduce
-interpretation errors on Q1 without requiring rework.
+The trickiest questions were around Q2 (distinct vs. not distinct), especially on tasks where the options were similar but technically different — those seemed to trip people up the most. There were also a few cases where annotators marked Q1 as "no" on tasks the ground truth said "yes," which usually came down to how the selections were formatted rather than carelessness.
 
-Let me know if you'd like a deeper breakdown per annotator or per task.
+Lead times were all over the place too — some annotations under 10 seconds, some pushing several minutes. Hard to know what to make of the fast ones without more context, but it's probably worth flagging extreme outliers in future batches.
 
-Best,
+My suggestion would be to run a quick calibration round with the flagged annotators before the next batch kicks off — a small set of pre-labeled tasks would help surface whether this was a one-off or a consistent pattern. Also, if we can add a short note in the task interface about how to read the selections format, I think that would cut down on the Q1 errors without needing to rework anything major.
+
+Happy to pull a more detailed breakdown per annotator or per task if that would help.
+
+Thanks,
 Field Engineering
 `.trim();
 

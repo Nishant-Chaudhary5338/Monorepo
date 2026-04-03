@@ -11,51 +11,39 @@ import { join } from "path";
 // no additional instructions are required at call time.
 
 const SYSTEM_PROMPT = `
-You are an annotation quality assurance reviewer for a data labeling project.
+You are a quality reviewer for a data annotation project. Your job is to look at individual annotations and flag anything that seems off — whether that's an internal contradiction, a vague or unhelpful answer, or a lead time that doesn't add up.
 
-PROJECT CONTEXT
-Annotators were shown a product category with a list of selections and asked four questions:
-  Q1 (multiple):          "Does the list have more than one option?"   → Yes / No
-  Q2 (distinct):          "Are the selections distinct?"               → Yes / No
-  Q3 (not_distinct):      "Which selections are not distinct?"         → free text (only if Q2 = No)
-  Q4 (not_distinct_reason): "Why are they not distinct?"              → free text (only if Q2 = No)
+Here's the context: annotators were shown a product category with a list of selections and asked to answer four questions about it.
 
-YOUR TASK
-Evaluate the annotation below for quality issues across three dimensions:
+  Q1 — Does the list have more than one option? (Yes / No)
+  Q2 — Are the selections distinct? (Yes / No)
+  Q3 — Which selections are not distinct? (free text, only filled in if Q2 = No)
+  Q4 — Why are they not distinct? (free text, only filled in if Q2 = No)
 
-1. INTERNAL CONSISTENCY
-   - If Q1 = No (only one option), Q2 should also effectively be irrelevant or unanswerable
-     with a meaningful Yes/No. Flag if Q2 is answered and contradicts Q1.
-   - If Q2 = No, Q3 and Q4 MUST both be present and non-empty. Flag if either is missing.
-   - If Q2 = Yes, Q3 and Q4 should be absent. Flag if they are unexpectedly present.
+When reviewing an annotation, look for three types of problems:
 
-2. FREE TEXT QUALITY (applies when Q2 = No)
-   - Q3 should name specific selections from the provided list. Flag if it is vague (e.g., "some of them",
-     "a few", "...") or if it names items not present in the selections.
-   - Q4 should provide a clear, logical reason. Flag if it is a single word, a repetition of Q3,
-     or otherwise fails to explain why the selections are not distinct.
+Internal consistency
+If Q1 = No (only one option in the list), then Q2 is effectively unanswerable — flag if it's filled in and contradicts Q1. If Q2 = No, then Q3 and Q4 both need to be filled in — flag if either one is missing or empty. If Q2 = Yes, Q3 and Q4 shouldn't be there at all.
 
-3. LEAD TIME PLAUSIBILITY
-   - Lead time is measured in seconds.
-   - Flag if lead time < 5 seconds (too fast to have read and understood the task).
-   - Flag if lead time > 300 seconds (5 minutes; may indicate distraction or task abandonment).
-   - For context: a typical well-considered annotation takes between 15 and 120 seconds.
+Free text quality (when Q2 = No)
+Q3 should call out specific items from the selections list — flag it if it's vague ("some of them", "a few") or references things that aren't in the list. Q4 should actually explain why those items aren't distinct — a single word, a repeat of Q3, or something like "they're the same" without any elaboration isn't good enough.
 
-OUTPUT FORMAT
-Return ONLY a valid JSON object. Do not include any explanation outside the JSON.
+Lead time
+Under 5 seconds means the annotator almost certainly didn't read the task properly. Over 300 seconds (5 minutes) might mean they stepped away or got distracted. A typical annotation lands somewhere between 15 and 120 seconds.
+
+Respond with a JSON object only — no explanation outside the JSON.
 
 {
   "flag": "pass" | "flag",
   "confidence": <number between 0.0 and 1.0>,
   "issues": [<list of short issue strings, empty array if none>],
-  "reason": "<one or two sentence summary of your assessment>"
+  "reason": "<one or two sentence plain-English summary>"
 }
 
-Definitions:
-- "flag": "pass" if no quality issues found, "flag" if one or more issues found
-- "confidence": how confident you are in your assessment (1.0 = very confident, 0.5 = uncertain)
-- "issues": specific problems found, e.g. ["Q2=No but Q3 is missing", "Lead time too low (3s)"]
-- "reason": brief plain-English summary suitable for an operations reviewer
+"flag" is "pass" if everything looks fine, "flag" if something needs attention.
+"confidence" reflects how sure you are — use 1.0 when it's obvious, 0.5 when it's a judgment call.
+"issues" should be specific, e.g. ["Q2=No but Q3 is missing", "Lead time too low (3s)"].
+"reason" is for the ops reviewer — write it like you're leaving a note for a colleague.
 `.trim();
 
 const USER_PROMPT_TEMPLATE = `
@@ -76,35 +64,17 @@ ANNOTATION
 // ── Written Explanation ────────────────────────────────────────────────────
 
 const EXPLANATION = `
-PROMPT DESIGN EXPLANATION
-==========================
+Why I picked these three signals
 
-Quality signals chosen and why
---------------------------------
-I focused on three signals: internal consistency, free-text quality, and lead time.
-Internal consistency catches the most clear-cut errors — if Q2 = No but Q3/Q4 are absent,
-the annotation is objectively incomplete, and no judgement call is needed. Free-text quality
-catches subtler issues: vague answers like "..." or "some of them" pass schema validation but
-provide no actionable information to downstream users. Lead time is a behavioral proxy — an
-annotation completed in under 5 seconds cannot have involved genuine deliberation.
+The core idea was to focus on things that are objectively wrong rather than subjectively questionable. Internal consistency is the clearest case — if Q2 = No but Q3 and Q4 are empty, the annotation is just incomplete. No model judgment needed, that's a definite flag. Free-text quality is a step trickier: an answer like "some of them" technically fills in the field but tells you nothing useful. I wanted the model to catch those cases even though they pass schema validation. Lead time is more of a behavioral signal — it's not a perfect indicator, but under 5 seconds really isn't enough time to read and think about a task, so it's worth surfacing.
 
-Tradeoffs considered
----------------------
-The main tension is false positives vs. missed issues. Setting the lead-time floor at 5 seconds
-is conservative — some very short tasks genuinely can be answered quickly. A higher floor (e.g.,
-10 seconds) would catch more suspicious annotations but risk flagging legitimate fast responses.
-I chose 5 seconds as a reasonable lower bound and kept the confidence score to signal uncertainty
-rather than hard-coding a binary outcome. The LLM also gets latitude to express low confidence
-rather than being forced into a pass/flag binary when evidence is ambiguous.
+On the tradeoffs
 
-How I would iterate with more test data
------------------------------------------
-With a labeled set of known-good and known-bad annotations, I would track precision and recall
-for the flag signal. If false positives dominate (good annotations being flagged), I would raise
-the lead-time floor, tighten the free-text vagueness criteria, or add an explicit "borderline"
-category. If missed issues dominate, I would add more signal dimensions — for example, checking
-whether Q3 mentions terms that do not appear verbatim in the selections string, which is a strong
-indicator of a careless or confused annotator.
+The lead-time floor at 5 seconds is deliberately conservative. Some tasks are simple enough that a fast answer is genuinely fine, and I didn't want to create noise by flagging too aggressively. I could have set it higher — 10 seconds is defensible — but 5 felt like the threshold where you'd have a hard time arguing the annotator actually read the task. The confidence score is there precisely because some of these calls are judgment calls. A model that's uncertain should say so rather than guessing.
+
+How I'd tune it with real data
+
+If I had a labeled set of known-good and known-bad annotations, I'd look at precision and recall on the flag signal and adjust from there. Too many false positives would push me to raise the lead-time floor or tighten what counts as a vague free-text answer. Too many missed issues and I'd add more signal — for example, checking whether the items named in Q3 actually appear in the selections string, which is a pretty reliable sign that an annotator wasn't paying attention.
 `.trim();
 
 // ── Write outputs ──────────────────────────────────────────────────────────
