@@ -8,48 +8,50 @@ export default function AnnotatorTable({ data }: Props) {
   return (
     <div className="widget-card">
       <h3 className="mb-1 text-lg font-semibold text-foreground">Annotator Details</h3>
-      <p className="mb-4 text-sm text-muted-foreground">Color-coded by accuracy status (red = flagged, green = passing)</p>
+      <p className="mb-4 text-sm text-muted-foreground">Per-annotator breakdown — flagged annotators fell below the 70% accuracy threshold</p>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border/50">
-              <th className="px-3 py-2 font-medium text-left text-muted-foreground">Annotator</th>
-              <th className="px-3 py-2 font-medium text-right text-muted-foreground">Annotations</th>
-              <th className="px-3 py-2 font-medium text-right text-muted-foreground">Avg Lead Time</th>
-              <th className="px-3 py-2 font-medium text-right text-muted-foreground">Agreement</th>
-              <th className="px-3 py-2 font-medium text-right text-muted-foreground">Accuracy</th>
-              <th className="px-3 py-2 font-medium text-right text-muted-foreground">GT Tasks</th>
-              <th className="px-3 py-2 font-medium text-center text-muted-foreground">Status</th>
+            <tr className="border-b-2 border-border/60 bg-muted/30">
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Annotator</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Annotations</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Avg Lead Time</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Agreement</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Accuracy</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">GT Tasks</th>
+              <th className="px-4 py-3 font-semibold text-center text-muted-foreground tracking-wide uppercase text-xs">Status</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((a) => (
+            {data.map((a, i) => (
               <tr
                 key={a.id}
-                className="transition-colors border-b border-border/30 last:border-0 hover:bg-muted/10"
+                className={`transition-colors border-b border-border/30 last:border-0 hover:bg-primary/5 ${i % 2 === 0 ? "bg-white" : "bg-muted/10"}`}
               >
-                <td className="px-3 py-2 font-medium text-foreground">{a.id}</td>
-                <td className="px-3 py-2 text-right text-foreground">{a.totalAnnotations}</td>
-                <td className="px-3 py-2 text-right text-foreground">
+                <td className="px-4 py-3 text-center font-mono font-semibold text-foreground tracking-wide">{a.id}</td>
+                <td className="px-4 py-3 text-center text-foreground">{a.totalAnnotations}</td>
+                <td className="px-4 py-3 text-center text-foreground">
                   {a.avgLeadTime.toFixed(1)}s
-                  <span className={`ml-1 text-xs ${a.leadTimeDiffVsAverage > 0 ? "text-destructive" : "text-[hsl(var(--chart-2))]"}`}>
+                  <span className={`ml-1 text-xs font-medium ${a.leadTimeDiffVsAverage > 0 ? "text-amber-500" : "text-emerald-600"}`}>
                     ({a.leadTimeDiffVsAverage > 0 ? "+" : ""}{a.leadTimeDiffVsAverage.toFixed(1)}s)
                   </span>
                 </td>
-                <td className="px-3 py-2 text-right text-foreground">{a.avgAgreement.toFixed(1)}%</td>
-                <td className="px-3 py-2 text-right text-foreground">
-                  {a.accuracyPercent !== null ? `${a.accuracyPercent}%` : "—"}
+                <td className="px-4 py-3 text-center text-foreground">{a.avgAgreement.toFixed(1)}%</td>
+                <td className="px-4 py-3 text-center">
+                  <span className={`font-semibold ${a.accuracyPercent === null ? "text-muted-foreground" : a.flagged ? "text-destructive" : "text-emerald-600"}`}>
+                    {a.accuracyPercent !== null ? `${a.accuracyPercent}%` : "—"}
+                  </span>
                 </td>
-                <td className="px-3 py-2 text-right text-foreground">
-                  {a.tasksCompared > 0 ? `${a.correctAnswers}/${a.tasksCompared}` : "—"}
+                <td className="px-4 py-3 text-center text-foreground">
+                  {a.tasksCompared > 0 ? `${a.correctAnswers} / ${a.tasksCompared}` : "—"}
                 </td>
-                <td className="px-3 py-2 text-center">
+                <td className="px-4 py-3 text-center">
                   {a.accuracyPercent === null ? (
-                    <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground">No GT</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-500">No GT</span>
                   ) : a.flagged ? (
-                    <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-destructive/15 text-destructive">Flagged</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full bg-red-50 text-red-600 ring-1 ring-red-200">Flagged</span>
                   ) : (
-                    <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-[hsl(var(--chart-2))]/15 text-[hsl(var(--chart-2))] font-medium">Passing</span>
+                    <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">Passing</span>
                   )}
                 </td>
               </tr>

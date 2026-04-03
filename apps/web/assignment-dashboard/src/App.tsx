@@ -18,9 +18,6 @@ export default function App() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-lg font-semibold text-foreground">Annotation Quality Dashboard</h1>
-              <p className="text-xs text-muted-foreground">
-                WeloData FE Assessment — Annotator performance & accuracy overview
-              </p>
             </div>
             <nav className="flex gap-6">
               <button
