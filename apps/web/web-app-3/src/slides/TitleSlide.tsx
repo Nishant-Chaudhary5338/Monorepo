@@ -15,9 +15,6 @@ export function TitleSlide() {
         <p className="mt-6 max-w-[600px] text-center text-xl text-gray-500">
           Cutting Costs · Boosting Productivity · Unleashing Innovation
         </p>
-        <div className="mt-8 rounded-full border border-purple-300 px-6 py-2 text-sm text-purple-600">
-          Press → to continue · F for fullscreen
-        </div>
       </div>
     </Slide>
   );

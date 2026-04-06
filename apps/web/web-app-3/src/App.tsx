@@ -21,8 +21,8 @@ function App() {
       <TitleSlide />
       <ProblemSlide />
       <MonorepoExplainerSlide />
-      <ArchitectureSlide />
       <SolutionSlide />
+      <ArchitectureSlide />
       <TurborepoSlide />
       <FrontendAutomationSlide />
       <CostImpactSlide />

@@ -75,7 +75,8 @@ function getMaxDepth(obj: unknown, current = 0): number {
 // ============================================================================
 
 function generateHtml(label: string, parsed: unknown, timestamp: string): string {
-  const compactJson = JSON.stringify(parsed);
+  // Escape </script> so a JSON string value can't break out of the <script> block.
+  const compactJson = JSON.stringify(parsed).replace(/<\/script>/gi, '<\\/script>');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -322,8 +323,13 @@ function escapeHtml(s) {
 
 function toggleTheme() {
   const body = document.body;
-  const current = body.getAttribute('data-theme');
-  body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+  // Remove attribute for dark (falls back to :root vars); set to 'light' for light mode.
+  // Setting data-theme="dark" would override :root without any matching rule defined.
+  if (body.getAttribute('data-theme') === 'light') {
+    body.removeAttribute('data-theme');
+  } else {
+    body.setAttribute('data-theme', 'light');
+  }
 }
 
 function showCopyToast() {
@@ -383,11 +389,10 @@ function renderValue(val, path, depth) {
   }
   if (Array.isArray(val)) {
     if (val.length === 0) return '<span class="json-bracket">[]</span>';
-    lineNum++;
-    const id = 'n' + lineNum;
     const items = val.map((item, i) => {
       const childPath = path + '[' + i + ']';
-      return '<div class="json-line"><span class="line-number">' + lineNum + '</span><span class="json-content">' +
+      const ln = ++lineNum;  // increment per item so each row has its own line number
+      return '<div class="json-line"><span class="line-number">' + ln + '</span><span class="json-content">' +
         renderValue(item, childPath, depth + 1) + (i < val.length - 1 ? '<span class="json-comma">,</span>' : '') +
         '</span></div>';
     }).join('');
@@ -400,10 +405,10 @@ function renderValue(val, path, depth) {
   if (typeof val === 'object') {
     const keys = Object.keys(val);
     if (keys.length === 0) return '<span class="json-bracket">{}</span>';
-    lineNum++;
     const items = keys.map((key, i) => {
       const childPath = path + '.' + key;
-      return '<div class="json-line"><span class="line-number">' + lineNum + '</span><span class="json-content">' +
+      const ln = ++lineNum;  // increment per key so each row has its own line number
+      return '<div class="json-line"><span class="line-number">' + ln + '</span><span class="json-content">' +
         '<span class="json-key" data-key="' + escapeHtml(key) + '">"' + escapeHtml(key) + '"</span>' +
         '<span class="json-colon">: </span>' +
         renderValue(val[key], childPath, depth + 1) + (i < keys.length - 1 ? '<span class="json-comma">,</span>' : '') +
@@ -446,18 +451,27 @@ function performSearch(query) {
   if (!query) return;
   const q = query.toLowerCase();
   let count = 0;
+  function expandParents(el) {
+    // DOM order: .collapsible → .json-summary → .json-children
+    // previousElementSibling from .json-children is .json-summary, not .collapsible,
+    // so we walk backwards until we find the .collapsible sibling.
+    let parent = el.closest('.json-children');
+    while (parent) {
+      let sib = parent.previousElementSibling;
+      while (sib && !sib.classList.contains('collapsible')) {
+        sib = sib.previousElementSibling;
+      }
+      if (sib) sib.classList.remove('collapsed');
+      parent = parent.parentElement?.closest('.json-children');
+    }
+  }
+
   // Search keys
   document.querySelectorAll('.json-key').forEach(el => {
     if (el.textContent.toLowerCase().includes(q)) {
       el.classList.add('highlight');
       count++;
-      // Expand parents
-      let parent = el.closest('.json-children');
-      while (parent) {
-        const prev = parent.previousElementSibling;
-        if (prev && prev.classList.contains('collapsible')) prev.classList.remove('collapsed');
-        parent = parent.parentElement?.closest('.json-children');
-      }
+      expandParents(el);
     }
   });
   // Search string values
@@ -465,12 +479,7 @@ function performSearch(query) {
     if (el.textContent.toLowerCase().includes(q)) {
       el.classList.add('highlight');
       count++;
-      let parent = el.closest('.json-children');
-      while (parent) {
-        const prev = parent.previousElementSibling;
-        if (prev && prev.classList.contains('collapsible')) prev.classList.remove('collapsed');
-        parent = parent.parentElement?.closest('.json-children');
-      }
+      expandParents(el);
     }
   });
   document.getElementById('searchCount').textContent = count + ' match' + (count !== 1 ? 'es' : '');

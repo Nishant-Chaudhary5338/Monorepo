@@ -101,24 +101,54 @@ function isInteractiveElement(componentName: string): boolean {
 // CODE GENERATORS (using shadcn/ui templates)
 // ============================================================================
 
-function generateTypesCode(name: string): string {
-  return `import * as React from "react"
-import { type VariantProps } from "class-variance-authority"
+function generateTypesCode(name: string, templateContent: string): string {
+  // Extract named type/interface exports from the actual template so we don't
+  // generate conflicting or wrong generics (e.g. Button already exports ButtonProps
+  // extending ButtonHTMLAttributes, not the generic HTMLDivElement we'd otherwise emit).
+  const typeExports: string[] = [];
 
-export interface ${name}Props
-  extends React.HTMLAttributes<HTMLDivElement> {
+  const interfaceRe = /^export\s+(?:interface|type)\s+(\w+)/gm;
+  let m: RegExpExecArray | null;
+  while ((m = interfaceRe.exec(templateContent)) !== null) {
+    typeExports.push(m[1]);
+  }
+
+  if (typeExports.length > 0) {
+    return `// Re-exports of types defined in ${name}.tsx\nexport type { ${typeExports.join(', ')} } from './${name}'\n`;
+  }
+
+  // Template has no named type exports — provide a minimal augmentation interface.
+  return `import * as React from "react"
+
+// Augmentation — extend this to add custom props beyond what ${name}.tsx defines.
+export interface ${name}ExtendedProps {
   className?: string
   children?: React.ReactNode
 }
-
-export type ${name}Variant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
-export type ${name}Size = "default" | "sm" | "lg" | "icon"
 `;
 }
 
-function generateTestCode(name: string): string {
+function generateTestCode(name: string, templateContent: string): string {
   const isVoid = isVoidElement(name);
-  
+  const hasCva = templateContent.includes('cva(');
+  const hasVariants = hasCva && templateContent.includes('variant:');
+  const hasSizes = hasCva && templateContent.includes('size:');
+  const hasDisplayName = templateContent.includes('.displayName');
+
+  const displayNameTest = hasDisplayName
+    ? `\n  it('has correct displayName', () => {\n    expect(${name}.displayName).toBe('${name}')\n  })\n`
+    : '';
+
+  const variantTest =
+    hasVariants && !isVoid
+      ? `\n  it('renders destructive variant', () => {\n    const { container } = render(<${name} variant="destructive">Delete</${name}>)\n    expect(container.firstChild).toBeInTheDocument()\n  })\n`
+      : '';
+
+  const sizeTest =
+    hasSizes && !isVoid
+      ? `\n  it('renders sm size', () => {\n    const { container } = render(<${name} size="sm">Small</${name}>)\n    expect(container.firstChild).toBeInTheDocument()\n  })\n`
+      : '';
+
   if (isVoid) {
     return `import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
@@ -146,7 +176,7 @@ describe('${name}', () => {
     expect(screen.getByTestId('test-component')).toBeInTheDocument()
   })
 
-  it('accepts value prop', () => {
+  it('accepts value and readOnly', () => {
     render(<${name} value="test value" readOnly />)
     expect(screen.getByDisplayValue('test value')).toBeInTheDocument()
   })
@@ -155,19 +185,10 @@ describe('${name}', () => {
     render(<${name} disabled placeholder="test" />)
     expect(screen.getByPlaceholderText('test')).toBeDisabled()
   })
-
-  it('handles placeholder prop', () => {
-    render(<${name} placeholder="Enter text" />)
-    expect(screen.getByPlaceholderText('Enter text')).toBeInTheDocument()
-  })
-
-  it('has correct displayName', () => {
-    expect(${name}.displayName).toBe('${name}')
-  })
-})
+${displayNameTest}})
 `;
   }
-  
+
   return `import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ${name} } from './${name}'
@@ -193,11 +214,7 @@ describe('${name}', () => {
     render(<${name} data-testid="test-component">Test</${name}>)
     expect(screen.getByTestId('test-component')).toBeInTheDocument()
   })
-
-  it('has correct displayName', () => {
-    expect(${name}.displayName).toBe('${name}')
-  })
-})
+${variantTest}${sizeTest}${displayNameTest}})
 `;
 }
 
@@ -371,9 +388,10 @@ export const Disabled: Story = {
 }
 
 function generateIndexCode(name: string): string {
-  return `export { ${name} } from './${name}'
-export type { ${name}Props, ${name}Variant, ${name}Size } from './${name}.types'
-`;
+  // Use wildcard re-export so the index reflects whatever the template actually exports.
+  // Templates vary: Button exports ButtonProps+buttonVariants, Input exports only Input,
+  // Card exports Card+CardHeader+... — hardcoding a specific list would break for most.
+  return `export * from './${name}'\n`;
 }
 
 function generateDocsCode(name: string, templateContent: string): string {
@@ -564,11 +582,18 @@ function improviseComponent(componentDir: string, componentName: string): { adde
   const added: string[] = [];
   const enhanced: string[] = [];
 
+  // Read the actual component template to generate context-aware improvements
+  const componentFile = path.join(componentDir, `${componentName}.tsx`);
+  const templateContent = fs.existsSync(componentFile)
+    ? fs.readFileSync(componentFile, 'utf-8')
+    : '';
+
   const testFile = path.join(componentDir, `${componentName}.test.tsx`);
   if (fs.existsSync(testFile)) {
-    const extendedTests = generateExtendedTestCode(componentName, componentName);
-    fs.writeFileSync(testFile, extendedTests);
-    enhanced.push('Extended test file with comprehensive test cases');
+    // Use the template-aware test generator (same one used during generation)
+    const improvedTests = generateTestCode(componentName, templateContent);
+    fs.writeFileSync(testFile, improvedTests);
+    enhanced.push('Updated test file using actual component template analysis');
   }
 
   const storiesFile = path.join(componentDir, `${componentName}.stories.tsx`);
@@ -758,13 +783,13 @@ class ComponentFactoryServer extends McpServerBase {
 
     if (includeTypes) {
       const typesPath = path.join(componentDir, `${name}.types.ts`);
-      fs.writeFileSync(typesPath, generateTypesCode(name));
+      fs.writeFileSync(typesPath, generateTypesCode(name, templateContent));
       files.push(typesPath);
     }
 
     if (includeTests) {
       const testPath = path.join(componentDir, `${name}.test.tsx`);
-      fs.writeFileSync(testPath, generateTestCode(name));
+      fs.writeFileSync(testPath, generateTestCode(name, templateContent));
       files.push(testPath);
     }
 

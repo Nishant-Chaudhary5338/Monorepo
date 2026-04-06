@@ -6,7 +6,8 @@
   "main": "build/json-viewer/src/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "dashboard": "node build/json-viewer/src/dashboard.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

@@ -7,10 +7,10 @@ interface SlideHeaderProps {
 }
 
 const highlightColorMap = {
-  purple: "text-purple-400",
-  cyan: "text-cyan-400",
-  green: "text-green-400",
-  amber: "text-amber-400",
+  purple: "text-purple-600",
+  cyan: "text-cyan-600",
+  green: "text-green-600",
+  amber: "text-amber-600",
   gradient: "gradient-text",
 };
 
@@ -23,7 +23,7 @@ export function SlideHeader({
 }: SlideHeaderProps) {
   return (
     <div className={`mb-6 ${className}`}>
-      <h2 className="text-3xl font-bold text-slate-200">
+      <h2 className="text-3xl font-bold text-gray-800">
         {title}
         {highlight && (
           <>
@@ -35,7 +35,7 @@ export function SlideHeader({
         )}
       </h2>
       {subtitle && (
-        <p className="mt-2 text-base text-slate-400">{subtitle}</p>
+        <p className="mt-2 text-base text-gray-500">{subtitle}</p>
       )}
     </div>
   );
