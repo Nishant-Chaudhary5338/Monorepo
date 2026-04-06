@@ -190,7 +190,13 @@ class McpToolImproviserServer extends McpServerBase {
     const allDiffs = toolResults.flatMap((r) => r.proposedDiffs);
 
     const summary = {
-      criticalIssues: toolResults.reduce((sum, r) => sum + r.scores.descriptionQuality.issues.filter((i) => i.severity === 'critical').length, 0),
+      criticalIssues: toolResults.reduce((sum, r) => {
+        let count = 0;
+        for (const dim of Object.values(r.scores)) {
+          count += dim.issues.filter((i) => i.severity === 'critical').length;
+        }
+        return sum + count;
+      }, 0),
       highIssues: toolResults.reduce((sum, r) => {
         let count = 0;
         for (const dim of Object.values(r.scores)) {

@@ -372,7 +372,7 @@ export const Disabled: Story = {
 
 function generateIndexCode(name: string): string {
   return `export { ${name} } from './${name}'
-export type { ${name}Props } from './${name}'
+export type { ${name}Props, ${name}Variant, ${name}Size } from './${name}.types'
 `;
 }
 
@@ -435,13 +435,27 @@ function runTests(componentDir: string): { passed: number, failed: number, error
       return { passed: 0, failed: 0, errors: ['No test file found'] };
     }
 
-    const output = execSync(`npx vitest run ${testFile} --reporter=json`, {
-      cwd: path.join(componentDir, '..', '..'),
-      stdio: 'pipe',
-      timeout: 60000,
-    }).toString();
+    // Use absolute path so cwd offset doesn't affect test file resolution
+    const absoluteTestPath = path.resolve(componentDir, testFile);
+    const projectRoot = path.join(componentDir, '..', '..');
+    const outputFile = path.join(projectRoot, `.vitest-result-${Date.now()}.json`);
 
     try {
+      execSync(
+        `npx vitest run "${absoluteTestPath}" --reporter=json --outputFile="${outputFile}"`,
+        { cwd: projectRoot, stdio: 'pipe', timeout: 60000 },
+      );
+    } catch {
+      // vitest exits non-zero on test failure; output file still written
+    }
+
+    if (!fs.existsSync(outputFile)) {
+      return { passed: 0, failed: 1, errors: ['Test runner produced no output'] };
+    }
+
+    try {
+      const output = fs.readFileSync(outputFile, 'utf-8');
+      fs.unlinkSync(outputFile);
       const result = JSON.parse(output);
       return {
         passed: result.numPassedTests || 0,
@@ -449,7 +463,8 @@ function runTests(componentDir: string): { passed: number, failed: number, error
         errors: result.testResults?.[0]?.message ? [result.testResults[0].message] : [],
       };
     } catch {
-      return { passed: 1, failed: 0, errors: [] };
+      fs.existsSync(outputFile) && fs.unlinkSync(outputFile);
+      return { passed: 0, failed: 1, errors: ['Failed to parse test output'] };
     }
   } catch (error: unknown) {
     const err = error as { stdout?: { toString(): string }; stderr?: { toString(): string }; message: string };
@@ -909,7 +924,7 @@ class ComponentFactoryServer extends McpServerBase {
     });
   }
 
-  private async handleListTemplates(): Promise<ToolResult> {
+  private async handleListTemplates(_args: unknown): Promise<ToolResult> {
     const templates = getAvailableTemplates();
     return this.success({
       templates,

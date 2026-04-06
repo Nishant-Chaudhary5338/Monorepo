@@ -464,15 +464,16 @@ export const codeQualityPatterns = {
 
 export const contextualPatterns = {
   checkMissingWhy(source: string): AnalysisIssue | null {
-    // Check if tool responses explain WHY something is an issue
-    if (source.includes('issues.push') && !source.includes('description:') && !source.includes('fix:')) {
+    // Check if issue objects include a `problem` or `improvement` field explaining WHY
+    // (description: appears everywhere in schema props, so use issue-specific fields)
+    if (source.includes('issues.push') && !source.includes('problem:') && !source.includes('improvement:') && !source.includes('fix:')) {
       return {
         dimension: 'contextualDepth',
         severity: 'high',
         location: 'issue reporting',
         current: 'Reports issues without explaining WHY they matter',
         problem: 'Tool outputs what is wrong but not why it matters or how to fix it.',
-        improvement: 'Add description (why it matters) and fix (how to resolve) to each reported issue.',
+        improvement: 'Add problem (why it matters) and improvement/fix (how to resolve) to each reported issue.',
       };
     }
     return null;

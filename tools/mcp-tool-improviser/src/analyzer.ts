@@ -83,64 +83,87 @@ export function extractToolSource(filePath: string): ToolSource {
 function extractToolsFromSource(source: string): ExtractedTool[] {
   const tools: ExtractedTool[] = [];
 
-  // Find the tools array in ListToolsRequestSchema handler
-  // Pattern: tools: [ { name: '...', description: '...', inputSchema: { ... } }, ... ]
+  // Strategy 1: Old SDK format — tools: [ { name: '...', description: '...', inputSchema: { ... } } ]
   const toolsArrayMatch = source.match(/tools:\s*\[([\s\S]*?)\]\s*,?\s*\}\)/);
-  if (!toolsArrayMatch) return tools;
+  if (toolsArrayMatch) {
+    const toolsBlock = toolsArrayMatch[1];
+    const toolRegex = /\{\s*name:\s*['\"]([^'\"]+)['\"],\s*description:\s*(['\"])([\s\S]*?)\2\s*,\s*inputSchema:\s*(\{[\s\S]*?\})\s*\}/g;
+    let match: RegExpExecArray | null;
+    while ((match = toolRegex.exec(toolsBlock)) !== null) {
+      const toolName = match[1];
+      const toolDesc = match[3];
+      const schemaStr = match[4];
 
-  const toolsBlock = toolsArrayMatch[1];
+      let inputSchema: Record<string, unknown> = {};
+      try {
+        const cleaned = schemaStr
+          .replace(/(\w+):/g, '"$1":')
+          .replace(/'/g, '"')
+          .replace(/,(\s*[}\]])/g, '$1')
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          .replace(/\/\/.*/g, '');
+        inputSchema = JSON.parse(cleaned);
+      } catch {
+        inputSchema = { _raw: schemaStr.slice(0, 500) };
+      }
 
-  // Extract individual tool objects
-  // Match each { name: '...', description: '...', inputSchema: { ... } }
-  const toolRegex = /\{\s*name:\s*['\"]([^'\"]+)['\"],\s*description:\s*(['\"])([\s\S]*?)\2\s*,\s*inputSchema:\s*(\{[\s\S]*?\})\s*\}/g;
-  
-  let match: RegExpExecArray | null;
-  while ((match = toolRegex.exec(toolsBlock)) !== null) {
-    const toolName = match[1];
-    const toolDesc = match[3];
-    const schemaStr = match[4];
-
-    let inputSchema: Record<string, unknown> = {};
-    try {
-      // Clean up the schema string to make it valid JSON-like
-      const cleaned = schemaStr
-        .replace(/(\w+):/g, '"$1":') // quote keys
-        .replace(/'/g, '"') // single to double quotes
-        .replace(/,(\s*[}\]])/g, '$1') // trailing commas
-        .replace(/\/\*[\s\S]*?\*\//g, '') // block comments
-        .replace(/\/\/.*/g, ''); // line comments
-      inputSchema = JSON.parse(cleaned);
-    } catch {
-      // Fallback: extract what we can
-      inputSchema = { _raw: schemaStr.slice(0, 500) };
+      tools.push({
+        name: toolName,
+        description: toolDesc,
+        inputSchema,
+        handlerName: findHandlerForTool(source, toolName),
+        handlerCode: '',
+        lineNumber: source.slice(0, match.index).split('\n').length,
+      });
     }
+  }
 
-    // Find handler name
-    const handlerName = findHandlerForTool(source, toolName);
+  if (tools.length > 0) return tools;
 
+  // Strategy 2: McpServerBase addTool() pattern
+  // this.addTool('name', 'description', schemaObj, handler)
+  const addToolRegex = /this\.addTool\(\s*['"]([^'"]+)['"]\s*,\s*'([^']*)'/g;
+  let addMatch: RegExpExecArray | null;
+  while ((addMatch = addToolRegex.exec(source)) !== null) {
+    const toolName = addMatch[1];
+    const toolDesc = addMatch[2];
     tools.push({
       name: toolName,
       description: toolDesc,
-      inputSchema,
-      handlerName,
+      inputSchema: {},
+      handlerName: findHandlerForTool(source, toolName),
       handlerCode: '',
-      lineNumber: source.slice(0, match.index).split('\n').length,
+      lineNumber: source.slice(0, addMatch.index).split('\n').length,
     });
   }
 
-  // If regex didn't work, try a simpler approach - find tool names and descriptions
+  if (tools.length > 0) return tools;
+
+  // Strategy 3: addTool with double-quoted description
+  const addToolDqRegex = /this\.addTool\(\s*['"]([^'"]+)['"]\s*,\s*"([^"]*)"/g;
+  let dqMatch: RegExpExecArray | null;
+  while ((dqMatch = addToolDqRegex.exec(source)) !== null) {
+    tools.push({
+      name: dqMatch[1],
+      description: dqMatch[2],
+      inputSchema: {},
+      handlerName: findHandlerForTool(source, dqMatch[1]),
+      handlerCode: '',
+      lineNumber: source.slice(0, dqMatch.index).split('\n').length,
+    });
+  }
+
+  // Strategy 4: Simple fallback — name/description as adjacent object properties
   if (tools.length === 0) {
-    const simpleToolRegex = /name:\s*['\"](\w+)['\"],\s*description:\s*['\"]([^'\"]+)['\"]/g;
+    const simpleToolRegex = /name:\s*['\"]([^'"]+)['"]\s*,\s*description:\s*['\"]([^'"]+)['"]/g;
     let simpleMatch: RegExpExecArray | null;
     while ((simpleMatch = simpleToolRegex.exec(source)) !== null) {
       const toolName = simpleMatch[1];
-      const handlerName = findHandlerForTool(source, toolName);
-      
       tools.push({
         name: toolName,
         description: simpleMatch[2],
         inputSchema: {},
-        handlerName,
+        handlerName: findHandlerForTool(source, toolName),
         handlerCode: '',
         lineNumber: simpleMatch.index ? source.slice(0, simpleMatch.index).split('\n').length : 0,
       });
