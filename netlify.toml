@@ -1,0 +1,4 @@
+[build]
+  base    = "packages/ui"
+  command = "pnpm build-storybook"
+  publish = "storybook-static"

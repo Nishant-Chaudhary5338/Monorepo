@@ -1,0 +1,234 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Design System/Tokens" />
+
+<style>{`
+  .token-page { font-family: var(--font-sans); padding: 2rem; max-width: 960px; }
+  .section-title { font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 0.25rem; color: hsl(var(--foreground)); }
+  .section-desc { font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 1.25rem; }
+  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+  .token-card { border-radius: var(--radius); border: 1px solid hsl(var(--border)); overflow: hidden; }
+  .token-swatch { height: 64px; width: 100%; }
+  .token-meta { padding: 0.6rem 0.75rem; background: hsl(var(--card)); }
+  .token-name { font-size: 0.75rem; font-weight: 600; color: hsl(var(--foreground)); }
+  .token-var  { font-size: 0.7rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); margin-top: 2px; }
+
+  .type-row { display: flex; align-items: baseline; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid hsl(var(--border)); }
+  .type-label { font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); width: 120px; flex-shrink: 0; }
+
+  .radius-row { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid hsl(var(--border)); }
+  .radius-box { width: 48px; height: 48px; background: hsl(var(--primary)); flex-shrink: 0; }
+
+  .shadow-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid hsl(var(--border)); }
+  .shadow-box { width: 80px; height: 48px; background: hsl(var(--card)); border-radius: var(--radius); flex-shrink: 0; }
+
+  .spacing-row { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid hsl(var(--border)); }
+  .spacing-bar { height: 16px; background: hsl(var(--primary) / 0.3); border-radius: 2px; flex-shrink: 0; }
+
+  .chart-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .chart-chip { width: 48px; height: 48px; border-radius: var(--radius); }
+`}</style>
+
+<div className="token-page">
+
+# Design Tokens
+
+The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
+
+---
+
+## Colors
+
+### Semantic Palette
+
+<div className="token-grid">
+  {[
+    { name: 'Background',    var: '--background',    fg: '--foreground' },
+    { name: 'Foreground',    var: '--foreground',    fg: '--background' },
+    { name: 'Primary',       var: '--primary',       fg: '--primary-foreground' },
+    { name: 'Secondary',     var: '--secondary',     fg: '--secondary-foreground' },
+    { name: 'Muted',         var: '--muted',         fg: '--muted-foreground' },
+    { name: 'Accent',        var: '--accent',        fg: '--accent-foreground' },
+    { name: 'Destructive',   var: '--destructive',   fg: '--destructive-foreground' },
+    { name: 'Card',          var: '--card',          fg: '--card-foreground' },
+    { name: 'Popover',       var: '--popover',       fg: '--popover-foreground' },
+    { name: 'Border',        var: '--border',        fg: '--foreground' },
+    { name: 'Input',         var: '--input',         fg: '--foreground' },
+    { name: 'Ring',          var: '--ring',          fg: '--background' },
+  ].map(({ name, var: v, fg }) => (
+    <div key={v} className="token-card">
+      <div className="token-swatch" style={{ background: `hsl(var(${v}))`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ fontSize: '0.7rem', color: `hsl(var(${fg}))`, fontFamily: 'var(--font-mono)', padding: '2px 6px', borderRadius: '4px', background: `hsl(var(${fg}) / 0.1)` }}>Aa</span>
+      </div>
+      <div className="token-meta">
+        <div className="token-name">{name}</div>
+        <div className="token-var">{v}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+### Chart Colors
+
+<div className="chart-grid" style={{ marginTop: '1rem' }}>
+  {[1,2,3,4,5].map(n => (
+    <div key={n} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
+      <div className="chart-chip" style={{ background: `hsl(var(--chart-${n}))` }} />
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>--chart-{n}</span>
+    </div>
+  ))}
+</div>
+
+### Sidebar
+
+<div className="token-grid" style={{ marginTop: '1rem' }}>
+  {[
+    { name: 'Sidebar BG',       var: '--sidebar-background',       fg: '--sidebar-foreground' },
+    { name: 'Sidebar Primary',  var: '--sidebar-primary',          fg: '--sidebar-primary-foreground' },
+    { name: 'Sidebar Accent',   var: '--sidebar-accent',           fg: '--sidebar-accent-foreground' },
+    { name: 'Sidebar Border',   var: '--sidebar-border',           fg: '--sidebar-foreground' },
+  ].map(({ name, var: v, fg }) => (
+    <div key={v} className="token-card">
+      <div className="token-swatch" style={{ background: `hsl(var(${v}))` }} />
+      <div className="token-meta">
+        <div className="token-name">{name}</div>
+        <div className="token-var">{v}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Typography
+
+### Font Families
+
+<div style={{ marginBottom: '1.5rem' }}>
+  {[
+    { label: '--font-sans',    value: 'Inter, ui-sans-serif',     sample: 'The quick brown fox jumps' },
+    { label: '--font-heading', value: 'Inter, ui-sans-serif',     sample: 'Heading Style Example' },
+    { label: '--font-mono',    value: 'JetBrains Mono, monospace', sample: 'const x = "code sample";' },
+  ].map(({ label, value, sample }) => (
+    <div key={label} className="type-row">
+      <span className="type-label">{label}</span>
+      <span style={{ fontSize: '1rem', color: 'hsl(var(--foreground))', fontFamily: label === '--font-mono' ? 'var(--font-mono)' : 'var(--font-sans)' }}>{sample}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+### Type Scale
+
+<div>
+  {[
+    { label: '--text-xs',   size: '0.75rem' },
+    { label: '--text-sm',   size: '0.875rem' },
+    { label: '--text-base', size: '1rem' },
+    { label: '--text-lg',   size: '1.125rem' },
+    { label: '--text-xl',   size: '1.25rem' },
+    { label: '--text-2xl',  size: '1.5rem' },
+    { label: '--text-3xl',  size: '1.875rem' },
+    { label: '--text-4xl',  size: '2.25rem' },
+    { label: '--text-5xl',  size: '3rem' },
+  ].map(({ label, size }) => (
+    <div key={label} className="type-row">
+      <span className="type-label">{label}</span>
+      <span style={{ fontSize: size, color: 'hsl(var(--foreground))', lineHeight: 1.2 }}>Design System</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>{size}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Border Radius
+
+<div>
+  {[
+    { label: '--radius-sm',  value: 'calc(var(--radius) - 4px)', computed: '2px' },
+    { label: '--radius-md',  value: 'calc(var(--radius) - 2px)', computed: '4px' },
+    { label: '--radius-lg',  value: 'var(--radius)',              computed: '6px' },
+    { label: '--radius-xl',  value: 'calc(var(--radius) + 4px)', computed: '10px' },
+  ].map(({ label, computed }) => (
+    <div key={label} className="radius-row">
+      <div className="radius-box" style={{ borderRadius: computed }} />
+      <div>
+        <div className="token-name">{label}</div>
+        <div className="token-var">{computed}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Shadows
+
+<div>
+  {[
+    { label: '--shadow-2xs', value: '0 1px 2px 0 hsl(0 0% 0% / 0.03)' },
+    { label: '--shadow-xs',  value: '0 1px 2px 0 hsl(0 0% 0% / 0.05)' },
+    { label: '--shadow-sm',  value: '0 1px 3px 0 hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-md',  value: '0 4px 6px -1px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-lg',  value: '0 10px 15px -3px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-xl',  value: '0 20px 25px -5px hsl(0 0% 0% / 0.1)' },
+  ].map(({ label, value }) => (
+    <div key={label} className="shadow-row">
+      <div className="shadow-box" style={{ boxShadow: value }} />
+      <div>
+        <div className="token-name">{label}</div>
+        <div className="token-var" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '480px' }}>{value}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Spacing Scale
+
+<div>
+  {[
+    { label: '--spacing-1',  px: '4px',  w: 4 },
+    { label: '--spacing-2',  px: '8px',  w: 8 },
+    { label: '--spacing-3',  px: '12px', w: 12 },
+    { label: '--spacing-4',  px: '16px', w: 16 },
+    { label: '--spacing-5',  px: '20px', w: 20 },
+    { label: '--spacing-6',  px: '24px', w: 24 },
+    { label: '--spacing-8',  px: '32px', w: 32 },
+    { label: '--spacing-10', px: '40px', w: 40 },
+    { label: '--spacing-12', px: '48px', w: 48 },
+    { label: '--spacing-16', px: '64px', w: 64 },
+    { label: '--spacing-20', px: '80px', w: 80 },
+  ].map(({ label, px, w }) => (
+    <div key={label} className="spacing-row">
+      <span className="type-label">{label}</span>
+      <div className="spacing-bar" style={{ width: w * 2 }} />
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>{px}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Z-Index
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.75rem', marginTop: '0.5rem' }}>
+  {[
+    { label: '--z-dropdown',       value: 10 },
+    { label: '--z-sticky',         value: 20 },
+    { label: '--z-fixed',          value: 30 },
+    { label: '--z-modal-backdrop', value: 40 },
+    { label: '--z-modal',          value: 50 },
+    { label: '--z-popover',        value: 60 },
+    { label: '--z-tooltip',        value: 70 },
+  ].map(({ label, value }) => (
+    <div key={label} style={{ padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}>
+      <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'hsl(var(--primary))', fontFamily: 'var(--font-mono)' }}>{value}</div>
+      <div className="token-var" style={{ marginTop: '4px' }}>{label}</div>
+    </div>
+  ))}
+</div>
+
+</div>
