@@ -33,5 +33,20 @@ const config: StorybookConfig = {
         prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
     },
   },
+  viteFinal: async (config) => {
+    // @storybook/blocks@8 imports storybook/internal/* paths that are not
+    // exported by storybook@10. Mark them external so Rollup doesn't try
+    // to resolve/bundle those internal subpaths.
+    config.build = config.build ?? {};
+    config.build.rollupOptions = config.build.rollupOptions ?? {};
+    const existing = config.build.rollupOptions.external;
+    const internalPattern = /^storybook\/internal\//;
+    config.build.rollupOptions.external = Array.isArray(existing)
+      ? [...existing, internalPattern]
+      : existing
+        ? [existing as RegExp, internalPattern]
+        : [internalPattern];
+    return config;
+  },
 }
 export default config
