@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,   // You can keep this option
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*"]
+    },
+    "moduleResolution": "node"  // Change moduleResolution to 'node'
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.js", "app.tsx", "src/context/groupData.jsx", "src/context/GroupsContext.jsx", "src/context/GroupsContext.jsx"],
+  "exclude": ["node_modules"]
+}

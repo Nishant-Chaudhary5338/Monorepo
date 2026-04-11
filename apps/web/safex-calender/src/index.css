@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (min-width: 1024px) {
+  .playButton svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+}
