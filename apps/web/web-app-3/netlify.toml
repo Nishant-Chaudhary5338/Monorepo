@@ -1,6 +1,6 @@
 [build]
   base    = "."
-  command = "pnpm --filter web-app-3 build"
+  command = "pnpm --filter @repo/ui build && pnpm --filter web-app-3 build"
   publish = "apps/web/web-app-3/dist"
 
 [build.environment]
