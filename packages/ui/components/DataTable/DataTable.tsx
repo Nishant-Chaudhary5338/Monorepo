@@ -818,7 +818,7 @@ function DataTable<TData, TValue>({
                       placeholder="Filter…"
                       className="h-7 text-xs pr-6"
                     />
-                    {header.column.getFilterValue() && (
+                    {!!header.column.getFilterValue() && (
                       <button
                         className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         onClick={() => header.column.setFilterValue(undefined)}

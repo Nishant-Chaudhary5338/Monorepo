@@ -766,6 +766,9 @@ importers:
 
   apps/web/web-app-1:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.9.0
+        version: 3.10.0(react-hook-form@7.72.0)
       '@repo/router':
         specifier: workspace:^
         version: link:../../../packages/router
@@ -775,9 +778,15 @@ importers:
       react-dom:
         specifier: ^19.2.4
         version: 19.2.4(react@19.2.4)
+      react-hook-form:
+        specifier: ^7.54.0
+        version: 7.72.0(react@19.2.4)
       react-router:
         specifier: ^7.13.2
         version: 7.13.2(react-dom@19.2.4)(react@19.2.4)
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -5109,6 +5118,14 @@ packages:
       hono: ^4
     dependencies:
       hono: 4.12.8
+    dev: false
+
+  /@hookform/resolvers@3.10.0(react-hook-form@7.72.0):
+    resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.72.0(react@19.2.4)
     dev: false
 
   /@hookform/resolvers@5.2.2(react-hook-form@7.72.0):

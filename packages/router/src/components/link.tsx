@@ -1,6 +1,5 @@
 import { forwardRef, useEffect, type AnchorHTMLAttributes } from 'react'
 import {
-  Link as RRLink,
   useHref,
   useLinkClickHandler,
   useMatch,
@@ -60,13 +59,12 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
 
   // Prefetch on render — eagerly trigger the lazy import
   useEffect(() => {
-    if (prefetch === 'render') {
-      const link = document.createElement('link')
-      link.rel = 'prefetch'
-      link.href = href
-      document.head.appendChild(link)
-      return () => { document.head.removeChild(link) }
-    }
+    if (prefetch !== 'render') return
+    const link = document.createElement('link')
+    link.rel = 'prefetch'
+    link.href = href
+    document.head.appendChild(link)
+    return () => { document.head.removeChild(link) }
   }, [prefetch, href])
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {

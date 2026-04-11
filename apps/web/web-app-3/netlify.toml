@@ -1,8 +1,0 @@
-[build]
-  base    = "."
-  command = "pnpm --filter @repo/ui build && pnpm --filter web-app-3 build"
-  publish = "apps/web/web-app-3/dist"
-
-[build.environment]
-  NODE_VERSION = "20"
-  PNPM_VERSION = "8.15.6"

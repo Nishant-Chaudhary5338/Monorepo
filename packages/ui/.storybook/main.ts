@@ -65,7 +65,7 @@ const config: StorybookConfig = {
       },
     ]
 
-    // Also exclude @storybook/blocks from Vite pre-bundling so esbuild
+    // Exclude @storybook/blocks from Vite pre-bundling so esbuild
     // doesn't choke on the internal imports during dep optimization.
     config.optimizeDeps = config.optimizeDeps ?? {}
     config.optimizeDeps.exclude = [
@@ -76,17 +76,6 @@ const config: StorybookConfig = {
       ...(config.optimizeDeps.include ?? []),
       "semver",
     ]
-
-    // Keep the Rollup external rule for production builds.
-    config.build = config.build ?? {}
-    config.build.rollupOptions = config.build.rollupOptions ?? {}
-    const existing = config.build.rollupOptions.external
-    const internalPattern = /^storybook\/internal\//
-    config.build.rollupOptions.external = Array.isArray(existing)
-      ? [...existing, internalPattern]
-      : existing
-        ? [existing as RegExp, internalPattern]
-        : [internalPattern]
 
     return config
   },

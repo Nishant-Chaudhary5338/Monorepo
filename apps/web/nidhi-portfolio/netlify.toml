@@ -1,8 +1,0 @@
-[build]
-  base    = "."
-  command = "pnpm --filter nidhi-portfolio build"
-  publish = "apps/web/nidhi-portfolio/dist"
-
-[build.environment]
-  NODE_VERSION = "20"
-  PNPM_VERSION = "8.15.6"
