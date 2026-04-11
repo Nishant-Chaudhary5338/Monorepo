@@ -1,20 +1,28 @@
 import { useRef, useState } from 'react'
-import { ArrowUp, Loader2, WifiOff, Wifi } from 'lucide-react'
+import { ArrowUp, Loader2 } from 'lucide-react'
+import { ModelSelector } from './ModelSelector'
+import type { ProviderId } from '../../ai/providers'
 
 interface Props {
   onSubmit: (prompt: string) => void
   isGenerating: boolean
   streamingStatus: string
-  isOllamaOnline: boolean
   hasSchema: boolean
+  provider: ProviderId
+  model: string
+  onProviderChange: (provider: ProviderId) => void
+  onModelChange: (model: string) => void
 }
 
 export function PromptBar({
   onSubmit,
   isGenerating,
   streamingStatus,
-  isOllamaOnline,
   hasSchema,
+  provider,
+  model,
+  onProviderChange,
+  onModelChange,
 }: Props) {
   const [value, setValue] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -36,7 +44,6 @@ export function PromptBar({
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value)
-    // auto-resize
     e.target.style.height = 'auto'
     e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`
   }
@@ -58,17 +65,14 @@ export function PromptBar({
 
       {/* Input row */}
       <div className="flex items-end gap-2">
-        {/* Ollama status */}
-        <div
-          title={isOllamaOnline ? 'Ollama running' : 'Ollama offline — run: ollama serve'}
-          className="mb-1.5 shrink-0"
-        >
-          {isOllamaOnline ? (
-            <Wifi size={14} className="text-green-500" />
-          ) : (
-            <WifiOff size={14} className="text-red-500" />
-          )}
-        </div>
+        {/* Model selector */}
+        <ModelSelector
+          provider={provider}
+          model={model}
+          onProviderChange={onProviderChange}
+          onModelChange={onModelChange}
+          disabled={isGenerating}
+        />
 
         {/* Mode badge */}
         <span className="mb-1.5 shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
@@ -83,7 +87,7 @@ export function PromptBar({
           onChange={handleInput}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          disabled={isGenerating || !isOllamaOnline}
+          disabled={isGenerating}
           className="flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm
             text-foreground placeholder:text-muted-foreground
             focus:outline-none focus:ring-2 focus:ring-ring
@@ -94,7 +98,7 @@ export function PromptBar({
         {/* Submit */}
         <button
           onClick={handleSubmit}
-          disabled={!value.trim() || isGenerating || !isOllamaOnline}
+          disabled={!value.trim() || isGenerating}
           className="mb-0.5 shrink-0 flex items-center justify-center w-9 h-9 rounded-lg
             bg-primary text-primary-foreground
             hover:bg-primary/90 transition-colors
@@ -108,15 +112,6 @@ export function PromptBar({
           )}
         </button>
       </div>
-
-      {!isOllamaOnline && (
-        <p className="text-xs text-red-500">
-          Ollama is offline. Run{' '}
-          <code className="font-mono bg-muted px-1 rounded">ollama serve</code>{' '}
-          then{' '}
-          <code className="font-mono bg-muted px-1 rounded">ollama pull llama3.2:3b</code>
-        </p>
-      )}
     </div>
   )
 }

@@ -11,10 +11,10 @@ import { Meta } from '@storybook/blocks';
   .token-swatch { height: 64px; width: 100%; }
   .token-meta { padding: 0.6rem 0.75rem; background: hsl(var(--card)); }
   .token-name { font-size: 0.75rem; font-weight: 600; color: hsl(var(--foreground)); }
-  .token-var  { font-size: 0.7rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); margin-top: 2px; }
+  .token-cssVar  { font-size: 0.7rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); margin-top: 2px; }
 
   .type-row { display: flex; align-items: baseline; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid hsl(var(--border)); }
-  .type-label { font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); width: 120px; flex-shrink: 0; }
+  .type-label { font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); width: 140px; flex-shrink: 0; }
 
   .radius-row { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid hsl(var(--border)); }
   .radius-box { width: 48px; height: 48px; background: hsl(var(--primary)); flex-shrink: 0; }
@@ -43,26 +43,26 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
 
 <div className="token-grid">
   {[
-    { name: 'Background',    var: '--background',    fg: '--foreground' },
-    { name: 'Foreground',    var: '--foreground',    fg: '--background' },
-    { name: 'Primary',       var: '--primary',       fg: '--primary-foreground' },
-    { name: 'Secondary',     var: '--secondary',     fg: '--secondary-foreground' },
-    { name: 'Muted',         var: '--muted',         fg: '--muted-foreground' },
-    { name: 'Accent',        var: '--accent',        fg: '--accent-foreground' },
-    { name: 'Destructive',   var: '--destructive',   fg: '--destructive-foreground' },
-    { name: 'Card',          var: '--card',          fg: '--card-foreground' },
-    { name: 'Popover',       var: '--popover',       fg: '--popover-foreground' },
-    { name: 'Border',        var: '--border',        fg: '--foreground' },
-    { name: 'Input',         var: '--input',         fg: '--foreground' },
-    { name: 'Ring',          var: '--ring',          fg: '--background' },
-  ].map(({ name, var: v, fg }) => (
-    <div key={v} className="token-card">
-      <div className="token-swatch" style={{ background: `hsl(var(${v}))`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    { name: 'Background',    cssVar: '--background',    fg: '--foreground' },
+    { name: 'Foreground',    cssVar: '--foreground',    fg: '--background' },
+    { name: 'Primary',       cssVar: '--primary',       fg: '--primary-foreground' },
+    { name: 'Secondary',     cssVar: '--secondary',     fg: '--secondary-foreground' },
+    { name: 'Muted',         cssVar: '--muted',         fg: '--muted-foreground' },
+    { name: 'Accent',        cssVar: '--accent',        fg: '--accent-foreground' },
+    { name: 'Destructive',   cssVar: '--destructive',   fg: '--destructive-foreground' },
+    { name: 'Card',          cssVar: '--card',          fg: '--card-foreground' },
+    { name: 'Popover',       cssVar: '--popover',       fg: '--popover-foreground' },
+    { name: 'Border',        cssVar: '--border',        fg: '--foreground' },
+    { name: 'Input',         cssVar: '--input',         fg: '--foreground' },
+    { name: 'Ring',          cssVar: '--ring',          fg: '--background' },
+  ].map(({ name, cssVar, fg }) => (
+    <div key={cssVar} className="token-card">
+      <div className="token-swatch" style={{ background: `hsl(var(${cssVar}))`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <span style={{ fontSize: '0.7rem', color: `hsl(var(${fg}))`, fontFamily: 'var(--font-mono)', padding: '2px 6px', borderRadius: '4px', background: `hsl(var(${fg}) / 0.1)` }}>Aa</span>
       </div>
       <div className="token-meta">
         <div className="token-name">{name}</div>
-        <div className="token-var">{v}</div>
+        <div className="token-cssVar">{cssVar}</div>
       </div>
     </div>
   ))}
@@ -74,7 +74,7 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
   {[1,2,3,4,5].map(n => (
     <div key={n} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
       <div className="chart-chip" style={{ background: `hsl(var(--chart-${n}))` }} />
-      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>--chart-{n}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>{`--chart-${n}`}</span>
     </div>
   ))}
 </div>
@@ -83,16 +83,16 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
 
 <div className="token-grid" style={{ marginTop: '1rem' }}>
   {[
-    { name: 'Sidebar BG',       var: '--sidebar-background',       fg: '--sidebar-foreground' },
-    { name: 'Sidebar Primary',  var: '--sidebar-primary',          fg: '--sidebar-primary-foreground' },
-    { name: 'Sidebar Accent',   var: '--sidebar-accent',           fg: '--sidebar-accent-foreground' },
-    { name: 'Sidebar Border',   var: '--sidebar-border',           fg: '--sidebar-foreground' },
-  ].map(({ name, var: v, fg }) => (
-    <div key={v} className="token-card">
-      <div className="token-swatch" style={{ background: `hsl(var(${v}))` }} />
+    { name: 'Sidebar BG',       cssVar: '--sidebar-background',       fg: '--sidebar-foreground' },
+    { name: 'Sidebar Primary',  cssVar: '--sidebar-primary',          fg: '--sidebar-primary-foreground' },
+    { name: 'Sidebar Accent',   cssVar: '--sidebar-accent',           fg: '--sidebar-accent-foreground' },
+    { name: 'Sidebar Border',   cssVar: '--sidebar-border',           fg: '--sidebar-foreground' },
+  ].map(({ name, cssVar, fg }) => (
+    <div key={cssVar} className="token-card">
+      <div className="token-swatch" style={{ background: `hsl(var(${cssVar}))` }} />
       <div className="token-meta">
         <div className="token-name">{name}</div>
-        <div className="token-var">{v}</div>
+        <div className="token-cssVar">{cssVar}</div>
       </div>
     </div>
   ))}
@@ -106,14 +106,13 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
 
 <div style={{ marginBottom: '1.5rem' }}>
   {[
-    { label: '--font-sans',    value: 'Inter, ui-sans-serif',     sample: 'The quick brown fox jumps' },
-    { label: '--font-heading', value: 'Inter, ui-sans-serif',     sample: 'Heading Style Example' },
-    { label: '--font-mono',    value: 'JetBrains Mono, monospace', sample: 'const x = "code sample";' },
-  ].map(({ label, value, sample }) => (
+    { label: '--font-sans',    sample: 'The quick brown fox jumps over the lazy dog', mono: false },
+    { label: '--font-heading', sample: 'Heading Style — Bold & Clear', mono: false },
+    { label: '--font-mono',    sample: 'const x = "code sample";', mono: true },
+  ].map(({ label, sample, mono }) => (
     <div key={label} className="type-row">
       <span className="type-label">{label}</span>
-      <span style={{ fontSize: '1rem', color: 'hsl(var(--foreground))', fontFamily: label === '--font-mono' ? 'var(--font-mono)' : 'var(--font-sans)' }}>{sample}</span>
-      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto' }}>{value}</span>
+      <span style={{ fontSize: '1rem', color: 'hsl(var(--foreground))', fontFamily: mono ? 'var(--font-mono)' : 'var(--font-sans)' }}>{sample}</span>
     </div>
   ))}
 </div>
@@ -132,7 +131,7 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
     { label: '--text-4xl',  size: '2.25rem' },
     { label: '--text-5xl',  size: '3rem' },
   ].map(({ label, size }) => (
-    <div key={label} className="type-row">
+    <div key={label} className="type-row" style={{ alignItems: 'center' }}>
       <span className="type-label">{label}</span>
       <span style={{ fontSize: size, color: 'hsl(var(--foreground))', lineHeight: 1.2 }}>Design System</span>
       <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>{size}</span>
@@ -146,16 +145,16 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
 
 <div>
   {[
-    { label: '--radius-sm',  value: 'calc(var(--radius) - 4px)', computed: '2px' },
-    { label: '--radius-md',  value: 'calc(var(--radius) - 2px)', computed: '4px' },
-    { label: '--radius-lg',  value: 'var(--radius)',              computed: '6px' },
-    { label: '--radius-xl',  value: 'calc(var(--radius) + 4px)', computed: '10px' },
-  ].map(({ label, computed }) => (
+    { label: '--radius-sm',  computed: 'calc(var(--radius) - 4px)', display: '2px' },
+    { label: '--radius-md',  computed: 'calc(var(--radius) - 2px)', display: '4px' },
+    { label: '--radius-lg',  computed: 'var(--radius)',              display: '6px (base)' },
+    { label: '--radius-xl',  computed: 'calc(var(--radius) + 4px)', display: '10px' },
+  ].map(({ label, computed, display }) => (
     <div key={label} className="radius-row">
       <div className="radius-box" style={{ borderRadius: computed }} />
       <div>
         <div className="token-name">{label}</div>
-        <div className="token-var">{computed}</div>
+        <div className="token-cssVar">{display}</div>
       </div>
     </div>
   ))}
@@ -169,16 +168,16 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
   {[
     { label: '--shadow-2xs', value: '0 1px 2px 0 hsl(0 0% 0% / 0.03)' },
     { label: '--shadow-xs',  value: '0 1px 2px 0 hsl(0 0% 0% / 0.05)' },
-    { label: '--shadow-sm',  value: '0 1px 3px 0 hsl(0 0% 0% / 0.1)' },
-    { label: '--shadow-md',  value: '0 4px 6px -1px hsl(0 0% 0% / 0.1)' },
-    { label: '--shadow-lg',  value: '0 10px 15px -3px hsl(0 0% 0% / 0.1)' },
-    { label: '--shadow-xl',  value: '0 20px 25px -5px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-sm',  value: '0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-md',  value: '0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-lg',  value: '0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1)' },
+    { label: '--shadow-xl',  value: '0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.1)' },
   ].map(({ label, value }) => (
     <div key={label} className="shadow-row">
       <div className="shadow-box" style={{ boxShadow: value }} />
       <div>
         <div className="token-name">{label}</div>
-        <div className="token-var" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '480px' }}>{value}</div>
+        <div className="token-cssVar" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '480px' }}>{value}</div>
       </div>
     </div>
   ))}
@@ -190,22 +189,22 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
 
 <div>
   {[
-    { label: '--spacing-1',  px: '4px',  w: 4 },
-    { label: '--spacing-2',  px: '8px',  w: 8 },
-    { label: '--spacing-3',  px: '12px', w: 12 },
-    { label: '--spacing-4',  px: '16px', w: 16 },
-    { label: '--spacing-5',  px: '20px', w: 20 },
-    { label: '--spacing-6',  px: '24px', w: 24 },
-    { label: '--spacing-8',  px: '32px', w: 32 },
-    { label: '--spacing-10', px: '40px', w: 40 },
-    { label: '--spacing-12', px: '48px', w: 48 },
-    { label: '--spacing-16', px: '64px', w: 64 },
-    { label: '--spacing-20', px: '80px', w: 80 },
-  ].map(({ label, px, w }) => (
+    { label: '--spacing-1',  rem: '0.25rem', px: '4px',   w: 4 },
+    { label: '--spacing-2',  rem: '0.5rem',  px: '8px',   w: 8 },
+    { label: '--spacing-3',  rem: '0.75rem', px: '12px',  w: 12 },
+    { label: '--spacing-4',  rem: '1rem',    px: '16px',  w: 16 },
+    { label: '--spacing-5',  rem: '1.25rem', px: '20px',  w: 20 },
+    { label: '--spacing-6',  rem: '1.5rem',  px: '24px',  w: 24 },
+    { label: '--spacing-8',  rem: '2rem',    px: '32px',  w: 32 },
+    { label: '--spacing-10', rem: '2.5rem',  px: '40px',  w: 40 },
+    { label: '--spacing-12', rem: '3rem',    px: '48px',  w: 48 },
+    { label: '--spacing-16', rem: '4rem',    px: '64px',  w: 64 },
+    { label: '--spacing-20', rem: '5rem',    px: '80px',  w: 80 },
+  ].map(({ label, rem, px, w }) => (
     <div key={label} className="spacing-row">
       <span className="type-label">{label}</span>
       <div className="spacing-bar" style={{ width: w * 2 }} />
-      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>{px}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)' }}>{rem} ({px})</span>
     </div>
   ))}
 </div>
@@ -226,7 +225,191 @@ The complete token set powering `@repo/ui` — shadcn/ui New York, Tailwind v4.
   ].map(({ label, value }) => (
     <div key={label} style={{ padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}>
       <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'hsl(var(--primary))', fontFamily: 'var(--font-mono)' }}>{value}</div>
-      <div className="token-var" style={{ marginTop: '4px' }}>{label}</div>
+      <div className="token-cssVar" style={{ marginTop: '4px' }}>{label}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Transitions
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginTop: '0.5rem' }}>
+  {[
+    { label: '--transition-fast', value: '150ms' },
+    { label: '--transition-base', value: '200ms' },
+    { label: '--transition-slow', value: '300ms' },
+  ].map(({ label, value }) => (
+    <div key={label} style={{ padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}>
+      <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'hsl(var(--primary))', fontFamily: 'var(--font-mono)' }}>{value}</div>
+      <div className="token-cssVar" style={{ marginTop: '4px' }}>{label}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Easing Curves
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginTop: '0.5rem' }}>
+  {[
+    { label: '--ease-in',         value: 'cubic-bezier(0.4, 0, 1, 1)',       desc: 'Accelerate — exits, dismissals' },
+    { label: '--ease-out',        value: 'cubic-bezier(0, 0, 0.2, 1)',       desc: 'Decelerate — entrances, reveals' },
+    { label: '--ease-in-out',     value: 'cubic-bezier(0.4, 0, 0.2, 1)',     desc: 'Standard — position changes' },
+    { label: '--ease-spring',     value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', desc: 'Spring — delightful micro-interactions' },
+    { label: '--ease-linear',     value: 'linear',                            desc: 'Linear — spinners, progress bars' },
+    { label: '--ease-bounce',     value: 'cubic-bezier(0.68, -0.55, 0.27, 1.55)', desc: 'Bounce — playful confirmations' },
+  ].map(({ label, value, desc }) => (
+    <div key={label} style={{ padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}>
+      <div style={{ height: '3px', borderRadius: '99px', background: 'hsl(var(--primary) / 0.15)', marginBottom: '0.75rem', position: 'relative', overflow: 'visible' }}>
+        <div style={{ position: 'absolute', left: 0, top: '-4px', width: '11px', height: '11px', borderRadius: '50%', background: 'hsl(var(--primary))', boxShadow: '0 0 0 2px hsl(var(--background))' }} />
+        <div style={{ position: 'absolute', right: 0, top: '-4px', width: '11px', height: '11px', borderRadius: '50%', background: 'hsl(var(--primary) / 0.35)', boxShadow: '0 0 0 2px hsl(var(--background))' }} />
+      </div>
+      <div style={{ fontWeight: 600, fontSize: '0.75rem', color: 'hsl(var(--foreground))', fontFamily: 'var(--font-mono)', marginBottom: '2px' }}>{label}</div>
+      <div style={{ fontSize: '0.65rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)', marginBottom: '4px', wordBreak: 'break-all' }}>{value}</div>
+      <div style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))' }}>{desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Font Weights
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { label: '--font-weight-thin',       value: '100', sample: 'The quick brown fox' },
+    { label: '--font-weight-light',      value: '300', sample: 'The quick brown fox' },
+    { label: '--font-weight-normal',     value: '400', sample: 'The quick brown fox' },
+    { label: '--font-weight-medium',     value: '500', sample: 'The quick brown fox' },
+    { label: '--font-weight-semibold',   value: '600', sample: 'The quick brown fox' },
+    { label: '--font-weight-bold',       value: '700', sample: 'The quick brown fox' },
+    { label: '--font-weight-extrabold',  value: '800', sample: 'The quick brown fox' },
+    { label: '--font-weight-black',      value: '900', sample: 'The quick brown fox' },
+  ].map(({ label, value, sample }) => (
+    <div key={label} className="type-row">
+      <span className="type-label">{label}</span>
+      <span style={{ fontSize: '1rem', fontWeight: value, color: 'hsl(var(--foreground))' }}>{sample}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Line Heights
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { label: '--leading-none',    value: '1',    sample: 'Tight headlines and display text' },
+    { label: '--leading-tight',   value: '1.25', sample: 'Subheadings and card titles' },
+    { label: '--leading-snug',    value: '1.375',sample: 'UI labels and compact text' },
+    { label: '--leading-normal',  value: '1.5',  sample: 'Default body text reading flow' },
+    { label: '--leading-relaxed', value: '1.625',sample: 'Long-form reading, articles, docs' },
+    { label: '--leading-loose',   value: '2',    sample: 'Airy captions and annotations' },
+  ].map(({ label, value, sample }) => (
+    <div key={label} className="type-row" style={{ alignItems: 'flex-start', paddingTop: '1rem', paddingBottom: '1rem' }}>
+      <span className="type-label" style={{ paddingTop: '2px' }}>{label}</span>
+      <span style={{ fontSize: '0.875rem', lineHeight: value, color: 'hsl(var(--foreground))', maxWidth: '360px' }}>{sample}<br />Second line shows rhythm.</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto', fontFamily: 'var(--font-mono)', paddingTop: '2px' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Letter Spacing
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { label: '--tracking-tighter', value: '-0.05em', sample: 'Display Headlines' },
+    { label: '--tracking-tight',   value: '-0.025em',sample: 'Large Headings' },
+    { label: '--tracking-normal',  value: '0em',     sample: 'Body Text Default' },
+    { label: '--tracking-wide',    value: '0.025em', sample: 'UI Labels' },
+    { label: '--tracking-wider',   value: '0.05em',  sample: 'BADGE TEXT' },
+    { label: '--tracking-widest',  value: '0.1em',   sample: 'OVERLINES & CAPS' },
+  ].map(({ label, value, sample }) => (
+    <div key={label} className="type-row">
+      <span className="type-label">{label}</span>
+      <span style={{ fontSize: '1rem', letterSpacing: value, color: 'hsl(var(--foreground))' }}>{sample}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Opacity Scale
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginTop: '0.5rem' }}>
+  {[
+    { label: '--opacity-0',   value: '0%',   opacity: 0 },
+    { label: '--opacity-5',   value: '5%',   opacity: 0.05 },
+    { label: '--opacity-10',  value: '10%',  opacity: 0.1 },
+    { label: '--opacity-20',  value: '20%',  opacity: 0.2 },
+    { label: '--opacity-25',  value: '25%',  opacity: 0.25 },
+    { label: '--opacity-50',  value: '50%',  opacity: 0.5 },
+    { label: '--opacity-75',  value: '75%',  opacity: 0.75 },
+    { label: '--opacity-90',  value: '90%',  opacity: 0.9 },
+    { label: '--opacity-95',  value: '95%',  opacity: 0.95 },
+    { label: '--opacity-100', value: '100%', opacity: 1 },
+  ].map(({ label, value, opacity }) => (
+    <div key={label} style={{ padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}>
+      <div style={{ height: '40px', borderRadius: 'calc(var(--radius) - 2px)', background: 'hsl(var(--primary))', opacity, marginBottom: '0.6rem' }} />
+      <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'hsl(var(--foreground))', fontFamily: 'var(--font-mono)' }}>{value}</div>
+      <div className="token-cssVar">{label}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Breakpoints
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { label: '--breakpoint-xs',  value: '480px',  desc: 'Extra small phones' },
+    { label: '--breakpoint-sm',  value: '640px',  desc: 'Small / landscape phones' },
+    { label: '--breakpoint-md',  value: '768px',  desc: 'Tablets portrait' },
+    { label: '--breakpoint-lg',  value: '1024px', desc: 'Tablets landscape / small laptops' },
+    { label: '--breakpoint-xl',  value: '1280px', desc: 'Desktops' },
+    { label: '--breakpoint-2xl', value: '1536px', desc: 'Large desktops / wide monitors' },
+  ].map(({ label, value, desc }) => (
+    <div key={label} className="spacing-row">
+      <span className="type-label">{label}</span>
+      <div style={{ flex: 1, height: '8px', borderRadius: '4px', background: 'hsl(var(--muted))', position: 'relative' }}>
+        <div style={{
+          position: 'absolute', left: 0, top: 0, height: '100%', borderRadius: '4px',
+          background: 'hsl(var(--primary) / 0.5)',
+          width: `${(parseInt(value) / 1536) * 100}%`,
+        }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', fontFamily: 'var(--font-mono)', minWidth: '60px', textAlign: 'right' }}>{value}</span>
+      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', minWidth: '200px' }}>{desc}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+## Cursor Types
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.75rem', marginTop: '0.5rem' }}>
+  {[
+    { label: 'default',     desc: 'Normal pointer' },
+    { label: 'pointer',     desc: 'Clickable element' },
+    { label: 'text',        desc: 'Text selection' },
+    { label: 'move',        desc: 'Draggable element' },
+    { label: 'grab',        desc: 'Grabbable handle' },
+    { label: 'not-allowed', desc: 'Disabled state' },
+    { label: 'crosshair',   desc: 'Precision tool' },
+    { label: 'wait',        desc: 'Loading state' },
+    { label: 'zoom-in',     desc: 'Zoomable media' },
+    { label: 'col-resize',  desc: 'Column resize handle' },
+  ].map(({ label, desc }) => (
+    <div key={label} style={{ padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))', cursor: label, userSelect: 'none' }}>
+      <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'hsl(var(--foreground))', fontFamily: 'var(--font-mono)', marginBottom: '2px' }}>{label}</div>
+      <div className="token-cssVar">{desc}</div>
     </div>
   ))}
 </div>

@@ -5,6 +5,81 @@
 export function checkModifiers(source, filePath) {
     const violations = [];
     const lines = source.split('\n');
+    // Pre-pass: find interface blocks and their property lines
+    let insideInterface = false;
+    let interfaceName = '';
+    let interfaceDepth = 0;
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        if (trimmed.startsWith('//') || trimmed.startsWith('*'))
+            continue;
+        const ifaceStart = line.match(/^(?:export\s+)?interface\s+(\w+)/);
+        if (ifaceStart) {
+            insideInterface = true;
+            interfaceName = ifaceStart[1];
+            interfaceDepth = 0;
+        }
+        if (insideInterface) {
+            interfaceDepth += (line.match(/\{/g) || []).length;
+            interfaceDepth -= (line.match(/\}/g) || []).length;
+            if (interfaceDepth <= 0 && line.includes('}')) {
+                insideInterface = false;
+                continue;
+            }
+            // Detect interface property without readonly
+            // Matches: "  propName: Type" or "  propName?: Type" but not "  readonly propName"
+            const propMatch = trimmed.match(/^(\w+)\s*\??\s*:\s*.+/);
+            if (propMatch && !trimmed.startsWith('readonly') && interfaceDepth > 0) {
+                const propName = propMatch[1];
+                violations.push({
+                    rule: 'modifiers',
+                    severity: 'info',
+                    line: i + 1,
+                    column: line.indexOf(propName) + 1,
+                    current: trimmed.slice(0, 60),
+                    suggestion: `readonly ${trimmed.slice(0, 60)}`,
+                    fix: `// Mark interface property as readonly to prevent accidental mutation:\n// readonly ${propName}: ...`,
+                    why: `Interface properties in '${interfaceName}' should be readonly unless they need to be mutated. Readonly props prevent accidental modification and communicate immutability intent.`,
+                });
+            }
+        }
+    }
+    // Pre-pass: detect 'return { ... }' inside functions without 'as const'
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        if (trimmed.startsWith('//'))
+            continue;
+        // Detect: return {  (start of an object literal return)
+        if (/^\s*return\s*\{/.test(line) && !line.includes('as const')) {
+            // Find the closing brace
+            let depth = (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+            let endLine = i;
+            for (let j = i + 1; j < lines.length && depth > 0; j++) {
+                depth += (lines[j].match(/\{/g) || []).length;
+                depth -= (lines[j].match(/\}/g) || []).length;
+                if (depth <= 0) {
+                    endLine = j;
+                    break;
+                }
+            }
+            // Check if 'as const' follows the closing brace
+            const closingLine = lines[endLine] || '';
+            if (!closingLine.includes('as const')) {
+                violations.push({
+                    rule: 'modifiers',
+                    severity: 'info',
+                    line: i + 1,
+                    column: line.indexOf('return') + 1,
+                    current: 'return { ... }',
+                    suggestion: 'return { ... } as const',
+                    fix: `// Add 'as const' to preserve literal types:\n// return {\n//   key: 'value',\n// } as const`,
+                    why: "'as const' on returned object literals preserves literal types ('light' instead of string), enabling exhaustive checks and autocomplete.",
+                });
+            }
+        }
+    }
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         const trimmed = line.trim();
@@ -176,7 +251,7 @@ export function checkModifiers(source, filePath) {
 }
 function findObjectEnd(lines, startLine) {
     let depth = 0;
-    for (const i = startLine; i < lines.length; i++) {
+    for (let i = startLine; i < lines.length; i++) {
         depth += (lines[i].match(/{/g) || []).length;
         depth -= (lines[i].match(/}/g) || []).length;
         if (depth === 0 && i > startLine)

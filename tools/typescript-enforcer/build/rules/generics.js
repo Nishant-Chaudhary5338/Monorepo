@@ -11,6 +11,45 @@ export function checkGenerics(source, filePath) {
         // Skip comments
         if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*'))
             continue;
+        // Pattern 0: React hooks without explicit type parameters
+        // e.g., useRef(null) → useRef<HTMLInputElement>(null)
+        const hookNoTypeRegex = /\b(useRef|useMemo|useReducer|useContext)\s*\(/g;
+        let hookMatch;
+        while ((hookMatch = hookNoTypeRegex.exec(line)) !== null) {
+            const hookName = hookMatch[1];
+            // Check the character before ( to see if < type param already used
+            const upToHook = line.slice(hookMatch.index);
+            if (upToHook.startsWith(`${hookName}<`))
+                continue;
+            let suggestion = '';
+            let why = '';
+            if (hookName === 'useRef') {
+                suggestion = `useRef<HTMLElement>(null) or useRef<ReturnType<typeof setTimeout>>(null)`;
+                why = 'Untyped useRef defaults to MutableRefObject<null>. Specify the ref target type for proper DOM/timer typing.';
+            }
+            else if (hookName === 'useMemo') {
+                suggestion = `useMemo<ReturnType>(() => ...)`;
+                why = 'Explicit type param on useMemo documents the intended memoized value type and catches computation errors.';
+            }
+            else if (hookName === 'useReducer') {
+                suggestion = `useReducer<State, Action>(reducer, initialState)`;
+                why = 'Typed reducers ensure state transitions are correct and action payloads are validated.';
+            }
+            else {
+                suggestion = `${hookName}<Type>(...)`;
+                why = 'React hooks benefit from explicit type parameters for better type safety and IDE support.';
+            }
+            violations.push({
+                rule: 'generics',
+                severity: 'warning',
+                line: i + 1,
+                column: hookMatch.index + 1,
+                current: `${hookName}(...)`,
+                suggestion,
+                fix: `// Add explicit type parameter:\n// ${suggestion}`,
+                why,
+            });
+        }
         // Pattern 1: Function that casts return type but could be generic
         // e.g., function getData(): any { ... } or function parse(input: string): unknown { ... }
         const castReturnRegex = /function\s+(\w+)\s*\([^)]*\):\s*(any|unknown)\s*\{/;
@@ -150,7 +189,7 @@ function findFunctionContext(lines, currentLine) {
 }
 function findClassEnd(lines, startLine) {
     let depth = 0;
-    for (const i = startLine; i < lines.length; i++) {
+    for (let i = startLine; i < lines.length; i++) {
         depth += (lines[i].match(/{/g) || []).length;
         depth -= (lines[i].match(/}/g) || []).length;
         if (depth === 0 && i > startLine)

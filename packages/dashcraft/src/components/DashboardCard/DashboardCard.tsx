@@ -614,45 +614,14 @@ export const DashboardCard = React.memo(function DashboardCard({
         />
       </WidgetActions>
 
-      {/* Settings gear — visibility controlled by settingsVisibility prop */}
-      {showSettings && (settingsVisibility === "always" || isEditMode) && widgetState && (
-        <SettingsPanel
-          id={id}
-          settings={widgetState.settings}
-          {...(onSettingsChange !== undefined && { onSettingsChange })}
-          trigger={
-            <button
-              type="button"
-              className="widget-action-btn absolute top-2 right-2
-                flex items-center justify-center
-                w-6 h-6 rounded-md
-                bg-white/80 dark:bg-gray-800/80
-                border border-gray-200/50 dark:border-gray-700/50
-                text-gray-500 dark:text-gray-400
-                hover:text-gray-700 dark:hover:text-gray-200
-                hover:bg-white dark:hover:bg-gray-800
-                hover:border-gray-300 dark:hover:border-gray-600
-                shadow-sm hover:shadow-md
-                transition-all duration-200 ease-in-out
-                opacity-60 hover:opacity-100
-                cursor-pointer pointer-events-auto z-10"
-              title="Widget settings"
-              aria-label="Widget settings"
-            >
-              <Settings size={14} />
-            </button>
-          }
-        />
-      )}
-
-      {/* Delete button — visible in edit mode when deletable */}
+      {/* Delete button — top-right, visible in edit mode when deletable */}
       {isEditMode && deletable && (
         <button
           type="button"
           onClick={handleDelete}
-          className="widget-action-btn absolute top-2 right-10
+          className="widget-action-btn absolute top-1 right-1
             flex items-center justify-center
-            w-6 h-6 rounded-md
+            w-5 h-5 rounded
             bg-white/80
             border border-gray-200/50
             text-red-400
@@ -666,12 +635,43 @@ export const DashboardCard = React.memo(function DashboardCard({
           title="Delete widget"
           aria-label="Delete widget"
         >
-          <Trash2 size={13} />
+          <Trash2 size={11} />
         </button>
       )}
 
+      {/* Settings gear — bottom-left, visibility controlled by settingsVisibility prop */}
+      {showSettings && (settingsVisibility === "always" || isEditMode) && widgetState && (
+        <SettingsPanel
+          id={id}
+          settings={widgetState.settings}
+          {...(onSettingsChange !== undefined && { onSettingsChange })}
+          trigger={
+            <button
+              type="button"
+              className="widget-action-btn absolute bottom-1 right-7
+                flex items-center justify-center
+                w-5 h-5 rounded
+                bg-white/80
+                border border-gray-200/50
+                text-gray-500
+                hover:text-gray-700
+                hover:bg-white
+                hover:border-gray-300
+                shadow-sm hover:shadow-md
+                transition-all duration-200 ease-in-out
+                opacity-60 hover:opacity-100
+                cursor-pointer pointer-events-auto z-10"
+              title="Widget settings"
+              aria-label="Widget settings"
+            >
+              <Settings size={12} />
+            </button>
+          }
+        />
+      )}
+
       {/* Content — lightweight placeholder when off-screen */}
-      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-8">
+      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-6">
         <div className="flex-1 min-h-0 min-w-0 w-full h-full">
           {isVisible ? content : <div className="w-full h-full min-h-25" />}
         </div>

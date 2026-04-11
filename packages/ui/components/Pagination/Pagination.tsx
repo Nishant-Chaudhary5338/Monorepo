@@ -1,7 +1,9 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
+import { paginationLinkVariants } from "./Pagination.variants"
 import type {
   PaginationProps,
   PaginationContentProps,
@@ -45,22 +47,13 @@ PaginationItem.displayName = "PaginationItem"
 const PaginationLink = ({
   className,
   isActive,
-  size = "icon",
+  size = "default",
+  variant = "default",
   ...props
-}: PaginationLinkProps) => (
+}: PaginationLinkProps & VariantProps<typeof paginationLinkVariants>) => (
   <button
     aria-current={isActive ? "page" : undefined}
-    className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-      isActive
-        ? "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-        : "hover:bg-accent hover:text-accent-foreground",
-      size === "default" && "h-10 px-4 py-2",
-      size === "sm" && "h-9 rounded-md px-3",
-      size === "lg" && "h-11 rounded-md px-8",
-      size === "icon" && "h-10 w-10",
-      className
-    )}
+    className={cn(paginationLinkVariants({ variant, size, isActive }), className)}
     {...props}
   />
 )
@@ -68,12 +61,15 @@ PaginationLink.displayName = "PaginationLink"
 
 const PaginationPrevious = ({
   className,
+  size,
+  variant,
   ...props
-}: PaginationPreviousProps) => (
+}: PaginationPreviousProps & VariantProps<typeof paginationLinkVariants>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5", className)}
+    size={size ?? "default"}
+    variant={variant}
+    className={cn("gap-1 pl-2.5 w-auto px-3", className)}
     {...props}
   >
     <ChevronLeft className="w-4 h-4" />
@@ -84,12 +80,15 @@ PaginationPrevious.displayName = "PaginationPrevious"
 
 const PaginationNext = ({
   className,
+  size,
+  variant,
   ...props
-}: PaginationNextProps) => (
+}: PaginationNextProps & VariantProps<typeof paginationLinkVariants>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5", className)}
+    size={size ?? "default"}
+    variant={variant}
+    className={cn("gap-1 pr-2.5 w-auto px-3", className)}
     {...props}
   >
     <span>Next</span>
@@ -121,4 +120,5 @@ export {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  paginationLinkVariants,
 }

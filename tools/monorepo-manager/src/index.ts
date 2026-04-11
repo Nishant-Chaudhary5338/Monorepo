@@ -185,12 +185,63 @@ class MonorepoManagerServer extends McpServerBase {
   }
 
   protected registerTools(): void {
-    
+    this.addTool(
+      'list_packages',
+      'List all packages in the monorepo workspace with their metadata',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+          filter: {
+            type: 'string',
+            enum: ['all', 'app', 'package', 'tool', 'config'],
+            description: 'Filter by package type (default: all)',
+          },
+        },
+      },
+      async (args) => this.success(this.handleListPackages(args))
+    );
 
-    
+    this.addTool(
+      'find_dependents',
+      'Find all packages that depend on a given package',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+          package: { type: 'string', description: 'Package name to find dependents of' },
+        },
+        required: ['package'],
+      },
+      async (args) => this.success(this.handleFindDependents(args))
+    );
+
+    this.addTool(
+      'dependency_graph',
+      'Build the full workspace dependency graph and detect circular dependencies',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleDependencyGraph(args))
+    );
+
+    this.addTool(
+      'check_health',
+      'Run a workspace health check: detect version mismatches, missing scripts, and orphaned packages',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleCheckHealth(args))
+    );
   }
 
-  private handleListPackages(args: unknown) {
+  private handleListPackages(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const filter = args?.filter || 'all';
     const workspace = getWorkspaceInfo(root);
@@ -223,7 +274,7 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleFindDependents(args: unknown) {
+  private handleFindDependents(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const targetPkg = args.package;
     const workspace = getWorkspaceInfo(root);
@@ -244,7 +295,7 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleDependencyGraph(args: unknown) {
+  private handleDependencyGraph(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const workspace = getWorkspaceInfo(root);
     const graph = getDependencyGraph(workspace.packages);
@@ -285,7 +336,7 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleCheckHealth(args: unknown) {
+  private handleCheckHealth(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const workspace = getWorkspaceInfo(root);
     const issues: unknown[] = [];
@@ -372,7 +423,7 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleRunAcrossPackages(args: unknown) {
+  private handleRunAcrossPackages(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const command = args.command;
     const filter = args?.filter || 'all';
@@ -416,9 +467,9 @@ class MonorepoManagerServer extends McpServerBase {
       }
     }
 
-    const succeeded = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success && !r.skipped).length;
-    const skipped = results.filter(r => r.skipped).length;
+    const succeeded = results.filter((r: any) => r.success).length;
+    const failed = results.filter((r: any) => !r.success && !r.skipped).length;
+    const skipped = results.filter((r: any) => r.skipped).length;
 
     return {
       content: [{
@@ -432,9 +483,10 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleFindSharedDeps(args: unknown) {
-    const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-    const minPackages = args?.minPackages || 2;
+  private handleFindSharedDeps(args: any) {
+    const a = args as Record<string, unknown>;
+    const root = a?.root ? path.resolve(a.root as string) : findMonorepoRoot(process.cwd());
+    const minPackages = (a?.minPackages as number) || 2;
     const workspace = getWorkspaceInfo(root);
 
     const depUsage = new Map<string, Set<string>>();
@@ -473,9 +525,10 @@ class MonorepoManagerServer extends McpServerBase {
     };
   }
 
-  private handleSyncConfig(args: unknown) {
-    const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-    const configFile = args.configFile;
+  private handleSyncConfig(args: any) {
+    const a = args as Record<string, unknown>;
+    const root = a?.root ? path.resolve(a.root as string) : findMonorepoRoot(process.cwd());
+    const configFile = a.configFile as string;
     const workspace = getWorkspaceInfo(root);
 
     const configContents = new Map<string, string[]>();

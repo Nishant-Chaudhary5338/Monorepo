@@ -198,7 +198,7 @@ function parseArgs(args) {
         dryRun: false,
         backup: true,
     };
-    for (const i = 0; i < args.length; i++) {
+    for (let i = 0; i < args.length; i++) {
         const arg = args[i];
         switch (arg) {
             case '--path':

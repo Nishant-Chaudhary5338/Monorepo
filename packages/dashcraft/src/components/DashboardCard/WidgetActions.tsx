@@ -6,7 +6,7 @@ import { useDashboardStore } from "../../store";
 // Action Button Position
 // ============================================================
 
-export type ActionButtonPosition = "top-left" | "top-right" | "bottom-left" | "bottom-right";
+export type ActionButtonPosition = "top-left" | "top-left-second" | "top-right" | "bottom-left" | "bottom-right";
 
 // ============================================================
 // WidgetActionButton Props
@@ -34,10 +34,11 @@ export interface WidgetActionButtonProps {
 // ============================================================
 
 const positionStyles: Record<ActionButtonPosition, string> = {
-  "top-left": "top-2 left-2",
-  "top-right": "top-2 right-2",
-  "bottom-left": "bottom-2 left-2",
-  "bottom-right": "bottom-2 right-2",
+  "top-left": "top-1 left-1",
+  "top-left-second": "top-1 left-7",
+  "top-right": "top-1 right-1",
+  "bottom-left": "bottom-1 left-1",
+  "bottom-right": "bottom-1 right-1",
 };
 
 // ============================================================
@@ -60,20 +61,21 @@ export const WidgetActionButton = React.memo(function WidgetActionButton({
   return (
     <button
       type="button"
-      className={`widget-action-btn absolute ${positionStyles[position]} 
-        flex items-center justify-center 
-        w-6 h-6 rounded-md
-        bg-white/80 dark:bg-gray-800/80
-        border border-gray-200/50 dark:border-gray-700/50
-        text-gray-500 dark:text-gray-400
-        hover:text-gray-700 dark:hover:text-gray-200
-        hover:bg-white dark:hover:bg-gray-800
-        hover:border-gray-300 dark:hover:border-gray-600
+      className={`widget-action-btn absolute ${positionStyles[position]}
+        flex items-center justify-center
+        w-5 h-5 rounded
+        bg-white/80
+        border border-gray-200/50
+        text-gray-500
+        hover:text-gray-700
+        hover:bg-white
+        hover:border-gray-300
         shadow-sm hover:shadow-md
         transition-all duration-200 ease-in-out
         opacity-60 hover:opacity-100
         cursor-pointer
         pointer-events-auto
+        z-10
         ${className}`}
       onClick={onClick}
       title={tooltip}
@@ -151,7 +153,7 @@ export const DragHandleButton = React.memo(function DragHandleButton({
   return (
     <WidgetActionButton
       position="top-left"
-      icon={<GripVertical size={14} />}
+      icon={<GripVertical size={11} />}
       tooltip="Drag to move"
       visible={visible}
       className={`cursor-grab active:cursor-grabbing ${className}`}
@@ -230,28 +232,29 @@ export const ResizeHandleButton = React.memo(function ResizeHandleButton({
     <button
       type="button"
       data-resize-handle-btn=""
-      className={`widget-action-btn absolute ${positionStyles[position]} 
-        flex items-center justify-center 
-        w-6 h-6 rounded-md
-        bg-white/80 dark:bg-gray-800/80
-        border border-gray-200/50 dark:border-gray-700/50
-        text-gray-500 dark:text-gray-400
-        hover:text-gray-700 dark:hover:text-gray-200
-        hover:bg-white dark:hover:bg-gray-800
-        hover:border-gray-300 dark:hover:border-gray-600
+      className={`widget-action-btn absolute ${positionStyles[position]}
+        flex items-center justify-center
+        w-5 h-5 rounded
+        bg-white/80
+        border border-gray-200/50
+        text-gray-500
+        hover:text-gray-700
+        hover:bg-white
+        hover:border-gray-300
         shadow-sm hover:shadow-md
         transition-all duration-200 ease-in-out
         opacity-60 hover:opacity-100
-        cursor-pointer
+        cursor-nwse-resize
         pointer-events-auto
-        cursor-nwse-resize ${className}`}
+        z-10
+        ${className}`}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       title="Resize widget"
       aria-label="Resize widget"
       style={style}
     >
-      <MoveDiagonal size={12} />
+      <MoveDiagonal size={10} />
     </button>
   );
 });

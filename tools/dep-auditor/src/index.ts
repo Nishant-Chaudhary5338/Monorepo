@@ -96,12 +96,58 @@ class DepAuditorServer extends McpServerBase {
   }
 
   protected registerTools(): void {
-    
+    this.addTool(
+      'find_unused_deps',
+      'Find declared dependencies that are not imported anywhere in the package source files',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+          package: { type: 'string', description: 'Target package name to audit (all packages if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleFindUnusedDeps(args))
+    );
 
-    
+    this.addTool(
+      'find_duplicate_deps',
+      'Find dependencies declared with different versions across monorepo packages',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleFindDuplicateDeps(args))
+    );
+
+    this.addTool(
+      'check_outdated',
+      'Compare declared dependency versions against installed and latest npm versions',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+          package: { type: 'string', description: 'Target package name (all packages if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleCheckOutdated(args))
+    );
+
+    this.addTool(
+      'analyze_bundle_impact',
+      'Estimate the bundle size contribution of each dependency using node_modules sizes',
+      {
+        type: 'object',
+        properties: {
+          root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+        },
+      },
+      async (args) => this.success(this.handleAnalyzeBundleImpact(args))
+    );
   }
 
-  private handleFindUnusedDeps(args: unknown) {
+  private handleFindUnusedDeps(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const targetPackage = args?.package;
     const packages = getAllPackages(root);
@@ -113,8 +159,8 @@ class DepAuditorServer extends McpServerBase {
 
     for (const pkg of filtered) {
       const declaredDeps = new Set([
-        ...Object.keys(pkg.pkg.dependencies || {}),
-        ...Object.keys(pkg.pkg.devDependencies || {}),
+        ...Object.keys((pkg.pkg as any).dependencies || {}),
+        ...Object.keys((pkg.pkg as any).devDependencies || {}),
       ]);
 
       // Scan src for actual imports
@@ -162,7 +208,7 @@ class DepAuditorServer extends McpServerBase {
     };
   }
 
-  private handleFindDuplicateDeps(args: unknown) {
+  private handleFindDuplicateDeps(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const packages = getAllPackages(root);
 
@@ -207,7 +253,7 @@ class DepAuditorServer extends McpServerBase {
     };
   }
 
-  private handleCheckOutdated(args: unknown) {
+  private handleCheckOutdated(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const targetPackage = args?.package;
     const packages = getAllPackages(root);
@@ -283,15 +329,15 @@ class DepAuditorServer extends McpServerBase {
     };
   }
 
-  private handleAnalyzeBundleImpact(args: unknown) {
+  private handleAnalyzeBundleImpact(args: any) {
     const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
     const packages = getAllPackages(root);
 
     const analysis: unknown[] = [];
 
     for (const pkg of packages) {
-      const prodDeps = new Set(Object.keys(pkg.pkg.dependencies || {}));
-      const devDeps = new Set(Object.keys(pkg.pkg.devDependencies || {}));
+      const prodDeps = new Set(Object.keys((pkg.pkg as any).dependencies || {}));
+      const devDeps = new Set(Object.keys((pkg.pkg as any).devDependencies || {}));
 
       const srcDir = path.join(pkg.path, 'src');
       const sourceFiles = scanSourceFiles(srcDir);
@@ -333,9 +379,10 @@ class DepAuditorServer extends McpServerBase {
     };
   }
 
-  private handleFindUndeclaredDeps(args: unknown) {
-    const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-    const targetPackage = args?.package;
+  private handleFindUndeclaredDeps(args: any) {
+    const a = args as Record<string, unknown>;
+    const root = a?.root ? path.resolve(a.root as string) : findMonorepoRoot(process.cwd());
+    const targetPackage = a?.package;
     const packages = getAllPackages(root);
     const workspaceNames = new Set(packages.map(p => p.name));
 
@@ -347,8 +394,8 @@ class DepAuditorServer extends McpServerBase {
 
     for (const pkg of filtered) {
       const declaredDeps = new Set([
-        ...Object.keys(pkg.pkg.dependencies || {}),
-        ...Object.keys(pkg.pkg.devDependencies || {}),
+        ...Object.keys((pkg.pkg as any).dependencies || {}),
+        ...Object.keys((pkg.pkg as any).devDependencies || {}),
       ]);
 
       const srcDir = path.join(pkg.path, 'src');
@@ -375,7 +422,7 @@ class DepAuditorServer extends McpServerBase {
       }
     }
 
-    const totalUndeclared = results.reduce((sum, r) => sum + r.undeclaredDeps.length, 0);
+    const totalUndeclared = results.reduce((sum, r) => sum + (r as any).undeclaredDeps.length, 0);
 
     return {
       content: [{
@@ -384,7 +431,7 @@ class DepAuditorServer extends McpServerBase {
           summary: `Found ${totalUndeclared} undeclared (phantom) dependencies across ${results.length} packages`,
           packagesChecked: filtered.length,
           results,
-          recommendation: totalUndeclared > 0
+          recommendation: (totalUndeclared as number) > 0
             ? 'Add these to package.json dependencies to prevent breakage when hoisting changes'
             : 'No phantom dependencies detected',
         }, null, 2),
@@ -392,9 +439,10 @@ class DepAuditorServer extends McpServerBase {
     };
   }
 
-  private handleDepSizes(args: unknown) {
-    const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-    const topN = args?.topN || 20;
+  private handleDepSizes(args: any) {
+    const a = args as Record<string, unknown>;
+    const root = a?.root ? path.resolve(a.root as string) : findMonorepoRoot(process.cwd());
+    const topN = (a?.topN as number) || 20;
 
     const nmPath = path.join(root, 'node_modules');
     if (!fs.existsSync(nmPath)) {

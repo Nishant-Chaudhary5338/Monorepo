@@ -9,6 +9,8 @@ import { JSONPanel } from '../components/panels/JSONPanel'
 import { ExportPanel } from '../components/panels/ExportPanel'
 import { useBuilderStore } from '../stores/builderStore'
 import { useDashboardStore } from '@repo/dashcraft'
+import { generateSchema, generateDiff } from '../ai/aiClient'
+import { applyPatches } from '../lib/diffPatcher'
 import type { AIDashboardSchema } from '../types/schema'
 
 // ─── seed schema ─────────────────────────────────────────────────────────────
@@ -101,17 +103,22 @@ export function Builder() {
     activeVersionId,
     isGenerating,
     streamingStatus,
-    isOllamaOnline,
+    provider,
+    model,
     addVersion,
     setActiveVersion,
     deleteVersion,
     updateSchema,
-    setOllamaOnline,
+    setGenerating,
+    setStreamingStatus,
+    setProvider,
+    setModel,
     hydrate,
     activeSchema,
   } = useBuilderStore()
 
   const [rightTab, setRightTab] = useState<RightTab>('json')
+  const [aiError, setAiError] = useState<string | null>(null)
 
   const schema = activeSchema()
   const activeId = activeVersionId ?? 'seed'
@@ -131,21 +138,7 @@ export function Builder() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ── Poll Ollama every 5s ───────────────────────────────────────────────────
-  useEffect(() => {
-    const check = () => {
-      fetch('http://localhost:11434/api/tags')
-        .then((r) => setOllamaOnline(r.ok))
-        .catch(() => setOllamaOnline(false))
-    }
-    check()
-    const id = setInterval(check, 5000)
-    return () => clearInterval(id)
-  }, [setOllamaOnline])
-
   // ── Phase 5: Canvas → JSON sync ────────────────────────────────────────────
-  // Subscribe to dashcraft store: when widgets are dragged/resized/deleted/settings-changed,
-  // merge state back into our schema so JSON panel stays in sync.
   useEffect(() => {
     const unsub = useDashboardStore.subscribe((dashState) => {
       const current = useBuilderStore.getState().activeSchema()
@@ -153,7 +146,6 @@ export function Builder() {
 
       const dashIds = new Set(Object.keys(dashState.widgets))
 
-      // Filter out widgets deleted via dashcraft trash button
       const surviving = current.widgets.filter((w) => dashIds.has(w.id))
 
       const updatedWidgets = surviving.map((w) => {
@@ -166,7 +158,6 @@ export function Builder() {
         }
       })
 
-      // Only write if something changed (avoid infinite loop)
       const sizeChanged = updatedWidgets.some((uw, i) => {
         const orig = current.widgets[i]
         return (
@@ -183,13 +174,82 @@ export function Builder() {
     return unsub
   }, [])
 
-  // ── Handlers ───────────────────────────────────────────────────────────────
+  // ── AI prompt handler ──────────────────────────────────────────────────────
 
-  const handlePromptSubmit = useCallback((prompt: string) => {
-    // Phase 2: AI generation — placeholder for now
-    console.log('[Builder] prompt:', prompt)
-    alert(`Phase 2 not yet built.\n\nYour prompt: "${prompt}"\n\nEdit the seed schema using the JSON panel on the right.`)
-  }, [])
+  const handlePromptSubmit = useCallback(async (prompt: string) => {
+    setAiError(null)
+    const currentSchema = useBuilderStore.getState().activeSchema()
+    const isDiff = Boolean(currentSchema)
+    const { provider: p, model: m } = useBuilderStore.getState()
+
+    if (isDiff && currentSchema) {
+      // ── Diff mode: patch existing schema ───────────────────────────────────
+      setGenerating(true, 'Generating changes...')
+
+      try {
+        const patches = await generateDiff(
+          prompt,
+          currentSchema,
+          m,
+          p,
+          (token) => {
+            void token // streaming token — could use for live status
+            setStreamingStatus('Streaming patch...')
+          }
+        )
+
+        if (!patches) {
+          setAiError('Failed to generate changes. Check the console for raw output.')
+          return
+        }
+
+        const patched = applyPatches(currentSchema, patches)
+        addVersion({
+          schema: patched,
+          prompt,
+          timestamp: Date.now(),
+          diff: patches,
+        })
+      } catch (err) {
+        console.error('[Builder] Diff error:', err)
+        setAiError(`Error: ${err instanceof Error ? err.message : String(err)}`)
+      } finally {
+        setGenerating(false)
+      }
+    } else {
+      // ── Create mode: full schema generation ────────────────────────────────
+      setGenerating(true, 'Generating dashboard...')
+
+      try {
+        const newSchema = await generateSchema(
+          prompt,
+          m,
+          p,
+          (token) => {
+            void token
+            setStreamingStatus('Streaming schema...')
+          }
+        )
+
+        if (!newSchema) {
+          setAiError('Failed to generate schema. Check the console for raw output.')
+          return
+        }
+
+        addVersion({
+          schema: newSchema,
+          prompt,
+          timestamp: Date.now(),
+          isBase: true,
+        })
+      } catch (err) {
+        console.error('[Builder] Generate error:', err)
+        setAiError(`Error: ${err instanceof Error ? err.message : String(err)}`)
+      } finally {
+        setGenerating(false)
+      }
+    }
+  }, [addVersion, setGenerating, setStreamingStatus])
 
   const handleSchemaChange = useCallback(
     (updated: AIDashboardSchema) => updateSchema(updated),
@@ -218,6 +278,20 @@ export function Builder() {
         activeVersionId={activeVersionId}
         onVersionSwitch={setActiveVersion}
       />
+
+      {/* AI error banner */}
+      {aiError && (
+        <div className="shrink-0 px-4 py-2 bg-destructive/10 border-b border-destructive/30
+          flex items-center justify-between gap-2">
+          <p className="text-xs text-destructive">{aiError}</p>
+          <button
+            onClick={() => setAiError(null)}
+            className="text-xs text-destructive/70 hover:text-destructive shrink-0"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Main panels */}
       <div className="flex-1 min-h-0">
@@ -260,7 +334,6 @@ export function Builder() {
           {/* Right — JSON / Code */}
           <Panel defaultSize={28} minSize={0} collapsible className="min-w-0">
             <div className="flex flex-col h-full border-l border-border bg-card">
-              {/* Tab bar */}
               <div className="flex items-center border-b border-border shrink-0">
                 <button
                   onClick={() => setRightTab('json')}
@@ -286,7 +359,6 @@ export function Builder() {
                 </button>
               </div>
 
-              {/* Panel content */}
               <div className="flex-1 min-h-0">
                 {rightTab === 'json' ? (
                   <JSONPanel schema={schema} onChange={handleSchemaChange} />
@@ -302,11 +374,14 @@ export function Builder() {
 
       {/* Prompt bar */}
       <PromptBar
-        onSubmit={handlePromptSubmit}
+        onSubmit={(prompt) => { void handlePromptSubmit(prompt) }}
         isGenerating={isGenerating}
         streamingStatus={streamingStatus}
-        isOllamaOnline={isOllamaOnline}
         hasSchema={!!schema}
+        provider={provider}
+        model={model}
+        onProviderChange={setProvider}
+        onModelChange={setModel}
       />
     </div>
   )

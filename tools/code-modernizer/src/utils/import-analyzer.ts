@@ -197,9 +197,9 @@ export function getImportStats(files: ParsedFile[]): {
   averageImportsPerFile: number;
   mostImportedPackages: Array<{ name: string; count: number }>;
 } {
-  const totalImports = 0;
-  const relativeImports = 0;
-  const packageImports = 0;
+  let totalImports = 0;
+  let relativeImports = 0;
+  let packageImports = 0;
   const packageCounts = new Map<string, number>();
 
   for (const file of files) {
@@ -274,9 +274,9 @@ export function generateDependencyMatrix(
 ): number[][] {
   const matrix: number[][] = [];
 
-  for (const i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i++) {
     matrix[i] = [];
-    for (const j = 0; j < files.length; j++) {
+    for (let j = 0; j < files.length; j++) {
       const imports = graph.get(files[i]) || new Set();
       matrix[i][j] = imports.has(files[j]) ? 1 : 0;
     }

@@ -1,6 +1,8 @@
-/* Presentation Custom Styles — only gradients/animations not achievable with Tailwind */
+/* ============================================================
+   Presentation — Dark Cinematic Theme
+   ============================================================ */
 
-/* Gradient Text */
+/* Gradient Text Utilities */
 .gradient-text {
   background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #22c55e 100%);
   -webkit-background-clip: text;
@@ -8,78 +10,165 @@
   background-clip: text;
 }
 
-/* Slide Backgrounds — Light Theme */
-.bg-gradient-dark {
-  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+.gradient-text-violet {
+  background: linear-gradient(135deg, #a78bfa 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.bg-gradient-purple {
-  background: linear-gradient(135deg, #f8fafc 0%, #ede9fe 50%, #f5f3ff 100%);
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.bg-gradient-cyan {
-  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #ecfeff 100%);
+.gradient-text-gold {
+  background: linear-gradient(135deg, #f59e0b 0%, #fde68a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.bg-gradient-green {
-  background: linear-gradient(135deg, #f8fafc 0%, #dcfce7 50%, #f0fdf4 100%);
+/* Slide Background Variants */
+.slide-bg-void {
+  background: #050510;
 }
 
-/* Pulse glow animation for CTA */
+.slide-bg-deep {
+  background: radial-gradient(ellipse at 20% 50%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+              #050510;
+}
+
+.slide-bg-cosmos {
+  background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 100%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+              #070714;
+}
+
+.slide-bg-grid {
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+/* Pulse glow for CTA */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+  50% { box-shadow: 0 0 50px rgba(124, 58, 237, 0.6), 0 0 80px rgba(6, 182, 212, 0.2); }
 }
-
-.pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
+.pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 
 /* Slow pulse for icons */
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+  50% { opacity: 0.7; transform: scale(1.08); }
 }
+.animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
-}
-
-/* Glow animation for stat cards */
+/* Card glow */
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.1); }
-  50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.25); }
+  0%, 100% { box-shadow: 0 0 15px rgba(124, 58, 237, 0.1); }
+  50% { box-shadow: 0 0 35px rgba(124, 58, 237, 0.3), 0 0 60px rgba(6, 182, 212, 0.1); }
+}
+.animate-glow { animation: glow 3s ease-in-out infinite; }
+
+/* Float — ambient orbs */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-18px) scale(1.03); }
+}
+.animate-float { animation: float 5s ease-in-out infinite; }
+
+/* Fade up entrance */
+@keyframes fade-up-in {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up-in 0.6s ease-out forwards; }
+
+/* SVG path draw — for flowcharts */
+@keyframes path-draw {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+.animate-path-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: path-draw 1.5s ease-out forwards;
 }
 
-.animate-glow {
-  animation: glow 3s ease-in-out infinite;
+/* Flow pulse — shimmer along SVG connectors */
+@keyframes flow-pulse {
+  0% { stroke-dashoffset: 40; opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0.3; }
+}
+.animate-flow {
+  stroke-dasharray: 8 4;
+  animation: flow-pulse 1.5s linear infinite;
 }
 
-/* Trend up animation for big numbers */
+/* Shimmer — for progress bars */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Scan line — ambient effect */
+@keyframes scan-line {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+.animate-scan { animation: scan-line 4s linear infinite; }
+
+/* Grid glow pulse */
+@keyframes grid-glow {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.08; }
+}
+.animate-grid-glow { animation: grid-glow 4s ease-in-out infinite; }
+
+/* Ping dot */
+@keyframes ping-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+.animate-ping-dot { animation: ping-dot 1.5s ease-in-out infinite; }
+
+/* Slide transitions */
+@keyframes slide-in-right {
+  0% { transform: translateX(60px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes slide-in-left {
+  0% { transform: translateX(-60px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Trend */
 @keyframes trend {
-  0% { transform: translateY(5px); opacity: 0.7; }
+  0% { transform: translateY(8px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
+.animate-trend { animation: trend 0.8s ease-out forwards; }
 
-.animate-trend {
-  animation: trend 1s ease-out forwards;
-}
-
-/* Fill animation for progress bars */
+/* Fill bar */
 @keyframes fill {
   0% { width: 0%; }
 }
-
-.animate-fill {
-  animation: fill 1.5s ease-out forwards;
-}
-
-/* Floating animation for icons */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
+.animate-fill { animation: fill 1.5s ease-out forwards; }

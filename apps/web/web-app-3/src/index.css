@@ -1,13 +1,14 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
-@import "@repo/ui/styles.css";
-@import "@repo/present/styles";
 
 /* Ensure full viewport height for presentation */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
-/* App specific styles */
+* {
+  box-sizing: border-box;
+}

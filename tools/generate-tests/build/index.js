@@ -435,7 +435,7 @@ describe('${name}', () => {
 }
 function generateClassTests(info) {
     const { name, methods } = info;
-    const tests = `import { describe, it, expect, beforeEach } from 'vitest'
+    let tests = `import { describe, it, expect, beforeEach } from 'vitest'
 import { ${name} } from './${name.toLowerCase()}' // Adjust import path
 
 describe('${name}', () => {
@@ -748,7 +748,7 @@ class GenerateTestsServer {
                     results.push({ file, skipped: true, reason: 'Test file already exists' });
                     continue;
                 }
-                const testContent = '';
+                let testContent = '';
                 for (const comp of analysis.components) {
                     testContent += generateComponentTests(comp) + '\n';
                 }

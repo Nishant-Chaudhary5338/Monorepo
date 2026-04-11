@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "@repo/tailwind-config";
+@import "../../../../packages/ui/dist/index.css";
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: #09090b;
+  color: #fafafa;
+}
+
+/* Tool call card animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tool-card-enter {
+  animation: slideIn 0.25s ease-out;
+}
+
+/* Pulse for running state */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.tool-running {
+  animation: pulse-ring 1.5s ease-out infinite;
+}

@@ -16,14 +16,14 @@ import * as React from "react"
  */
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * The visual variant of the skeleton.
+   * The shape/visual variant of the skeleton.
    * @default "default"
    */
-  variant?: "default" | "shimmer" | "pulse"
-  
+  variant?: "default" | "text" | "circle" | "rect" | "card"
+
   /**
-   * Whether to show an animation effect.
-   * @default true
+   * Animation style.
+   * @default "pulse"
    */
-  animate?: boolean
+  animate?: "pulse" | "shimmer" | "none"
 }

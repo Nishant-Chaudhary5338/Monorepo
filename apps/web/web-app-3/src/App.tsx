@@ -1,37 +1,34 @@
-import { Deck, Progress } from "@repo/present";
+import SlideEngine from "./SlideEngine";
 import {
   TitleSlide,
   ProblemSlide,
-  MonorepoExplainerSlide,
-  ArchitectureSlide,
-  SolutionSlide,
+  MonorepoSlide,
+  SharedPackagesSlide,
+  AppsLayerSlide,
   TurborepoSlide,
-  FrontendAutomationSlide,
-  CostImpactSlide,
-  BeforeAfterSlide,
-  CreativitySlide,
-  TimelineSlide,
-  CallToActionSlide,
+  MCPToolsSlide,
+  WorkflowSlide,
+  ResultsSlide,
+  ROISlide,
+  CTASlide,
 } from "./slides";
 import "./presentation.css";
 
 function App() {
   return (
-    <Deck theme="light" initialSlide={0}>
+    <SlideEngine>
       <TitleSlide />
       <ProblemSlide />
-      <MonorepoExplainerSlide />
-      <SolutionSlide />
-      <ArchitectureSlide />
+      <MonorepoSlide />
+      <SharedPackagesSlide />
+      <AppsLayerSlide />
       <TurborepoSlide />
-      <FrontendAutomationSlide />
-      <CostImpactSlide />
-      <BeforeAfterSlide />
-      <CreativitySlide />
-      <TimelineSlide />
-      <CallToActionSlide />
-      <Progress />
-    </Deck>
+      <MCPToolsSlide />
+      <WorkflowSlide />
+      <ResultsSlide />
+      <ROISlide />
+      <CTASlide />
+    </SlideEngine>
   );
 }
 

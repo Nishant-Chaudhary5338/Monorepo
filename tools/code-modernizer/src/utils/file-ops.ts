@@ -2,7 +2,8 @@
 // FILE OPERATIONS - Safe file manipulation with backup support
 // ============================================================================
 
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
+import { readdir } from 'fs/promises';
 import * as path from 'path';
 import type { BackupMetadata } from '../types.js';
 
@@ -121,7 +122,7 @@ export async function listFiles(dirPath: string, extensions?: string[]): Promise
     const files: string[] = [];
 
     async function walk(currentPath: string) {
-      const entries = await fs.readdir(currentPath, { withFileTypes: true });
+      const entries = await readdir(currentPath, { withFileTypes: true });
 
       for (const entry of entries) {
         const fullPath = path.join(currentPath, entry.name);

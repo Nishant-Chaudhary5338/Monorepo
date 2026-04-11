@@ -284,7 +284,7 @@ export function ArchitectureSlide() {
         />
 
         {/* AI Watcher Header */}
-        <div className="relative mt-4 flex w-full max-w-4xl items-center justify-between rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-green-500/10 px-6 py-4 backdrop-blur-sm">
+        <div className="relative mt-4 flex w-full max-w-4xl items-center justify-between rounded-2xl border border-purple-500/30 bg-linear-to-r from-purple-500/10 via-cyan-500/10 to-green-500/10 px-6 py-4 backdrop-blur-sm">
           <div className="flex items-center gap-4">
             <div className="relative">
               <span className="text-4xl">🤖</span>
@@ -302,7 +302,7 @@ export function ArchitectureSlide() {
           <div className="flex items-center gap-3">
             <div className="relative h-6 w-40 overflow-hidden rounded-full bg-gray-800">
               <div
-                className="absolute h-full w-6 animate-pulse bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60"
+                className="absolute h-full w-6 animate-pulse bg-linear-to-r from-transparent via-cyan-400 to-transparent opacity-60"
                 style={{ left: `${scanPosition}%` }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -449,7 +449,7 @@ export function ArchitectureSlide() {
 
         {/* Footer */}
         <div className="mt-6 flex items-center gap-4">
-          <div className="rounded-full border border-purple-300 bg-gradient-to-r from-purple-100 to-cyan-100 px-6 py-2">
+          <div className="rounded-full border border-purple-300 bg-linear-to-r from-purple-100 to-cyan-100 px-6 py-2">
             <span className="font-mono text-sm font-bold text-gray-800">
               One codebase ·{" "}
               <span className="text-purple-600">AI-monitored</span> ·{" "}

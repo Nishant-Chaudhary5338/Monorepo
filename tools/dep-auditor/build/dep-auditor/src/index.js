@@ -92,6 +92,32 @@ class DepAuditorServer extends McpServerBase {
         super({ name: 'dep-auditor', version: '2.0.0' });
     }
     registerTools() {
+        this.addTool('find_unused_deps', 'Find declared dependencies that are not imported anywhere in the package source files', {
+            type: 'object',
+            properties: {
+                root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+                package: { type: 'string', description: 'Target package name to audit (all packages if omitted)' },
+            },
+        }, async (args) => this.success(this.handleFindUnusedDeps(args)));
+        this.addTool('find_duplicate_deps', 'Find dependencies declared with different versions across monorepo packages', {
+            type: 'object',
+            properties: {
+                root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+            },
+        }, async (args) => this.success(this.handleFindDuplicateDeps(args)));
+        this.addTool('check_outdated', 'Compare declared dependency versions against installed and latest npm versions', {
+            type: 'object',
+            properties: {
+                root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+                package: { type: 'string', description: 'Target package name (all packages if omitted)' },
+            },
+        }, async (args) => this.success(this.handleCheckOutdated(args)));
+        this.addTool('analyze_bundle_impact', 'Estimate the bundle size contribution of each dependency using node_modules sizes', {
+            type: 'object',
+            properties: {
+                root: { type: 'string', description: 'Monorepo root path (auto-detected if omitted)' },
+            },
+        }, async (args) => this.success(this.handleAnalyzeBundleImpact(args)));
     }
     handleFindUnusedDeps(args) {
         const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
@@ -302,8 +328,9 @@ class DepAuditorServer extends McpServerBase {
         };
     }
     handleFindUndeclaredDeps(args) {
-        const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-        const targetPackage = args?.package;
+        const a = args;
+        const root = a?.root ? path.resolve(a.root) : findMonorepoRoot(process.cwd());
+        const targetPackage = a?.package;
         const packages = getAllPackages(root);
         const workspaceNames = new Set(packages.map(p => p.name));
         const filtered = targetPackage
@@ -352,8 +379,9 @@ class DepAuditorServer extends McpServerBase {
         };
     }
     handleDepSizes(args) {
-        const root = args?.root ? path.resolve(args.root) : findMonorepoRoot(process.cwd());
-        const topN = args?.topN || 20;
+        const a = args;
+        const root = a?.root ? path.resolve(a.root) : findMonorepoRoot(process.cwd());
+        const topN = a?.topN || 20;
         const nmPath = path.join(root, 'node_modules');
         if (!fs.existsSync(nmPath)) {
             return {

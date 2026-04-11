@@ -1,0 +1,397 @@
+{
+  "candidate": {
+    "name": "Nishant Chaudhary",
+    "level": "Senior Frontend Engineer",
+    "yearsExperience": 4,
+    "currentEmployer": "Samsung Electronics",
+    "location": "New Delhi, India",
+    "targetMarkets": ["Europe Remote", "USA Remote", "India Remote"]
+  },
+
+  "additionalKeywords": [
+    "React Engineer",
+    "Senior React Engineer",
+    "Frontend Engineer",
+    "Senior Frontend Engineer",
+    "UI Engineer",
+    "Frontend Developer",
+    "Frontend Architect",
+    "Frontend Platform Engineer",
+    "JavaScript Engineer",
+    "JavaScript Developer",
+    "Next.js Developer",
+    "Next.js Engineer",
+    "TypeScript React Developer",
+    "TypeScript Frontend Engineer",
+    "React TypeScript Engineer",
+    "Design Systems Engineer",
+    "UI Component Engineer",
+    "Web Engineer",
+    "Product Engineer Frontend",
+    "Software Engineer Frontend",
+    "Full Stack Engineer (React)",
+    "React Native Developer",
+    "Mobile Frontend Engineer",
+    "Three.js Developer",
+    "WebGL Engineer",
+    "Animation Engineer",
+    "Creative Frontend Developer",
+    "Frontend Infrastructure Engineer",
+    "Vite Developer",
+    "GraphQL Frontend Engineer",
+    "Storybook",
+    "Playwright Engineer",
+    "Web Application Engineer",
+    "SPA Developer",
+    "React + AWS",
+    "Frontend Cloud Engineer"
+  ],
+
+  "targetCompanies": [
+    {
+      "name": "Vercel",
+      "careersUrl": "https://vercel.com/careers",
+      "market": "USA Remote",
+      "why": "Built Next.js, deeply React-first, fully remote, heavy TypeScript usage"
+    },
+    {
+      "name": "Supabase",
+      "careersUrl": "https://supabase.com/careers",
+      "market": "USA Remote / Global Remote",
+      "why": "100% remote, open source, actively hiring frontend engineers with React/TypeScript, modern stack"
+    },
+    {
+      "name": "Linear",
+      "careersUrl": "https://linear.app/careers",
+      "market": "USA Remote / Europe Remote",
+      "why": "Known for best-in-class UI, React + TypeScript shop, values frontend craft"
+    },
+    {
+      "name": "Shopify",
+      "careersUrl": "https://www.shopify.com/careers/disciplines/engineering-data",
+      "market": "USA Remote / Global Remote",
+      "why": "Fully distributed, React-heavy frontend infra, large engineering org, good for senior IC"
+    },
+    {
+      "name": "GitLab",
+      "careersUrl": "https://about.gitlab.com/jobs/",
+      "market": "Global Remote",
+      "why": "Fully remote company, hires in 50+ countries including India, frontend roles use modern JS frameworks"
+    },
+    {
+      "name": "Atlassian",
+      "careersUrl": "https://www.atlassian.com/company/careers/all-jobs",
+      "market": "USA Remote / Europe Remote",
+      "why": "Distributed team, large frontend codebase, design systems work, good for 4+ years experience"
+    },
+    {
+      "name": "Knack",
+      "careersUrl": "https://weworkremotely.com/remote-jobs/knack-senior-frontend-engineer-react-next-js-full-time-contract",
+      "market": "USA Remote",
+      "why": "Actively hiring Senior Frontend Engineer React/Next.js remote, values code quality and architecture"
+    },
+    {
+      "name": "Koinly",
+      "careersUrl": "https://koinly.io/careers/",
+      "market": "Europe Remote / Global Remote",
+      "why": "Actively hiring Senior Frontend with TypeScript + React, modern tooling, crypto fintech product"
+    },
+    {
+      "name": "Gr4vy",
+      "careersUrl": "https://wellfound.com/jobs/2264076-frontend-software-engineer-react-europe-remote",
+      "market": "Europe Remote",
+      "why": "Actively hiring Frontend Software Engineer (React) Europe Remote via Wellfound, React + TypeScript stack"
+    },
+    {
+      "name": "Plentific",
+      "careersUrl": "https://plentific.com/en-gb/careers/",
+      "market": "Europe Remote (Portugal)",
+      "why": "Actively hiring Senior Frontend Engineer (React), listed on Wellfound, JS/React/TypeScript stack"
+    },
+    {
+      "name": "Razorpay",
+      "careersUrl": "https://razorpay.com/jobs-frontend/",
+      "market": "India Remote",
+      "why": "Dedicated frontend careers page, strong React culture, high-scale fintech product, 5+ yrs preferred"
+    },
+    {
+      "name": "BrowserStack",
+      "careersUrl": "https://www.browserstack.com/careers",
+      "market": "India Remote / Global Remote",
+      "why": "Indian SaaS unicorn with global engineering, frontend-heavy developer tooling product, Mumbai/Bangalore"
+    },
+    {
+      "name": "Postman",
+      "careersUrl": "https://www.postman.com/company/careers/",
+      "market": "India Remote / USA Remote",
+      "why": "Developer tooling, React-heavy frontend, distributed teams, India-first hiring"
+    },
+    {
+      "name": "PhonePe",
+      "careersUrl": "https://www.phonepe.com/careers/",
+      "market": "India Remote",
+      "why": "High-scale fintech, active frontend hiring, React and Next.js stack, top Indian product company"
+    },
+    {
+      "name": "Zepto",
+      "careersUrl": "https://www.zeptonow.com/careers",
+      "market": "India Remote",
+      "why": "YC-backed fast commerce unicorn, hiring React/React Native frontend engineers, high growth"
+    },
+    {
+      "name": "CRED",
+      "careersUrl": "https://careers.cred.club/",
+      "market": "India Remote",
+      "why": "Premium Indian fintech, known for top-tier UI craft, strong React/TypeScript culture"
+    },
+    {
+      "name": "Groww",
+      "careersUrl": "https://groww.in/careers",
+      "market": "India Remote",
+      "why": "Fintech investing product, React ecosystem, strong engineering team, Series D+ scale"
+    },
+    {
+      "name": "Hasura",
+      "careersUrl": "https://hasura.io/careers/",
+      "market": "India Remote / Global Remote",
+      "why": "GraphQL-first company (matches his GraphQL skill), distributed team, developer tooling frontend"
+    },
+    {
+      "name": "Hashnode",
+      "careersUrl": "https://hashnode.com/careers",
+      "market": "India Remote / Global Remote",
+      "why": "Remote-first Indian product company, React/Next.js stack, developer-focused platform"
+    },
+    {
+      "name": "Meesho",
+      "careersUrl": "https://meesho.io/careers",
+      "market": "India Remote",
+      "why": "Social commerce unicorn, strong frontend engineering team, React ecosystem, high scale"
+    },
+    {
+      "name": "BoWatt",
+      "careersUrl": "https://wellfound.com/company/bowatt",
+      "market": "Europe Remote (Germany)",
+      "why": "Actively hiring Senior Full-Stack Engineer (React), offers â¬70-100k + equity, bootstrapped profitable"
+    },
+    {
+      "name": "Voxel51",
+      "careersUrl": "https://voxel51.com/careers/",
+      "market": "USA Remote",
+      "why": "Actively hiring Senior Frontend React Engineer, $180K-$220K range, remote-first AI/ML tooling company"
+    },
+    {
+      "name": "Truelogic Software",
+      "careersUrl": "https://www.truelogic.io/careers",
+      "market": "USA Remote / LATAM Remote",
+      "why": "Hiring Senior Frontend React/Animation engineer, matches Three.js + GSAP skills, 100% remote"
+    },
+    {
+      "name": "Netlify",
+      "careersUrl": "https://www.netlify.com/careers/",
+      "market": "USA Remote",
+      "why": "Fully remote, frontend-first infrastructure company, React + TypeScript culture, Vite/build tooling overlap"
+    },
+    {
+      "name": "Figma",
+      "careersUrl": "https://www.figma.com/careers/",
+      "market": "USA Remote",
+      "why": "Design tooling, heavy canvas/WebGL engineering, matches Three.js/GSAP animation skills, world-class frontend"
+    },
+    {
+      "name": "Notion",
+      "careersUrl": "https://www.notion.so/careers",
+      "market": "USA Remote",
+      "why": "Complex React editor frontend, TypeScript, distributed team, good for senior product engineers"
+    },
+    {
+      "name": "Automattic (WordPress.com / Tumblr)",
+      "careersUrl": "https://automattic.com/work-with-us/",
+      "market": "Global Remote",
+      "why": "Fully distributed since inception, hires globally including India, React + JavaScript stack"
+    },
+    {
+      "name": "Clearscore",
+      "careersUrl": "https://www.clearscore.com/careers",
+      "market": "Europe Remote (UK)",
+      "why": "Actively posting on RemoteOK, React-heavy fintech, UK-based, remote-friendly"
+    },
+    {
+      "name": "Orium",
+      "careersUrl": "https://orium.com/careers/",
+      "market": "USA Remote / Canada Remote",
+      "why": "Actively posting on RemoteOK, React/TypeScript composable commerce agency, remote-first"
+    },
+    {
+      "name": "Descript",
+      "careersUrl": "https://www.descript.com/careers",
+      "market": "USA Remote",
+      "why": "Complex browser-based editor, heavy React/TypeScript, Canvas/WebGL work, remote-friendly"
+    }
+  ],
+
+  "jobBoards": [
+    {
+      "name": "LinkedIn Jobs",
+      "url": "https://www.linkedin.com/jobs/",
+      "bestFor": "All markets â highest volume, 15,000+ React India jobs, 2000+ remote React India, essential for applications",
+      "priority": 1
+    },
+    {
+      "name": "Wellfound (AngelList Talent)",
+      "url": "https://wellfound.com/role/r/react-developer",
+      "bestFor": "USA Remote + Europe Remote startups â best for startup equity roles, direct apply to founders/engineers, very active",
+      "priority": 1
+    },
+    {
+      "name": "Naukri",
+      "url": "https://www.naukri.com/frontend-react-js-developer-jobs",
+      "bestFor": "India market â 48,000+ React jobs, 31,000+ remote frontend India, dominant Indian job board",
+      "priority": 1
+    },
+    {
+      "name": "Arc.dev",
+      "url": "https://arc.dev/remote-jobs/reactjs",
+      "bestFor": "USA Remote / Europe Remote â vetted senior developer roles, global companies, dedicated React remote listings, premium quality",
+      "priority": 1
+    },
+    {
+      "name": "RemoteOK",
+      "url": "https://remoteok.com/remote-react+typescript-jobs",
+      "bestFor": "Global remote â real-time remote-only listings, good signal-to-noise for React+TypeScript stack, $30K-$180K range",
+      "priority": 2
+    },
+    {
+      "name": "WeWorkRemotely",
+      "url": "https://weworkremotely.com/remote-jobs/search?term=React",
+      "bestFor": "USA Remote â one of the oldest and most trusted remote boards, strong US company listings",
+      "priority": 2
+    },
+    {
+      "name": "Hacker News Who Is Hiring (monthly thread)",
+      "url": "https://hnhiring.com/technologies/react",
+      "bestFor": "USA Remote / Global Remote â curated by HN community, direct engineer-to-engineer hiring, high-quality companies, scrape monthly",
+      "priority": 1
+    },
+    {
+      "name": "Himalayas",
+      "url": "https://himalayas.app/jobs/countries/india/front-end-developer",
+      "bestFor": "India Remote + Global Remote â modern remote job board, good company profiles, India-specific filtering",
+      "priority": 2
+    },
+    {
+      "name": "Cutshort",
+      "url": "https://cutshort.io/jobs/remote-reactjs-jobs",
+      "bestFor": "India market â AI-powered matching, 50+ React.js remote India jobs, startup-heavy, good for direct recruiter contact",
+      "priority": 2
+    },
+    {
+      "name": "Indeed India",
+      "url": "https://in.indeed.com/q-react-js-developer-remote-jobs.html",
+      "bestFor": "India market â 198+ React remote jobs, broad coverage, useful for MNC remote roles based in India",
+      "priority": 2
+    },
+    {
+      "name": "Cord",
+      "url": "https://cord.com/",
+      "bestFor": "Europe Remote / UK â direct access to tech hiring teams in UK, USA, and remote Europe, no recruiter middlemen",
+      "priority": 2
+    },
+    {
+      "name": "Welcome to the Jungle (formerly Otta)",
+      "url": "https://www.welcometothejungle.com/en/jobs?refinementList%5Bcontract_type_names.en%5D%5B%5D=Permanent+Contract&query=react+frontend",
+      "bestFor": "Europe Remote â European-first job board, strong employer branding, UK and EU startup focus",
+      "priority": 2
+    },
+    {
+      "name": "Remotive",
+      "url": "https://remotive.com/remote-jobs/software-dev/front-end",
+      "bestFor": "Global Remote â curated tech remote listings, hand-selected quality, good for senior roles",
+      "priority": 2
+    },
+    {
+      "name": "Landing.jobs",
+      "url": "https://landing.jobs/jobs?remote=true&skills=React",
+      "bestFor": "Europe Remote â European-focused, personalized matching, detailed company profiles, Portugal/Spain/Germany heavy",
+      "priority": 2
+    },
+    {
+      "name": "DailyRemote",
+      "url": "https://dailyremote.com/remote-frontend-jobs",
+      "bestFor": "Global Remote â aggregates remote frontend jobs, 697+ new listings in March 2026, good breadth",
+      "priority": 3
+    },
+    {
+      "name": "Remote Rocketship",
+      "url": "https://www.remoterocketship.com/country/europe/jobs/frontend-engineer/",
+      "bestFor": "Europe Remote â Europe-specific frontend listings, React + TypeScript filtered views available",
+      "priority": 3
+    },
+    {
+      "name": "Working Nomads",
+      "url": "https://www.workingnomads.com/remote-front-end-jobs",
+      "bestFor": "Global Remote / Europe â curated remote listings, good for timezone-flexible roles",
+      "priority": 3
+    },
+    {
+      "name": "Glassdoor",
+      "url": "https://www.glassdoor.com/Job/remote-react-frontend-engineer-jobs.htm",
+      "bestFor": "USA Remote / India â strong for researching company culture and salary bands before applying, not primary sourcing",
+      "priority": 3
+    },
+    {
+      "name": "Turing",
+      "url": "https://www.turing.com/jobs/remote-react-js-developer",
+      "bestFor": "USA Remote via India â specialized platform connecting Indian developers with US companies, handles timezone/legal, good fallback",
+      "priority": 3
+    },
+    {
+      "name": "Built In",
+      "url": "https://builtin.com/jobs/remote/dev-engineering/front-end",
+      "bestFor": "USA Remote â tech company focused board, good mid-size startup listings, US companies only",
+      "priority": 3
+    },
+    {
+      "name": "ZipRecruiter",
+      "url": "https://www.ziprecruiter.com/Jobs/Remote-React-Developer",
+      "bestFor": "USA Remote â aggregator with 474+ remote React listings, $90K-$170K band, broad US coverage",
+      "priority": 3
+    },
+    {
+      "name": "Y Combinator Jobs",
+      "url": "https://www.ycombinator.com/jobs/role/frontend-engineer",
+      "bestFor": "USA Remote / Global â YC-backed startups only, high-quality companies, Zepto/Razorpay/etc. post here, good signal",
+      "priority": 2
+    },
+    {
+      "name": "4 Day Week",
+      "url": "https://4dayweek.io/remote-jobs/frontend",
+      "bestFor": "Europe Remote / Global â curated remote listings from companies with 4-day weeks, includes Supabase and similar remote-first orgs",
+      "priority": 3
+    }
+  ],
+
+  "searchStringTemplates": [
+    "\"Senior Frontend Engineer\" React TypeScript remote",
+    "\"React Engineer\" TypeScript remote \"open to\" OR \"worldwide\" OR \"Europe\" OR \"India\"",
+    "\"Frontend Engineer\" Next.js TypeScript remote 2026",
+    "\"UI Engineer\" React TypeScript \"design systems\" remote",
+    "\"Frontend Platform Engineer\" React TypeScript remote",
+    "\"Software Engineer\" frontend React TypeScript GraphQL remote",
+    "\"Product Engineer\" React TypeScript frontend remote",
+    "React Next.js Tailwind TypeScript senior remote hire",
+    "Three.js GSAP frontend engineer remote",
+    "Vite React TypeScript senior engineer remote"
+  ],
+
+  "notes": {
+    "timezoneStrategy": "Europe Remote roles (CET/CEST) have 3.5hr overlap with IST â favorable. US Remote roles on EST have ~10.5hr gap; look for async-first companies. US PST gap is 13.5hrs â flag these as harder unless fully async.",
+    "salaryBenchmarks": {
+      "EuropeRemote": "â¬60Kââ¬95K for senior level",
+      "USARemote": "$120Kâ$220K for senior level (via platforms like Arc.dev or direct)",
+      "IndiaRemote": "â¹30Lââ¹60L+ at top Indian product companies"
+    },
+    "highPriorityBoards": ["LinkedIn", "Wellfound", "Naukri", "Arc.dev", "HN Hiring"],
+    "nicheAdvantage": "Three.js + GSAP is a rare combo â search 'animation engineer', 'creative technologist', 'WebGL engineer' for differentiated roles with less competition. Design-system experience opens roles at Atlassian, Shopify, CRED specifically."
+  }
+}

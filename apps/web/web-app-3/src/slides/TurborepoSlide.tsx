@@ -1,248 +1,168 @@
 import { useState, useEffect } from "react";
-import { SlideComponent as Slide } from "@repo/present";
-import { SlideHeader } from "../components";
+import { motion } from "framer-motion";
+import { Tooltip } from "../components/Tooltip";
+
+const benefits = [
+  {
+    label: "Manageable",
+    detail: "One repository. One git history. One place to search, refactor, and review code across all apps and packages.",
+    color: "border-violet-500/30 bg-violet-500/8",
+    accent: "text-violet-400",
+  },
+  {
+    label: "Maintainable",
+    detail: "Update a shared package once and every app gets the fix. No chasing the same bug across four repositories.",
+    color: "border-cyan-500/30 bg-cyan-500/8",
+    accent: "text-cyan-400",
+  },
+  {
+    label: "Scalable",
+    detail: "Add a new app or package without changing the build system. Turborepo's task graph scales to any number of packages.",
+    color: "border-emerald-500/30 bg-emerald-500/8",
+    accent: "text-emerald-400",
+  },
+];
 
 interface Task {
   id: string;
   label: string;
-  duration: number; // in seconds
-  cached?: boolean;
+  color: string;
+  start: number;
+  duration: number;
 }
 
-const tasks: Task[] = [
-  { id: "app1", label: "web-app-1", duration: 120 },
-  { id: "app2", label: "web-app-2", duration: 120 },
-  { id: "app3", label: "web-app-3", duration: 120 },
-  { id: "pkgs", label: "packages", duration: 60 },
+const seqTasks: Task[] = [
+  { id: "s1", label: "lint", color: "#7c3aed", start: 0, duration: 115 },
+  { id: "s2", label: "build:ui", color: "#06b6d4", start: 115, duration: 155 },
+  { id: "s3", label: "build:apps", color: "#06b6d4", start: 270, duration: 185 },
+  { id: "s4", label: "test", color: "#10b981", start: 455, duration: 160 },
+  { id: "s5", label: "typecheck", color: "#f59e0b", start: 615, duration: 120 },
 ];
 
+const parTasks: Task[] = [
+  { id: "p1", label: "lint", color: "#7c3aed", start: 0, duration: 60 },
+  { id: "p2", label: "build:ui", color: "#06b6d4", start: 0, duration: 80 },
+  { id: "p3", label: "typecheck ⚡", color: "#f59e0b", start: 0, duration: 12 },
+  { id: "p4", label: "build:apps", color: "#06b6d4", start: 80, duration: 85 },
+  { id: "p5", label: "test", color: "#10b981", start: 80, duration: 70 },
+];
+
+const SEQ_TOTAL = 735;
+const PAR_TOTAL = 170;
+const BAR_W = 260;
+
+function Gantt({ tasks, total, animated }: { tasks: Task[]; total: number; animated: boolean }) {
+  return (
+    <div className="space-y-1.5">
+      {tasks.map((t) => {
+        const left = (t.start / total) * BAR_W;
+        const width = Math.max((t.duration / total) * BAR_W, 28);
+        return (
+          <div key={t.id} className="relative h-6" style={{ width: BAR_W }}>
+            <motion.div
+              className="absolute h-full rounded flex items-center px-2 overflow-hidden"
+              style={{
+                left,
+                width,
+                background: `${t.color}22`,
+                border: `1px solid ${t.color}55`,
+                transformOrigin: "left center",
+              }}
+              initial={animated ? { scaleX: 0 } : false}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.4, delay: (t.start / total) * 0.6 + 0.1 }}
+            >
+              <span className="text-[9px] font-mono whitespace-nowrap" style={{ color: t.color }}>{t.label}</span>
+            </motion.div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function TurborepoSlide() {
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [sequentialProgress, setSequentialProgress] = useState<number[]>([0, 0, 0, 0]);
-  const [parallelProgress, setParallelProgress] = useState<number[]>([0, 0, 0, 0]);
-  const [showCache, setShowCache] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsAnimating(true);
-      startAnimation();
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const startAnimation = () => {
-    // Sequential animation - one after another
-    let seqIndex = 0;
-    const seqInterval = setInterval(() => {
-      if (seqIndex < 4) {
-        animateBar(setSequentialProgress, seqIndex, 1000);
-        seqIndex++;
-      } else {
-        clearInterval(seqInterval);
-      }
-    }, 1100);
-
-    // Parallel animation - all at once
-    setTimeout(() => {
-      for (let i = 0; i < 4; i++) {
-        setTimeout(() => {
-          animateBar(setParallelProgress, i, 800);
-        }, i * 100);
-      }
-    }, 500);
-
-    // Show cache indicator
-    setTimeout(() => setShowCache(true), 2000);
-  };
-
-  const animateBar = (
-    setter: React.Dispatch<React.SetStateAction<number[]>>,
-    index: number,
-    duration: number
-  ) => {
-    const startTime = Date.now();
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(100, (elapsed / duration) * 100);
-      setter((prev) => {
-        const next = [...prev];
-        next[index] = progress;
-        return next;
-      });
-      if (progress < 100) {
-        requestAnimationFrame(animate);
-      }
-    };
-    requestAnimationFrame(animate);
-  };
+  const [animated, setAnimated] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setAnimated(true), 300); return () => clearTimeout(t); }, []);
 
   return (
-    <Slide layout="center" title="Turborepo">
-      <div className="bg-gradient-green flex h-full w-full flex-col items-center justify-center p-10">
-        <SlideHeader
-          title="How"
-          highlight="Turborepo"
-          highlightColor="green"
-          subtitle="Parallel builds with smart caching"
-        />
+    <div className="relative w-full h-full slide-bg-deep flex flex-col items-center justify-center overflow-hidden px-16">
+      {/* Question */}
+      <motion.div
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-10"
+      >
+        <p className="text-xs tracking-[0.3em] uppercase text-amber-400/60 mb-3 font-medium">The Answer</p>
+        <p className="text-slate-400 text-base mb-1 italic">"Is it manageable? Maintainable? Scalable?"</p>
+        <h2 className="text-5xl font-black text-white">
+          Yes —{" "}
+          <span className="gradient-text-gold">Turborepo + pnpm Workspaces</span>
+        </h2>
+      </motion.div>
 
-        {/* Main Content Row */}
-        <div className="mt-6 flex w-full max-w-5xl gap-6">
-          {/* Comparison Section */}
-          <div className="flex flex-1 gap-6">
-            {/* Sequential */}
-            <div className="flex-1">
-              <div className="mb-4 flex items-center justify-center gap-2">
-                <span className="text-2xl">❌</span>
-                <h3 className="text-lg font-bold text-red-600">Sequential (Before)</h3>
-              </div>
-
-              <div className="rounded-xl border border-red-300 bg-red-50 p-5">
-                {tasks.map((task, i) => (
-                  <div key={task.id} className="mb-3 flex items-center gap-3">
-                    <span className="w-24 text-right text-xs font-medium text-gray-600">
-                      {task.label}
-                    </span>
-                    <div className="relative h-6 flex-1 overflow-hidden rounded-full bg-red-200">
-                      <div
-                        className="absolute h-full rounded-full bg-gradient-to-r from-red-400 to-red-500 transition-all duration-100"
-                        style={{ width: `${sequentialProgress[i]}%` }}
-                      />
-                      {sequentialProgress[i] > 0 && sequentialProgress[i] < 100 && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-[10px] font-bold text-white">
-                            {Math.round(sequentialProgress[i])}%
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <span className="w-10 text-right text-xs font-bold text-red-600">
-                      2m
-                    </span>
-                  </div>
-                ))}
-
-                <div className="mt-4 flex items-center justify-center gap-2 border-t border-red-200 pt-4">
-                  <span className="text-3xl font-extrabold text-red-600">8 min</span>
-                  <span className="text-sm text-gray-500">total</span>
-                </div>
-              </div>
+      <div className="flex gap-10 w-full max-w-4xl items-start">
+        {/* Build comparison */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="flex flex-col gap-4"
+        >
+          {/* Sequential */}
+          <div className="rounded-2xl bg-red-500/6 border border-red-500/20 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-red-400">Sequential — Before</span>
+              <span className="text-lg font-black text-red-400">15 min</span>
             </div>
-
-            {/* VS Arrow */}
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
-                <span className="text-2xl font-bold text-gray-400">VS</span>
-              </div>
-              <div className="mt-4 animate-pulse">
-                <span className="text-4xl">⚡</span>
-              </div>
-            </div>
-
-            {/* Parallel */}
-            <div className="flex-1">
-              <div className="mb-4 flex items-center justify-center gap-2">
-                <span className="text-2xl">✅</span>
-                <h3 className="text-lg font-bold text-green-600">Parallel (After)</h3>
-              </div>
-
-              <div className="rounded-xl border border-green-300 bg-green-50 p-5">
-                {tasks.map((task, i) => (
-                  <div key={task.id} className="mb-3 flex items-center gap-3">
-                    <span className="w-24 text-right text-xs font-medium text-gray-600">
-                      {task.label}
-                    </span>
-                    <div className="relative h-6 flex-1 overflow-hidden rounded-full bg-green-200">
-                      <div
-                        className="absolute h-full rounded-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-100"
-                        style={{ width: `${parallelProgress[i]}%` }}
-                      />
-                      {parallelProgress[i] > 0 && parallelProgress[i] < 100 && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-[10px] font-bold text-white">
-                            {Math.round(parallelProgress[i])}%
-                          </span>
-                        </div>
-                      )}
-                      {parallelProgress[i] === 100 && showCache && (
-                        <div className="absolute right-1 top-1/2 -translate-y-1/2">
-                          <span className="animate-pulse text-xs">⚡</span>
-                        </div>
-                      )}
-                    </div>
-                    <span className="w-10 text-right text-xs font-bold text-green-600">
-                      {i === 3 ? "1m" : "2m"}
-                    </span>
-                  </div>
-                ))}
-
-                <div className="mt-4 flex items-center justify-center gap-2 border-t border-green-200 pt-4">
-                  <span className="text-3xl font-extrabold text-green-600">2 min</span>
-                  <span className="text-sm text-gray-500">total</span>
-                </div>
-              </div>
-            </div>
+            <Gantt tasks={seqTasks} total={SEQ_TOTAL} animated={animated} />
           </div>
-
-          {/* Turborepo Metrics Panel */}
-          <div className="flex w-44 flex-col gap-3">
-            <div
-              className={`flex items-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 transition-all duration-500 ${
-                showCache ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-            >
-              <span className="text-xl">💾</span>
-              <div>
-                <p className="text-xs font-bold text-amber-700">Smart Caching</p>
-                <p className="text-[10px] text-gray-500">Build once, reuse</p>
-              </div>
+          {/* Parallel */}
+          <div className="rounded-2xl bg-emerald-500/6 border border-emerald-500/20 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-emerald-400">Parallel — After</span>
+              <span className="text-lg font-black text-emerald-400">2 min</span>
             </div>
+            <Gantt tasks={parTasks} total={PAR_TOTAL} animated={animated} />
+            <p className="text-[9px] text-slate-600 mt-2 font-mono">⚡ = remote cache hit (zero rebuild)</p>
+          </div>
+        </motion.div>
 
-            <div
-              className={`flex items-center gap-2 rounded-xl border border-cyan-300 bg-cyan-50 px-4 py-3 transition-all duration-500 ${
-                showCache ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-              style={{ transitionDelay: "150ms" }}
-            >
-              <span className="text-xl">🔄</span>
-              <div>
-                <p className="text-xs font-bold text-cyan-700">90% Cache Hits</p>
-                <p className="text-[10px] text-gray-500">Most builds instant</p>
-              </div>
-            </div>
+        {/* Right: what it solves */}
+        <div className="flex-1 flex flex-col gap-4 mt-2">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.35, duration: 0.5 }}
+            className="text-center rounded-2xl bg-white/4 border border-white/8 px-6 py-5 mb-1"
+          >
+            <div className="text-5xl font-black gradient-text-gold mb-1">87%</div>
+            <div className="text-sm text-slate-400">Faster builds</div>
+            <div className="text-xs text-slate-600 mt-0.5">15 min → 2 min with parallel execution + caching</div>
+          </motion.div>
 
-            <div
-              className={`flex flex-col items-center rounded-xl border border-green-300 bg-green-50 px-4 py-3 transition-all duration-500 ${
-                showCache ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-              style={{ transitionDelay: "300ms" }}
-            >
-              <span className="text-2xl font-extrabold text-green-600">75%</span>
-              <span className="text-[10px] text-gray-500">Faster Builds</span>
-            </div>
-
-            <div
-              className={`flex flex-col items-center rounded-xl border border-purple-300 bg-purple-50 px-4 py-3 transition-all duration-500 ${
-                showCache ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-              style={{ transitionDelay: "450ms" }}
-            >
-              <span className="text-2xl font-extrabold text-purple-600">30</span>
-              <span className="text-[10px] text-gray-500">Parallel Tasks</span>
-            </div>
-
-            <div
-              className={`flex flex-col items-center rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 transition-all duration-500 ${
-                showCache ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-              style={{ transitionDelay: "600ms" }}
-            >
-              <span className="text-2xl font-extrabold text-amber-600">3.5×</span>
-              <span className="text-[10px] text-gray-500">Speed Boost</span>
-            </div>
+          <div className="flex flex-col gap-3">
+            {benefits.map((b, i) => (
+              <motion.div
+                key={b.label}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.45 + i * 0.1, duration: 0.4 }}
+              >
+                <Tooltip content={b.detail}>
+                  <div
+                    className={`w-full rounded-xl border ${b.color} px-5 py-3 flex items-center gap-3 cursor-default hover:opacity-90 transition-opacity`}
+                  >
+                    <span className={`text-sm font-bold ${b.accent}`}>✓</span>
+                    <span className="text-sm font-semibold text-white/80">{b.label}</span>
+                  </div>
+                </Tooltip>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
-    </Slide>
+    </div>
   );
 }

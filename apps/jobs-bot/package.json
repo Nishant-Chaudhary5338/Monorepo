@@ -1,0 +1,27 @@
+{
+  "name": "jobs-bot",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "apply": "tsx src/commands/apply.ts",
+    "status": "tsx src/commands/status.ts",
+    "outreach": "tsx src/commands/outreach.ts",
+    "dev": "tsx watch src/commands/apply.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "better-sqlite3": "^11.0.0",
+    "chalk": "^5.3.0",
+    "node-cron": "^3.0.3",
+    "ora": "^8.0.1",
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.0.0",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.3"
+  }
+}

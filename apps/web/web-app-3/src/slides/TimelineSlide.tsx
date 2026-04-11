@@ -135,7 +135,7 @@ export function TimelineSlide() {
             <span>60% Complete</span>
           </div>
           <div className="mt-2 h-3 overflow-hidden rounded-full bg-gray-200">
-            <div className="h-full animate-fill rounded-full bg-gradient-to-r from-purple-500 via-cyan-500 to-green-500" style={{ width: "60%" }} />
+            <div className="h-full animate-fill rounded-full bg-linear-to-r from-purple-500 via-cyan-500 to-green-500" style={{ width: "60%" }} />
           </div>
         </div>
 

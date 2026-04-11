@@ -1,0 +1,288 @@
+export type ToolStatus = 'working' | 'partial';
+
+export interface ToolEntry {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  tools: string[];
+  status: ToolStatus;
+  serverName: string;
+}
+
+export const TOOLS_REGISTRY: ToolEntry[] = [
+  // ── Code Generation ──────────────────────────────────────────────────────
+  {
+    id: 'component-factory',
+    name: 'Component Factory',
+    serverName: 'component-factory',
+    category: 'Code Generation',
+    description: 'Generates complete React components with TypeScript, tests, Storybook stories, and docs from templates',
+    tools: [
+      'generate_component',
+      'scaffold_component_folder',
+      'generate_component_library',
+      'check_component_exists',
+      'review_component',
+      'generate_documentation',
+      'list_templates',
+      'fix_improvise_review',
+    ],
+    status: 'working',
+  },
+  {
+    id: 'storybook-generator',
+    name: 'Storybook Generator',
+    serverName: 'storybook-generator',
+    category: 'Code Generation',
+    description: 'Auto-generates Storybook stories for existing React components',
+    tools: ['generate_stories'],
+    status: 'working',
+  },
+  {
+    id: 'utils-scaffolder',
+    name: 'Utils Scaffolder',
+    serverName: 'utils-scaffolder',
+    category: 'Code Generation',
+    description: 'Scaffolds utility functions, hooks, and helper modules with TypeScript types',
+    tools: ['scaffold_utils'],
+    status: 'working',
+  },
+
+  // ── Transformation ────────────────────────────────────────────────────────
+  {
+    id: 'code-modernizer',
+    name: 'Code Modernizer',
+    serverName: 'code-modernizer',
+    category: 'Transformation',
+    description: 'Migrates legacy JS codebases to TypeScript, modernizes React patterns, optimizes state and API layers',
+    tools: [
+      'convert-to-typescript',
+      'add-type-definitions',
+      'extract-api-layer',
+      'state-optimizer',
+      'create-rtk-query-services',
+      'enforce-design-patterns',
+      'enforce-boundaries',
+      'optimize-components',
+      'code-modernizer',
+    ],
+    status: 'working',
+  },
+  {
+    id: 'refactor-executor',
+    name: 'Refactor Executor',
+    serverName: 'refactor-executor',
+    category: 'Transformation',
+    description: 'Executes targeted refactors: rename symbols, extract components, restructure imports',
+    tools: ['execute_refactor'],
+    status: 'working',
+  },
+  {
+    id: 'legacy-analyzer',
+    name: 'Legacy Analyzer',
+    serverName: 'legacy-analyzer',
+    category: 'Transformation',
+    description: 'Deep analysis of legacy React/CRA codebases — detects anti-patterns, generates refactor plans, maps to target structure',
+    tools: [
+      'detect-project-tech',
+      'analyze-folder-structure',
+      'analyze-components',
+      'analyze-state-management',
+      'analyze-api-layer',
+      'detect-anti-patterns',
+      'detect-duplication',
+      'generate-refactor-plan',
+      'refactor-folder-structure',
+    ],
+    status: 'working',
+  },
+
+  // ── Analysis ──────────────────────────────────────────────────────────────
+  {
+    id: 'typescript-enforcer',
+    name: 'TypeScript Enforcer',
+    serverName: 'typescript-enforcer',
+    category: 'Analysis',
+    description: 'Scans files and directories for TypeScript violations: any types, missing generics, utility types, modifiers, type guards',
+    tools: ['scan_file', 'scan_directory', 'scan_specific_rule', 'list_rules'],
+    status: 'working',
+  },
+  {
+    id: 'mcp-tool-improviser',
+    name: 'MCP Tool Improviser',
+    serverName: 'mcp-tool-improviser',
+    category: 'Analysis',
+    description: 'Meta-tool: analyzes MCP tools across 7 dimensions, generates improvement diffs, applies changes with rollback support',
+    tools: ['analyze_tool', 'batch_analyze', 'apply_improvements', 'rollback'],
+    status: 'working',
+  },
+  {
+    id: 'analyze-ui-design',
+    name: 'UI Design Analyzer',
+    serverName: 'analyze-ui-design',
+    category: 'Analysis',
+    description: 'Extracts React component blueprints from design images and PDFs using computer vision and OCR',
+    tools: ['analyze', 'analyze_and_save', 'get_formats'],
+    status: 'working',
+  },
+  {
+    id: 'dep-auditor',
+    name: 'Dependency Auditor',
+    serverName: 'dep-auditor',
+    category: 'Analysis',
+    description: 'Finds unused, duplicate, outdated, and phantom dependencies across the monorepo with bundle impact analysis',
+    tools: ['find_unused_deps', 'find_duplicate_deps', 'check_outdated', 'analyze_bundle_impact'],
+    status: 'working',
+  },
+  {
+    id: 'monorepo-manager',
+    name: 'Monorepo Manager',
+    serverName: 'monorepo-manager',
+    category: 'Analysis',
+    description: 'Lists packages, builds dependency graphs, detects circular deps, runs health checks across the workspace',
+    tools: ['list_packages', 'find_dependents', 'dependency_graph', 'check_health'],
+    status: 'working',
+  },
+  {
+    id: 'performance-audit',
+    name: 'Performance Audit',
+    serverName: 'performance-audit',
+    category: 'Analysis',
+    description: 'Detects heavy imports, memory leaks, sync operations, unoptimized images, and deep nesting in components',
+    tools: ['audit_performance'],
+    status: 'partial',
+  },
+  {
+    id: 'test-gap-analyzer',
+    name: 'Test Gap Analyzer',
+    serverName: 'test-gap-analyzer',
+    category: 'Analysis',
+    description: 'Identifies untested code paths, missing edge cases, and coverage gaps across components and utilities',
+    tools: ['analyze_test_gaps'],
+    status: 'working',
+  },
+  {
+    id: 'render-analyzer',
+    name: 'Render Analyzer',
+    serverName: 'render-analyzer',
+    category: 'Analysis',
+    description: 'Detects unnecessary re-renders, missing memoization, and prop instability in React component trees',
+    tools: ['analyze_renders'],
+    status: 'working',
+  },
+
+  // ── Review & Quality ──────────────────────────────────────────────────────
+  {
+    id: 'quality-pipeline',
+    name: 'Quality Pipeline',
+    serverName: 'quality-pipeline',
+    category: 'Review & Quality',
+    description: 'Orchestrates full QA: runs tests, performance checks, accessibility audits, linting, and TypeScript compilation in sequence',
+    tools: ['run_full_pipeline', 'run_partial_pipeline'],
+    status: 'working',
+  },
+  {
+    id: 'component-reviewer',
+    name: 'Component Reviewer',
+    serverName: 'component-reviewer',
+    category: 'Review & Quality',
+    description: 'Grades components A–F across TypeScript safety, accessibility, performance, testing, and code quality',
+    tools: ['review_component'],
+    status: 'partial',
+  },
+  {
+    id: 'component-fixer',
+    name: 'Component Fixer',
+    serverName: 'component-fixer',
+    category: 'Review & Quality',
+    description: 'Auto-fixes broken imports, missing dependencies, incorrect prop types, and improper ref forwarding',
+    tools: ['fix_component'],
+    status: 'partial',
+  },
+  {
+    id: 'component-improver',
+    name: 'Component Improver',
+    serverName: 'component-improver',
+    category: 'Review & Quality',
+    description: 'Iteratively improves components for readability, performance, and accessibility with diff previews',
+    tools: ['improve_component'],
+    status: 'working',
+  },
+  {
+    id: 'accessibility-checker',
+    name: 'Accessibility Checker',
+    serverName: 'accessibility-checker',
+    category: 'Review & Quality',
+    description: 'Checks WCAG compliance: missing alt text, ARIA labels, color contrast, keyboard navigation, and focus management',
+    tools: ['check_accessibility'],
+    status: 'working',
+  },
+  {
+    id: 'enforce-design-tokens',
+    name: 'Design Token Enforcer',
+    serverName: 'enforce-design-tokens',
+    category: 'Review & Quality',
+    description: 'Detects hardcoded colors, spacing, and font sizes — enforces design token usage across the codebase',
+    tools: ['enforce_tokens'],
+    status: 'partial',
+  },
+  {
+    id: 'lighthouse-runner',
+    name: 'Lighthouse Runner',
+    serverName: 'lighthouse-runner',
+    category: 'Review & Quality',
+    description: 'Runs Lighthouse audits on web pages, collects Core Web Vitals, and compares against baselines',
+    tools: ['run_lighthouse', 'collect_metrics', 'compare_audits', 'static_audit'],
+    status: 'partial',
+  },
+
+  // ── Testing ───────────────────────────────────────────────────────────────
+  {
+    id: 'generate-tests',
+    name: 'Test Generator',
+    serverName: 'generate-tests',
+    category: 'Testing',
+    description: 'Generates comprehensive Vitest + Testing Library test files by introspecting component props, hooks, and render behavior',
+    tools: ['generate_unit_tests', 'generate_component_tests', 'generate_hook_tests', 'generate_all_tests'],
+    status: 'working',
+  },
+  {
+    id: 'fix-failing-tests',
+    name: 'Fix Failing Tests',
+    serverName: 'fix-failing-tests',
+    category: 'Testing',
+    description: 'Diagnoses failing tests and applies targeted fixes to assertions, mocks, and async patterns',
+    tools: ['fix_tests'],
+    status: 'working',
+  },
+
+  // ── Workspace ─────────────────────────────────────────────────────────────
+  {
+    id: 'config-manager',
+    name: 'Config Manager',
+    serverName: 'config-manager',
+    category: 'Workspace',
+    description: 'Manages shared ESLint, TypeScript, Tailwind, and Vite configs across the monorepo workspace',
+    tools: ['manage_config'],
+    status: 'working',
+  },
+  {
+    id: 'json-viewer',
+    name: 'JSON Viewer',
+    serverName: 'json-viewer',
+    category: 'Workspace',
+    description: 'Formats, validates, queries (JMESPath), and diffs JSON files with pretty output',
+    tools: ['view_json', 'diff_json', 'query_json'],
+    status: 'working',
+  },
+];
+
+export const CATEGORIES = [
+  'Code Generation',
+  'Transformation',
+  'Analysis',
+  'Review & Quality',
+  'Testing',
+  'Workspace',
+] as const;

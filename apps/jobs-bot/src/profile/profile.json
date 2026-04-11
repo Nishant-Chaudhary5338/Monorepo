@@ -1,0 +1,107 @@
+{
+  "personal": {
+    "name": "Nishant Chaudhary",
+    "firstName": "Nishant",
+    "lastName": "Chaudhary",
+    "email": "nishantchaudhary5338@gmail.com",
+    "phone": "+919560025338",
+    "phoneFormatted": "+91 9560025338",
+    "location": "New Delhi, India",
+    "city": "New Delhi",
+    "country": "India",
+    "linkedin": "https://linkedin.com/in/nishantchaudhary5338",
+    "github": "https://github.com/nishantchaudhary5338",
+    "portfolio": ""
+  },
+  "experience": {
+    "totalYears": 4,
+    "currentRole": "Frontend Engineer",
+    "currentCompany": "Samsung Electronics",
+    "currentStart": "July 2024"
+  },
+  "screening": {
+    "yearsExperienceReact": "4",
+    "yearsExperienceTypeScript": "3",
+    "yearsExperienceJavaScript": "4",
+    "yearsExperienceNextJs": "2",
+    "noticePeriod": "30",
+    "noticePeriodUnit": "days",
+    "expectedSalaryINR": "negotiable",
+    "expectedSalaryUSD": "negotiable",
+    "expectedSalaryEUR": "negotiable",
+    "workAuthorization": {
+      "india": true,
+      "us": false,
+      "uk": false,
+      "europe": false,
+      "requiresSponsorship": true
+    },
+    "remotePreference": "Remote",
+    "willingToRelocate": true,
+    "gender": "Male",
+    "veteranStatus": "I am not a veteran",
+    "disabilityStatus": "I don't have a disability"
+  },
+  "commonAnswers": {
+    "Are you legally authorized to work in the United States?": "No",
+    "Will you now or in the future require sponsorship for employment visa status?": "Yes",
+    "Do you require visa sponsorship?": "Yes",
+    "Are you comfortable working remotely?": "Yes",
+    "Are you open to remote work?": "Yes",
+    "Are you able to commute to the office?": "Yes",
+    "Are you willing to relocate?": "Yes",
+    "How many years of experience do you have with React?": "4",
+    "How many years of experience do you have with TypeScript?": "3",
+    "How many years of experience do you have with JavaScript?": "4",
+    "How many years of experience do you have with Next.js?": "2",
+    "How many years of front-end development experience do you have?": "4",
+    "What is your current location?": "New Delhi, India",
+    "What is your notice period?": "30 days",
+    "Are you currently employed?": "Yes",
+    "What is your highest level of education?": "Master's Degree (pursuing)",
+    "Are you a fresher or experienced?": "Experienced",
+    "Describe yourself in one sentence": "Senior Frontend Engineer with 4+ years building high-performance React applications at Samsung Electronics, specialising in scalable architecture, design systems, and AI-assisted developer tooling.",
+    "Why do you want to work here?": "I'm drawn to roles where I can architect scalable frontend systems and contribute to meaningful products. I'm specifically interested in this opportunity because of the technical challenges involved and the chance to work with a strong team.",
+    "What are your strengths?": "Architecting scalable React/TypeScript applications, performance optimisation, building reusable design systems, and AI-driven developer tooling.",
+    "What are your salary expectations?": "I'm open to discussing a competitive compensation based on the role and location. Happy to share a specific number once we've had a chance to speak."
+  },
+  "topSkills": [
+    "React.js",
+    "Vite",
+    "Next.js",
+    "TypeScript",
+    "pnpm Workspaces",
+    "Turborepo",
+    "Monorepo Architecture",
+    "Custom MCP Tools",
+    "Frontend Automation",
+    "AI-driven Developer Tooling"
+  ],
+  "skills": [
+    "React.js", "Vite", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3",
+    "pnpm Workspaces", "Turborepo", "Monorepo", "Custom MCP Tools", "Frontend Automation",
+    "AI Developer Tooling", "Tailwind CSS", "Radix UI", "Framer Motion", "GSAP", "Three.js",
+    "Redux Toolkit", "Zustand", "RTK Query", "REST APIs", "GraphQL",
+    "Webpack", "Rollup", "Docker", "CI/CD", "GitHub Actions",
+    "Playwright", "Vitest", "Jest", "React Testing Library", "Storybook", "Cypress",
+    "AWS", "Firebase", "Azure AD", "MSAL", "OAuth 2.0", "RBAC",
+    "Node.js", "Express", "HLS.js", "Web Workers", "Service Workers",
+    "Figma", "WCAG", "Accessibility", "Performance Optimisation"
+  ],
+  "education": [
+    {
+      "degree": "Master of Computer Applications (MCA)",
+      "institution": "Chandigarh University",
+      "startYear": "2023",
+      "endYear": "Present",
+      "status": "pursuing"
+    },
+    {
+      "degree": "Bachelor of Commerce (Hons)",
+      "institution": "University of Delhi",
+      "startYear": "2013",
+      "endYear": "2016",
+      "status": "completed"
+    }
+  ]
+}

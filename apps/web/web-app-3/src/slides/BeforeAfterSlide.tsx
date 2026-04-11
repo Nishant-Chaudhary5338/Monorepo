@@ -33,7 +33,7 @@ export function BeforeAfterSlide() {
           {/* Before */}
           <div className="flex-1">
             <h3 className="mb-6 text-center text-xl font-bold text-red-500">
-              🔴 Before — Struggling
+              🔴 Before
             </h3>
             <div className="flex flex-col gap-3">
               {beforeMetrics.map((m) => (
@@ -51,18 +51,13 @@ export function BeforeAfterSlide() {
 
           {/* Arrow */}
           <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center gap-2">
-              <span className="animate-pulse text-5xl text-gray-400">→</span>
-              <span className="rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 px-4 py-1 text-xs font-bold text-white">
-                10× Better
-              </span>
-            </div>
+            <span className="animate-pulse text-5xl text-gray-400">→</span>
           </div>
 
           {/* After */}
           <div className="flex-1">
             <h3 className="mb-6 text-center text-xl font-bold text-green-600">
-              🟢 After — Thriving
+              🟢 After
             </h3>
             <div className="flex flex-col gap-3">
               {afterMetrics.map((m) => (
@@ -79,7 +74,7 @@ export function BeforeAfterSlide() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-full border border-green-300 bg-gradient-to-r from-green-100 to-cyan-100 px-8 py-3">
+        <div className="mt-8 rounded-full border border-green-300 bg-linear-to-r from-green-100 to-cyan-100 px-8 py-3">
           <span className="text-lg font-bold text-gray-800">
             From <span className="text-red-600">frustration</span> to{" "}
             <span className="text-green-600">acceleration</span>

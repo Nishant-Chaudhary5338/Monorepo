@@ -116,7 +116,7 @@ export const DashboardCardViewCycler = React.memo(function DashboardCardViewCycl
 
   return (
     <WidgetActionButton
-      position="top-right"
+      position="top-left-second"
       icon={
         <AnimatePresence mode="wait">
           <motion.span

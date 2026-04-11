@@ -1,11 +1,12 @@
 {
   "name": "code-modernizer",
   "version": "2.0.0",
+  "type": "module",
   "description": "MCP server for modernizing React codebases: TypeScript conversion, type generation, API extraction, state optimization",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --noEmitOnError false",
     "dev": "tsc --watch",
     "start": "node build/index.js"
   },

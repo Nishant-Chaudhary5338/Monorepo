@@ -1,57 +1,13 @@
-"use strict";
 // ============================================================================
 // FILE OPERATIONS - Safe file manipulation with backup support
 // ============================================================================
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createBackup = createBackup;
-exports.updateBackupMetadata = updateBackupMetadata;
-exports.readFile = readFile;
-exports.writeFile = writeFile;
-exports.renameFile = renameFile;
-exports.pathExists = pathExists;
-exports.listFiles = listFiles;
-exports.getRelativePath = getRelativePath;
-exports.resolvePath = resolvePath;
-exports.ensureDir = ensureDir;
-const fs = __importStar(require("fs-extra"));
-const path = __importStar(require("path"));
+import fs from 'fs-extra';
+import { readdir } from 'fs/promises';
+import * as path from 'path';
 /**
  * Create a timestamped backup of the project directory
  */
-async function createBackup(projectPath) {
+export async function createBackup(projectPath) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const backupPath = `${projectPath}.backup-${timestamp}`;
     await fs.copy(projectPath, backupPath, {
@@ -72,7 +28,7 @@ async function createBackup(projectPath) {
 /**
  * Update backup metadata with an operation
  */
-async function updateBackupMetadata(backupPath, operation) {
+export async function updateBackupMetadata(backupPath, operation) {
     const metadataPath = path.join(backupPath, '.backup-metadata.json');
     if (await fs.pathExists(metadataPath)) {
         const metadata = await fs.readJson(metadataPath);
@@ -83,7 +39,7 @@ async function updateBackupMetadata(backupPath, operation) {
 /**
  * Read file content safely
  */
-async function readFile(filePath) {
+export async function readFile(filePath) {
     try {
         return await fs.readFile(filePath, 'utf-8');
     }
@@ -94,7 +50,7 @@ async function readFile(filePath) {
 /**
  * Write file content
  */
-async function writeFile(filePath, content) {
+export async function writeFile(filePath, content) {
     try {
         await fs.ensureDir(path.dirname(filePath));
         await fs.writeFile(filePath, content, 'utf-8');
@@ -107,7 +63,7 @@ async function writeFile(filePath, content) {
 /**
  * Rename a file
  */
-async function renameFile(oldPath, newPath, backupPath) {
+export async function renameFile(oldPath, newPath, backupPath) {
     try {
         if (!(await fs.pathExists(oldPath))) {
             return { success: false, error: `File does not exist: ${oldPath}` };
@@ -135,17 +91,17 @@ async function renameFile(oldPath, newPath, backupPath) {
 /**
  * Check if path exists
  */
-async function pathExists(filePath) {
+export async function pathExists(filePath) {
     return fs.pathExists(filePath);
 }
 /**
  * List all files in directory recursively
  */
-async function listFiles(dirPath, extensions) {
+export async function listFiles(dirPath, extensions) {
     try {
         const files = [];
         async function walk(currentPath) {
-            const entries = await fs.readdir(currentPath, { withFileTypes: true });
+            const entries = await readdir(currentPath, { withFileTypes: true });
             for (const entry of entries) {
                 const fullPath = path.join(currentPath, entry.name);
                 if (entry.isDirectory()) {
@@ -170,19 +126,19 @@ async function listFiles(dirPath, extensions) {
 /**
  * Get relative path from project root
  */
-function getRelativePath(projectPath, filePath) {
+export function getRelativePath(projectPath, filePath) {
     return path.relative(projectPath, filePath);
 }
 /**
  * Resolve path relative to project root
  */
-function resolvePath(projectPath, relativePath) {
+export function resolvePath(projectPath, relativePath) {
     return path.resolve(projectPath, relativePath);
 }
 /**
  * Ensure directory exists
  */
-async function ensureDir(dirPath) {
+export async function ensureDir(dirPath) {
     await fs.ensureDir(dirPath);
 }
 //# sourceMappingURL=file-ops.js.map

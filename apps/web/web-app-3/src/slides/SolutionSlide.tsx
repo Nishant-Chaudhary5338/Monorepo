@@ -15,49 +15,49 @@ const pillars: Pillar[] = [
   {
     icon: "📦",
     title: "Monorepo",
-    desc: "One codebase. Shared packages. Single source of truth.",
+    desc: "Reusable components, shared types, unified DX.",
     color: "cyan",
     benefits: [
-      "Shared UI components across apps",
-      "Unified type definitions",
+      "Shared UI components across all apps",
+      "Unified TypeScript definitions",
       "Single dependency management",
-      "Cross-team collaboration",
+      "Consistent code quality standards",
     ],
     metrics: [
-      { value: "80%", label: "Code Reuse" },
-      { value: "1", label: "Source of Truth" },
+      { value: "6", label: "Shared Packages" },
+      { value: "4", label: "Production Apps" },
     ],
   },
   {
     icon: "⚡",
     title: "Turborepo",
-    desc: "30 parallel builds. Smart caching. Minutes, not hours.",
+    desc: "Parallel builds, intelligent caching, performance by default.",
     color: "purple",
     benefits: [
       "Parallel task execution",
-      "Intelligent caching",
+      "Intelligent build caching",
       "Incremental builds",
       "CI/CD optimization",
     ],
     metrics: [
-      { value: "75%", label: "Faster Builds" },
-      { value: "90%", label: "Cache Hits" },
+      { value: "Parallel", label: "Execution" },
+      { value: "Smart", label: "Caching" },
     ],
   },
   {
     icon: "🤖",
     title: "AI Tools",
-    desc: "20+ custom MCP agents automating the entire workflow.",
+    desc: "Automated code quality, UI generation from specs, test coverage.",
     color: "green",
     benefits: [
       "Automated code reviews",
-      "Component generation",
+      "Component generation from wireframes",
       "Test automation",
       "TypeScript enforcement",
     ],
     metrics: [
-      { value: "20+", label: "AI Agents" },
-      { value: "55+", label: "Hrs/Week Saved" },
+      { value: "24+", label: "MCP Tools" },
+      { value: "3", label: "Automation Layers" },
     ],
   },
 ];
@@ -110,10 +110,10 @@ export function SolutionSlide() {
     <Slide layout="center" title="The Solution">
       <div className="bg-gradient-cyan flex h-full w-full flex-col items-center justify-center p-10">
         <SlideHeader
-          title="What We"
+          title="What Was"
           highlight="Built"
           highlightColor="cyan"
-          subtitle="A powerful platform that transforms engineering"
+          subtitle="A scalable React platform built on reusable architecture"
         />
 
         {/* Animated Workflow */}
@@ -165,14 +165,13 @@ export function SolutionSlide() {
                   className={`flex min-w-[220px] flex-col items-center gap-3 rounded-2xl border-2 p-6 transition-all duration-300 ${colors.border} ${colors.bg} ${
                     isExpanded
                       ? `scale-105 shadow-xl ${colors.glow}`
-                      : "hover:scale-102 hover:shadow-lg"
+                      : "hover:shadow-lg"
                   }`}
                 >
-                  {/* Animated Icon */}
                   <div className="relative">
                     <span className="text-5xl">{pillar.icon}</span>
                     <div
-                      className={`absolute -inset-2 rounded-full bg-gradient-to-r ${colors.gradient} opacity-20 blur-md`}
+                      className={`absolute -inset-2 rounded-full bg-linear-to-r ${colors.gradient} opacity-20 blur-md`}
                     />
                   </div>
 
@@ -193,7 +192,6 @@ export function SolutionSlide() {
                     ))}
                   </div>
 
-                  {/* Expand Indicator */}
                   <span className="mt-2 text-xs text-gray-400">
                     {isExpanded ? "▼ Click to collapse" : "▶ Click for details"}
                   </span>
@@ -207,7 +205,7 @@ export function SolutionSlide() {
                 >
                   <div className="p-4">
                     <h4 className={`mb-2 text-sm font-bold ${colors.text}`}>
-                      Key Benefits:
+                      Key Capabilities:
                     </h4>
                     <ul className="flex flex-col gap-1.5">
                       {pillar.benefits.map((benefit) => (
@@ -228,7 +226,7 @@ export function SolutionSlide() {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 rounded-full border border-cyan-300 bg-gradient-to-r from-cyan-100 to-green-100 px-8 py-3">
+        <div className="mt-8 rounded-full border border-cyan-300 bg-linear-to-r from-cyan-100 to-green-100 px-8 py-3">
           <span className="text-sm font-bold text-gray-800">
             <span className="text-cyan-600">One codebase</span> ·{" "}
             <span className="text-purple-600">Parallel builds</span> ·{" "}

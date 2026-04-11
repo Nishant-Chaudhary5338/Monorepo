@@ -1,25 +1,10 @@
-"use strict";
 // ============================================================================
 // TYPE GENERATOR - Generate TypeScript type strings from AST analysis
 // ============================================================================
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generatePropsInterface = generatePropsInterface;
-exports.generateParamType = generateParamType;
-exports.generateApiResponseType = generateApiResponseType;
-exports.generateApiRequestType = generateApiRequestType;
-exports.generateStateType = generateStateType;
-exports.generateActionType = generateActionType;
-exports.generateRtkEndpointType = generateRtkEndpointType;
-exports.generateTypesFile = generateTypesFile;
-exports.generateBarrelExport = generateBarrelExport;
-exports.toPascalCase = toPascalCase;
-exports.toCamelCase = toCamelCase;
-exports.generateHookName = generateHookName;
-exports.generateFileHeader = generateFileHeader;
 /**
  * Generate a TypeScript interface from extracted props
  */
-function generatePropsInterface(componentName, props) {
+export function generatePropsInterface(componentName, props) {
     if (props.length === 0) {
         return `interface ${componentName}Props {}`;
     }
@@ -34,7 +19,7 @@ function generatePropsInterface(componentName, props) {
 /**
  * Generate type declaration for a function parameter
  */
-function generateParamType(paramName) {
+export function generateParamType(paramName) {
     const commonTypes = {
         event: 'React.FormEvent',
         e: 'React.ChangeEvent<HTMLInputElement>',
@@ -61,7 +46,7 @@ function generateParamType(paramName) {
 /**
  * Generate API response type interface
  */
-function generateApiResponseType(endpointName, fields) {
+export function generateApiResponseType(endpointName, fields) {
     const typeName = `${endpointName}Response`;
     if (fields.length === 0) {
         return `interface ${typeName} {\n  // TODO: Define response fields\n  [key: string]: unknown;\n}`;
@@ -72,7 +57,7 @@ function generateApiResponseType(endpointName, fields) {
 /**
  * Generate API request type interface
  */
-function generateApiRequestType(endpointName, fields) {
+export function generateApiRequestType(endpointName, fields) {
     const typeName = `${endpointName}Request`;
     if (fields.length === 0) {
         return `interface ${typeName} {\n  // TODO: Define request fields\n}`;
@@ -83,7 +68,7 @@ function generateApiRequestType(endpointName, fields) {
 /**
  * Generate state type interface
  */
-function generateStateType(stateName, fields) {
+export function generateStateType(stateName, fields) {
     const typeName = `${capitalize(stateName)}State`;
     if (fields.length === 0) {
         return `interface ${typeName} {\n  // TODO: Define state fields\n}`;
@@ -94,13 +79,13 @@ function generateStateType(stateName, fields) {
 /**
  * Generate Redux action type
  */
-function generateActionType(actionName) {
+export function generateActionType(actionName) {
     return `type ${actionName}Action = {\n  type: '${actionName}';\n  payload?: unknown;\n}`;
 }
 /**
  * Generate RTK Query endpoint type
  */
-function generateRtkEndpointType(hookName, responseType, requestType) {
+export function generateRtkEndpointType(hookName, responseType, requestType) {
     if (requestType) {
         return `export const ${hookName} = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -121,7 +106,7 @@ function generateRtkEndpointType(hookName, responseType, requestType) {
 /**
  * Generate complete types file content
  */
-function generateTypesFile(interfaces, imports = []) {
+export function generateTypesFile(interfaces, imports = []) {
     const lines = [];
     if (imports.length > 0) {
         lines.push(imports.join('\n'));
@@ -140,7 +125,7 @@ function generateTypesFile(interfaces, imports = []) {
 /**
  * Generate barrel export file
  */
-function generateBarrelExport(exports) {
+export function generateBarrelExport(exports) {
     const lines = [];
     for (const exp of exports) {
         if (exp.name === '*') {
@@ -161,19 +146,19 @@ function capitalize(str) {
 /**
  * Convert camelCase to PascalCase
  */
-function toPascalCase(str) {
+export function toPascalCase(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 /**
  * Convert PascalCase to camelCase
  */
-function toCamelCase(str) {
+export function toCamelCase(str) {
     return str.charAt(0).toLowerCase() + str.slice(1);
 }
 /**
  * Generate hook name from endpoint
  */
-function generateHookName(method, path) {
+export function generateHookName(method, path) {
     const segments = path.split('/').filter(Boolean);
     const resourceName = segments.map((s) => capitalize(s.replace(/[^a-zA-Z0-9]/g, ''))).join('');
     const methodPrefix = {
@@ -188,7 +173,7 @@ function generateHookName(method, path) {
 /**
  * Generate file header comment
  */
-function generateFileHeader(toolName) {
+export function generateFileHeader(toolName) {
     return `// ============================================================================
 // Generated by code-modernizer: ${toolName}
 // Generated at: ${new Date().toISOString()}

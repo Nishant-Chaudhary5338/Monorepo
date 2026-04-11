@@ -1,13 +1,18 @@
 import { create } from 'zustand'
 import type { Version, AIDashboardSchema, DiffPatchList } from '../types/schema'
 import { localStorageAdapter } from '../types/schema'
+import { DEFAULT_PROVIDER, PROVIDERS } from '../ai/providers'
+import type { ProviderId } from '../ai/providers'
 
 interface BuilderState {
   versions: Version[]
   activeVersionId: string | null
   isGenerating: boolean
   streamingStatus: string
-  isOllamaOnline: boolean
+
+  // AI provider / model selection
+  provider: ProviderId
+  model: string
 
   // Derived
   activeVersion: () => Version | null
@@ -20,7 +25,8 @@ interface BuilderState {
   updateSchema: (schema: AIDashboardSchema) => void
   setGenerating: (v: boolean, status?: string) => void
   setStreamingStatus: (s: string) => void
-  setOllamaOnline: (v: boolean) => void
+  setProvider: (provider: ProviderId) => void
+  setModel: (model: string) => void
   persist: () => void
   hydrate: () => Promise<void>
 }
@@ -32,7 +38,8 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
   activeVersionId: null,
   isGenerating: false,
   streamingStatus: '',
-  isOllamaOnline: false,
+  provider: DEFAULT_PROVIDER,
+  model: PROVIDERS[DEFAULT_PROVIDER].defaultModel,
 
   activeVersion: () => {
     const { versions, activeVersionId } = get()
@@ -91,7 +98,16 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
 
   setStreamingStatus: (s) => set({ streamingStatus: s }),
 
-  setOllamaOnline: (v) => set({ isOllamaOnline: v }),
+  setProvider: (provider) => {
+    set({ provider, model: PROVIDERS[provider].defaultModel })
+    localStorage.setItem('ai-builder-provider', provider)
+    localStorage.setItem('ai-builder-model', PROVIDERS[provider].defaultModel)
+  },
+
+  setModel: (model) => {
+    set({ model })
+    localStorage.setItem('ai-builder-model', model)
+  },
 
   persist: () => {
     void localStorageAdapter.save(get().versions)
@@ -100,12 +116,19 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
   hydrate: async () => {
     const saved = await localStorageAdapter.load()
     if (saved.length > 0) {
-      // Restore versionCounter so new versions get correct IDs
       const nums = saved.map((v) => parseInt(v.id.replace('v', ''), 10)).filter(Boolean)
       if (nums.length) versionCounter = Math.max(...nums) + 1
       const lastActiveId = localStorage.getItem('ai-builder-active-version')
       const activeId = saved.find((v) => v.id === lastActiveId)?.id ?? saved[saved.length - 1]?.id ?? null
       set({ versions: saved, activeVersionId: activeId })
+    }
+
+    // Restore provider/model selection
+    const savedProvider = localStorage.getItem('ai-builder-provider') as ProviderId | null
+    const savedModel = localStorage.getItem('ai-builder-model')
+    if (savedProvider && PROVIDERS[savedProvider]) {
+      const model = savedModel ?? PROVIDERS[savedProvider].defaultModel
+      set({ provider: savedProvider, model })
     }
   },
 }))

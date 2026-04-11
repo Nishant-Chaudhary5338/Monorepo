@@ -17,11 +17,17 @@ import * as React from "react"
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /**
+   * Size variant of the textarea.
+   * @default "default"
+   */
+  inputSize?: "sm" | "default" | "lg"
+
+  /**
    * When true, the textarea is displayed in an error state.
    * @default false
    */
   error?: boolean
-  
+
   /**
    * When true, the textarea is displayed in a success state.
    * @default false

@@ -5,7 +5,7 @@
 export function checkUtilityTypes(source, filePath) {
     const violations = [];
     const lines = source.split('\n');
-    for (const i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         const trimmed = line.trim();
         if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*'))

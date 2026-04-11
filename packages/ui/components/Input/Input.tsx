@@ -1,17 +1,46 @@
 import * as React from "react"
+import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
+import { inputVariants } from "./Input.variants"
 import type { InputProps } from "./Input.types"
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", ...props }, ref) => {
+  ({ className, type = "text", inputSize, error, success, startIcon, endIcon, ...props }, ref) => {
+    const state = error ? "error" : success ? "success" : "default"
+
+    if (startIcon || endIcon) {
+      return (
+        <div className="relative flex items-center w-full">
+          {startIcon && (
+            <span className="absolute left-3 flex items-center pointer-events-none text-muted-foreground">
+              {startIcon}
+            </span>
+          )}
+          <input
+            type={type}
+            className={cn(
+              inputVariants({ inputSize, state }),
+              startIcon && "pl-9",
+              endIcon && "pr-9",
+              className
+            )}
+            ref={ref}
+            {...props}
+          />
+          {endIcon && (
+            <span className="absolute right-3 flex items-center pointer-events-none text-muted-foreground">
+              {endIcon}
+            </span>
+          )}
+        </div>
+      )
+    }
+
     return (
       <input
         type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className
-        )}
+        className={cn(inputVariants({ inputSize, state }), className)}
         ref={ref}
         {...props}
       />
@@ -20,4 +49,5 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export { Input }
+export { Input, inputVariants }
+export type { VariantProps }

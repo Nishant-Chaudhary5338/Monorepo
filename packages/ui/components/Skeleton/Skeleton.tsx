@@ -1,26 +1,22 @@
 import * as React from "react"
+import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
+import { skeletonVariants } from "./Skeleton.variants"
 import type { SkeletonProps } from "./Skeleton.types"
 
 function Skeleton({
   className,
-  variant = "default",
-  animate = true,
+  variant,
+  animate,
   ...props
-}: SkeletonProps) {
+}: SkeletonProps & VariantProps<typeof skeletonVariants>) {
   return (
     <div
-      className={cn(
-        "rounded-md bg-muted",
-        variant === "shimmer" && "animate-shimmer",
-        variant === "pulse" && "animate-pulse",
-        variant === "default" && animate && "animate-pulse",
-        className
-      )}
+      className={cn(skeletonVariants({ variant, animate }), className)}
       {...props}
     />
   )
 }
 
-export { Skeleton }
+export { Skeleton, skeletonVariants }

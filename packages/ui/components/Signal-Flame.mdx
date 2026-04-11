@@ -1,0 +1,507 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Design System/Signal & Flame" />
+
+<style>{`
+  .sf-page { font-family: var(--font-sans); padding: 2rem; max-width: 1000px; background: #fff; }
+  .sf-section-title { font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 0.25rem; color: #111; }
+  .sf-section-desc  { font-size: 0.875rem; color: #71717a; margin-bottom: 1.25rem; }
+  .sf-row  { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid #f4f4f5; }
+  .sf-mono { font-family: var(--font-mono); font-size: 0.7rem; color: #a1a1aa; }
+  .sf-label { font-size: 0.75rem; width: 180px; flex-shrink: 0; font-family: var(--font-mono); color: #71717a; }
+
+  .sf-swatch-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; margin-bottom: 2rem; }
+  .sf-swatch { height: 56px; border-radius: 6px; display: flex; align-items: flex-end; padding: 4px; }
+  .sf-swatch-step { font-size: 8px; font-family: var(--font-mono); color: rgba(0,0,0,0.35); }
+  .sf-swatch-step-light { color: rgba(255,255,255,0.5); }
+
+  .sf-combo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 0.5rem; }
+
+  .sf-grad-border-demo {
+    position: relative;
+    border-radius: 10px;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1.5px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .sf-accessible-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .sf-accessible-chip {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #f4f4f5;
+    font-size: 0.75rem;
+  }
+  .sf-accessible-swatch { height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; }
+  .sf-accessible-meta { padding: 0.5rem 0.75rem; background: #fafafa; }
+  .sf-accessible-pair { font-family: var(--font-mono); font-size: 0.65rem; color: #a1a1aa; }
+  .sf-accessible-ratio { font-weight: 700; font-size: 0.75rem; color: #111; }
+`}</style>
+
+<div className="sf-page">
+
+# Signal & Flame
+
+The two brand colors that define this design system — **Signal Blue** for trust, clarity, and action; **Flame Orange** for energy, urgency, and warmth.
+
+---
+
+## Signal Blue — Color Scale
+
+<div style={{ marginBottom: '0.5rem' }}>
+  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#71717a' }}>Brand primary · #1428A0 · hsl(228°, 79%, 36%)</span>
+</div>
+
+<div className="sf-swatch-grid">
+  {[
+    { step: '50',  hex: '#EEF1FC', light: true },
+    { step: '100', hex: '#D4DAFF', light: true },
+    { step: '200', hex: '#AAB5F7', light: true },
+    { step: '300', hex: '#7F90F0', light: false },
+    { step: '400', hex: '#546BE8', light: false },
+    { step: '500', hex: '#1428A0', light: false },
+    { step: '600', hex: '#102288', light: false },
+    { step: '700', hex: '#0D1B70', light: false },
+    { step: '800', hex: '#091455', light: false },
+    { step: '900', hex: '#060D3A', light: false },
+    { step: '950', hex: '#03071F', light: false },
+  ].map(({ step, hex, light }) => (
+    <div key={step} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div className="sf-swatch" style={{ background: hex }}>
+        <span className={light ? 'sf-swatch-step' : 'sf-swatch-step-light'}>{step}</span>
+      </div>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#a1a1aa', textAlign: 'center' }}>{hex}</span>
+    </div>
+  ))}
+</div>
+
+### Semantic Uses
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { role: 'Primary action',    step: '500 · #1428A0', desc: 'Default buttons, primary CTA' },
+    { role: 'Hover state',       step: '600 · #102288', desc: 'Button hover, link hover' },
+    { role: 'Active / pressed',  step: '700 · #0D1B70', desc: 'Pressed button state' },
+    { role: 'Focus ring',        step: '400 · #546BE8', desc: 'Keyboard focus outline' },
+    { role: 'Link text',         step: '500 · #1428A0', desc: 'Inline hyperlinks' },
+    { role: 'Info surface',      step: '50  · #EEF1FC', desc: 'Info alert background' },
+    { role: 'Info border',       step: '200 · #AAB5F7', desc: 'Info alert border' },
+    { role: 'Selected state',    step: '100 · #D4DAFF', desc: 'Selected chip, active tab bg' },
+  ].map(({ role, step, desc }) => (
+    <div key={role} className="sf-row">
+      <div style={{ width: '20px', height: '20px', borderRadius: '4px', background: step.split('·')[1]?.trim(), border: '1px solid #f4f4f5', flexShrink: 0 }} />
+      <span style={{ width: '180px', flexShrink: 0, fontSize: '0.8rem', fontWeight: 500, color: '#111' }}>{role}</span>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#546BE8', width: '160px', flexShrink: 0 }}>{step}</span>
+      <span style={{ fontSize: '0.75rem', color: '#71717a' }}>{desc}</span>
+    </div>
+  ))}
+</div>
+
+### Accessible Pairings
+
+<div className="sf-accessible-grid" style={{ marginTop: '1rem' }}>
+  {[
+    { bg: '#1428A0', fg: '#ffffff', bgLabel: 'Signal-500',  fgLabel: 'White',  ratio: '7.2:1',  pass: 'AAA' },
+    { bg: '#EEF1FC', fg: '#1428A0', bgLabel: 'Signal-50',   fgLabel: 'Signal-500', ratio: '6.1:1', pass: 'AA' },
+    { bg: '#546BE8', fg: '#ffffff', bgLabel: 'Signal-400',  fgLabel: 'White',  ratio: '4.6:1',  pass: 'AA' },
+    { bg: '#D4DAFF', fg: '#0D1B70', bgLabel: 'Signal-100',  fgLabel: 'Signal-700', ratio: '8.3:1', pass: 'AAA' },
+    { bg: '#0D1B70', fg: '#EEF1FC', bgLabel: 'Signal-700',  fgLabel: 'Signal-50',  ratio: '12.4:1', pass: 'AAA' },
+    { bg: '#AAB5F7', fg: '#060D3A', bgLabel: 'Signal-200',  fgLabel: 'Signal-900', ratio: '7.8:1', pass: 'AAA' },
+  ].map(({ bg, fg, bgLabel, fgLabel, ratio, pass }) => (
+    <div key={bg + fg} className="sf-accessible-chip">
+      <div className="sf-accessible-swatch" style={{ background: bg, color: fg }}>Aa — {pass}</div>
+      <div className="sf-accessible-meta">
+        <div className="sf-accessible-ratio">{ratio} contrast</div>
+        <div className="sf-accessible-pair">{bgLabel} bg · {fgLabel} text</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Flame Orange — Color Scale
+
+<div style={{ marginBottom: '0.5rem' }}>
+  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#71717a' }}>Brand accent · #F4511E · hsl(16°, 90%, 54%)</span>
+</div>
+
+<div className="sf-swatch-grid">
+  {[
+    { step: '50',  hex: '#FFF1ED', light: true },
+    { step: '100', hex: '#FFD9CC', light: true },
+    { step: '200', hex: '#FEB8A0', light: true },
+    { step: '300', hex: '#FD9074', light: true },
+    { step: '400', hex: '#FC6A47', light: false },
+    { step: '500', hex: '#F4511E', light: false },
+    { step: '600', hex: '#D43D0C', light: false },
+    { step: '700', hex: '#A82E08', light: false },
+    { step: '800', hex: '#7C2006', light: false },
+    { step: '900', hex: '#521303', light: false },
+    { step: '950', hex: '#2A0902', light: false },
+  ].map(({ step, hex, light }) => (
+    <div key={step} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div className="sf-swatch" style={{ background: hex }}>
+        <span className={light ? 'sf-swatch-step' : 'sf-swatch-step-light'}>{step}</span>
+      </div>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#a1a1aa', textAlign: 'center' }}>{hex}</span>
+    </div>
+  ))}
+</div>
+
+### Semantic Uses
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { role: 'Accent CTA',       step: '500 · #F4511E', desc: 'High-energy action button, subscribe, upgrade' },
+    { role: 'Hover state',      step: '600 · #D43D0C', desc: 'Flame button hover' },
+    { role: 'Active / pressed', step: '700 · #A82E08', desc: 'Pressed flame button' },
+    { role: 'Warning surface',  step: '50  · #FFF1ED', desc: 'Warning alert background' },
+    { role: 'Warning border',   step: '200 · #FEB8A0', desc: 'Warning alert border' },
+    { role: 'Badge accent',     step: '400 · #FC6A47', desc: 'Notification badge, online indicator' },
+    { role: 'Highlight',        step: '100 · #FFD9CC', desc: 'Text highlight, selection background' },
+    { role: 'Icon accent',      step: '500 · #F4511E', desc: 'Icon fills, star ratings, likes' },
+  ].map(({ role, step, desc }) => (
+    <div key={role} className="sf-row">
+      <div style={{ width: '20px', height: '20px', borderRadius: '4px', background: step.split('·')[1]?.trim(), border: '1px solid #f4f4f5', flexShrink: 0 }} />
+      <span style={{ width: '180px', flexShrink: 0, fontSize: '0.8rem', fontWeight: 500, color: '#111' }}>{role}</span>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#F4511E', width: '160px', flexShrink: 0 }}>{step}</span>
+      <span style={{ fontSize: '0.75rem', color: '#71717a' }}>{desc}</span>
+    </div>
+  ))}
+</div>
+
+### Accessible Pairings
+
+<div className="sf-accessible-grid" style={{ marginTop: '1rem' }}>
+  {[
+    { bg: '#F4511E', fg: '#ffffff',  bgLabel: 'Flame-500',  fgLabel: 'White',       ratio: '4.5:1',  pass: 'AA' },
+    { bg: '#FFF1ED', fg: '#7C2006',  bgLabel: 'Flame-50',   fgLabel: 'Flame-800',   ratio: '9.1:1',  pass: 'AAA' },
+    { bg: '#A82E08', fg: '#ffffff',  bgLabel: 'Flame-700',  fgLabel: 'White',       ratio: '7.6:1',  pass: 'AAA' },
+    { bg: '#FFD9CC', fg: '#521303',  bgLabel: 'Flame-100',  fgLabel: 'Flame-900',   ratio: '8.8:1',  pass: 'AAA' },
+    { bg: '#7C2006', fg: '#FFF1ED',  bgLabel: 'Flame-800',  fgLabel: 'Flame-50',    ratio: '11.2:1', pass: 'AAA' },
+    { bg: '#FC6A47', fg: '#2A0902',  bgLabel: 'Flame-400',  fgLabel: 'Flame-950',   ratio: '5.3:1',  pass: 'AA' },
+  ].map(({ bg, fg, bgLabel, fgLabel, ratio, pass }) => (
+    <div key={bg + fg} className="sf-accessible-chip">
+      <div className="sf-accessible-swatch" style={{ background: bg, color: fg }}>Aa — {pass}</div>
+      <div className="sf-accessible-meta">
+        <div className="sf-accessible-ratio">{ratio} contrast</div>
+        <div className="sf-accessible-pair">{bgLabel} bg · {fgLabel} text</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Gradient Combinations
+
+Diagonal, mesh, and directional gradients built from Signal Blue + Flame Orange.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginTop: '0.75rem' }}>
+  {[
+    { name: 'Brand Diagonal',   css: 'linear-gradient(135deg, #1428A0 0%, #F4511E 100%)',                                token: '--gradient-brand' },
+    { name: 'Brand Reverse',    css: 'linear-gradient(135deg, #F4511E 0%, #1428A0 100%)',                                token: '--gradient-brand-rev' },
+    { name: 'Brand Dark',       css: 'linear-gradient(135deg, #091455 0%, #521303 100%)',                                token: '--gradient-brand-dark' },
+    { name: 'Brand Subtle',     css: 'linear-gradient(135deg, #EEF1FC 0%, #FFF1ED 100%)',                                token: '--gradient-brand-subtle' },
+    { name: 'Signal Vertical',  css: 'linear-gradient(180deg, #1428A0 0%, #03071F 100%)',                                token: '--gradient-signal-v' },
+    { name: 'Flame Vertical',   css: 'linear-gradient(180deg, #F4511E 0%, #2A0902 100%)',                                token: '--gradient-flame-v' },
+    { name: 'Mesh',             css: 'radial-gradient(ellipse at 20% 50%, rgba(20,40,160,0.7) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(244,81,30,0.65) 0%, transparent 60%), #070910', token: '--gradient-mesh' },
+    { name: 'Glass Brand',      css: 'linear-gradient(135deg, rgba(20,40,160,0.13) 0%, rgba(244,81,30,0.07) 100%)',     token: '--gradient-glass' },
+  ].map(({ name, css, token }) => (
+    <div key={name} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ height: '88px', borderRadius: '10px', background: css, border: '1px solid #f4f4f5' }} />
+      <div>
+        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#111', marginBottom: '2px' }}>{name}</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#a1a1aa' }}>{token}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Gradient Borders — Inputs & Buttons
+
+Gradient borders using the `background-clip: padding-box` + `border: transparent` technique.
+Works with `border-radius`. Copy the CSS pattern below each demo.
+
+### Input Borders
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1rem' }}>
+
+  {/* Brand diagonal */}
+  <div>
+    <div style={{
+      borderRadius: '8px', padding: '10px 14px',
+      background: 'linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #1428A0, #F4511E) border-box',
+      border: '2px solid transparent',
+      fontSize: '0.875rem', color: '#111', outline: 'none',
+    }}>
+      Brand diagonal · placeholder text
+    </div>
+    <pre style={{ marginTop: '8px', padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`border: 2px solid transparent;
+background:
+  linear-gradient(#fff, #fff) padding-box,
+  linear-gradient(135deg, #1428A0, #F4511E) border-box;`}</pre>
+  </div>
+
+  {/* Signal only */}
+  <div>
+    <div style={{
+      borderRadius: '8px', padding: '10px 14px',
+      background: 'linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #7F90F0, #1428A0) border-box',
+      border: '2px solid transparent',
+      fontSize: '0.875rem', color: '#111',
+    }}>
+      Signal Blue only · placeholder text
+    </div>
+    <pre style={{ marginTop: '8px', padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`border: 2px solid transparent;
+background:
+  linear-gradient(#fff, #fff) padding-box,
+  linear-gradient(135deg, #7F90F0, #1428A0) border-box;`}</pre>
+  </div>
+
+  {/* Flame only */}
+  <div>
+    <div style={{
+      borderRadius: '8px', padding: '10px 14px',
+      background: 'linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #FC6A47, #D43D0C) border-box',
+      border: '2px solid transparent',
+      fontSize: '0.875rem', color: '#111',
+    }}>
+      Flame Orange only · placeholder text
+    </div>
+    <pre style={{ marginTop: '8px', padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`border: 2px solid transparent;
+background:
+  linear-gradient(#fff, #fff) padding-box,
+  linear-gradient(135deg, #FC6A47, #D43D0C) border-box;`}</pre>
+  </div>
+
+  {/* Subtle glow */}
+  <div>
+    <div style={{
+      borderRadius: '8px', padding: '10px 14px',
+      background: 'linear-gradient(#fff, #fff) padding-box, linear-gradient(90deg, #AAB5F7, #FEB8A0) border-box',
+      border: '2px solid transparent',
+      fontSize: '0.875rem', color: '#111',
+      boxShadow: '0 0 0 4px rgba(20, 40, 160, 0.06)',
+    }}>
+      Pastel blend + focus glow
+    </div>
+    <pre style={{ marginTop: '8px', padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`border: 2px solid transparent;
+background:
+  linear-gradient(#fff, #fff) padding-box,
+  linear-gradient(90deg, #AAB5F7, #FEB8A0) border-box;
+box-shadow: 0 0 0 4px rgba(20, 40, 160, 0.06);`}</pre>
+  </div>
+
+</div>
+
+### Button Borders (Outline Variants)
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginTop: '1rem' }}>
+
+  {/* Brand outline pill */}
+  <div>
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px' }}>
+      <button style={{
+        borderRadius: '999px', padding: '8px 20px',
+        background: 'linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #1428A0, #F4511E) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #1428A0, #F4511E) border-box',
+        cursor: 'pointer', color: '#1428A0',
+      }}>Get started</button>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #1428A0, #F4511E) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#111',
+      }}>Get started</button>
+    </div>
+    <pre style={{ padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`/* Pill or rounded */
+border: 2px solid transparent;
+background:
+  linear-gradient(white, white) padding-box,
+  linear-gradient(135deg, #1428A0, #F4511E) border-box;`}</pre>
+  </div>
+
+  {/* Gradient text + outline */}
+  <div>
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px' }}>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #F4511E, #1428A0) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 700,
+        cursor: 'pointer',
+        backgroundClip: 'unset',
+        WebkitBackgroundClip: 'unset',
+        color: 'transparent',
+        WebkitTextFillColor: 'transparent',
+        backgroundImage: 'linear-gradient(135deg, #F4511E, #1428A0)',
+      }}>Upgrade now</button>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(135deg, #1428A0, #F4511E)',
+        border: 'none',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#fff',
+      }}>Upgrade now</button>
+    </div>
+    <pre style={{ padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`/* Filled variant */
+background: linear-gradient(135deg, #1428A0, #F4511E);
+color: white; border: none;
+
+/* Outline + gradient text */
+border: 2px solid transparent;
+background:
+  linear-gradient(white, white) padding-box,
+  linear-gradient(135deg, #F4511E, #1428A0) border-box;
+color: transparent;
+-webkit-background-clip: text;`}</pre>
+  </div>
+
+  {/* Signal outline */}
+  <div>
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px' }}>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(180deg, #546BE8, #1428A0) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#1428A0',
+      }}>Sign in</button>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(180deg, #546BE8, #1428A0) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#1428A0',
+        boxShadow: '0 0 0 3px rgba(84, 107, 232, 0.18)',
+      }}>Sign in (focus)</button>
+    </div>
+    <pre style={{ padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`/* Signal outline + focus ring */
+border: 2px solid transparent;
+background:
+  linear-gradient(white, white) padding-box,
+  linear-gradient(180deg, #546BE8, #1428A0) border-box;
+/* :focus-visible */
+box-shadow: 0 0 0 3px rgba(84, 107, 232, 0.18);`}</pre>
+  </div>
+
+  {/* Flame destructive outline */}
+  <div>
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px' }}>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #FC6A47, #A82E08) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#D43D0C',
+      }}>Delete</button>
+      <button style={{
+        borderRadius: '8px', padding: '8px 20px',
+        background: 'linear-gradient(#FFF1ED, #FFF1ED) padding-box, linear-gradient(135deg, #FC6A47, #A82E08) border-box',
+        border: '2px solid transparent',
+        fontSize: '0.875rem', fontWeight: 600,
+        cursor: 'pointer', color: '#D43D0C',
+      }}>Delete (tinted)</button>
+    </div>
+    <pre style={{ padding: '10px 12px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', overflowX: 'auto', lineHeight: 1.6 }}>{`/* Flame destructive outline */
+border: 2px solid transparent;
+background:
+  linear-gradient(white, white) padding-box,
+  linear-gradient(135deg, #FC6A47, #A82E08) border-box;
+
+/* Tinted background variant */
+background:
+  linear-gradient(#FFF1ED, #FFF1ED) padding-box,
+  linear-gradient(135deg, #FC6A47, #A82E08) border-box;`}</pre>
+  </div>
+
+</div>
+
+### Focus States
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginTop: '1rem' }}>
+  {[
+    {
+      label: 'Signal focus ring',
+      shadow: '0 0 0 2px #fff, 0 0 0 4px #546BE8',
+      border: '1px solid #1428A0',
+      snippet: `outline: 2px solid #546BE8;\noutline-offset: 2px;`,
+    },
+    {
+      label: 'Flame focus ring',
+      shadow: '0 0 0 2px #fff, 0 0 0 4px #FC6A47',
+      border: '1px solid #F4511E',
+      snippet: `outline: 2px solid #FC6A47;\noutline-offset: 2px;`,
+    },
+    {
+      label: 'Brand gradient ring',
+      shadow: '0 0 0 2px #fff, 0 0 0 4px #546BE8, 0 0 0 6px #FC6A47',
+      border: '1px solid #aaa',
+      snippet: `box-shadow:\n  0 0 0 2px #fff,\n  0 0 0 4px #546BE8,\n  0 0 0 6px #FC6A47;`,
+    },
+  ].map(({ label, shadow, border, snippet }) => (
+    <div key={label}>
+      <div style={{
+        borderRadius: '8px', padding: '10px 14px', border,
+        fontSize: '0.875rem', color: '#111', marginBottom: '8px',
+        boxShadow: shadow,
+        background: '#fff',
+      }}>
+        Focused input
+      </div>
+      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#111', marginBottom: '4px' }}>{label}</div>
+      <pre style={{ padding: '8px 10px', borderRadius: '6px', background: '#f8f8f8', fontSize: '0.65rem', color: '#71717a', lineHeight: 1.6, margin: 0 }}>{snippet}</pre>
+    </div>
+  ))}
+</div>
+
+---
+
+## CSS Variable Reference
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  {[
+    { token: '--color-signal-50',   value: '#EEF1FC' },
+    { token: '--color-signal-100',  value: '#D4DAFF' },
+    { token: '--color-signal-200',  value: '#AAB5F7' },
+    { token: '--color-signal-300',  value: '#7F90F0' },
+    { token: '--color-signal-400',  value: '#546BE8' },
+    { token: '--color-signal-500',  value: '#1428A0' },
+    { token: '--color-signal-600',  value: '#102288' },
+    { token: '--color-signal-700',  value: '#0D1B70' },
+    { token: '--color-signal-800',  value: '#091455' },
+    { token: '--color-signal-900',  value: '#060D3A' },
+    { token: '--color-signal-950',  value: '#03071F' },
+    { token: '--color-flame-50',    value: '#FFF1ED' },
+    { token: '--color-flame-100',   value: '#FFD9CC' },
+    { token: '--color-flame-200',   value: '#FEB8A0' },
+    { token: '--color-flame-300',   value: '#FD9074' },
+    { token: '--color-flame-400',   value: '#FC6A47' },
+    { token: '--color-flame-500',   value: '#F4511E' },
+    { token: '--color-flame-600',   value: '#D43D0C' },
+    { token: '--color-flame-700',   value: '#A82E08' },
+    { token: '--color-flame-800',   value: '#7C2006' },
+    { token: '--color-flame-900',   value: '#521303' },
+    { token: '--color-flame-950',   value: '#2A0902' },
+    { token: '--gradient-brand',         value: 'linear-gradient(135deg, #1428A0, #F4511E)' },
+    { token: '--gradient-brand-rev',     value: 'linear-gradient(135deg, #F4511E, #1428A0)' },
+    { token: '--gradient-brand-dark',    value: 'linear-gradient(135deg, #091455, #521303)' },
+    { token: '--gradient-brand-subtle',  value: 'linear-gradient(135deg, #EEF1FC, #FFF1ED)' },
+  ].map(({ token, value }) => (
+    <div key={token} className="sf-row">
+      <div style={{ width: '16px', height: '16px', borderRadius: '3px', background: value.startsWith('#') ? value : value, border: '1px solid #f4f4f5', flexShrink: 0 }} />
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#111', width: '240px', flexShrink: 0 }}>{token}</span>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#a1a1aa' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+</div>

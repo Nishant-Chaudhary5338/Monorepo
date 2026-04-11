@@ -1,57 +1,16 @@
-"use strict";
+// @ts-nocheck
 // ============================================================================
 // AST PARSER - Parse JS/JSX/TS/TSX files to AST using @typescript-eslint
 // ============================================================================
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.readFileContent = readFileContent;
-exports.parseFile = parseFile;
-exports.extractImports = extractImports;
-exports.extractExports = extractExports;
-exports.extractFunctions = extractFunctions;
-exports.extractJSX = extractJSX;
-exports.extractHooks = extractHooks;
-exports.hasJSX = hasJSX;
-exports.extractApiCalls = extractApiCalls;
-const path = __importStar(require("path"));
-const fs = __importStar(require("fs-extra"));
+import * as path from 'path';
+import fs from 'fs-extra';
+import { createRequire } from 'module';
+const _require = createRequire(import.meta.url);
 // Lazy-load parser to avoid issues at module level
 let parser = null;
 function getParser() {
     if (!parser) {
-        parser = require('@typescript-eslint/parser');
+        parser = _require('@typescript-eslint/parser');
     }
     return parser;
 }
@@ -76,7 +35,7 @@ function getParserOptions(filePath) {
 /**
  * Read file content safely
  */
-function readFileContent(filePath) {
+export function readFileContent(filePath) {
     try {
         return fs.readFileSync(filePath, 'utf-8');
     }
@@ -87,7 +46,7 @@ function readFileContent(filePath) {
 /**
  * Parse a file into an AST
  */
-function parseFile(filePath) {
+export function parseFile(filePath) {
     const content = readFileContent(filePath);
     if (!content)
         return null;
@@ -124,7 +83,7 @@ function parseFile(filePath) {
 /**
  * Extract import declarations from AST
  */
-function extractImports(ast) {
+export function extractImports(ast) {
     const imports = [];
     function walk(node) {
         if (!node || typeof node !== 'object')
@@ -173,7 +132,7 @@ function extractImports(ast) {
 /**
  * Extract export declarations from AST
  */
-function extractExports(ast) {
+export function extractExports(ast) {
     const exports = [];
     function walk(node) {
         if (!node || typeof node !== 'object')
@@ -229,7 +188,7 @@ function extractExports(ast) {
 /**
  * Extract function declarations from AST
  */
-function extractFunctions(ast) {
+export function extractFunctions(ast) {
     const functions = [];
     const exportedNames = new Set();
     function collectExports(node) {
@@ -325,7 +284,7 @@ function extractFunctions(ast) {
 /**
  * Extract JSX elements and calculate nesting depth
  */
-function extractJSX(ast) {
+export function extractJSX(ast) {
     const elements = [];
     function walk(node, currentDepth = 0) {
         if (!node || typeof node !== 'object')
@@ -371,7 +330,7 @@ function extractJSX(ast) {
 /**
  * Extract React hook usage from AST
  */
-function extractHooks(ast) {
+export function extractHooks(ast) {
     const hooks = [];
     function walk(node) {
         if (!node || typeof node !== 'object')
@@ -404,7 +363,7 @@ function extractHooks(ast) {
 /**
  * Detect if file contains JSX
  */
-function hasJSX(ast) {
+export function hasJSX(ast) {
     let found = false;
     function walk(node) {
         if (found || !node || typeof node !== 'object')
@@ -432,7 +391,7 @@ function hasJSX(ast) {
 /**
  * Detect fetch/axios API calls
  */
-function extractApiCalls(ast) {
+export function extractApiCalls(ast) {
     const calls = [];
     function walk(node) {
         if (!node || typeof node !== 'object')

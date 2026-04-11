@@ -15,6 +15,47 @@ export function checkTypeGuards(source: string, filePath: string): RuleCheckResu
 
     if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*')) continue;
 
+    // Pattern 0: Type assertion to object type — should be a type guard instead
+    // e.g., const typed = item as { id: number; name: string }
+    const objectAssertRegex = /\bconst\s+(\w+)\s*=\s*(\w+)\s+as\s+\{/;
+    const objAssertMatch = line.match(objectAssertRegex);
+    if (objAssertMatch) {
+      violations.push({
+        rule: 'type-guards',
+        severity: 'warning',
+        line: i + 1,
+        column: line.indexOf('as {') + 1,
+        current: `const ${objAssertMatch[1]} = ${objAssertMatch[2]} as { ... }`,
+        suggestion: `Use a type guard: function is${objAssertMatch[1].charAt(0).toUpperCase() + objAssertMatch[1].slice(1)}(v: unknown): v is { ... }`,
+        fix: `// Replace type assertion with a type guard function:\n// function is${objAssertMatch[1].charAt(0).toUpperCase() + objAssertMatch[1].slice(1)}(v: unknown): v is { ... } {\n//   return typeof v === 'object' && v !== null && '...' in v;\n// }`,
+        why: "Type assertions ('as') bypass TypeScript's type checking. Type guards validate the shape at runtime and narrow the type safely.",
+      });
+    }
+
+    // Pattern 0b: Named function with 'as' cast on unknown/any parameter — should be type guard
+    // e.g., function process(item: any) { const x = item as SomeType }
+    const funcAssertion = line.match(/(\w+)\s+as\s+(\w[\w<>, ]*)\s*[;,)]/);
+    if (funcAssertion && !line.includes('//') && !objAssertMatch) {
+      const castTarget = funcAssertion[2].trim();
+      // Skip primitive casts and imports
+      if (!['string', 'number', 'boolean', 'never', 'unknown', 'any', 'object'].includes(castTarget) && !castTarget.startsWith('typeof')) {
+        // Check if we're inside a function (look back for function keyword)
+        const isInsideFunc = lines.slice(Math.max(0, i - 20), i).some(l => /(?:function|=>)\s*\{/.test(l) || /=>\s*$/.test(l));
+        if (isInsideFunc) {
+          violations.push({
+            rule: 'type-guards',
+            severity: 'info',
+            line: i + 1,
+            column: line.indexOf(' as ') + 1,
+            current: `${funcAssertion[1]} as ${castTarget}`,
+            suggestion: `Create a type guard: function is${castTarget}(v: unknown): v is ${castTarget}`,
+            fix: `// Use a type guard instead of 'as' cast:\n// function is${castTarget}(v: unknown): v is ${castTarget} {\n//   return typeof v === 'object' && v !== null && '...' in v;\n// }`,
+            why: "'as' assertions silence TypeScript without validating the actual shape. Type guards enforce correctness at runtime.",
+          });
+        }
+      }
+    }
+
     // Pattern 1: typeof check without type predicate
     // function isString(value: unknown): boolean { return typeof value === 'string' }
     const typeofCheck = line.match(/function\s+(is\w+)\s*\(\s*(\w+)\s*:\s*(\w+)\s*\)\s*:\s*boolean\s*\{/);

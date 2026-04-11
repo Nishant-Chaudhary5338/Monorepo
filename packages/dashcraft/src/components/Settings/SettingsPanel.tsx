@@ -8,7 +8,6 @@ import { SettingsThemeSection } from "./SettingsThemeSection";
 import { SettingsHighlightSection } from "./SettingsHighlightSection";
 import { SettingsEndpointSection } from "./SettingsEndpointSection";
 import { SettingsMethodSection } from "./SettingsMethodSection";
-import { SettingsHeadersSection } from "./SettingsHeadersSection";
 import { SettingsPollingSection } from "./SettingsPollingSection";
 import { SettingsBehaviorSection } from "./SettingsBehaviorSection";
 import { SettingsCustomFields } from "./SettingsCustomFields";
@@ -99,10 +98,10 @@ export const SettingsPanel = React.memo(function SettingsPanel({
     [applyChange]
   );
 
-  // Endpoint: draft pattern — update local on change, flush on blur
+  // Endpoint: update local state on change, flush to store on blur
   const handleEndpointChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setLocalSettings((prev) => ({ ...prev, endpoint: e.target.value })),
+    (endpoint: string) =>
+      setLocalSettings((prev) => ({ ...prev, endpoint })),
     []
   );
 
@@ -116,11 +115,6 @@ export const SettingsPanel = React.memo(function SettingsPanel({
   const handleMethodChange = useCallback(
     (method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE") =>
       applyChange({ method }),
-    [applyChange]
-  );
-
-  const handleHeadersChange = useCallback(
-    (headers: Record<string, string>) => applyChange({ headers }),
     [applyChange]
   );
 
@@ -204,7 +198,7 @@ export const SettingsPanel = React.memo(function SettingsPanel({
         <Popover.Content
           sideOffset={6}
           align="end"
-          collisionPadding={8}
+          collisionPadding={12}
           style={{ zIndex: 10000 }}
           className="outline-none"
         >
@@ -214,63 +208,59 @@ export const SettingsPanel = React.memo(function SettingsPanel({
             animate="animate"
             variants={popoverVariants}
           >
-            {/* Sticky header */}
-            <div className="px-4 pt-4 pb-3 border-b border-gray-100 bg-white sticky top-0 z-10">
+            {/* Header — sits outside scroll container, always visible */}
+            <div className="px-4 pt-4 pb-3 border-b border-gray-100">
               <SettingsHeader />
             </div>
 
             {/* Scrollable sections */}
-            <div className="overflow-y-auto max-h-110 px-4 py-3 space-y-0">
-                  <SettingsThemeSection
-                    currentTheme={currentTheme}
-                    onThemeChange={handleThemeChange}
-                  />
-                  <SettingsHighlightSection
-                    isEnabled={localSettings.highlight ?? false}
-                    color={localSettings.highlightColor ?? "#3b82f6"}
-                    onToggle={handleHighlightToggle}
-                    onColorChange={handleHighlightColorChange}
-                  />
-                  <SettingsEndpointSection
-                    endpoint={localSettings.endpoint ?? ""}
-                    onChange={handleEndpointChange}
-                    onBlur={handleEndpointBlur}
-                  />
-                  <SettingsMethodSection
-                    method={localSettings.method ?? "GET"}
-                    onChange={handleMethodChange}
-                  />
-                  <SettingsHeadersSection
-                    headers={(localSettings.headers as Record<string, string>) ?? {}}
-                    onChange={handleHeadersChange}
-                  />
-                  <SettingsPollingSection
-                    pollingInterval={localSettings.pollingInterval ?? 0}
-                    onChange={handlePollingChange}
-                  />
-                  <SettingsBehaviorSection
-                    opacity={localSettings.opacity as number ?? 1}
-                    requestTimeout={localSettings.requestTimeout as number | undefined}
-                    refreshOnFocus={localSettings.refreshOnFocus as boolean ?? false}
-                    cacheEnabled={localSettings.cacheEnabled as boolean ?? false}
-                    cacheDuration={localSettings.cacheDuration as number | undefined}
-                    description={localSettings.description as string ?? ""}
-                    onOpacityChange={handleOpacityChange}
-                    onRequestTimeoutChange={handleRequestTimeoutChange}
-                    onRefreshOnFocusChange={handleRefreshOnFocusChange}
-                    onCacheEnabledChange={handleCacheEnabledChange}
-                    onCacheDurationChange={handleCacheDurationChange}
-                    onDescriptionChange={handleDescriptionChange}
-                  />
-                  <SettingsCustomFields
-                    fields={customFields}
-                    values={localSettings}
-                    onChange={handleCustomFieldChange}
-                  />
-                </div>
-
-                <Popover.Arrow className="fill-white drop-shadow-sm" />
-              </motion.div>
+            <div className="overflow-y-auto overscroll-contain max-h-110 px-4 py-3 space-y-0">
+              <SettingsThemeSection
+                currentTheme={currentTheme}
+                onThemeChange={handleThemeChange}
+              />
+              <SettingsHighlightSection
+                isEnabled={localSettings.highlight ?? false}
+                color={localSettings.highlightColor ?? "#3b82f6"}
+                onToggle={handleHighlightToggle}
+                onColorChange={handleHighlightColorChange}
+              />
+              <SettingsEndpointSection
+                endpoint={localSettings.endpoint ?? ""}
+                onChange={handleEndpointChange}
+                onBlur={handleEndpointBlur}
+                endpointOptions={[]}
+              />
+              <SettingsMethodSection
+                method={localSettings.method ?? "GET"}
+                onChange={handleMethodChange}
+              />
+              <SettingsPollingSection
+                pollingInterval={localSettings.pollingInterval ?? 0}
+                onChange={handlePollingChange}
+              />
+              <SettingsBehaviorSection
+                opacity={localSettings.opacity as number ?? 1}
+                requestTimeout={localSettings.requestTimeout as number | undefined}
+                refreshOnFocus={localSettings.refreshOnFocus as boolean ?? false}
+                cacheEnabled={localSettings.cacheEnabled as boolean ?? false}
+                cacheDuration={localSettings.cacheDuration as number | undefined}
+                description={localSettings.description as string ?? ""}
+                onOpacityChange={handleOpacityChange}
+                onRequestTimeoutChange={handleRequestTimeoutChange}
+                onRefreshOnFocusChange={handleRefreshOnFocusChange}
+                onCacheEnabledChange={handleCacheEnabledChange}
+                onCacheDurationChange={handleCacheDurationChange}
+                onDescriptionChange={handleDescriptionChange}
+              />
+              <SettingsCustomFields
+                fields={customFields}
+                values={localSettings}
+                onChange={handleCustomFieldChange}
+              />
+            </div>
+          </motion.div>
+          <Popover.Arrow className="fill-white drop-shadow-sm" />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

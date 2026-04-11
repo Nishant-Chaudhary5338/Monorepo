@@ -18,6 +18,7 @@ import { sendEvent, createDeckMachineState, type DeckMachineState, type DeckMach
 import { useKeyboard } from "../../utils/keyboard";
 import type { DeckState, DeckActions, DeckEvent, Slide } from "../../types";
 import { Progress } from "../progress/Progress";
+import { Controls } from "../controls/Controls";
 
 /** Deck context value */
 interface DeckContextValue {
@@ -284,8 +285,8 @@ export const Deck = React.memo(function Deck({
   const renderedChildren = useMemo(() => {
     const childArray = React.Children.toArray(children);
     return childArray.map((child, index) => {
-      // Progress component is always visible
-      if (React.isValidElement(child) && child.type === Progress) {
+      // Progress and Controls are always visible
+      if (React.isValidElement(child) && (child.type === Progress || child.type === Controls)) {
         return child;
       }
       // Slides: only show the current one

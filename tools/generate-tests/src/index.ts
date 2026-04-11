@@ -501,7 +501,7 @@ describe('${name}', () => {
 function generateClassTests(info: ClassInfo): string {
   const { name, methods } = info;
 
-  const tests = `import { describe, it, expect, beforeEach } from 'vitest'
+  let tests = `import { describe, it, expect, beforeEach } from 'vitest'
 import { ${name} } from './${name.toLowerCase()}' // Adjust import path
 
 describe('${name}', () => {

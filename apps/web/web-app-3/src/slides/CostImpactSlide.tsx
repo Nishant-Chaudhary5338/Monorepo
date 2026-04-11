@@ -2,10 +2,34 @@ import { SlideComponent as Slide } from "@repo/present";
 import { SlideHeader } from "../components";
 
 const stats = [
-  { value: "$180K+", label: "Annual Savings", icon: "💰", color: "green" as const },
-  { value: "75%", label: "Faster Delivery", icon: "🚀", color: "cyan" as const },
-  { value: "4×", label: "Code Reuse", icon: "🔄", color: "purple" as const },
-  { value: "9×", label: "Return on Investment", icon: "📈", color: "amber" as const },
+  {
+    value: "4",
+    label: "Production Apps",
+    sub: "Sharing one codebase",
+    icon: "🏗️",
+    color: "purple" as const,
+  },
+  {
+    value: "6+",
+    label: "Reusable Packages",
+    sub: "UI, router, dashcraft, present…",
+    icon: "📦",
+    color: "cyan" as const,
+  },
+  {
+    value: "24+",
+    label: "Custom MCP Tools",
+    sub: "Code quality · UI gen · Testing",
+    icon: "🤖",
+    color: "green" as const,
+  },
+  {
+    value: "12 wks",
+    label: "End-to-End Build",
+    sub: "From zero to production",
+    icon: "📅",
+    color: "amber" as const,
+  },
 ];
 
 const colorMap = {
@@ -17,11 +41,11 @@ const colorMap = {
 
 export function CostImpactSlide() {
   return (
-    <Slide layout="center" title="The Impact">
+    <Slide layout="center" title="By The Numbers">
       <div className="bg-gradient-dark flex h-full w-full flex-col items-center justify-center p-12">
         <SlideHeader
-          title="The"
-          highlight="Impact"
+          title="By The"
+          highlight="Numbers"
         />
 
         <div className="mt-10 grid w-full max-w-4xl grid-cols-4 gap-6">
@@ -36,15 +60,16 @@ export function CostImpactSlide() {
                 <div className={`animate-trend text-5xl font-extrabold ${colors.text}`}>
                   {s.value}
                 </div>
-                <div className="text-sm font-medium text-gray-500">{s.label}</div>
+                <div className="text-sm font-semibold text-gray-700 text-center">{s.label}</div>
+                <div className="text-xs text-gray-400 text-center">{s.sub}</div>
               </div>
             );
           })}
         </div>
 
-        <div className="mt-10 rounded-full border border-purple-300 bg-gradient-to-r from-purple-100 to-cyan-100 px-8 py-3">
+        <div className="mt-10 rounded-full border border-purple-300 bg-linear-to-r from-purple-100 to-cyan-100 px-8 py-3">
           <span className="text-lg font-bold text-gray-800">
-            $20K investment → <span className="text-green-600">$180K+ saved</span> annually
+            One engineer. One system. <span className="gradient-text">Built to last.</span>
           </span>
         </div>
       </div>

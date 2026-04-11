@@ -21,7 +21,13 @@ export interface SeparatorProps
    * @default "horizontal"
    */
   orientation?: "horizontal" | "vertical"
-  
+
+  /**
+   * Visual style of the separator line.
+   * @default "solid"
+   */
+  variant?: "solid" | "dashed" | "dotted"
+
   /**
    * Whether the separator is purely decorative or has semantic meaning.
    * When true, separator will have aria-hidden="true".

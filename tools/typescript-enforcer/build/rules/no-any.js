@@ -5,7 +5,7 @@
 export function checkNoAny(source, filePath) {
     const violations = [];
     const lines = source.split('\n');
-    for (const i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         // Skip comments and strings
         const trimmed = line.trim();
