@@ -1,0 +1,8 @@
+[build]
+  base    = "."
+  command = "pnpm --filter @repo/ui build-storybook"
+  publish = "packages/ui/storybook-static"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "8.15.6"
