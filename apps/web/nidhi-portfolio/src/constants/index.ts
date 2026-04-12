@@ -12,7 +12,7 @@ export const personal = {
     "5+ years bridging research, strategy, and visual craft — crafting experiences that are intuitive, beautiful, and business-driven.",
   bio: "I'm a multidisciplinary senior designer who lives at the intersection of UX strategy and visual artistry. Currently shaping enterprise digital products at Samsung Electronics, I combine rigorous user research with pixel-perfect craft to design experiences that feel inevitable. Beyond screens, I'm an illustrator, brand designer, and motion artist who believes every medium is a chance to communicate something meaningful.",
   available: true,
-  resumeUrl: "/Nidhi-resume2026.pdf",
+  resumeUrl: "/Nidhi Chhimwal — Resume 2026.pdf",
 };
 
 // ─── Hero role slider ──────────────────────────────────────

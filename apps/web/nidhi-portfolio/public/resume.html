@@ -3,328 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nidhi Chhimwal — Resume</title>
+  <title>Nidhi Chhimwal — Resume 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black: #0a0a0a;
-      --ink: #1a1a1a;
-      --muted: #555;
-      --subtle: #888;
-      --rule: #d8d8d8;
-      --accent: #1428A0;
-      --page: #fff;
-      --serif: 'EB Garamond', Georgia, serif;
-      --sans: 'Inter', system-ui, sans-serif;
-      --mono: 'JetBrains Mono', monospace;
+      --black:   #0d0d0d;
+      --ink:     #1c1c1c;
+      --muted:   #4a4a4a;
+      --subtle:  #888;
+      --rule:    #e0e0e0;
+      --accent:  #1428A0;
+      --accent2: #c8a95a;
+      --bg-chip: #f2f2f2;
     }
 
-    html { background: #e8e8e8; }
+    html { background: #d4d4d4; }
 
     body {
-      font-family: var(--sans);
-      font-size: 9.5pt;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 8.5pt;
       line-height: 1.5;
       color: var(--ink);
-      background: #e8e8e8;
+      background: #d4d4d4;
     }
 
     .page {
       width: 210mm;
       min-height: 297mm;
-      background: var(--page);
-      margin: 20px auto;
-      padding: 14mm 14mm 12mm;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+      background: #fff;
+      margin: 24px auto;
+      padding: 10mm 13mm 8mm;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
     }
 
-    /* ── Header ── */
+    /* ─── Header ─── */
     .header {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: end;
+      gap: 16px;
       padding-bottom: 10px;
-      border-bottom: 1.5px solid var(--black);
-      margin-bottom: 14px;
-      gap: 20px;
+      border-bottom: 2px solid var(--black);
+      margin-bottom: 13px;
     }
 
-    .header-name {
-      font-family: var(--serif);
-      font-size: 30pt;
+    .name {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 32pt;
       font-weight: 400;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       line-height: 1;
       color: var(--black);
     }
 
-    .header-name em {
+    .name em {
       font-style: italic;
       color: var(--accent);
     }
 
-    .header-title {
-      font-family: var(--mono);
-      font-size: 7.5pt;
-      letter-spacing: 0.12em;
+    .title-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
-    .header-contact {
+    .contact-block {
       text-align: right;
-      font-family: var(--mono);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 7pt;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 2;
     }
 
-    .header-contact a {
+    .contact-block a {
       color: var(--accent);
       text-decoration: none;
     }
 
-    /* ── Two-column body ── */
+    /* ─── Layout ─── */
     .body {
       display: grid;
-      grid-template-columns: 1fr 2.5fr;
-      gap: 0 18px;
+      grid-template-columns: 155px 1fr;
+      gap: 0 16px;
     }
 
-    /* ── Section label ── */
-    .section-label {
-      font-family: var(--mono);
-      font-size: 6.5pt;
-      letter-spacing: 0.14em;
+    /* ─── Section label ─── */
+    .sec {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6pt;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 7px;
-      margin-top: 14px;
+      margin-top: 9px;
+      margin-bottom: 3px;
     }
 
-    .section-label:first-child { margin-top: 0; }
+    .sec:first-child { margin-top: 0; }
 
     hr {
       border: none;
       border-top: 1px solid var(--rule);
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
-    /* ── Left column ── */
-    .col-left { padding-top: 0; }
-
+    /* ─── Left column ─── */
     .tagline {
-      font-family: var(--serif);
+      font-family: 'EB Garamond', Georgia, serif;
       font-size: 9pt;
       font-style: italic;
       color: var(--muted);
       line-height: 1.5;
-      margin-bottom: 14px;
-      padding-bottom: 14px;
+      margin-bottom: 9px;
+      padding-bottom: 9px;
       border-bottom: 1px solid var(--rule);
     }
 
-    /* Skills */
-    .skill-group { margin-bottom: 11px; }
+    .skill-group { margin-bottom: 7px; }
 
-    .skill-group-name {
-      font-family: var(--sans);
+    .skill-group-title {
       font-size: 7.5pt;
       font-weight: 600;
       color: var(--ink);
       margin-bottom: 4px;
     }
 
-    .skill-list {
-      list-style: none;
+    .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 3px;
+      gap: 2.5px;
     }
 
-    .skill-list li {
-      font-size: 7pt;
-      font-family: var(--mono);
+    .chip {
+      font-size: 6.5pt;
+      font-family: 'JetBrains Mono', monospace;
       color: var(--muted);
-      background: #f3f3f3;
+      background: var(--bg-chip);
       padding: 1.5px 5px;
       border-radius: 2px;
     }
 
-    /* Tools */
     .tools-list {
       font-size: 7.5pt;
       color: var(--muted);
-      line-height: 1.9;
+      line-height: 2;
     }
 
     /* Education */
-    .edu-entry { margin-bottom: 10px; }
+    .edu { margin-bottom: 5px; }
+
     .edu-degree {
       font-weight: 600;
-      font-size: 8pt;
-      color: var(--ink);
-    }
-    .edu-school {
       font-size: 7.5pt;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .edu-school {
+      font-size: 7pt;
       color: var(--muted);
     }
+
     .edu-year {
-      font-family: var(--mono);
-      font-size: 6.5pt;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6pt;
       color: var(--subtle);
     }
 
-    /* Links */
-    .link-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    /* Certs */
+    .cert {
+      margin-bottom: 4px;
     }
-    .link-row a {
-      font-family: var(--mono);
-      font-size: 7pt;
+
+    .cert-org {
+      font-size: 6.5pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--subtle);
+    }
+
+    .cert-name {
+      font-size: 7.5pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Links */
+    .links { display: flex; flex-direction: column; gap: 4px; }
+
+    .links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6.5pt;
       color: var(--accent);
       text-decoration: none;
       word-break: break-all;
     }
-    .link-row span {
-      font-size: 6.5pt;
+
+    .links span {
+      font-size: 6pt;
       color: var(--subtle);
+      display: block;
     }
 
-    /* ── Right column ── */
-    .col-right {}
+    /* ─── Right column ─── */
 
     /* Experience */
-    .exp-entry {
-      margin-bottom: 14px;
-      padding-bottom: 13px;
+    .exp {
+      padding-bottom: 8px;
+      margin-bottom: 8px;
       border-bottom: 1px solid var(--rule);
     }
-    .exp-entry:last-child { border-bottom: none; margin-bottom: 0; }
 
-    .exp-header {
+    .exp:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+
+    .exp-top {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: baseline;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
 
     .exp-role {
-      font-family: var(--serif);
-      font-size: 11pt;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 12pt;
       font-weight: 500;
       color: var(--black);
       line-height: 1.2;
     }
 
     .exp-period {
-      font-family: var(--mono);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 6.5pt;
       color: var(--subtle);
       white-space: nowrap;
     }
 
-    .exp-meta {
-      font-size: 7.5pt;
+    .exp-company {
+      font-size: 8pt;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
-    .exp-meta strong {
+    .exp-company strong {
       font-weight: 600;
       color: var(--ink);
     }
 
-    .exp-highlights {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
+    .bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
 
-    .exp-highlights li {
-      font-size: 8pt;
+    .bullets li {
+      font-size: 7.5pt;
       color: var(--ink);
       padding-left: 10px;
       position: relative;
       line-height: 1.45;
     }
 
-    .exp-highlights li::before {
+    .bullets li::before {
       content: "–";
       position: absolute;
       left: 0;
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    /* Projects */
-    .project-entry {
-      margin-bottom: 10px;
-      padding-bottom: 10px;
+    /* Freelance */
+    .freelance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 12px;
+    }
+
+    .fl-item { }
+
+    .fl-client {
+      font-weight: 600;
+      font-size: 7.5pt;
+      color: var(--ink);
+    }
+
+    .fl-desc {
+      font-size: 7pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ─── Profile summary ─── */
+    .profile {
+      font-size: 7.5pt;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-bottom: 7px;
+      padding-bottom: 7px;
       border-bottom: 1px solid var(--rule);
     }
-    .project-entry:last-child { border-bottom: none; margin-bottom: 0; }
 
-    .project-header {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 3px;
-    }
-
-    .project-name {
-      font-family: var(--serif);
-      font-size: 10pt;
-      font-weight: 500;
-      color: var(--black);
-    }
-
-    .project-badge {
-      font-family: var(--mono);
-      font-size: 6pt;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(20,40,160,0.07);
-      padding: 1px 5px;
-      border-radius: 2px;
-    }
-
-    .project-desc {
-      font-size: 8pt;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .project-outcomes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .outcome-pill {
-      font-family: var(--mono);
-      font-size: 6.5pt;
-      color: var(--ink);
-      background: #f3f3f3;
-      padding: 1.5px 6px;
-      border-radius: 2px;
-    }
-
-    /* ── Print ── */
+    /* ─── Print ─── */
     @media print {
       html, body { background: white; }
       .page {
         margin: 0;
-        padding: 12mm 14mm;
+        padding: 10mm 13mm;
         box-shadow: none;
         width: 100%;
         min-height: auto;
@@ -333,219 +318,204 @@
   </style>
 </head>
 <body>
-  <div class="page">
+<div class="page">
 
-    <!-- Header -->
-    <header class="header">
-      <div>
-        <div class="header-name">Nidhi <em>Chhimwal</em></div>
-        <div class="header-title">Senior UI/UX Designer &amp; Illustrator</div>
-      </div>
-      <div class="header-contact">
-        <div>nidhi.doodles@gmail.com</div>
-        <div>+91 81685 80423</div>
-        <div>Gurugram, India</div>
-        <div><a href="https://www.behance.net/nidhichhim6d3d">behance.net/nidhichhim6d3d</a></div>
-      </div>
-    </header>
-
-    <!-- Body -->
-    <div class="body">
-
-      <!-- Left column -->
-      <aside class="col-left">
-
-        <p class="tagline">5+ years bridging research, strategy, and visual craft — building experiences that are intuitive, beautiful, and business-driven.</p>
-
-        <!-- Skills -->
-        <p class="section-label">Core Skills</p>
-        <hr />
-
-        <div class="skill-group">
-          <div class="skill-group-name">UX &amp; Product Design</div>
-          <ul class="skill-list">
-            <li>Design Thinking</li>
-            <li>Information Architecture</li>
-            <li>User Flows</li>
-            <li>Wireframing</li>
-            <li>Hi-fi Prototyping</li>
-            <li>Design Systems</li>
-            <li>Interaction Design</li>
-            <li>Responsive Design</li>
-            <li>WCAG 2.1</li>
-            <li>Design QA</li>
-          </ul>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-group-name">UX Research</div>
-          <ul class="skill-list">
-            <li>User Interviews</li>
-            <li>Usability Testing</li>
-            <li>Affinity Mapping</li>
-            <li>Persona Development</li>
-            <li>A/B Testing</li>
-            <li>Heuristic Evaluation</li>
-            <li>Competitive Analysis</li>
-          </ul>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-group-name">Visual &amp; Creative</div>
-          <ul class="skill-list">
-            <li>Illustration</li>
-            <li>Brand Identity</li>
-            <li>Motion Graphics</li>
-            <li>Packaging Design</li>
-            <li>Editorial Design</li>
-            <li>Mural Art</li>
-          </ul>
-        </div>
-
-        <!-- Tools -->
-        <p class="section-label" style="margin-top: 12px;">Tools</p>
-        <hr />
-        <div class="tools-list">
-          Figma (Advanced) · Figma Variables &amp; Tokens<br/>
-          Adobe Illustrator · Photoshop · InDesign<br/>
-          Procreate · After Effects · ProtoPie<br/>
-          Miro · FigJam · Storybook
-        </div>
-
-        <!-- Education -->
-        <p class="section-label" style="margin-top: 12px;">Education</p>
-        <hr />
-        <div class="edu-entry">
-          <div class="edu-degree">B.Des — Communication Design</div>
-          <div class="edu-school">Sharda University, Greater Noida</div>
-          <div class="edu-year">2017 — 2021</div>
-        </div>
-
-        <!-- Links -->
-        <p class="section-label" style="margin-top: 12px;">Portfolio &amp; Work</p>
-        <hr />
-        <div class="link-row">
-          <div>
-            <span>Behance — </span>
-            <a href="https://www.behance.net/nidhichhim6d3d">behance.net/nidhichhim6d3d</a>
-          </div>
-          <div>
-            <span>Golden Farms (Play Store) — </span>
-            <a href="https://play.google.com/store">Live on Play Store</a>
-          </div>
-          <div>
-            <span>Safex Chemicals — </span>
-            <a href="https://www.safexchemicals.com">safexchemicals.com</a>
-          </div>
-        </div>
-
-      </aside>
-
-      <!-- Right column -->
-      <main class="col-right">
-
-        <!-- Experience -->
-        <p class="section-label" style="margin-top: 0;">Experience</p>
-        <hr />
-
-        <div class="exp-entry">
-          <div class="exp-header">
-            <div class="exp-role">Senior Associate — UI/UX Design</div>
-            <div class="exp-period">Dec 2023 — Present</div>
-          </div>
-          <div class="exp-meta"><strong>Samsung Electronics</strong> &nbsp;·&nbsp; Gurugram, India</div>
-          <ul class="exp-highlights">
-            <li>Designed TVPlus Test Suite — enterprise QA automation platform adopted by Samsung's global content operations teams</li>
-            <li>Built Samsung Design System in Figma (tokens, components, variants) — adopted across 3+ internal products</li>
-            <li>Led end-to-end UX for Samsung Research Centre's intranet portal and internal LMS</li>
-            <li>Conducted user research, usability testing, and journey mapping to drive evidence-based design decisions</li>
-            <li>Partnered cross-functionally with product, engineering, and global brand teams</li>
-          </ul>
-        </div>
-
-        <div class="exp-entry">
-          <div class="exp-header">
-            <div class="exp-role">UI/UX Designer</div>
-            <div class="exp-period">Jun 2022 — Dec 2023</div>
-          </div>
-          <div class="exp-meta"><strong>Safex Chemicals India Ltd.</strong> &nbsp;·&nbsp; Delhi, India</div>
-          <ul class="exp-highlights">
-            <li>Designed Golden Farms — B2B e-commerce app for agricultural distributors, live on Play Store (4.2★) and App Store (5.0★) with 15K+ users</li>
-            <li>Designed Safex LMS (500+ employees) and SAP Web Interface for Briar Chemicals, Norwich UK</li>
-            <li>Redesigned 5 Safex group websites with a unified design system; all live</li>
-            <li>Produced motion graphics, packaging, and brand identity for product launches</li>
-          </ul>
-        </div>
-
-        <div class="exp-entry">
-          <div class="exp-header">
-            <div class="exp-role">Graphic Visualizer</div>
-            <div class="exp-period">Apr 2021 — Mar 2022</div>
-          </div>
-          <div class="exp-meta"><strong>Liberty Shoes Pvt. Ltd.</strong> &nbsp;·&nbsp; Delhi, India</div>
-          <ul class="exp-highlights">
-            <li>Created brand-aligned illustrations, GIFs, and marketing visuals for digital campaigns</li>
-            <li>Drove a 25% boost in engagement through high-impact campaign creatives</li>
-          </ul>
-        </div>
-
-        <div class="exp-entry">
-          <div class="exp-header">
-            <div class="exp-role">Graphic Designer</div>
-            <div class="exp-period">Mar 2020 — Jul 2020</div>
-          </div>
-          <div class="exp-meta"><strong>Mediamix</strong> &nbsp;·&nbsp; Gurugram, India</div>
-          <ul class="exp-highlights">
-            <li>Designed social media creatives and built a reusable template library for multiple brand clients</li>
-          </ul>
-        </div>
-
-        <!-- Selected Projects -->
-        <p class="section-label">Selected Projects</p>
-        <hr />
-
-        <div class="project-entry">
-          <div class="project-header">
-            <span class="project-name">TVPlus Test Suite</span>
-            <span class="project-badge">Samsung · Enterprise</span>
-          </div>
-          <p class="project-desc">End-to-end QA automation platform for Samsung's global streaming content operations — multi-step test scheduling, drag-drop analytics dashboard, and AI chatbot for quick task execution.</p>
-          <div class="project-outcomes">
-            <span class="outcome-pill">98.5% accuracy</span>
-            <span class="outcome-pill">↓100% manual QA on TVs</span>
-            <span class="outcome-pill">Global pilot</span>
-          </div>
-        </div>
-
-        <div class="project-entry">
-          <div class="project-header">
-            <span class="project-name">Golden Farms</span>
-            <span class="project-badge">Safex · B2B App</span>
-          </div>
-          <p class="project-desc">B2B mobile ordering platform for agricultural distributors — 5-step KYC onboarding, bilingual (Hindi/English), browse-before-approve flow. Live on Play Store and App Store across India.</p>
-          <div class="project-outcomes">
-            <span class="outcome-pill">15K+ users</span>
-            <span class="outcome-pill">4.2★ Play Store</span>
-            <span class="outcome-pill">5.0★ App Store</span>
-            <span class="outcome-pill">↓80% order calls</span>
-          </div>
-        </div>
-
-        <div class="project-entry">
-          <div class="project-header">
-            <span class="project-name">Samsung Design System</span>
-            <span class="project-badge">Samsung · Design System</span>
-          </div>
-          <p class="project-desc">43-component Figma design system with 10 token categories (colors, typography, spacing, motion). Includes Signal & Flame brand system for TVPlus with WCAG-tested color pairings. Documented in live Storybook.</p>
-          <div class="project-outcomes">
-            <span class="outcome-pill">43 components</span>
-            <span class="outcome-pill">↓40% handoff time</span>
-            <span class="outcome-pill">Live Storybook</span>
-          </div>
-        </div>
-
-      </main>
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="name">Nidhi <em>Chhimwal</em></div>
+      <div class="title-line">Senior UI/UX Designer &amp; Illustrator &nbsp;·&nbsp; Delhi, India</div>
     </div>
+    <div class="contact-block">
+      <div>nidhi.doodles@gmail.com &nbsp;·&nbsp; +91 81685 80423</div>
+      <div><a href="https://nidhi-3d-portfolio.netlify.app/">Portfolio</a></div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- ═══ LEFT ═══ -->
+    <aside>
+
+      <p class="tagline">5+ years bridging research, strategy, and visual craft — building experiences that are intuitive, beautiful, and business-driven.</p>
+
+      <!-- Skills -->
+      <p class="sec">Core Skills</p>
+      <hr/>
+
+      <div class="skill-group">
+        <div class="skill-group-title">UX &amp; Product Design</div>
+        <div class="chips">
+          <span class="chip">Design Thinking</span>
+          <span class="chip">Wireframing</span>
+          <span class="chip">Prototyping</span>
+          <span class="chip">Info Architecture</span>
+          <span class="chip">User Research</span>
+          <span class="chip">Journey Mapping</span>
+          <span class="chip">Design Systems</span>
+          <span class="chip">Interaction Design</span>
+          <span class="chip">WCAG 2.1</span>
+          <span class="chip">Design QA</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Visual &amp; Motion Design</div>
+        <div class="chips">
+          <span class="chip">Illustration</span>
+          <span class="chip">Brand Identity</span>
+          <span class="chip">Packaging</span>
+          <span class="chip">Editorial</span>
+          <span class="chip">Motion Graphics</span>
+          <span class="chip">2D Animation</span>
+          <span class="chip">Typography</span>
+          <span class="chip">Mural Art</span>
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <p class="sec">Tools</p>
+      <hr/>
+      <div class="tools-list">
+        Figma · Adobe XD<br/>
+        Photoshop · Illustrator<br/>
+        InDesign · After Effects<br/>
+        Procreate · ProtoPie<br/>
+        Miro · FigJam · Storybook
+      </div>
+
+      <!-- Education -->
+      <p class="sec">Education</p>
+      <hr/>
+
+      <div class="edu">
+        <div class="edu-degree">Advanced Certification</div>
+        <div class="edu-school">Persuasive UX Strategy</div>
+        <div class="edu-school">IIT Delhi</div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-degree">Bachelor of Design</div>
+        <div class="edu-school">Doon University, Dehradun</div>
+        <div class="edu-year">2015 — 2019</div>
+      </div>
+
+      <!-- Certificates -->
+      <p class="sec">Certificates</p>
+      <hr/>
+
+      <div class="cert">
+        <div class="cert-org">University of Toronto</div>
+        <div class="cert-name">Human-Centered Design for Inclusive Innovation</div>
+      </div>
+      <div class="cert">
+        <div class="cert-org">Coursera</div>
+        <div class="cert-name">Get Started with Figma</div>
+      </div>
+      <div class="cert">
+        <div class="cert-org">Domestika</div>
+        <div class="cert-name">Mixed Media Animation in Procreate</div>
+      </div>
+
+
+    </aside>
+
+    <!-- ═══ RIGHT ═══ -->
+    <main>
+
+      <!-- Profile -->
+      <p class="sec" style="margin-top:0">Profile</p>
+      <hr/>
+      <p class="profile">Senior UI/UX Designer with 5+ years across enterprise product design, mobile platforms, and visual craft — from B2B apps with 15K+ users to Samsung-scale design systems. Specialised in research-driven UX, accessibility, and full-spectrum visual identity.</p>
+
+      <!-- Experience -->
+      <p class="sec">Experience</p>
+      <hr/>
+
+      <div class="exp">
+        <div class="exp-top">
+          <div class="exp-role">Senior Associate — UI/UX Design</div>
+          <div class="exp-period">Dec 2023 — Present</div>
+        </div>
+        <div class="exp-company"><strong>Samsung Electronics</strong> &nbsp;·&nbsp; Delhi, India</div>
+        <ul class="bullets">
+          <li>Designed TVPlus Test Suite — enterprise QA automation platform with drag-drop analytics dashboard, multi-step test scheduling, and AI chatbot; adopted by Samsung's global content operations teams (98.5% accuracy)</li>
+          <li>Built Samsung Design System in Figma — 43 components, 10 token categories, Signal &amp; Flame brand system for TVPlus with WCAG-tested color pairings; documented in live Storybook</li>
+          <li>Led end-to-end UX for Samsung India R&amp;D Centre's intranet portal and internal LMS; conducted user research, usability testing, and journey mapping across cross-functional and global brand teams</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-top">
+          <div class="exp-role">UI/UX Designer</div>
+          <div class="exp-period">Jun 2022 — Dec 2023</div>
+        </div>
+        <div class="exp-company"><strong>Safex Chemicals India Ltd.</strong> &nbsp;·&nbsp; Delhi, India</div>
+        <ul class="bullets">
+          <li>Designed Golden Farms — B2B mobile ordering platform for 15K+ agricultural distributors; live on Play Store (4.2★) and App Store (5.0★) with bilingual (Hindi/English) 5-step KYC onboarding</li>
+          <li>Designed Safex LMS (500+ employees, 9 courses) and SAP Web Interface for Briar Chemicals (Norwich, UK) — 3 ERP modules, 4 role-gated access levels, ↓70% notification tracking time</li>
+          <li>Redesigned 5 Safex group websites with a unified design system; all live</li>
+          <li>Produced motion graphics, product packaging, and brand identity for group product launches</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-top">
+          <div class="exp-role">Graphic Visualizer</div>
+          <div class="exp-period">Apr 2021 — Mar 2022</div>
+        </div>
+        <div class="exp-company"><strong>Liberty Shoes Pvt. Ltd.</strong> &nbsp;·&nbsp; Delhi, India</div>
+        <ul class="bullets">
+          <li>Created brand-aligned illustrations, GIFs, banners, and marketing visuals for digital campaigns</li>
+          <li>Drove a 25% boost in engagement through high-impact creatives; managed multiple tracks under tight deadlines</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-top">
+          <div class="exp-role">Graphic Designer</div>
+          <div class="exp-period">Mar 2020 — Jul 2020</div>
+        </div>
+        <div class="exp-company"><strong>Mediamix</strong> &nbsp;·&nbsp; Gurugram, India</div>
+        <ul class="bullets">
+          <li>Designed social media creatives and managed accounts for multiple brands; built reusable design template library</li>
+        </ul>
+      </div>
+
+      <!-- Selected Work -->
+      <p class="sec">Selected Work &amp; Freelance</p>
+      <hr/>
+
+      <div class="freelance-grid">
+        <div class="fl-item">
+          <div class="fl-client">Smith N Smith</div>
+          <div class="fl-desc">UI/UX + branding — responsive website and cohesive visual identity</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-client">Healing Urja</div>
+          <div class="fl-desc">Illustrated a complete 78-card tarot deck with symbolic cohesion</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-client">FarmOrigin &amp; Prasuma India</div>
+          <div class="fl-desc">Packaging design and brand kits for FMCG products</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-client">Spectra Hospitality</div>
+          <div class="fl-desc">Social media creatives, reels, and brand kits for wellness startups</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-client">ALMA Magazine</div>
+          <div class="fl-desc">Editorial illustrations aligned with contemporary visual style</div>
+        </div>
+        <div class="fl-item">
+          <div class="fl-client">Kiwi Kisan Window</div>
+          <div class="fl-desc">Packaging and label systems blending sustainability with visual clarity</div>
+        </div>
+      </div>
+
+    </main>
   </div>
+</div>
 </body>
 </html>
