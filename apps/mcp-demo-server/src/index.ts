@@ -7,7 +7,7 @@ import parallelRouter from './routes/parallel.js';
 const app = express();
 const PORT = 3001;
 
-app.use(cors({ origin: ['http://localhost:5175', 'http://localhost:5173'] }));
+app.use(cors({ origin: /^http:\/\/localhost:\d+$/ }));
 app.use(express.json());
 
 app.get('/health', (_req, res) => res.json({ status: 'ok', port: PORT }));
