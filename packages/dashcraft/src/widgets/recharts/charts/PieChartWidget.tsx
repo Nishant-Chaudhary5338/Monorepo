@@ -30,22 +30,23 @@ export const PieChartWidget = React.memo(function PieChartWidget({
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
-        {showTooltip && <Tooltip />}
-        {showLegend && (
-          <Legend wrapperStyle={{ fontSize: 12 }} />
-        )}
+        {showTooltip && <Tooltip formatter={(value, name) => [value, name]} />}
+        <Legend
+          iconType="circle"
+          iconSize={8}
+          wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+        />
         <Pie
           data={[...data]}
           cx="50%"
           cy="50%"
+          innerRadius="52%"
+          outerRadius="78%"
           labelLine={false}
-          outerRadius="80%"
           dataKey={valueKey}
           nameKey="name"
           isAnimationActive={animate}
-          label={({ name, percent }) =>
-            `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
-          }
+          paddingAngle={3}
         >
           {data.map((_, index) => (
             <Cell

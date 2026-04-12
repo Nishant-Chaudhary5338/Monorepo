@@ -5,13 +5,35 @@ import {
   RechartsWidget,
   useDashboard,
 } from "@repo/dashcraft";
+import type React from "react";
 
 // ── Corner Action Buttons ──────────────────────────────────────────────────
 
 const TopRightControls = () => {
-  const { isEditMode, toggleEditMode } = useDashboard();
+  const { isEditMode, toggleEditMode, resetLayout } = useDashboard();
   return (
-    <div style={{ position: "fixed", top: "12px", right: "16px", zIndex: 1000 }}>
+    <div style={{ position: "fixed", top: "12px", right: "16px", zIndex: 1000, display: "flex", gap: "8px" }}>
+      {isEditMode && (
+        <button
+          onClick={resetLayout}
+          style={{
+            background: "linear-gradient(135deg, #7f1d1d, #991b1b)",
+            color: "#fca5a5",
+            border: "1px solid rgba(252,165,165,0.2)",
+            borderRadius: "8px",
+            padding: "7px 14px",
+            fontSize: "12px",
+            fontWeight: 600,
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
+          ↺ Reset Layout
+        </button>
+      )}
       <button
         onClick={toggleEditMode}
         style={{

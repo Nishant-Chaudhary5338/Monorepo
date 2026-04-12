@@ -26,7 +26,7 @@ export const heroRoles = [
 export const stats = [
   { value: 5, suffix: "+", label: "Years Experience" },
   { value: 6, suffix: "", label: "Live Products Shipped" },
-  { value: 15, suffix: "K+", label: "Real Users Impacted" },
+  { value: 50, suffix: "K+", label: "Users Impacted" },
   { value: 3, suffix: "", label: "Enterprise Companies" },
 ];
 
@@ -263,6 +263,7 @@ export type CaseStudyLink = {
   playStore?: string;
   behance?: string;
   pdf?: string;
+  sites?: { label: string; url: string }[];
 };
 
 export type CaseStudyOutcome = {
@@ -274,7 +275,20 @@ export type CaseStudyImage = {
   src: string;
   alt: string;
   caption?: string;
-  full?: boolean; // full-width image
+  full?: boolean;   // landscape banner — spans full width, objectFit: contain
+  mobile?: boolean; // portrait mobile screenshot — shown in horizontal scrollable strip
+};
+
+export type Portal = {
+  id: string;
+  title: string;
+  subtitle: string;
+  context: string;
+  problem: string;
+  painPoints: string[];
+  solutionHighlights: string[];
+  outcomes: CaseStudyOutcome[];
+  images: CaseStudyImage[];
 };
 
 export type CaseStudy = {
@@ -287,6 +301,7 @@ export type CaseStudy = {
   painPoints: string[];
   processHighlights: { phase: string; what: string }[];
   solutionHighlights: string[];
+  portals?: Portal[];
   outcomes: CaseStudyOutcome[];
   images: CaseStudyImage[];
   links: CaseStudyLink;
@@ -332,56 +347,99 @@ export const projects: Project[] = [
       tools: ["Figma", "FigJam", "Miro", "Google Analytics", "After Effects"],
       teamNote: "Cross-functional team: 2 developers, 1 product manager, 1 QA engineer",
       overview:
-        "Golden Farms (internally KIWI — Kisan Window) is a B2B agricultural e-commerce mobile app developed for Safex Chemicals India. It lets distributors and retailers browse products, place bulk orders, track delivery, upload trade permits, and access agri-expert support — entirely in Hindi or English. I led the end-to-end UX from initial user research with rural distributors to launch and post-launch iteration.",
+        "Golden Farms is Safex Chemicals' first B2B e-commerce platform — live on Play Store and App Store, serving 15K+ agricultural distributors across India. I led the end-to-end UX: the distributor mobile app, an internal ops admin portal, and the complete launch brand system.",
       problem:
-        "Safex's B2B ordering was completely manual — phone calls, WhatsApp, spreadsheets. Distributors in Tier-2/3 cities struggled with delayed orders, unclear pricing, permit confusion, and no visibility into delivery status. The business had zero digital presence for this distribution layer.",
+        "Safex's entire B2B distribution ran on phone calls and WhatsApp — no digital ordering, no onboarding structure, and zero ops visibility.",
       painPoints: [
-        "No digital ordering — every order placed via phone/WhatsApp with errors and delays",
-        "Permit & compliance documents required for each order, but no structured upload flow existed",
-        "Rural distributors (primary users) had low digital literacy — needed simple, bilingual UX",
-        "Product catalog was not accessible — no search, no category structure, no stock visibility",
-        "Zero order tracking — distributors had no idea when their order would arrive",
+        "Manual ordering via phone/WhatsApp — errors, delays, no order history",
+        "Complex KYC onboarding with business docs, govt licenses, and shop photos",
+        "Ops team verifying documents manually with no dashboard or approval workflow",
       ],
       processHighlights: [
         {
           phase: "Discover",
-          what: "Field research with 12 Safex distributors across UP and Haryana — in-person interviews, task observation, contextual inquiry. Mapped current state ordering journey revealing 7 pain point clusters.",
+          what: "Field research with 12 distributors across UP and Haryana — in-person interviews, contextual inquiry, and journey mapping across the full ordering lifecycle.",
         },
         {
           phase: "Define",
-          what: "Created 3 user personas (rural retailer, urban distributor, first-time user), information architecture for 5 core flows (onboarding, catalog, ordering, permit upload, tracking), and a prioritized feature matrix.",
+          what: "3 personas (rural retailer, urban distributor, ops admin), 5 core flows (onboarding, catalog, ordering, permit upload, tracking), and a prioritized feature matrix.",
         },
         {
           phase: "Design",
-          what: "14 rounds of wireframe iteration. Key decisions: simplified 3-step checkout, permit upload with camera integration, bilingual toggle, large touch targets (48dp minimum) for rural accessibility.",
+          what: "14 wireframe rounds across the app, admin portal, and bilingual onboarding — 48dp touch targets, camera-integrated permit upload, and a parallel admin verification flow.",
         },
         {
           phase: "Deliver",
-          what: "Usability testing with 8 distributors pre-launch. Iterated on permit flow and onboarding based on findings. Handed off with a 120+ screen Figma file + annotated dev specs.",
+          what: "Usability testing with 8 distributors pre-launch. 120+ screen Figma handoff + admin portal specs + packaging and brand launch kit.",
         },
       ],
-      solutionHighlights: [
-        "One-tap reorder — distributors can replicate their last order in 2 taps",
-        "Smart permit upload — camera capture + OCR prompt for required fields",
-        "Bilingual on-the-fly toggle (Hindi ↔ English) without re-navigation",
-        "Inline stock availability with restock ETA to reduce follow-up calls",
-        "Order timeline with push notifications at each status change",
+      solutionHighlights: [],
+      portals: [
+        {
+          id: "gf-app",
+          title: "Distributor App",
+          subtitle: "B2B Mobile Ordering Platform",
+          context: "Live on Play Store (4.2★) and App Store (5.0★) — used by 15K+ agricultural distributors and retailers across India.",
+          problem: "Distributors had no way to register, upload compliance documents, or place orders digitally.",
+          painPoints: [
+            "Multi-step KYC: mobile OTP → referral code → business docs + shop photos",
+            "Browse & cart allowed before approval — orders gated until admin verified",
+            "Bilingual (Hindi/English) for rural, low-literacy users across Tier-2/3 cities",
+          ],
+          solutionHighlights: [
+            "5-step onboarding with pending-approval browse mode so users stay engaged",
+            "Camera-integrated permit + licence upload (govt docs, existing shop images)",
+            "On-the-fly bilingual toggle (Hindi ↔ English) without re-navigation",
+            "One-tap reorder + real-time delivery tracking with push notifications",
+          ],
+          outcomes: [
+            { metric: "15K+", label: "Active distributors" },
+            { metric: "80%", label: "Fewer manual order calls" },
+            { metric: "4.2★", label: "Play Store rating" },
+            { metric: "Live", label: "Nidhi credited in-app" },
+          ],
+          images: [
+            { src: "/images/golden-farms/playstore.webp",       alt: "Golden Farms — Play Store listing", caption: "Play Store · Agcare Technologies", full: true },
+            { src: "/images/golden-farms/appstore.webp",        alt: "Golden Farms — App Store listing",  caption: "App Store · Utility",           full: true },
+            { src: "/images/golden-farms/language.webp",       alt: "Language selection — English / Hindi / Bangla", caption: "Onboarding · Language",      mobile: true },
+            { src: "/images/golden-farms/login.webp",          alt: "OTP-based mobile login",                        caption: "Authentication · OTP Login", mobile: true },
+            { src: "/images/golden-farms/home.webp",           alt: "Home dashboard — ledger, quick actions",         caption: "Dashboard · Home",           mobile: true },
+            { src: "/images/golden-farms/products.webp",       alt: "Product catalog with category filters",          caption: "Catalog · All Products",     mobile: true },
+            { src: "/images/golden-farms/product-detail.webp", alt: "Product detail — dosage and pricing",            caption: "Product Detail",             mobile: true },
+          ],
+        },
+        {
+          id: "gf-admin",
+          title: "Admin Portal & Brand System",
+          subtitle: "Ops Management + Launch Identity",
+          context: "Internal tool for Safex ops team — KYC verification, order management, stock and warehouse tracking. Plus the complete brand system for go-to-market launch.",
+          problem: "The ops team reviewed KYC documents case by case, tracked orders in spreadsheets, and had zero launch collateral for a national rollout.",
+          painPoints: [
+            "No KYC approval dashboard — distributor docs verified manually, case by case",
+            "Stock, warehouse, and order fulfilment tracked across spreadsheets",
+            "Zero brand collateral for a national product launch",
+          ],
+          solutionHighlights: [
+            "Admin portal: customer verification queue, order management table, stock + warehouse tracking",
+            "Product packaging design for the Golden Farms brand",
+            "Launch collateral: branded calendars, merchandise (T-shirts, caps), training PPTs + videos",
+            "Product launch presentations for internal and channel partner stakeholders",
+          ],
+          outcomes: [
+            { metric: "Live",      label: "Ops team fully onboarded" },
+            { metric: "Shipped",   label: "Packaging design delivered" },
+            { metric: "Complete",  label: "Full launch kit" },
+          ],
+          images: [],
+        },
       ],
       outcomes: [
         { metric: "15K+", label: "Active users on Play Store & App Store" },
-        { metric: "80%", label: "Reduction in manual order calls" },
+        { metric: "80%",  label: "Reduction in manual order calls" },
         { metric: "4.2★", label: "Average app store rating" },
-        { metric: "Live", label: "Nidhi's name credited inside the app" },
+        { metric: "Live",  label: "Nidhi's name credited inside the app" },
       ],
-      images: [
-        { src: "/images/golden-farms/playstore.png",      alt: "Golden Farms — Play Store listing (4.2★, 10K+ downloads)", caption: "Play Store · Agcare Technologies Private Limited", full: true },
-        { src: "/images/golden-farms/appstore.png",       alt: "Golden Farms — App Store listing (5.0★)", caption: "App Store · Utility · Developer: Songlift" },
-        { src: "/images/golden-farms/language.webp",      alt: "Onboarding — Language selection screen (English / Hindi / Bangla)", caption: "Onboarding · Language Selection" },
-        { src: "/images/golden-farms/login.webp",         alt: "Login screen — OTP-based mobile number authentication", caption: "Authentication · OTP Login" },
-        { src: "/images/golden-farms/home.webp",          alt: "Home dashboard — Ledger balance, quick actions, tutorial", caption: "Dashboard · Home Screen" },
-        { src: "/images/golden-farms/products.webp",      alt: "Product catalog — Filtered by Weedicides, Fungicides, Insecticides, PGRs, Fertilisers", caption: "Product Catalog · All Products" },
-        { src: "/images/golden-farms/product-detail.webp", alt: "Product detail — Crop/pest/dosage table with pricing", caption: "Product Detail · Dosage & Pricing" },
-      ],
+      images: [],
       links: {
         playStore: "https://play.google.com/store/apps/details?id=com.safexchemicals.goldenfarms",
         appStore: "https://apps.apple.com/in/app/golden-farms/id6443530676",
@@ -395,71 +453,67 @@ export const projects: Project[] = [
     title: "TVPlus Test Suite",
     projectType: "enterprise",
     year: "2023–Present",
-    category: "Enterprise UX · SaaS Dashboard",
+    category: "Enterprise UX · QA Automation Platform",
     description:
-      "End-to-end UX for Samsung's internal QA automation platform — a drag-drop dashboard, AI-assisted test authoring, and scheduling system used by global content operations teams.",
-    tags: ["Enterprise UX", "SaaS", "Dashboard", "Design Systems", "User Research"],
+      "Built from scratch — an end-to-end QA automation platform eliminating 100% of manual content testing effort for Samsung's TVPlus streaming service. Used by global QA engineers, PMs, and managers. Achieving 98.5% accuracy in pilot.",
+    tags: ["Enterprise UX", "QA Automation", "Dashboard", "Scheduling", "AI Chatbot"],
     gradient: "linear-gradient(135deg, #0d0a2e 0%, #1a1060 50%, #0d0a2e 100%)",
     accentColor: "#9d72ff",
     featured: false,
     company: "Samsung Electronics",
-    badge: "Used by Samsung Global Teams",
+    badge: "98.5% Accuracy in Pilot",
     caseStudy: {
-      myRole: "Senior UX Designer & Researcher",
+      myRole: "Senior UX Designer (0→1)",
       timeline: "Dec 2023 — Present",
-      tools: ["Figma", "FigJam", "Miro", "Storybook", "ProtoPie"],
-      teamNote: "Collaboration with Samsung's global content ops and QA engineering teams",
+      tools: ["Adobe XD", "FigJam", "Miro", "ProtoPie"],
+      teamNote: "Samsung global QA engineering, content ops, and product teams",
       overview:
-        "TVPlus is Samsung's free ad-supported streaming service available on Samsung Smart TVs globally. The TVPlus Test Suite is the internal QA automation platform used by Samsung's content operations and QA teams to author, schedule, and monitor automated tests for TVPlus content and features. I redesigned the entire UX — from the test authoring flow to the real-time monitoring dashboard.",
+        "Built from scratch — automates 100% of manual content QA for Samsung's TVPlus streaming service. QA engineers, PMs, and managers across global teams use it to schedule, monitor, and review automated test runs. 98.5% accuracy in pilot.",
       problem:
-        "The existing test suite had no centralized dashboard, test authoring was scattered across multiple tools, and QA teams spent excessive time on manual status checks and scheduling conflicts. The interface was engineer-built, with no UX consideration, leading to high error rates and onboarding friction for new team members.",
+        "All content QA was manual — engineers watched content on physical TVs, country by country, device by device. No scheduling, no status view, no scale.",
       painPoints: [
-        "No unified dashboard — QA engineers used 3 separate tools to create, schedule, and monitor tests",
-        "Test authoring was CLI-based for non-technical content ops staff who couldn't code",
-        "No real-time status visibility — engineers had to ping devs to know if tests passed or failed",
-        "Scheduling conflicts were common with no conflict detection or resolution UI",
-        "New team members took 2+ weeks to onboard due to tool complexity",
+        "100% manual QA — no automation, no scheduling, one test at a time",
+        "No status visibility — QA leads couldn't see what was passing, failing, or queued",
+        "Non-engineers had no way to trigger tests or check assets without going through QA",
       ],
       processHighlights: [
         {
           phase: "Discover",
-          what: "Stakeholder interviews with 8 QA engineers and 4 content ops leads. Workflow shadowing sessions. Heuristic evaluation of the existing tool identified 23 critical usability issues.",
+          what: "Mapped the full manual QA workflow with global engineers and content ops. Found the scheduling flow as the core design challenge — 6 interdependent selection dimensions.",
         },
         {
           phase: "Define",
-          what: "User journey maps for 3 personas (QA Engineer, Content Ops Lead, Admin). Defined MVP feature set with stakeholders. Prioritized test authoring and real-time dashboard as Phase 1.",
+          what: "3 user types: QA Engineer, PM/Manager, Admin. Full platform IA: Dashboard → Schedule → Monitor → Jobs → Admin. Scheduling and dashboard prioritised for Phase 1.",
         },
         {
           phase: "Design",
-          what: "Component-first design in Figma — built a small design system for the tool. Drag-drop dashboard with customizable widget grid. No-code test authoring with step builder and parameter selectors.",
+          what: "6-step progressive stepper for scheduling — each step locks on confirm, live summary panel tracks selections. Drag-drop dashboard personalised per role.",
         },
         {
           phase: "Deliver",
-          what: "Prototype testing with QA team. Iterated on scheduling interface after conflict detection was flagged as confusing. Handed off with Storybook components and annotated specs.",
+          what: "Iterated scheduling flow through prototype rounds with QA team. Added AI chatbot for PM/manager quick tasks. Full handoff with annotated specs.",
         },
       ],
       solutionHighlights: [
-        "Unified drag-drop dashboard — all test metrics, pass/fail rates, and schedules in one place",
-        "No-code test authoring — step builder with dropdown selectors enables content ops (non-engineers) to write tests",
-        "AI-assisted chatbot for test search, Q&A on test results, and quick test execution",
-        "Real-time monitoring feed with status badges and alert escalation",
-        "Admin portal for team management, permissions, and audit logs",
+        "Dashboard: 7 KPI cards + drag-drop widgets (Server Health, Issue Trends, Ageing Hours, Live & VOD ring charts)",
+        "6-step scheduler: Country → Content Type → Assets → Devices → QC Category → Test Cases → Submit",
+        "AI chatbot: enter a service ID → get asset status + schedule a test in one step",
+        "3 role levels: QA Engineer (full access), PM/Manager (chatbot + status), Admin (full + audit)",
       ],
       outcomes: [
-        { metric: "Global", label: "Samsung content ops teams as users" },
-        { metric: "↓60%", label: "Reduction in test authoring time" },
-        { metric: "↑3x", label: "Faster onboarding for new team members" },
-        { metric: "Phase 2", label: "Mobile view in active development" },
+        { metric: "98.5%", label: "Accuracy in pilot" },
+        { metric: "↓100%", label: "Manual TV QA effort" },
+        { metric: "Global", label: "Teams using it" },
+        { metric: "4",     label: "Platforms expanding to" },
       ],
       images: [
-        { src: "/images/tvplus/dashboard.png", alt: "TVPlus Test Suite dashboard" },
-        { src: "/images/tvplus/test-authoring.png", alt: "Test authoring interface" },
-        { src: "/images/tvplus/scheduling.png", alt: "Test scheduling view" },
-        { src: "/images/tvplus/chatbot.png", alt: "AI-assisted chatbot interface" },
+        { src: "/images/tvplus/dashboard.webp",   alt: "Monitoring dashboard",   caption: "Dashboard",    full: true },
+        { src: "/images/tvplus/scheduling.webp", alt: "6-step scheduling flow", caption: "Schedule Test" },
+        { src: "/images/tvplus/job-status.webp", alt: "Test run job status",    caption: "Job Status" },
       ],
       links: {},
       disclaimer:
-        "Screens have been recreated to protect confidential information. All metrics and outcomes are referenced with permission.",
+        "Screens are recreated mockups. Samsung product information is confidential.",
     },
   },
 
@@ -471,145 +525,243 @@ export const projects: Project[] = [
     year: "2024–Present",
     category: "Design System · Figma + Storybook",
     description:
-      "A scalable design system built in Figma (tokens, components, patterns) and deployed as a live Storybook — adopted across 3+ internal Samsung products.",
-    tags: ["Design System", "Figma Tokens", "Storybook", "Components", "Documentation"],
+      "Two design systems built for Samsung — a generic enterprise component library (43 components, live Storybook) and Signal & Flame, a TVPlus-specific brand system designed for the rebranding of Samsung's streaming platform across multiple portals.",
+    tags: ["Design System", "Figma Tokens", "Storybook", "TVPlus", "Brand System"],
     gradient: "linear-gradient(135deg, #0a1520 0%, #0f2540 50%, #0a1520 100%)",
     accentColor: "#4cc9f0",
     featured: false,
     company: "Samsung Electronics",
-    badge: "Live Storybook",
+    badge: "2 Design Systems · Live Storybook",
     caseStudy: {
       myRole: "Lead Design System Designer (Figma)",
       timeline: "Jan 2024 — Present",
-      tools: ["Figma", "Figma Variables", "Figma Auto-Layout", "Storybook", "Design Tokens W3C"],
-      teamNote: "Design: Nidhi Chhimwal | Engineering/Storybook: Nishant Chaudhary (FE Dev)",
+      tools: ["Adobe XD", "Figma Variables", "Storybook", "Radix UI", "Tailwind CSS v4"],
+      teamNote: "Design: Nidhi Chhimwal | Engineering & Storybook: in-house dev team",
       overview:
-        "As Samsung's internal products grew, design inconsistency became a bottleneck — teams were rebuilding components from scratch, inconsistent color tokens caused visual fragmentation, and handoffs between design and engineering were error-prone. I designed the Samsung Design System from the ground up: token architecture, component library, usage guidelines, and worked with the engineering counterpart to deploy it as a live Storybook.",
+        "Two design systems for Samsung — a 43-component enterprise library used across internal products, and Signal & Flame, the TVPlus brand system built for the platform's rebranding across portals.",
       problem:
-        "Multiple internal Samsung teams were designing in isolation — each product had different button styles, color palettes, spacing systems, and text styles. This led to fragmented UX, slow delivery, and high maintenance costs as each team maintained their own component set.",
+        "Teams designed in isolation with no shared tokens or components, and TVPlus had no visual identity to unify its growing suite of portals.",
       painPoints: [
-        "No shared token system — teams hardcoded colors, inconsistent across products",
-        "Component duplication — every team built their own Button, Card, Modal from scratch",
-        "Design-to-engineering handoff was manual and error-prone with no single source of truth",
-        "Dark mode was inconsistently implemented across different products",
-        "New designers had no documentation to onboard from",
+        "12 conflicting color systems across internal products — all hardcoded, no token layer",
+        "Every team rebuilt the same components from scratch — Button, Modal, DataTable, over and over",
+        "TVPlus rebrand underway with no visual language to anchor it across portals",
       ],
       processHighlights: [
         {
           phase: "Discover",
-          what: "Audit of 3 existing Samsung internal product UIs — catalogued 180+ unique components, 12 different button styles, and 6 conflicting color systems. Conducted team interviews to understand adoption blockers.",
+          what: "Audited 3 Samsung product UIs — 180+ component variants, 12 button styles. TVPlus brand workshops surfaced the emotional core: trust + energy → Signal & Flame.",
         },
         {
           phase: "Define",
-          what: "Defined token taxonomy: 4 tiers (primitive → semantic → component → theme). Prioritized component set of 40 core components for Phase 1. Created contribution and governance model.",
+          what: "4-tier token taxonomy (primitive → semantic → component → theme). Signal Blue + Flame Orange defined as the two-color TVPlus identity with full 11-step scales.",
         },
         {
           phase: "Design",
-          what: "Built in Figma with Variables for semantic tokens. Components with 5-state variants, interactive properties, and auto-layout. Full dark + light mode support. Annotated every component with usage guidelines.",
+          what: "43 Figma components with 5-state variants and dark/light mode. Signal & Flame color scales, accessible pairings, and usage guidelines for all TVPlus surfaces.",
         },
         {
           phase: "Deliver",
-          what: "Design tokens exported as W3C JSON. Collaborated with FE developer to build Storybook with live component previews and code snippets. Conducted design system office hours for adoption.",
+          what: "Live Storybook with copy-paste code for all 43 components. Signal & Flame shipped as its own Storybook chapter with swatches, ratios, and gradient demos.",
         },
       ],
-      solutionHighlights: [
-        "4-tier token system: primitive → semantic → component → theme (supports dark/light switching)",
-        "40+ components in Phase 1: documented, accessible, and variant-complete in Figma",
-        "Live Storybook — developers can copy component code directly, no ambiguity in specs",
-        "Figma Variables integration — token updates propagate to all component instances instantly",
-        "Governance model: component request process, contribution guidelines, versioning",
+      solutionHighlights: [],
+      portals: [
+        {
+          id: "generic-ds",
+          title: "Generic Design System",
+          subtitle: "Enterprise Component Library · 43 Components",
+          context: "Token-driven component library for Samsung internal products — Radix UI + Tailwind CSS v4, full dark/light mode, live Storybook.",
+          problem:
+            "Every internal team was building the same components independently, with hardcoded values and no shared source of truth.",
+          painPoints: [
+            "180+ component variants across 3 products — almost zero shared code",
+            "No token layer — any color change meant hunting every hardcoded value",
+            "Handoff was Figma screenshots — devs guessed spacing, states, and shadows",
+          ],
+          solutionHighlights: [
+            "43 components: Button, Input, DataTable, AutoForm, Dialog, Command palette, and more",
+            "10 token categories — Colors, Typography, Spacing, Shadows, Motion, and more",
+            "DataTable: sorting, filtering, pagination, inline editing, CSV export, RBAC — via feature flags",
+            "Dark/light mode via CSS variable swap — zero component-level changes needed",
+          ],
+          outcomes: [
+            { metric: "43",   label: "Components in Phase 1" },
+            { metric: "10",   label: "Token categories" },
+            { metric: "↓40%", label: "Design-to-dev handoff time" },
+            { metric: "Live", label: "Storybook deployed" },
+          ],
+          images: [
+            { src: "/images/samsung-ds/token-overview.webp", alt: "Design token system in Figma Variables", caption: "Token Architecture" },
+            { src: "/images/samsung-ds/components.webp",     alt: "Component library in Storybook",         caption: "Component Library" },
+            { src: "/images/samsung-ds/input.webp",          alt: "Input component variants and states",    caption: "Input Component" },
+            { src: "/images/samsung-ds/storybook.webp",      alt: "Live Storybook documentation",           caption: "Live Storybook" },
+          ],
+        },
+        {
+          id: "signal-flame",
+          title: "Signal & Flame",
+          subtitle: "TVPlus Brand System · Streaming Platform Rebrand",
+          context: "Brand system for the TVPlus rebranding — Signal Blue + Flame Orange across all portals and apps.",
+          problem:
+            "TVPlus was expanding with no visual identity — every team used Samsung's corporate blue differently across portals.",
+          painPoints: [
+            "No brand color scale — teams couldn't build hover states or accessible variants",
+            "Consumer and internal portal surfaces looked like different products",
+            "Zero accessibility documentation — contrast ratios never checked",
+          ],
+          solutionHighlights: [
+            "Signal Blue (#1428A0) — primary for trust, clarity, action. Full 11-step scale.",
+            "Flame Orange (#F4511E) — secondary for energy and warmth. Full 11-step scale.",
+            "6 accessible pairings — WCAG AA/AAA ratios documented and shipped",
+            "Gradient system + Storybook chapter with swatches and accessibility matrix",
+          ],
+          outcomes: [
+            { metric: "2",    label: "Brand colors, full scales" },
+            { metric: "6",    label: "WCAG-tested color pairings" },
+            { metric: "Multi-portal", label: "TVPlus surfaces covered" },
+            { metric: "Live", label: "Signal & Flame in Storybook" },
+          ],
+          images: [
+            { src: "/images/samsung-ds/signal-flame.webp",     alt: "Signal Blue + Flame Orange brand story", caption: "Signal & Flame" },
+            { src: "/images/samsung-ds/color-scales.webp",     alt: "11-step color scales",                   caption: "Color Scales" },
+            { src: "/images/samsung-ds/dark-light.webp",       alt: "Dark and light mode token swap",         caption: "Dark / Light Mode" },
+            { src: "/images/samsung-ds/samsung-ds:accessible-pairs.webp", alt: "WCAG accessibility pairing matrix", caption: "Accessibility" },
+          ],
+        },
       ],
       outcomes: [
-        { metric: "3+", label: "Samsung products adopted the system" },
-        { metric: "40+", label: "Components in Phase 1 Storybook" },
+        { metric: "43",   label: "Components shipped" },
+        { metric: "2",    label: "Design systems (generic + TVPlus brand)" },
         { metric: "↓40%", label: "Design-to-dev handoff time" },
-        { metric: "Live", label: "Storybook deployed and accessible" },
+        { metric: "Live", label: "Storybook documented and deployed" },
       ],
-      images: [
-        { src: "/images/samsung-ds/token-overview.png", alt: "Design token overview in Figma" },
-        { src: "/images/samsung-ds/components.png", alt: "Component library" },
-        { src: "/images/samsung-ds/storybook.png", alt: "Live Storybook" },
-        { src: "/images/samsung-ds/dark-light.png", alt: "Dark and light mode theming" },
-      ],
+      images: [],
       links: {
         storybook: "https://fluffy-churros-b798ad.netlify.app/?path=/docs/components-button--docs",
       },
       disclaimer:
-        "Screens have been recreated to protect confidential information. Storybook is deployed with dummy data.",
+        "Screens recreated to protect confidential information. Storybook deployed with real components.",
     },
   },
 
-  // ── 4. Safex LMS + Admin Portal ───────────────────────────
+  // ── 4. Safex Enterprise Portals ───────────────────────────
   {
     id: "safex-lms",
-    title: "Safex LMS & Admin Portal",
+    title: "Safex Enterprise Portals",
     projectType: "enterprise",
     year: "2022–2023",
     category: "Enterprise UX · Web Platform",
     description:
-      "A dual-platform design project — corporate Learning Management System for 500+ Safex employees, and a B2B Admin Portal managing orders, distributor verification, and India-wide inventory.",
-    tags: ["Enterprise UX", "LMS", "Admin Portal", "B2B", "Web App"],
+      "Two distinct enterprise platforms designed from the ground up — SafeXLMS for company-wide training and compliance, and a custom SAP Web Interface bridging SAP Cloud Platform into Briar Chemicals (Norwich, UK), a newly acquired Safex subsidiary.",
+    tags: ["Enterprise UX", "LMS", "ERP", "SAP Integration", "Web App"],
     gradient: "linear-gradient(135deg, #1a0a00 0%, #3a1800 50%, #1a0a00 100%)",
     accentColor: "#f5a623",
     featured: false,
     company: "Safex Chemicals",
-    badge: "Internal Enterprise Tool",
+    badge: "2 Enterprise Platforms",
     caseStudy: {
       myRole: "Lead UX Designer",
       timeline: "Jun 2022 — Dec 2023",
       tools: ["Figma", "Adobe XD", "Miro", "FigJam"],
       teamNote: "Worked with Safex IT team and senior management stakeholders",
       overview:
-        "Safex Chemicals needed two interconnected enterprise platforms: an LMS for company-wide employee training (compliance courses, policy docs, quizzes), and an Admin Portal for B2B operations — managing distributors, orders, permit verification, and state-wise inventory across India. I designed both platforms from research to delivery, adapting complex enterprise workflows into clean, efficient interfaces.",
+        "Two enterprise platforms built simultaneously — a training LMS for 500+ Safex employees in India, and a custom SAP web interface for Briar Chemicals (Norwich, UK), a newly acquired subsidiary.",
       problem:
-        "Safex's training was conducted offline (physical booklets, classroom sessions) with no tracking, no completion records, and no way to update content. The B2B Admin Portal didn't exist — operations were managed through Excel sheets, phone calls, and manual document verification, causing massive inefficiency as the distributor network scaled.",
+        "Two companies, two countries, both running critical operations on paper and Excel.",
       painPoints: [
-        "No digital training system — compliance training had zero completion tracking",
-        "New employee onboarding required in-person sessions — not scalable",
-        "B2B order management was entirely manual — Excel + phone = errors and delays",
-        "Distributor verification required physical visits for permit checks",
-        "No state-wise view of inventory or demand patterns",
+        "Zero digital training records — compliance audit would fail",
+        "SAP live but abandoned — default interface too complex for plant operators",
+        "Work notifications, stock transfers, QC sign-offs all tracked in Excel",
       ],
       processHighlights: [
         {
           phase: "Discover",
-          what: "Stakeholder interviews with HR, operations, and IT teams. Mapped current training and order workflows. Identified 3 primary user roles: Employee, LMS Admin, B2B Operations Manager.",
+          what: "Interviewed HR at Safex India and shadowed plant engineers at Briar Chemicals to map workflows end-to-end.",
         },
         {
           phase: "Define",
-          what: "Defined separate IA for LMS and Admin Portal. LMS: 5 core flows (login, course catalog, video player, quiz, profile). Admin: 6 modules (dashboard, orders, distributors, verification, inventory, reports).",
+          what: "Scoped LMS as 6 modules and SAP Web as 3 role-gated modules (Engineering, Logistics, QC).",
         },
         {
           phase: "Design",
-          what: "Built both platforms with a shared design language. LMS used a warm, approachable aesthetic. Admin Portal was data-dense with table-first design, powerful filters, and bulk actions for efficiency.",
+          what: "Two distinct visual languages: warm and approachable for LMS, data-dense and precise for the SAP interface.",
         },
         {
           phase: "Deliver",
-          what: "Usability testing with 10 employees (LMS) and 5 operations managers (Admin Portal). Key iterations: simplified quiz interface and bulk order approval flow. Complete Figma handoff with design tokens.",
+          what: "Tested with 8 LMS users and 5 plant staff, then delivered full Figma handoff to both IT teams.",
         },
       ],
-      solutionHighlights: [
-        "LMS: Video-first course player with chapter sidebar, note-taking, and inline quiz prompts",
-        "LMS: Editorial board section for company news and policy announcements",
-        "Admin: State-wise distributor map with filterable order density and inventory levels",
-        "Admin: Document verification queue with approve/reject workflows and audit trail",
-        "Admin: Bulk order management with CSV export and status tracking",
+      solutionHighlights: [],
+      portals: [
+        {
+          id: "safex-lms",
+          title: "Safex LMS",
+          subtitle: "Company-Wide Training & Compliance Platform",
+          context: "Internal training platform for Safex Chemicals India — 500+ employees, replacing printed booklets.",
+          problem:
+            "Compliance training was entirely offline with no records, no auditability, and no way for HR to report status.",
+          painPoints: [
+            "Zero digital record — a compliance audit would fail",
+            "No course catalog — employees didn't know what training existed",
+            "HR had no visibility into department-level completion rates",
+          ],
+          solutionHighlights: [
+            "Dashboard: personalised greeting + 4 KPI cards + department completion chart",
+            "Training Library: 9 courses across Safety, Compliance, Technical, HR",
+            "Video player with progress tracking + inline quiz engine per module",
+            "COMPLETED / IN PROGRESS / NOT STARTED badges on every course card",
+          ],
+          outcomes: [
+            { metric: "500+", label: "Employees at launch" },
+            { metric: "9",    label: "Courses digitised" },
+            { metric: "4",    label: "Course categories" },
+            { metric: "88%",  label: "Avg quiz score" },
+          ],
+          images: [
+            { src: "/images/safex-lms/lms-dashboard.webp", alt: "Employee dashboard",       caption: "SafeXLMS · Dashboard" },
+            { src: "/images/safex-lms/lms-library.webp",   alt: "Training library",          caption: "SafeXLMS · Library" },
+            { src: "/images/safex-lms/lms-progress.webp",  alt: "My Progress tracker",       caption: "SafeXLMS · Progress" },
+          ],
+        },
+        {
+          id: "briar-sap",
+          title: "SAP Web Interface",
+          subtitle: "Custom ERP · Briar Chemicals, Norwich UK",
+          context: "Briar Chemicals was newly acquired by Safex. SAP was adopted as the ERP, but plant teams needed a purpose-built interface — not the default SAP UI.",
+          problem:
+            "SAP was live but unused. Plant teams continued on Excel — the default interface was too complex for non-technical operators.",
+          painPoints: [
+            "Work notification status invisible — open vs. completed tracked in spreadsheets",
+            "Stock transfers handled by phone, logged manually",
+            "No role-based access — everyone saw everything",
+          ],
+          solutionHighlights: [
+            "KPI dashboard: live counts across Engineering, Logistics, QC",
+            "Engineering: work notification lifecycle + BOM + outstanding reservations",
+            "Logistics: stock transfer approvals + low-stock alerts",
+            "4 role-gated access levels: Engineer, Logistics, QC, Admin",
+          ],
+          outcomes: [
+            { metric: "3",    label: "ERP modules" },
+            { metric: "4",    label: "Role-gated access levels" },
+            { metric: "↓70%", label: "Notification tracking time" },
+            { metric: "0",    label: "Paper approvals remaining" },
+          ],
+          images: [
+            { src: "/images/safex-lms/erp-dashboard.webp",       alt: "SAP Web Interface dashboard",   caption: "SAP Web · Dashboard", full: true },
+            { src: "/images/safex-lms/sap-engineering.webp",     alt: "Engineering module",             caption: "SAP Web · Engineering" },
+            { src: "/images/safex-lms/sap-notifications.webp",   alt: "Work notification report",       caption: "SAP Web · Notifications" },
+            { src: "/images/safex-lms/sap-stock-transfers.webp", alt: "Logistics stock transfers",      caption: "SAP Web · Logistics" },
+          ],
+        },
       ],
       outcomes: [
-        { metric: "500+", label: "Employees on the LMS" },
-        { metric: "100%", label: "Compliance training now tracked digitally" },
-        { metric: "↓70%", label: "Distributor verification time" },
-        { metric: "India", label: "Nationwide distributor network managed" },
+        { metric: "500+", label: "Employees on LMS" },
+        { metric: "9",    label: "Courses digitised" },
+        { metric: "3",    label: "SAP modules built" },
+        { metric: "↓70%", label: "Notification tracking time" },
       ],
-      images: [
-        { src: "/images/safex-lms/lms-dashboard.png",      alt: "SafeXLMS — Employee dashboard (Good morning Nidhi, 12 courses, 8 completed, dept chart)", caption: "SafeXLMS · Employee Dashboard" },
-        { src: "/images/safex-lms/lms-library.png",         alt: "SafeXLMS — Training library: 9 courses (Fire Safety, Chemical Handling, ISO 45001…)", caption: "SafeXLMS · Training Library" },
-        { src: "/images/safex-lms/lms-progress.png",        alt: "SafeXLMS — My Progress: 88% overall score, 58% completion across courses", caption: "SafeXLMS · My Progress" },
-        { src: "/images/safex-lms/erp-dashboard.png",       alt: "Admin Portal — Main dashboard: notifications, pending approvals, stock transfers, modules", caption: "Admin Portal (SAP) · Dashboard", full: true },
-        { src: "/images/safex-lms/sap-engineering.png",     alt: "Admin Portal — Engineering modules: Bills of Material (1,688 items), Outstanding Reservations (24)", caption: "Admin Portal (SAP) · Engineering" },
-        { src: "/images/safex-lms/sap-notifications.png",   alt: "Admin Portal — Work Notification Report: 15 maintenance tasks with OPEN/IN PROGRESS/CLOSED status", caption: "Admin Portal (SAP) · Notifications" },
-        { src: "/images/safex-lms/sap-stock-transfers.png", alt: "Admin Portal — Logistics: 1,840 materials, 23 pending transfers, 7 low stock alerts", caption: "Admin Portal (SAP) · Stock Transfers" },
-      ],
+      images: [],
       links: {},
     },
   },
@@ -635,75 +787,171 @@ export const projects: Project[] = [
       tools: ["Figma", "Adobe Illustrator", "Photoshop"],
       teamNote: "Collaborated with Safex IT team and group marketing leads",
       overview:
-        "Safex Chemicals is a diversified agri-chemicals group with 5 subsidiary companies spanning crop protection, organic farming, specialty chemicals, and pharma raw materials. Each company had an outdated, inconsistent web presence with no shared design language. I redesigned all 5 group websites — establishing a unified visual system while giving each brand its own identity within the family.",
+        "Five Safex group company websites redesigned simultaneously — one coherent visual system, five distinct brand identities spanning agri-chemicals, organics, specialty chemicals, and pharma.",
       problem:
-        "The Safex group's web presence was fragmented: each subsidiary had a different design built at different times, with inconsistent typography, conflicting color systems, and no mobile responsiveness. New B2B customers couldn't navigate the group structure, and the sites didn't reflect the scale or credibility of the business.",
+        "Five subsidiaries looked like five unrelated companies — no shared identity, no mobile support, and no clear way for B2B buyers to navigate the group structure.",
       painPoints: [
-        "5 separate sites with no shared design language — felt like 5 unrelated companies",
-        "No mobile responsiveness — majority of B2B visitors browse on mobile",
-        "Inconsistent brand hierarchy — unclear which entity was parent, which was subsidiary",
-        "Outdated visual design not reflecting the group's enterprise scale",
-        "No clear conversion paths — contact, inquiry, and product pages buried",
+        "5 sites, 5 visual languages — zero group coherence",
+        "No mobile responsiveness despite majority B2B mobile traffic",
+        "Buried contact and inquiry paths — no conversion flow",
       ],
       processHighlights: [
         {
           phase: "Discover",
-          what: "Audited all 5 existing sites — catalogued inconsistencies in color, typography, navigation patterns, and content structure. Competitor benchmarking across agri-chemicals and pharma sector websites.",
+          what: "Audited all 5 existing sites and benchmarked competitors across agri-chemicals and pharma sectors.",
         },
         {
           phase: "Define",
-          what: "Defined a group design system: shared header/footer patterns, typography scale, color family (each brand gets a primary color within a coherent palette), and a common grid. IA redesign for each site.",
+          what: "Established a group design system: shared header/footer, typography scale, color family, and rebuilt IA per site.",
         },
         {
           phase: "Design",
-          what: "Designed all 5 sites in Figma with the shared system as the foundation. Each site has a unique hero and brand color — but same component library, navigation logic, and responsive grid.",
+          what: "All 5 sites in Figma on the shared system — unique hero and brand color per site, common component library and responsive grid.",
         },
         {
           phase: "Deliver",
-          what: "Delivered complete Figma files per site with responsive specs. Coordinated with IT team for implementation. All 5 sites now live.",
+          what: "Delivered full responsive Figma specs per site and coordinated with IT for implementation — all 5 now live.",
         },
       ],
-      solutionHighlights: [
-        "safexchemicals.com — Parent company: crop protection, agri-chemicals flagship site",
-        "shogunorganics.com — Organic farming and bio-stimulants brand",
-        "indoswiss.in — Specialty chemicals and pharma raw materials",
-        "briarchemicals.com — Industrial and specialty chemical products",
-        "smithnsmith.net — Niche specialty products brand",
+      solutionHighlights: [],
+      portals: [
+        {
+          id: "safex-chemicals",
+          title: "Safex Chemicals",
+          subtitle: "Parent Company · Crop Protection & Agri-Chemicals",
+          context: "Flagship brand of the Safex group — crop protection, weedicides, fungicides, and fertilisers across India.",
+          problem: "The parent site looked generic and didn't surface the product catalog or establish group credibility.",
+          painPoints: [
+            "No product hierarchy — crops, weedicides, fertilisers all buried",
+            "Homepage didn't establish group scale or credibility",
+          ],
+          solutionHighlights: [
+            "Hero with product spotlight and clear brand positioning",
+            "Crops grid: Rice, Wheat, Cotton, Sugarcane — product discovery by crop type",
+            "Dedicated weedicides and fertilisers category pages",
+          ],
+          outcomes: [
+            { metric: "Live", label: "safexchemicals.com" },
+            { metric: "4",    label: "Product category pages" },
+          ],
+          images: [
+            { src: "/images/safex-sites/safex-hero.webp",  alt: "safexchemicals.com — Hero section with product spotlight", caption: "Hero", full: true },
+            { src: "/images/safex-sites/safex-crops.webp", alt: "Crops grid (Rice, Wheat, Cotton, Sugarcane)",              caption: "Crops" },
+          ],
+        },
+        {
+          id: "shogun-organics",
+          title: "Shogun Organics",
+          subtitle: "Organic Farming & Bio-Stimulants",
+          context: "Shogun Organics produces bio-stimulant and organic agri-products for sustainable farming.",
+          problem: "The brand's scientific credibility wasn't coming through — it looked like any generic organics brand.",
+          painPoints: [
+            "No messaging around technical or scientific positioning",
+            "Product pages lacked MSDS, specs, and detailed information",
+          ],
+          solutionHighlights: [
+            "'Building a Healthier Community' brand narrative in the hero",
+            "Agrochemical AI section — scientific differentiation",
+            "Product detail pages with MSDS downloads and full technical specs",
+            "Infrastructure showcase: Advanced Technical Production Unit",
+          ],
+          outcomes: [
+            { metric: "Live", label: "shogunorganics.com" },
+            { metric: "5",    label: "Screens designed" },
+          ],
+          images: [
+            { src: "/images/safex-sites/shogun-hero.webp",           alt: "Hero: Building a Healthier Community",         caption: "Hero" },
+            { src: "/images/safex-sites/shogun-product-detail.webp", alt: "Product detail with MSDS and technical specs", caption: "Product Detail" },
+          ],
+        },
+        {
+          id: "indoswiss",
+          title: "IndoSwiss",
+          subtitle: "Specialty Chemicals & Pharma Raw Materials",
+          context: "IndoSwiss supplies specialty chemicals and pharma raw materials to B2B buyers across India.",
+          problem: "B2B buyers couldn't find local representatives or navigate the product range.",
+          painPoints: [
+            "No distributor network visibility — reps impossible to find",
+            "Product catalog inaccessible with no filtering or hierarchy",
+          ],
+          solutionHighlights: [
+            "'Accessible. Affordable. Efficient.' brand positioning",
+            "Find a Representative — interactive network page",
+            "Clean product catalogue with accessible navigation",
+          ],
+          outcomes: [
+            { metric: "Live", label: "indoswiss.in" },
+            { metric: "3",    label: "Screens designed" },
+          ],
+          images: [
+            { src: "/images/safex-sites/indoswiss-hero.webp",     alt: "Hero: Farmers in field",                      caption: "Hero" },
+            { src: "/images/safex-sites/indoswiss-products.webp", alt: "Accessible. Affordable. Efficient. products", caption: "Products" },
+          ],
+        },
+        {
+          id: "smithnsmith",
+          title: "Smith N Smith",
+          subtitle: "Specialty Products",
+          context: "Smith N Smith is a niche specialty products brand within the Safex group.",
+          problem: "Bare-bones site with no brand character and products impossible to discover.",
+          painPoints: [
+            "No visual identity — looked like an internal placeholder",
+            "Product categories (herbicides, fungicides) had no dedicated pages",
+          ],
+          solutionHighlights: [
+            "'We Are Smith N Smith' hero with clear brand voice",
+            "Icon-based home navigation for product categories",
+            "Product grids with herbicides and specialist product pages",
+          ],
+          outcomes: [
+            { metric: "Live", label: "smithnsmith.net" },
+            { metric: "4",    label: "Screens designed" },
+          ],
+          images: [
+            { src: "/images/safex-sites/smithnsmith-hero.webp",     alt: "Hero: We Are Smith N Smith", caption: "Hero" },
+            { src: "/images/safex-sites/smithnsmith-products.webp", alt: "Products grid",              caption: "Products" },
+          ],
+        },
+        {
+          id: "briar-chemicals-web",
+          title: "Briar Chemicals",
+          subtitle: "Industrial & Specialty Chemicals · Norwich, UK",
+          context: "Briar Chemicals (Norwich, UK) is the Safex group's UK subsidiary — industrial chemicals and custom synthesis for global clients.",
+          problem: "The existing site didn't communicate Briar's 50+ year heritage or custom synthesis capability.",
+          painPoints: [
+            "No messaging around expertise or heritage",
+            "Media, careers, and capabilities had no dedicated presence",
+          ],
+          solutionHighlights: [
+            "'Your dependable partner for custom synthesis' hero positioning",
+            "Technologies page: 50+ years of expertise showcased",
+            "Latest media and careers section for talent and press",
+          ],
+          outcomes: [
+            { metric: "Live", label: "briarchemicals.com" },
+            { metric: "3",    label: "Screens designed" },
+          ],
+          images: [
+            { src: "/images/safex-sites/briar-hero.webp",         alt: "Hero: Your dependable partner for custom synthesis", caption: "Hero" },
+            { src: "/images/safex-sites/briar-technologies.webp", alt: "Technologies: 50+ years experience",                caption: "Technologies" },
+          ],
+        },
       ],
       outcomes: [
-        { metric: "5",      label: "Live sites redesigned and launched" },
-        { metric: "100%",   label: "Mobile responsive across all sites" },
-        { metric: "Unified", label: "Group visual identity established" },
-        { metric: "Live",   label: "All sites verifiable at their URLs" },
+        { metric: "5",      label: "Live sites redesigned" },
+        { metric: "100%",   label: "Mobile responsive" },
+        { metric: "1",      label: "Unified design system" },
+        { metric: "Live",   label: "All sites verifiable" },
       ],
-      images: [
-        // Safex Chemicals
-        { src: "/images/safex-sites/safex-hero.png",              alt: "safexchemicals.com — Hero section with product spotlight", caption: "safexchemicals.com · Hero", full: true },
-        { src: "/images/safex-sites/safex-crops.png",             alt: "safexchemicals.com — Crops grid (Rice, Wheat, Cotton, Sugarcane…)", caption: "safexchemicals.com · Crops" },
-        { src: "/images/safex-sites/safex-weedicides.png",        alt: "safexchemicals.com — Weedicides product listing", caption: "safexchemicals.com · Products" },
-        { src: "/images/safex-sites/safex-fertilisers.png",       alt: "safexchemicals.com — Fertilisers section", caption: "safexchemicals.com · Fertilisers" },
-        // Shogun Organics
-        { src: "/images/safex-sites/shogun-hero.png",             alt: "shogunorganics.com — Hero: Building a Healthier Community", caption: "shogunorganics.com · Hero" },
-        { src: "/images/safex-sites/shogun-ai.png",               alt: "shogunorganics.com — Agrochemical A.I. section", caption: "shogunorganics.com · AI Section" },
-        { src: "/images/safex-sites/shogun-product-detail.png",   alt: "shogunorganics.com — Product detail: D-trans Allethrin with MSDS", caption: "shogunorganics.com · Product Detail" },
-        { src: "/images/safex-sites/shogun-product-detail-2.png", alt: "shogunorganics.com — Product detail: Allethrin", caption: "shogunorganics.com · Product Detail" },
-        { src: "/images/safex-sites/shogun-infra.png",            alt: "shogunorganics.com — Infrastructure: Advanced Technical Production Unit", caption: "shogunorganics.com · Infrastructure" },
-        // IndoSwiss
-        { src: "/images/safex-sites/indoswiss-hero.png",          alt: "indoswiss.in — Hero: Farmers in field", caption: "indoswiss.in · Hero" },
-        { src: "/images/safex-sites/indoswiss-products.png",      alt: "indoswiss.in — Accessible. Affordable. Efficient. products page", caption: "indoswiss.in · Products" },
-        { src: "/images/safex-sites/indoswiss-network.png",       alt: "indoswiss.in — Find a Representative network page", caption: "indoswiss.in · Network" },
-        // Smith N Smith
-        { src: "/images/safex-sites/smithnsmith-hero.png",        alt: "smithnsmith.net — Hero: We Are Smith N Smith", caption: "smithnsmith.net · Hero" },
-        { src: "/images/safex-sites/smithnsmith-home.png",        alt: "smithnsmith.net — Home navigation icons", caption: "smithnsmith.net · Home" },
-        { src: "/images/safex-sites/smithnsmith-products.png",    alt: "smithnsmith.net — Products grid", caption: "smithnsmith.net · Products" },
-        { src: "/images/safex-sites/smithnsmith-herbicides.png",  alt: "smithnsmith.net — Herbicides product listing", caption: "smithnsmith.net · Herbicides" },
-        // Briar Chemicals
-        { src: "/images/safex-sites/briar-hero.png",              alt: "briarchemicals.com — Hero: Your dependable partner for custom synthesis", caption: "briarchemicals.com · Hero" },
-        { src: "/images/safex-sites/briar-technologies.png",      alt: "briarchemicals.com — Technologies page: 50+ years experience", caption: "briarchemicals.com · Technologies" },
-        { src: "/images/safex-sites/briar-media.png",             alt: "briarchemicals.com — Latest media posts & careers", caption: "briarchemicals.com · Media" },
-      ],
+      images: [],
       links: {
-        live: "https://www.safexchemicals.com",
+        sites: [
+          { label: "safexchemicals.com",  url: "https://www.safexchemicals.com" },
+          { label: "shogunorganics.com",  url: "https://www.shogunorganics.com" },
+          { label: "indoswiss.in",        url: "https://www.indoswiss.in" },
+          { label: "smithnsmith.net",     url: "https://www.smithnsmith.net" },
+          { label: "briarchemicals.com",  url: "https://www.briarchemicals.com" },
+        ],
       },
     },
   },
@@ -752,9 +1000,9 @@ export const projects: Project[] = [
         { metric: "Complete", label: "Brand system delivered" },
       ],
       images: [
-        { src: "/images/freelance/tarot-1.png", alt: "Tarot card — The Fool" },
-        { src: "/images/freelance/tarot-2.png", alt: "Tarot card spread" },
-        { src: "/images/freelance/tarot-box.png", alt: "Tarot deck box packaging" },
+        { src: "/images/freelance/tarot-1.webp", alt: "Tarot card — The Fool" },
+        { src: "/images/freelance/tarot-2.webp", alt: "Tarot card spread" },
+        { src: "/images/freelance/tarot-box.webp", alt: "Tarot deck box packaging" },
       ],
       links: {
         behance: personal.behance,
@@ -806,8 +1054,8 @@ export const projects: Project[] = [
         { metric: "↓40%", label: "Asset production time via templates" },
       ],
       images: [
-        { src: "/images/freelance/liberty-1.png", alt: "Liberty Shoes campaign creative" },
-        { src: "/images/freelance/liberty-2.png", alt: "Social media campaign" },
+        { src: "/images/freelance/liberty-1.webp", alt: "Liberty Shoes campaign creative" },
+        { src: "/images/freelance/liberty-2.webp", alt: "Social media campaign" },
       ],
       links: {
         behance: personal.behance,
@@ -858,8 +1106,8 @@ export const projects: Project[] = [
         { metric: "Ongoing", label: "Repeat client collaboration" },
       ],
       images: [
-        { src: "/images/freelance/alma-1.png", alt: "ALMA Magazine illustration — feature spread" },
-        { src: "/images/freelance/alma-2.png", alt: "ALMA Magazine — character illustration" },
+        { src: "/images/freelance/alma-1.webp", alt: "ALMA Magazine illustration — feature spread" },
+        { src: "/images/freelance/alma-2.webp", alt: "ALMA Magazine — character illustration" },
       ],
       links: {
         behance: personal.behance,
@@ -910,9 +1158,9 @@ export const projects: Project[] = [
         { metric: "Print", label: "Packaging production-ready" },
       ],
       images: [
-        { src: "/images/branding/brand-01/cover.png", alt: "Brand Identity — cover" },
-        { src: "/images/branding/brand-01/logo.png",  alt: "Logo suite" },
-        { src: "/images/branding/brand-01/packaging.png", alt: "Packaging design" },
+        { src: "/images/branding/brand-01/cover.webp", alt: "Brand Identity — cover" },
+        { src: "/images/branding/brand-01/logo.webp",  alt: "Logo suite" },
+        { src: "/images/branding/brand-01/packaging.webp", alt: "Packaging design" },
       ],
       links: {
         pdf: "/branding/brand-kit-01.pdf",
@@ -960,8 +1208,8 @@ export const projects: Project[] = [
         { metric: "Multi", label: "Format applications covered" },
       ],
       images: [
-        { src: "/images/branding/brand-02/cover.png", alt: "Brand Identity 02 — cover" },
-        { src: "/images/branding/brand-02/logo.png",  alt: "Logo suite" },
+        { src: "/images/branding/brand-02/cover.webp", alt: "Brand Identity 02 — cover" },
+        { src: "/images/branding/brand-02/logo.webp",  alt: "Logo suite" },
       ],
       links: {
         pdf: "/branding/brand-kit-02.pdf",
@@ -1009,8 +1257,8 @@ export const projects: Project[] = [
         { metric: "Full", label: "Brand + packaging kit" },
       ],
       images: [
-        { src: "/images/branding/brand-03/cover.png",    alt: "Brand Identity 03 — cover" },
-        { src: "/images/branding/brand-03/packaging.png", alt: "Packaging design" },
+        { src: "/images/branding/brand-03/cover.webp",    alt: "Brand Identity 03 — cover" },
+        { src: "/images/branding/brand-03/packaging.webp", alt: "Packaging design" },
       ],
       links: {
         pdf: "/branding/brand-kit-03.pdf",

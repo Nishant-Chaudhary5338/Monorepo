@@ -5,7 +5,7 @@ const meta: Meta<typeof Button> = {
   title: "Components/Button",
   component: Button,
   tags: [],
-parameters: {
+  parameters: {
     layout: "centered",
   },
   argTypes: {

@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { experiences } from "../constants";
 
-gsap.registerPlugin(ScrollTrigger);
 
 // ── Single experience entry ──────────────────────────────────
 const ExpEntry = ({ exp, idx }: { exp: (typeof experiences)[0]; idx: number }) => {
@@ -11,14 +9,12 @@ const ExpEntry = ({ exp, idx }: { exp: (typeof experiences)[0]; idx: number }) =
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Entry slides up on scroll
       gsap.fromTo(entryRef.current,
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.7, ease: "power3.out",
           scrollTrigger: { trigger: entryRef.current, start: "top 82%" }
         }
       );
-      // Bullets stagger in after entry lands
       gsap.fromTo(".exp-bullet-" + idx,
         { x: -10, opacity: 0 },
         { x: 0, opacity: 1, stagger: 0.06, duration: 0.4, ease: "power2.out",
@@ -30,50 +26,41 @@ const ExpEntry = ({ exp, idx }: { exp: (typeof experiences)[0]; idx: number }) =
     return () => ctx.revert();
   }, [idx]);
 
-  // Pick most impactful metric (first one)
-  const topMetric = exp.impact?.[0];
+  // Limit bullets: 3 for current role, 2 for past roles
+  const visibleHighlights = exp.highlights.slice(0, exp.current ? 3 : 2);
 
   return (
     <div
       ref={entryRef}
-      style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: "var(--space-md)", paddingBottom: "var(--space-md)" }}
+      style={{
+        borderTop: "1px solid var(--border-subtle)",
+        paddingTop: "1.75rem",
+        paddingLeft: "1.25rem",
+        borderLeft: exp.current ? "2px solid var(--accent-purple)" : "2px solid transparent",
+        transition: "border-color var(--duration-base) var(--ease-out)",
+      }}
     >
-      {/* Company row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "1.05rem", color: "var(--text-primary)" }}>
+      {/* Company + period */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.2rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>
             {exp.company}
           </span>
-          {exp.current && (
-            <span className="pill pill-live">Current</span>
-          )}
-          {topMetric && (
-            <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontWeight: 900, fontSize: "1.1rem", color: "var(--accent-gold)" }}>
-              {topMetric.value}
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.62rem", fontStyle: "normal", fontWeight: 400, color: "var(--text-muted)", marginLeft: "0.35rem", letterSpacing: "0.06em" }}>
-                {topMetric.label}
-              </span>
-            </span>
-          )}
+          {exp.current && <span className="pill pill-live">Current</span>}
         </div>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.72rem", color: "var(--text-muted)", letterSpacing: "0.06em", flexShrink: 0, marginLeft: "1rem" }}>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "0.06em", flexShrink: 0, marginLeft: "1rem" }}>
           {exp.period}
         </span>
       </div>
 
-      {/* Role row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--space-sm)" }}>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-          {exp.role}
-        </span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: "var(--text-muted)", letterSpacing: "0.04em", flexShrink: 0, marginLeft: "1rem" }}>
-          {exp.location}
-        </span>
-      </div>
+      {/* Role */}
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1rem" }}>
+        {exp.role} · {exp.location}
+      </p>
 
-      {/* Highlights */}
-      <ul style={{ listStyle: "none", margin: "0 0 var(--space-sm) 0", padding: 0, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-        {exp.highlights.map((h, i) => (
+      {/* Highlights — capped */}
+      <ul style={{ listStyle: "none", margin: "0 0 1rem 0", padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        {visibleHighlights.map((h, i) => (
           <li
             key={i}
             className={`exp-bullet-${idx}`}
@@ -87,21 +74,21 @@ const ExpEntry = ({ exp, idx }: { exp: (typeof experiences)[0]; idx: number }) =
         ))}
       </ul>
 
-      {/* Tags */}
+      {/* Tags — max 4 */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
-        {exp.tags.map((tag) => (
+        {exp.tags.slice(0, 4).map((tag) => (
           <span
             key={tag}
             style={{
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "0.65rem",
+              fontSize: "0.62rem",
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               color: "var(--accent-purple)",
               background: "var(--accent-purple-light)",
               border: "1px solid var(--accent-purple-light)",
               borderRadius: "var(--radius-pill)",
-              padding: "0.2rem 0.6rem",
+              padding: "0.18rem 0.55rem",
             }}
           >
             {tag}
@@ -129,12 +116,11 @@ const Experience = () => {
         </h2>
         <hr style={{ border: "none", borderTop: "1px solid var(--border-subtle)", marginBottom: "var(--space-lg)" }} />
 
-        {/* Ruled timeline */}
-        <div style={{ marginBottom: "var(--space-xl)" }}>
+        {/* Ruled timeline — entries have gaps between them */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem", marginBottom: "var(--space-xl)" }}>
           {experiences.map((exp, idx) => (
             <ExpEntry key={exp.company + idx} exp={exp} idx={idx} />
           ))}
-          {/* Closing rule */}
           <div style={{ borderTop: "1px solid var(--border-subtle)" }} />
         </div>
 

@@ -9,7 +9,7 @@ import type {
 } from "../../types";
 import type { ResizeHandle } from "../../hooks/useResize";
 import { useDashboardContext } from "../Dashboard/Dashboard.context";
-import { WidgetActions, DragHandleButton, ResizeHandleButton } from "./WidgetActions";
+import { ResizeHandleButton } from "./WidgetActions";
 import { SettingsPanel } from "../Settings/SettingsPanel";
 import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
@@ -490,6 +490,7 @@ export const DashboardCard = React.memo(function DashboardCard({
     isEditMode,
     isDragging,
     isResizing,
+    draggable,
     resizeSize.width,
     resizeSize.height,
     transform?.x,
@@ -532,46 +533,14 @@ export const DashboardCard = React.memo(function DashboardCard({
   // ==========================================================
 
   const effectiveResizeHandles = useMemo<ResizeHandle[]>(() => {
-    // If explicit resizeHandles is provided and not default, use it
-    if (resizeHandles && resizeHandles.length > 0 && !(resizeHandles.length === 1 && resizeHandles[0] === "bottomRight")) {
+    // Always use the explicitly provided resizeHandles
+    if (resizeHandles && resizeHandles.length > 0) {
       return resizeHandles;
-    }
-
-    // If autoResizeDirections is enabled, detect based on position
-    if (widgetState?.position) {
-      const { x, y } = widgetState.position;
-      const widgetWidth = typeof widgetState.size?.width === "number" ? widgetState.size.width : 300;
-      const widgetHeight = typeof widgetState.size?.height === "number" ? widgetState.size.height : 200;
-
-      // Get container dimensions (default to typical viewport if not available)
-      const containerWidth = containerRef.current?.clientWidth ?? 1200;
-      const containerHeight = containerRef.current?.clientHeight ?? 800;
-
-      // Calculate widget center position
-      const centerX = x + widgetWidth / 2;
-      const centerY = y + widgetHeight / 2;
-
-      // Determine which quadrant the widget is in
-      const isLeft = centerX < containerWidth / 2;
-      const isRight = centerX >= containerWidth / 2;
-      const isTop = centerY < containerHeight / 2;
-      const isBottom = centerY >= containerHeight / 2;
-
-      // Return appropriate resize handles based on position
-      if (isTop && isLeft) {
-        return ["bottomRight", "bottom", "right"];
-      } else if (isTop && isRight) {
-        return ["bottomLeft", "bottom", "left"];
-      } else if (isBottom && isLeft) {
-        return ["topRight", "top", "right"];
-      } else if (isBottom && isRight) {
-        return ["topLeft", "top", "left"];
-      }
     }
 
     // Default fallback
     return ["bottomRight"];
-  }, [resizeHandles, widgetState?.position, widgetState?.size, containerRef]);
+  }, [resizeHandles]);
 
   // ==========================================================
   // Cleanup observer on unmount
@@ -600,19 +569,28 @@ export const DashboardCard = React.memo(function DashboardCard({
       data-widget-id={id}
       data-widget-type={type}
     >
-      {/* Widget Actions (visible in edit mode) */}
-      <WidgetActions visible={isEditMode}>
-        <DragHandleButton
-          visible={draggable}
-          dragAttributes={isEditMode && draggable ? attributes : undefined}
-          dragListeners={isEditMode && draggable ? listeners : undefined}
+      {/* Drag handle — invisible full-width strip at top, sits behind action buttons */}
+      {isEditMode && draggable && (
+        <button
+          type="button"
+          className="absolute inset-x-0 top-0 h-8 z-0
+            bg-transparent border-none outline-none
+            cursor-grab active:cursor-grabbing
+            pointer-events-auto"
+          aria-label="Drag to move"
+          {...(attributes ?? {})}
+          {...(listeners ?? {})}
         />
+      )}
+
+      {/* View cycler — visible in edit mode */}
+      {isEditMode && (
         <DashboardCardViewCycler
           breakpoints={viewBreakpoints}
           onCycle={handleViewCycle}
           visible={showViewCycler && !!viewBreakpoints}
         />
-      </WidgetActions>
+      )}
 
       {/* Delete button — top-right, visible in edit mode when deletable */}
       {isEditMode && deletable && (
@@ -639,7 +617,7 @@ export const DashboardCard = React.memo(function DashboardCard({
         </button>
       )}
 
-      {/* Settings gear — bottom-left, visibility controlled by settingsVisibility prop */}
+      {/* Settings gear — bottom-left corner, visibility controlled by settingsVisibility prop */}
       {showSettings && (settingsVisibility === "always" || isEditMode) && widgetState && (
         <SettingsPanel
           id={id}
@@ -648,7 +626,7 @@ export const DashboardCard = React.memo(function DashboardCard({
           trigger={
             <button
               type="button"
-              className="widget-action-btn absolute bottom-1 right-7
+              className="widget-action-btn absolute top-1 left-1
                 flex items-center justify-center
                 w-5 h-5 rounded
                 bg-white/80
@@ -671,7 +649,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       )}
 
       {/* Content — lightweight placeholder when off-screen */}
-      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-6">
+      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-6 pb-6">
         <div className="flex-1 min-h-0 min-w-0 w-full h-full">
           {isVisible ? content : <div className="w-full h-full min-h-25" />}
         </div>

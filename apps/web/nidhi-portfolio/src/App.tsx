@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
@@ -11,7 +12,9 @@ import Creative from "./sections/Creative";
 import Experience from "./sections/Experience";
 import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
-import CaseStudy from "./pages/CaseStudy";
+
+// CaseStudy is a separate page — lazy-load so its chunk only downloads on navigation
+const CaseStudy = lazy(() => import("./pages/CaseStudy"));
 
 const HomePage = () => (
   <main>
@@ -34,7 +37,11 @@ const App = () => (
 
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/work/:id" element={<CaseStudy />} />
+      <Route path="/work/:id" element={
+        <Suspense fallback={null}>
+          <CaseStudy />
+        </Suspense>
+      } />
     </Routes>
 
     <Footer />

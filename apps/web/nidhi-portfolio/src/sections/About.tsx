@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedCounter from "../components/AnimatedCounter";
 import { personal, stats } from "../constants";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);

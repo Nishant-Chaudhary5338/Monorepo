@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { personal } from "../constants";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const heroRef = useRef<HTMLElement>(null);
@@ -51,14 +49,6 @@ const Hero = () => {
         scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.5 },
       });
 
-      // ── Mouse parallax on hero image preview ───────────────
-      const onMove = (e: MouseEvent) => {
-        const dx = (e.clientX / window.innerWidth  - 0.5) * 15;
-        const dy = (e.clientY / window.innerHeight - 0.5) * 10;
-        gsap.to(".hero-image-preview", { x: -dx, y: -dy, duration: 0.8, ease: "power2.out" });
-      };
-      hero.addEventListener("mousemove", onMove);
-      return () => hero.removeEventListener("mousemove", onMove);
     }, heroRef);
 
     return () => ctx.revert();
@@ -68,8 +58,10 @@ const Hero = () => {
     <section id="hero" ref={heroRef} className="hero-section">
       {/* Name block */}
       <div className="hero-name-block">
-        {/* Clip wrapper — overflow hidden acts as the mask */}
-        <span className="hero-name-first" style={{ display: "block", overflow: "hidden" }}>
+        {/* Clip wrapper — overflow hidden acts as the mask.
+            Padding gives Playfair Italic 900 room for serif overhang;
+            negative margin cancels the extra space visually. */}
+        <span className="hero-name-first" style={{ display: "block", overflow: "hidden", paddingTop: "0.1em", paddingBottom: "0.05em", paddingLeft: "0.1em", marginTop: "-0.1em" }}>
           <span className="hero-name-first-inner" style={{ display: "block" }}>
             {personal.firstName}
           </span>
@@ -84,7 +76,7 @@ const Hero = () => {
           <span>Researcher</span>
         </div>
 
-        <span className="hero-name-last" style={{ display: "block", overflow: "hidden" }}>
+        <span className="hero-name-last" style={{ display: "block", overflow: "hidden", paddingBottom: "0.08em", paddingRight: "0.06em", marginBottom: "-0.08em", marginRight: "-0.06em" }}>
           <span className="hero-name-last-inner" style={{ display: "block" }}>
             {personal.name.split(" ")[1]}
           </span>
@@ -124,23 +116,6 @@ const Hero = () => {
           <span>Scroll</span>
         </div>
 
-        {/* Featured project preview — parallax target */}
-        <div className="hero-image-preview" aria-hidden="true">
-          <div style={{
-            width: "100%", height: "100%",
-            background: "linear-gradient(160deg, #0d1a06 0%, #1a3500 60%, #0d1a06 100%)",
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            gap: "0.5rem", padding: "1rem",
-          }}>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#6dca3e", opacity: 0.8 }}>
-              Golden Farms
-            </span>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "#8A8580" }}>
-              B2B · Live App
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   );

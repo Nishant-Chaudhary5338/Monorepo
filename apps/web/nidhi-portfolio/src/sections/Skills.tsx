@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const disciplineSkills = [
   { name: "UX Research",        years: "4 years" },
@@ -11,14 +9,20 @@ const disciplineSkills = [
   { name: "Design Systems",     years: "2 years" },
   { name: "Interaction Design", years: "3 years" },
   { name: "UX Strategy",        years: "2 years" },
+  { name: "Brand & Identity",   years: "3 years" },
+  { name: "Mobile App UX",      years: "2 years" },
+  { name: "Motion Design",      years: "2 years" },
 ];
 
-const toolSkills = [
-  "Figma", "Framer", "Illustrator", "Procreate",
-  "After Effects", "Photoshop", "Lottie", "Miro",
+const designTools = [
+  "Figma", "FigJam", "Framer", "Figma Variables", "Zeplin",
 ];
 
-const learningSkills = ["Motion Design", "3D in Spline"];
+const visualMotionTools = [
+  "Illustrator", "Photoshop", "After Effects", "Lottie", "Procreate", "InDesign",
+];
+
+const learningSkills = ["3D in Spline", "Advanced Motion"];
 
 const rowStyle: React.CSSProperties = {
   display: "flex",
@@ -36,6 +40,15 @@ const categoryHeaderStyle: React.CSSProperties = {
   color: "var(--text-muted)",
   padding: "0.75rem 0",
   borderTop: "1px solid var(--border-subtle)",
+};
+
+const subCategoryStyle: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: "0.65rem",
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  color: "var(--accent-gold)",
+  marginBottom: "0.15rem",
 };
 
 const Skills = () => {
@@ -71,6 +84,7 @@ const Skills = () => {
 
         <div style={{ maxWidth: "720px" }}>
 
+          {/* Core Disciplines */}
           <p className="skills-row" style={categoryHeaderStyle}>Core Disciplines</p>
           {disciplineSkills.map((skill) => (
             <div key={skill.name} className="skills-row" style={rowStyle}>
@@ -83,15 +97,28 @@ const Skills = () => {
             </div>
           ))}
 
+          {/* Tools — two sub-categories */}
           <p className="skills-row" style={{ ...categoryHeaderStyle, marginTop: "var(--space-md)" }}>
             Prototyping &amp; Tools
           </p>
-          <div className="skills-row" style={rowStyle}>
+
+          {/* Design & Prototyping */}
+          <div className="skills-row" style={{ ...rowStyle, flexDirection: "column", alignItems: "flex-start", gap: "0.35rem" }}>
+            <span style={subCategoryStyle}>Design &amp; Prototyping</span>
             <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "1rem", color: "var(--text-secondary)" }}>
-              {toolSkills.join("  ·  ")}
+              {designTools.join("  ·  ")}
             </span>
           </div>
 
+          {/* Visual & Motion */}
+          <div className="skills-row" style={{ ...rowStyle, flexDirection: "column", alignItems: "flex-start", gap: "0.35rem" }}>
+            <span style={subCategoryStyle}>Visual &amp; Motion</span>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "1rem", color: "var(--text-secondary)" }}>
+              {visualMotionTools.join("  ·  ")}
+            </span>
+          </div>
+
+          {/* Currently Learning */}
           <p className="skills-row" style={{ ...categoryHeaderStyle, marginTop: "var(--space-md)" }}>
             Currently Learning
           </p>

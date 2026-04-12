@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background -->
+  <rect width="32" height="32" fill="#F7F5F0"/>
+  <!-- N letterform in accent-purple, matching JetBrains Mono weight -->
+  <text
+    x="16"
+    y="23"
+    font-family="'JetBrains Mono', 'Courier New', monospace"
+    font-size="20"
+    font-weight="400"
+    fill="#5B4EE8"
+    text-anchor="middle"
+    dominant-baseline="auto"
+    letter-spacing="-1"
+  >N</text>
+</svg>

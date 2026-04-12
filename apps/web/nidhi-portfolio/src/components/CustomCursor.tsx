@@ -13,13 +13,13 @@ const CustomCursor = () => {
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
-    // GSAP quickTo — shares the same RAF tick, smoother than manual lerp
+    // quickTo batches ring movement through GSAP's RAF tick
     const xTo = gsap.quickTo(ring, "left", { duration: 0.45, ease: "power3" });
     const yTo = gsap.quickTo(ring, "top",  { duration: 0.45, ease: "power3" });
 
     const onMouseMove = (e: MouseEvent) => {
-      dot.style.left = `${e.clientX}px`;
-      dot.style.top  = `${e.clientY}px`;
+      // gsap.set goes through GSAP's RAF batching — no forced reflow
+      gsap.set(dot, { left: e.clientX, top: e.clientY });
       xTo(e.clientX);
       yTo(e.clientY);
     };
@@ -28,24 +28,21 @@ const CustomCursor = () => {
       const target = e.target as HTMLElement;
       const isInteractive = target.closest("a, button, [data-cursor]");
       if (isInteractive) {
-        ring.style.width       = "56px";
-        ring.style.height      = "56px";
-        ring.style.borderColor = "rgba(184,146,58,0.8)"; // --accent-gold
-        dot.style.transform    = "translate(-50%, -50%) scale(1.8)";
+        // Use CSS class instead of inline style mutations
+        ring.classList.add("cursor-ring--hover");
+        dot.classList.add("cursor-dot--hover");
       } else {
-        ring.style.width       = "36px";
-        ring.style.height      = "36px";
-        ring.style.borderColor = "rgba(91,78,232,0.6)"; // --accent-purple
-        dot.style.transform    = "translate(-50%, -50%) scale(1)";
+        ring.classList.remove("cursor-ring--hover");
+        dot.classList.remove("cursor-dot--hover");
       }
     };
 
     document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseover", onMouseOver);
+    document.addEventListener("mouseover",  onMouseOver);
 
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseover", onMouseOver);
+      document.removeEventListener("mouseover",  onMouseOver);
     };
   }, []);
 

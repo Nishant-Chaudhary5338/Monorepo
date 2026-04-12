@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { processSteps } from "../constants";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const Process = () => {
   const sectionRef = useRef<HTMLElement>(null);

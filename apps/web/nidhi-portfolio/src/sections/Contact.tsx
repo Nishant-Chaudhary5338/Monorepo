@@ -37,85 +37,29 @@ const Contact = () => {
           marginBottom: "var(--space-lg)",
         }} />
 
-        {/* Links row */}
+        {/* Links row — hover handled by CSS class, not inline JS */}
         <div style={{
           display: "flex",
           gap: "var(--space-lg)",
           flexWrap: "wrap",
           marginBottom: "var(--space-xl)",
         }}>
-          <a
-            href={`mailto:${personal.email}`}
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontWeight: 600,
-              fontSize: "1.1rem",
-              color: "var(--text-primary)",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--border-subtle)",
-              paddingBottom: "2px",
-              transition: "border-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent-purple)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-purple)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-subtle)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
-            }}
-          >
+          <a href={`mailto:${personal.email}`} className="contact-link">
             {personal.email}
           </a>
-
           <a
             href="https://www.linkedin.com/in/nidhi-chhimwal"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontWeight: 600,
-              fontSize: "1.1rem",
-              color: "var(--text-primary)",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--border-subtle)",
-              paddingBottom: "2px",
-              transition: "border-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent-purple)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-purple)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-subtle)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
-            }}
+            className="contact-link"
           >
             LinkedIn ↗
           </a>
-
           <a
             href={personal.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontWeight: 600,
-              fontSize: "1.1rem",
-              color: "var(--text-primary)",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--border-subtle)",
-              paddingBottom: "2px",
-              transition: "border-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent-purple)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-purple)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-subtle)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
-            }}
+            className="contact-link"
           >
             Resume ↗
           </a>

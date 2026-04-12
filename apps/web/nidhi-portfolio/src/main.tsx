@@ -1,8 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./index.css";
 import App from "./App.tsx";
+
+// Register GSAP plugins once at the app root — components must NOT re-register
+gsap.registerPlugin(ScrollTrigger);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

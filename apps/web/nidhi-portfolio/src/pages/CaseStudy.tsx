@@ -1,35 +1,40 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { projects, type CaseStudyImage } from "../constants";
+import { projects, type CaseStudyImage, type Portal } from "../constants";
 
 // ── Image slot with gradient fallback ────────────────────────
 const ImageSlot = ({
   image,
   gradient,
   accentColor,
-  className = "",
+  objectFit = "cover",
+  style: outerStyle,
 }: {
   image: CaseStudyImage;
   gradient: string;
   accentColor: string;
-  className?: string;
+  objectFit?: "cover" | "contain";
+  style?: React.CSSProperties;
 }) => {
   const [errored, setErrored] = useState(false);
 
   if (!errored && image.src && !image.src.includes("placeholder")) {
     return (
-      <figure className={className} style={{ margin: 0 }}>
-        <img
-          src={image.src}
-          alt={image.alt}
-          onError={() => setErrored(true)}
-          style={{
-            width: "100%", height: "100%",
-            objectFit: "cover",
-            display: "block",
-            border: "1px solid var(--border-default)",
-          }}
-        />
+      <figure style={{ margin: 0, ...outerStyle }}>
+        <div style={{ width: "100%", height: "100%", overflow: "hidden", background: objectFit === "contain" ? "var(--bg-surface)" : undefined }}>
+          <img
+            src={image.src}
+            alt={image.alt}
+            loading="lazy"
+            decoding="async"
+            onError={() => setErrored(true)}
+            style={{
+              width: "100%", height: "100%",
+              objectFit,
+              display: "block",
+            }}
+          />
+        </div>
         {image.caption && (
           <figcaption style={{
             fontFamily: "'JetBrains Mono', monospace",
@@ -47,7 +52,6 @@ const ImageSlot = ({
 
   return (
     <div
-      className={className}
       style={{
         background: gradient,
         border: "1px solid var(--border-default)",
@@ -58,6 +62,7 @@ const ImageSlot = ({
         gap: "0.5rem",
         minHeight: "220px",
         padding: "2rem",
+        ...outerStyle,
       }}
       aria-label={image.alt}
     >
@@ -82,6 +87,217 @@ const ImageSlot = ({
     </div>
   );
 };
+
+// ── Image gallery — three-tier layout ─────────────────────────
+const ImageGallery = ({
+  images,
+  gradient,
+  accentColor,
+}: {
+  images: CaseStudyImage[];
+  gradient: string;
+  accentColor: string;
+}) => {
+  const fullImages    = images.filter((img) => img.full);
+  const mobileImages  = images.filter((img) => img.mobile);
+  const desktopImages = images.filter((img) => !img.full && !img.mobile);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Tier 1 — landscape banners (full: true) — side-by-side, objectFit: contain */}
+      {fullImages.length > 0 && (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: fullImages.length === 1 ? "1fr" : "1fr 1fr",
+          gap: "1rem",
+        }}>
+          {fullImages.map((img, i) => (
+            <ImageSlot
+              key={i}
+              image={img}
+              gradient={gradient}
+              accentColor={accentColor}
+              objectFit="contain"
+              style={{ height: 360, border: "1px solid var(--border-subtle)", borderRadius: 8, overflow: "hidden" }}
+            />
+          ))}
+        </div>
+      )}
+      {/* Tier 2 — mobile portrait screenshots (mobile: true) — horizontal scrollable strip */}
+      {mobileImages.length > 0 && (
+        <div style={{
+          display: "flex",
+          gap: "1rem",
+          overflowX: "auto",
+          scrollbarWidth: "none",
+          paddingBottom: "0.5rem",
+        }}>
+          {mobileImages.map((img, i) => (
+            <ImageSlot
+              key={i}
+              image={img}
+              gradient={gradient}
+              accentColor={accentColor}
+              objectFit="cover"
+              style={{ flex: "0 0 auto", width: 210, height: 400, borderRadius: 12, border: "1px solid var(--border-subtle)", overflow: "hidden" }}
+            />
+          ))}
+        </div>
+      )}
+      {/* Tier 3 — desktop screenshots (no flag) — responsive grid, objectFit: contain */}
+      {desktopImages.length > 0 && (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
+          gap: "1rem",
+        }}>
+          {desktopImages.map((img, i) => (
+            <ImageSlot
+              key={i}
+              image={img}
+              gradient={gradient}
+              accentColor={accentColor}
+              objectFit="contain"
+              style={{ height: 300, border: "1px solid var(--border-subtle)", borderRadius: 8, overflow: "hidden" }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── Portal sub-section ───────────────────────────────────────
+const PortalSection = ({
+  portal,
+  index,
+  gradient,
+  accentColor,
+}: {
+  portal: Portal;
+  index: number;
+  gradient: string;
+  accentColor: string;
+}) => (
+  <section className="portal-section">
+    {/* Portal header */}
+    <div className="portal-header">
+      <span className="portal-badge" style={{ color: accentColor, borderColor: accentColor }}>
+        Portal {String(index + 1).padStart(2, "0")}
+      </span>
+      <h2 className="portal-title">{portal.title}</h2>
+      <p className="portal-subtitle">{portal.subtitle}</p>
+      <p className="portal-context">{portal.context}</p>
+    </div>
+
+    {/* Portal challenge */}
+    <div className="portal-body">
+      <div style={{ marginBottom: "2.5rem" }}>
+        <p style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: "0.65rem",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginBottom: "0.75rem",
+        }}>
+          The Challenge
+        </p>
+        <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+          {portal.problem}
+        </p>
+        <ul style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+          {portal.painPoints.map((point, i) => (
+            <li key={i} style={{
+              display: "flex",
+              gap: "1rem",
+              alignItems: "flex-start",
+              paddingBottom: "0.6rem",
+              borderBottom: "1px solid var(--border-subtle)",
+            }}>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.65rem",
+                color: accentColor,
+                flexShrink: 0,
+                marginTop: "0.2rem",
+                opacity: 0.8,
+              }}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "var(--text-secondary)" }}>
+                {point}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* What we built */}
+      <div style={{ marginBottom: "2.5rem" }}>
+        <p style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: "0.65rem",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginBottom: "0.75rem",
+        }}>
+          What We Built
+        </p>
+        <ul style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+          {portal.solutionHighlights.map((item, i) => (
+            <li key={i} style={{
+              display: "flex",
+              gap: "1rem",
+              alignItems: "flex-start",
+              padding: "0.9rem 0",
+              borderBottom: "1px solid var(--border-subtle)",
+            }}>
+              <span style={{
+                width: "5px", height: "5px",
+                borderRadius: "50%",
+                background: accentColor,
+                flexShrink: 0,
+                marginTop: "0.55rem",
+              }} />
+              <span style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "var(--text-secondary)" }}>
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Portal screens */}
+      {portal.images.length > 0 && (
+        <div style={{ marginBottom: "2.5rem" }}>
+          <p style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.65rem",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--text-muted)",
+            marginBottom: "1rem",
+          }}>
+            Screens
+          </p>
+          <ImageGallery images={portal.images} gradient={gradient} accentColor={accentColor} />
+        </div>
+      )}
+
+      {/* Portal outcomes */}
+      <div className="stats-row" style={{ paddingTop: "0.5rem" }}>
+        {portal.outcomes.map((outcome, i) => (
+          <div key={i} className="stat-item">
+            <p className="stat-value" style={{ color: accentColor }}>{outcome.metric}</p>
+            <p className="stat-label">{outcome.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 // ── Not found ─────────────────────────────────────────────────
 const NotFound = () => (
@@ -364,69 +580,78 @@ const CaseStudy = () => {
           </div>
         </section>
 
-        {/* ── Solution ── */}
-        <section style={{ padding: "var(--space-xl) 0", borderBottom: "1px solid var(--border-subtle)" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(2rem, 5vw, 5rem)",
-            alignItems: "start",
-          }}>
-            <div>
-              <p className="section-label" style={{ marginBottom: "1rem" }}>
-                <span className="section-label-num">03 —</span> Solution
-              </p>
-              <h2 className="section-title" style={{ marginBottom: "1.5rem" }}>
-                Key design decisions
-              </h2>
+        {/* ── Solution (shown only when no portals) ── */}
+        {!cs.portals && cs.solutionHighlights.length > 0 && (
+          <section style={{ padding: "var(--space-xl) 0", borderBottom: "1px solid var(--border-subtle)" }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "clamp(2rem, 5vw, 5rem)",
+              alignItems: "start",
+            }}>
+              <div>
+                <p className="section-label" style={{ marginBottom: "1rem" }}>
+                  <span className="section-label-num">03 —</span> Solution
+                </p>
+                <h2 className="section-title" style={{ marginBottom: "1.5rem" }}>
+                  Key design decisions
+                </h2>
+              </div>
+              <ul style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+                {cs.solutionHighlights.map((item, i) => (
+                  <li key={i} style={{
+                    display: "flex",
+                    gap: "1.25rem",
+                    alignItems: "flex-start",
+                    padding: "1.25rem 0",
+                    borderBottom: "1px solid var(--border-subtle)",
+                  }}>
+                    <span style={{
+                      width: "6px", height: "6px",
+                      borderRadius: "50%",
+                      background: project.accentColor,
+                      flexShrink: 0,
+                      marginTop: "0.55rem",
+                    }} />
+                    <span style={{ fontSize: "0.95rem", lineHeight: 1.7, color: "var(--text-secondary)" }}>
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-              {cs.solutionHighlights.map((item, i) => (
-                <li key={i} style={{
-                  display: "flex",
-                  gap: "1.25rem",
-                  alignItems: "flex-start",
-                  padding: "1.25rem 0",
-                  borderBottom: "1px solid var(--border-subtle)",
-                }}>
-                  <span style={{
-                    width: "6px", height: "6px",
-                    borderRadius: "50%",
-                    background: project.accentColor,
-                    flexShrink: 0,
-                    marginTop: "0.55rem",
-                  }} />
-                  <span style={{ fontSize: "0.95rem", lineHeight: 1.7, color: "var(--text-secondary)" }}>
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* ── Images ── */}
-        {cs.images.length > 0 && (
+        {/* ── Portal sub-sections (replaces Solution + Images when portals present) ── */}
+        {cs.portals && cs.portals.length > 0 && (
+          <div>
+            <p className="section-label" style={{ marginBottom: "0", padding: "var(--space-xl) 0 1rem" }}>
+              <span className="section-label-num">03 —</span> The Portals
+            </p>
+            {cs.portals.map((portal, i) => (
+              <PortalSection
+                key={portal.id}
+                portal={portal}
+                index={i}
+                gradient={project.gradient}
+                accentColor={project.accentColor}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* ── Images (shown only when no portals) ── */}
+        {!cs.portals && cs.images.length > 0 && (
           <section style={{ padding: "var(--space-xl) 0", borderBottom: "1px solid var(--border-subtle)" }}>
             <p className="section-label" style={{ marginBottom: "2rem" }}>
               <span className="section-label-num">04 —</span> Screens & Artifacts
             </p>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "1px",
-              border: "1px solid var(--border-subtle)",
-            }}>
-              {cs.images.map((img, i) => (
-                <ImageSlot
-                  key={i}
-                  image={img}
-                  gradient={project.gradient}
-                  accentColor={project.accentColor}
-                  className="cs-image-slot"
-                />
-              ))}
-            </div>
+            <ImageGallery
+              images={cs.images}
+              gradient={project.gradient}
+              accentColor={project.accentColor}
+            />
           </section>
         )}
 
@@ -471,6 +696,30 @@ const CaseStudy = () => {
               <a href={cs.links.behance} target="_blank" rel="noopener noreferrer" className="btn-outline">
                 View on Behance ↗
               </a>
+            )}
+            {cs.links.sites && cs.links.sites.length > 0 && (
+              <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", margin: 0 }}>
+                  Live Sites
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                  {cs.links.sites.map((site) => (
+                    <a key={site.url} href={site.url} target="_blank" rel="noopener noreferrer" style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.35rem",
+                      padding: "0.35rem 0.85rem", borderRadius: "999px",
+                      border: "1px solid var(--border-subtle)",
+                      fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem",
+                      color: "var(--text-secondary)", textDecoration: "none",
+                      transition: "border-color 150ms, color 150ms",
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-subtle)"; (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-secondary)"; }}
+                    >
+                      {site.label} ↗
+                    </a>
+                  ))}
+                </div>
+              </div>
             )}
           </section>
         )}
