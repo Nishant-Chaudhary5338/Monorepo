@@ -15,6 +15,16 @@ export interface SliderProps
   size?: SliderSize
 }
 
+/**
+ * Range slider for numeric input with single or multi-thumb support.
+ *
+ * @example
+ * ```tsx
+ * <Slider defaultValue={[50]} min={0} max={100} step={1} className="w-[60%]" />
+ * // Range slider:
+ * <Slider defaultValue={[20, 80]} min={0} max={100} />
+ * ```
+ */
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   SliderProps

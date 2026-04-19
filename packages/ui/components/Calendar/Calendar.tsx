@@ -8,6 +8,15 @@ import { cn } from "../../lib/utils"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
+/**
+ * Interactive date picker calendar built on react-day-picker.
+ *
+ * @example
+ * ```tsx
+ * const [date, setDate] = React.useState<Date>()
+ * <Calendar mode="single" selected={date} onSelect={setDate} />
+ * ```
+ */
 function Calendar({
   className,
   classNames,

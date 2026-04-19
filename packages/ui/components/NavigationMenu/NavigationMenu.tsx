@@ -18,6 +18,21 @@ import {
 } from "./NavigationMenu.types"
 import { navigationMenuTriggerStyle } from "./NavigationMenu.variants"
 
+/**
+ * Horizontal top navigation with animated flyout sub-menus and viewport panel.
+ *
+ * @example
+ * ```tsx
+ * <NavigationMenu>
+ *   <NavigationMenuList>
+ *     <NavigationMenuItem>
+ *       <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+ *       <NavigationMenuContent><NavigationMenuLink href="/docs">Intro</NavigationMenuLink></NavigationMenuContent>
+ *     </NavigationMenuItem>
+ *   </NavigationMenuList>
+ * </NavigationMenu>
+ * ```
+ */
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
   NavigationMenuProps

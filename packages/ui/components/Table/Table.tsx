@@ -1,6 +1,17 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
 
+/**
+ * Semantic HTML table with styled Header, Body, Footer, Row, Head, Cell, and Caption sub-components.
+ *
+ * @example
+ * ```tsx
+ * <Table>
+ *   <TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader>
+ *   <TableBody><TableRow><TableCell>Alice</TableCell></TableRow></TableBody>
+ * </Table>
+ * ```
+ */
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>

@@ -5,6 +5,19 @@ import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
+/**
+ * Toast notification provider powered by Sonner. Mount once at the app root.
+ *
+ * @example
+ * ```tsx
+ * // In root layout:
+ * <Toaster richColors position="top-right" />
+ *
+ * // Trigger toasts anywhere:
+ * import { toast } from 'sonner'
+ * toast.success('Saved!')
+ * ```
+ */
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
 

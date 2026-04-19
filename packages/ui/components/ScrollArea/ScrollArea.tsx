@@ -5,6 +5,18 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * Custom-styled scrollable container with visible or auto-hiding scrollbar.
+ *
+ * @example
+ * ```tsx
+ * <ScrollArea className="h-72 w-48 rounded-md border">
+ *   <div className="p-4">
+ *     {items.map(item => <div key={item.id}>{item.name}</div>)}
+ *   </div>
+ * </ScrollArea>
+ * ```
+ */
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>

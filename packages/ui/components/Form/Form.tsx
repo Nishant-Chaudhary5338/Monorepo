@@ -15,6 +15,25 @@ import {
 import { cn } from "../../lib/utils"
 import { Label } from "../Label/Label"
 
+/**
+ * react-hook-form wrapper providing accessible field, label, control, description, and error slots.
+ *
+ * @example
+ * ```tsx
+ * const form = useForm({ resolver: zodResolver(schema) })
+ * <Form {...form}>
+ *   <form onSubmit={form.handleSubmit(onSubmit)}>
+ *     <FormField control={form.control} name="email" render={({ field }) => (
+ *       <FormItem>
+ *         <FormLabel>Email</FormLabel>
+ *         <FormControl><Input {...field} /></FormControl>
+ *         <FormMessage />
+ *       </FormItem>
+ *     )} />
+ *   </form>
+ * </Form>
+ * ```
+ */
 const Form = FormProvider
 
 type FormFieldContextValue<

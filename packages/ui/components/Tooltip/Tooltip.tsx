@@ -10,6 +10,19 @@ import type { TooltipProps } from "./Tooltip.types"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
+/**
+ * Accessible tooltip shown on focus or hover. Wrap your app in TooltipProvider once.
+ *
+ * @example
+ * ```tsx
+ * <TooltipProvider>
+ *   <Tooltip>
+ *     <TooltipTrigger asChild><Button size="icon"><InfoIcon /></Button></TooltipTrigger>
+ *     <TooltipContent><p>More information</p></TooltipContent>
+ *   </Tooltip>
+ * </TooltipProvider>
+ * ```
+ */
 const Tooltip = TooltipPrimitive.Root
 
 const TooltipTrigger = TooltipPrimitive.Trigger

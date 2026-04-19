@@ -6,6 +6,19 @@ import { Circle } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * Accessible radio button group for single-choice selection.
+ *
+ * @example
+ * ```tsx
+ * <RadioGroup defaultValue="option-one">
+ *   <div className="flex items-center space-x-2">
+ *     <RadioGroupItem value="option-one" id="option-one" />
+ *     <Label htmlFor="option-one">Option One</Label>
+ *   </div>
+ * </RadioGroup>
+ * ```
+ */
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>

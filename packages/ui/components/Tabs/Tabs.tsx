@@ -11,6 +11,21 @@ type TabsVariant = "default" | "underline" | "pills" | "boxed"
 
 const TabsVariantContext = React.createContext<TabsVariant>("default")
 
+/**
+ * Tabbed content panels with list, trigger, and content slots. Supports variant styles.
+ *
+ * @example
+ * ```tsx
+ * <Tabs defaultValue="overview">
+ *   <TabsList>
+ *     <TabsTrigger value="overview">Overview</TabsTrigger>
+ *     <TabsTrigger value="details">Details</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="overview"><p>Overview content</p></TabsContent>
+ *   <TabsContent value="details"><p>Details content</p></TabsContent>
+ * </Tabs>
+ * ```
+ */
 const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<

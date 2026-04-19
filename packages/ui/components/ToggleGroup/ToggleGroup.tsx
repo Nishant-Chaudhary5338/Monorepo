@@ -14,6 +14,18 @@ const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   variant: "default",
 })
 
+/**
+ * Group of toggle buttons supporting single or multiple selection with shared variant styling.
+ *
+ * @example
+ * ```tsx
+ * <ToggleGroup type="single" defaultValue="center">
+ *   <ToggleGroupItem value="left"><AlignLeft className="h-4 w-4" /></ToggleGroupItem>
+ *   <ToggleGroupItem value="center"><AlignCenter className="h-4 w-4" /></ToggleGroupItem>
+ *   <ToggleGroupItem value="right"><AlignRight className="h-4 w-4" /></ToggleGroupItem>
+ * </ToggleGroup>
+ * ```
+ */
 const ToggleGroup = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Root>,
   ToggleGroupProps

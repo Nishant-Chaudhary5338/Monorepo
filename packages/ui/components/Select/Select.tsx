@@ -6,6 +6,22 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * Accessible dropdown select with groups, labels, and separator support.
+ *
+ * @example
+ * ```tsx
+ * <Select>
+ *   <SelectTrigger className="w-[180px]">
+ *     <SelectValue placeholder="Select a fruit" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="apple">Apple</SelectItem>
+ *     <SelectItem value="banana">Banana</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ * ```
+ */
 const Select = SelectPrimitive.Root
 
 const SelectGroup = SelectPrimitive.Group

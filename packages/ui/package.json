@@ -11,9 +11,9 @@
     },
     "./styles.css": "./dist/index.css",
     "./lib/utils": {
-      "types": "./dist/src/lib/utils.d.ts",
-      "import": "./dist/src/lib/utils.js",
-      "require": "./dist/src/lib/utils.cjs"
+      "types": "./dist/lib/utils.d.ts",
+      "import": "./dist/lib/utils.js",
+      "require": "./dist/lib/utils.cjs"
     }
   },
   "peerDependencies": {
@@ -119,7 +119,7 @@
     "storybook": "^10.3.3",
     "tailwindcss": "^4.1.5",
     "tsup": "^8.3.5",
-    "typescript": "5.5.4",
+    "typescript": "~5.9.3",
     "vitest": "^4.1.0"
   }
 }

@@ -8,6 +8,17 @@ import { cn } from "../../lib/utils"
 import { avatarVariants } from "./Avatar.variants"
 import type { AvatarProps, AvatarImageProps, AvatarFallbackProps } from "./Avatar.types"
 
+/**
+ * User avatar with image support, fallback text, size and shape variants.
+ *
+ * @example
+ * ```tsx
+ * <Avatar size="lg">
+ *   <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+ *   <AvatarFallback>SC</AvatarFallback>
+ * </Avatar>
+ * ```
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps & VariantProps<typeof avatarVariants>

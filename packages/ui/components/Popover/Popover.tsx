@@ -5,6 +5,19 @@ import * as PopoverPrimitive from "@radix-ui/react-popover"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * Floating panel anchored to a trigger, useful for inline forms and filters.
+ *
+ * @example
+ * ```tsx
+ * <Popover>
+ *   <PopoverTrigger asChild><Button variant="outline">Open</Button></PopoverTrigger>
+ *   <PopoverContent className="w-80">
+ *     <Input placeholder="Search..." />
+ *   </PopoverContent>
+ * </Popover>
+ * ```
+ */
 const Popover = PopoverPrimitive.Root
 
 const PopoverTrigger = PopoverPrimitive.Trigger

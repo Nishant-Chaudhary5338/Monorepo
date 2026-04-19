@@ -12,6 +12,18 @@ import type {
   CardFooterProps,
 } from "./Card.types"
 
+/**
+ * Container surface with Header, Title, Description, Content, and Footer slots.
+ *
+ * @example
+ * ```tsx
+ * <Card>
+ *   <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+ *   <CardContent>Content here</CardContent>
+ *   <CardFooter><Button>Action</Button></CardFooter>
+ * </Card>
+ * ```
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   CardProps & VariantProps<typeof cardVariants>

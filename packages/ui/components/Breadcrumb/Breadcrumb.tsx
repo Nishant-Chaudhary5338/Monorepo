@@ -15,6 +15,20 @@ import type {
   BreadcrumbEllipsisProps,
 } from "./Breadcrumb.types"
 
+/**
+ * Hierarchical navigation trail showing the current page path.
+ *
+ * @example
+ * ```tsx
+ * <Breadcrumb>
+ *   <BreadcrumbList>
+ *     <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+ *     <BreadcrumbSeparator />
+ *     <BreadcrumbItem><BreadcrumbPage>Current</BreadcrumbPage></BreadcrumbItem>
+ *   </BreadcrumbList>
+ * </Breadcrumb>
+ * ```
+ */
 const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
   ({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />
 )

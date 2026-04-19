@@ -6,6 +6,22 @@ import { Minus } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * One-time password input with slot-based entry and separator support.
+ *
+ * @example
+ * ```tsx
+ * <InputOTP maxLength={6} value={value} onChange={setValue}>
+ *   <InputOTPGroup>
+ *     <InputOTPSlot index={0} /><InputOTPSlot index={1} /><InputOTPSlot index={2} />
+ *   </InputOTPGroup>
+ *   <InputOTPSeparator />
+ *   <InputOTPGroup>
+ *     <InputOTPSlot index={3} /><InputOTPSlot index={4} /><InputOTPSlot index={5} />
+ *   </InputOTPGroup>
+ * </InputOTP>
+ * ```
+ */
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
   React.ComponentPropsWithoutRef<typeof OTPInput>

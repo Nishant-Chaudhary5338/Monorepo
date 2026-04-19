@@ -4,6 +4,17 @@ import { cn } from "../../lib/utils"
 import type { AlertProps, AlertTitleProps, AlertDescriptionProps } from "./Alert.types"
 import { alertVariants } from "./Alert.variants"
 
+/**
+ * Callout banner for informational or destructive messages with optional icon.
+ *
+ * @example
+ * ```tsx
+ * <Alert variant="destructive">
+ *   <AlertTitle>Error</AlertTitle>
+ *   <AlertDescription>Your session has expired.</AlertDescription>
+ * </Alert>
+ * ```
+ */
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant, ...props }, ref) => (
   <div

@@ -24,6 +24,20 @@ import {
   type ContextMenuShortcutProps
 } from "./ContextMenu.types"
 
+/**
+ * Right-click context menu with nested sub-menus, checkboxes, and radio groups.
+ *
+ * @example
+ * ```tsx
+ * <ContextMenu>
+ *   <ContextMenuTrigger>Right click here</ContextMenuTrigger>
+ *   <ContextMenuContent>
+ *     <ContextMenuItem>Open</ContextMenuItem>
+ *     <ContextMenuItem>Copy</ContextMenuItem>
+ *   </ContextMenuContent>
+ * </ContextMenu>
+ * ```
+ */
 const ContextMenu = ContextMenuPrimitive.Root
 
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger

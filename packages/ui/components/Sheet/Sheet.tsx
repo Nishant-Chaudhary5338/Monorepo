@@ -20,6 +20,20 @@ import {
 } from "./Sheet.types"
 import { sheetVariants } from "./Sheet.variants"
 
+/**
+ * Slide-in panel that appears from any screen edge (top/right/bottom/left).
+ *
+ * @example
+ * ```tsx
+ * <Sheet>
+ *   <SheetTrigger asChild><Button variant="outline">Open</Button></SheetTrigger>
+ *   <SheetContent side="right">
+ *     <SheetHeader><SheetTitle>Settings</SheetTitle></SheetHeader>
+ *     <div className="p-4">Content here</div>
+ *   </SheetContent>
+ * </Sheet>
+ * ```
+ */
 const Sheet = SheetPrimitive.Root
 
 const SheetTrigger = SheetPrimitive.Trigger

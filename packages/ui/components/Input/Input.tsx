@@ -5,6 +5,16 @@ import { cn } from "../../lib/utils"
 import { inputVariants } from "./Input.variants"
 import type { InputProps } from "./Input.types"
 
+/**
+ * Styled text input with size variants, error/success states, and start/end icon slots.
+ *
+ * @example
+ * ```tsx
+ * <Input type="email" placeholder="you@example.com" />
+ * <Input startIcon={<Search className="h-4 w-4" />} placeholder="Search" />
+ * <Input error placeholder="Invalid value" />
+ * ```
+ */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = "text", inputSize, error, success, startIcon, endIcon, ...props }, ref) => {
     const state = error ? "error" : success ? "success" : "default"

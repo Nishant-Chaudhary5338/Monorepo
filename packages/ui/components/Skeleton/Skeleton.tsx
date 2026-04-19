@@ -5,6 +5,15 @@ import { cn } from "../../lib/utils"
 import { skeletonVariants } from "./Skeleton.variants"
 import type { SkeletonProps } from "./Skeleton.types"
 
+/**
+ * Loading placeholder with pulse or shimmer animation and multiple shape variants.
+ *
+ * @example
+ * ```tsx
+ * <Skeleton className="h-4 w-[250px]" />
+ * <Skeleton variant="circle" className="h-12 w-12" />
+ * ```
+ */
 function Skeleton({
   className,
   variant,

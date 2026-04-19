@@ -12,6 +12,14 @@ export interface ProgressProps
     VariantProps<typeof progressVariants>,
     VariantProps<typeof progressIndicatorVariants> {}
 
+/**
+ * Linear progress bar with animated fill, color variants, and sizes.
+ *
+ * @example
+ * ```tsx
+ * <Progress value={60} className="w-full" />
+ * ```
+ */
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps

@@ -11,6 +11,19 @@ import {
   type HoverCardContentProps
 } from "./HoverCard.types"
 
+/**
+ * Floating card revealed on hover, useful for rich preview panels.
+ *
+ * @example
+ * ```tsx
+ * <HoverCard>
+ *   <HoverCardTrigger asChild><Button variant="link">@username</Button></HoverCardTrigger>
+ *   <HoverCardContent className="w-80">
+ *     <p>User profile preview content</p>
+ *   </HoverCardContent>
+ * </HoverCard>
+ * ```
+ */
 const HoverCard = HoverCardPrimitive.Root
 
 const HoverCardTrigger = HoverCardPrimitive.Trigger

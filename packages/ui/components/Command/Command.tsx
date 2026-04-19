@@ -8,6 +8,22 @@ import { Search } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Dialog, DialogContent } from "../Dialog/Dialog"
 
+/**
+ * Searchable command palette and combobox powered by cmdk.
+ *
+ * @example
+ * ```tsx
+ * <Command>
+ *   <CommandInput placeholder="Search..." />
+ *   <CommandList>
+ *     <CommandEmpty>No results.</CommandEmpty>
+ *     <CommandGroup heading="Actions">
+ *       <CommandItem onSelect={() => {}}>New File</CommandItem>
+ *     </CommandGroup>
+ *   </CommandList>
+ * </Command>
+ * ```
+ */
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>

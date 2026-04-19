@@ -8,6 +8,15 @@ import { cn } from "../../lib/utils"
 import { labelVariants } from "./Label.variants"
 import type { LabelProps } from "./Label.types"
 
+/**
+ * Accessible form label with optional error and required states, built on Radix Label.
+ *
+ * @example
+ * ```tsx
+ * <Label htmlFor="email" required>Email</Label>
+ * <Input type="email" id="email" />
+ * ```
+ */
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   LabelProps & VariantProps<typeof labelVariants>

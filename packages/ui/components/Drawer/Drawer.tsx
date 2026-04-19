@@ -18,6 +18,20 @@ import {
   type DrawerDescriptionProps
 } from "./Drawer.types"
 
+/**
+ * Slide-up bottom sheet panel built on Vaul, ideal for mobile interactions.
+ *
+ * @example
+ * ```tsx
+ * <Drawer>
+ *   <DrawerTrigger asChild><Button>Open</Button></DrawerTrigger>
+ *   <DrawerContent>
+ *     <DrawerHeader><DrawerTitle>Settings</DrawerTitle></DrawerHeader>
+ *     <div className="p-4">Content</div>
+ *   </DrawerContent>
+ * </Drawer>
+ * ```
+ */
 const Drawer = ({
   shouldScaleBackground = true,
   ...props

@@ -9,6 +9,17 @@ import { cn } from "../../lib/utils"
 import { checkboxVariants, checkboxIndicatorSizeVariants } from "./Checkbox.variants"
 import type { CheckboxProps } from "./Checkbox.types"
 
+/**
+ * Accessible checkbox with indeterminate state support.
+ *
+ * @example
+ * ```tsx
+ * <div className="flex items-center space-x-2">
+ *   <Checkbox id="terms" />
+ *   <Label htmlFor="terms">Accept terms and conditions</Label>
+ * </div>
+ * ```
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps & VariantProps<typeof checkboxVariants>

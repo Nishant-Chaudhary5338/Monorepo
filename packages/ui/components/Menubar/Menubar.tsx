@@ -35,6 +35,21 @@ const MenubarSub: typeof MenubarPrimitive.Sub = MenubarPrimitive.Sub
 
 const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup = MenubarPrimitive.RadioGroup
 
+/**
+ * Horizontal application menu bar with nested sub-menus, checkboxes, and radio groups.
+ *
+ * @example
+ * ```tsx
+ * <Menubar>
+ *   <MenubarMenu>
+ *     <MenubarTrigger>File</MenubarTrigger>
+ *     <MenubarContent>
+ *       <MenubarItem>New <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+ *     </MenubarContent>
+ *   </MenubarMenu>
+ * </Menubar>
+ * ```
+ */
 const Menubar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
   MenubarProps

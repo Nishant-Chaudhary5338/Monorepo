@@ -24,6 +24,21 @@ import {
   type DropdownMenuShortcutProps
 } from "./DropdownMenu.types"
 
+/**
+ * Dropdown menu with items, separators, checkboxes, radio groups, and nested sub-menus.
+ *
+ * @example
+ * ```tsx
+ * <DropdownMenu>
+ *   <DropdownMenuTrigger asChild><Button variant="outline">Open</Button></DropdownMenuTrigger>
+ *   <DropdownMenuContent>
+ *     <DropdownMenuItem>Profile</DropdownMenuItem>
+ *     <DropdownMenuSeparator />
+ *     <DropdownMenuItem>Log out</DropdownMenuItem>
+ *   </DropdownMenuContent>
+ * </DropdownMenu>
+ * ```
+ */
 const DropdownMenu = DropdownMenuPrimitive.Root
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger

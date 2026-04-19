@@ -14,6 +14,20 @@ import type {
   PaginationEllipsisProps,
 } from "./Pagination.types"
 
+/**
+ * Page navigation controls with previous/next buttons, page links, and ellipsis.
+ *
+ * @example
+ * ```tsx
+ * <Pagination>
+ *   <PaginationContent>
+ *     <PaginationItem><PaginationPrevious href="/page/1" /></PaginationItem>
+ *     <PaginationItem><PaginationLink href="/page/2" isActive>2</PaginationLink></PaginationItem>
+ *     <PaginationItem><PaginationNext href="/page/3" /></PaginationItem>
+ *   </PaginationContent>
+ * </Pagination>
+ * ```
+ */
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"

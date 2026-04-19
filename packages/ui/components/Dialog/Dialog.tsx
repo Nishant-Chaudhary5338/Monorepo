@@ -19,6 +19,20 @@ import {
   type DialogDescriptionProps
 } from "./Dialog.types"
 
+/**
+ * Modal dialog with animated overlay, accessible focus trapping, and composable slots.
+ *
+ * @example
+ * ```tsx
+ * <Dialog>
+ *   <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+ *   <DialogContent>
+ *     <DialogHeader><DialogTitle>Confirm</DialogTitle></DialogHeader>
+ *     <DialogFooter><Button type="submit">Save</Button></DialogFooter>
+ *   </DialogContent>
+ * </Dialog>
+ * ```
+ */
 const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger
