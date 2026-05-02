@@ -19,7 +19,7 @@ const openTo = [
 const Testimonials = () => (
   <section id="about" className="px-5 md:px-20 py-20 md:py-32">
     <TitleHeader
-      num="05"
+      num="06"
       label="About"
       title={<>The person behind <em>the platforms.</em></>}
       className="mb-12 md:mb-16"

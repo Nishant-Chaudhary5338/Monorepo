@@ -30,14 +30,34 @@ const caseStudies: CaseStudy[] = [
   {
     num: "02",
     meta: "2024 — Present · Samsung Electronics",
-    title: <>AI-driven <em>MCP tooling</em> — 3× faster engineering</>,
+    title: <>Headless <em>Dashboard Library</em> — the substrate every team builds on</>,
     description:
-      "Monorepo architecture with custom MCP tools automating UI generation, refactoring, code standardization, scaffolding, and test generation. Trained 30+ engineers across 5 R&D teams on AI-native workflows.",
-    metrics: ["~65% routine work automated", "3× dev speed boost", "30+ engineers trained", "28 MCP servers built"],
-    tags: ["Turborepo", "Model Context Protocol", "Claude Code", "pnpm", "GitHub Actions"],
+      "Solo-built headless composition framework handling layout, drag-drop, resize, widget registration, persistence, polling, and widget-to-widget events. 11 built-in widgets. Teams register custom widgets and get DnD, settings panels, and persistence for free.",
+    metrics: ["11 built-in widgets", "4 apps in production", "~12 product teams", "9,026 lines TypeScript"],
+    tags: ["React 19", "Zustand", "dnd-kit", "Framer Motion", "Recharts · Nivo"],
   },
   {
     num: "03",
+    meta: "2024 — Present · Samsung Electronics",
+    title: <>Shared <em>UI Library</em> — 45 components, zero forks</>,
+    description:
+      "45-component React library on Radix UI + Tailwind CSS v4 serving ~12 product teams. Custom 12-step design token system, type-safe variants via CVA, TanStack Table v8, dual ESM/CJS output. 79 test files, 47 Storybook stories, auto-doc from JSDoc.",
+    metrics: ["45 components shipped", "79 test files", "47 Storybook stories", "~12 teams, 0 forks"],
+    tags: ["React 19", "Radix UI", "Tailwind CSS v4", "CVA", "TanStack Table"],
+    link: "https://fluffy-churros-b798ad.netlify.app/?path=/docs/components-button--docs",
+    linkLabel: "Live Storybook ↗",
+  },
+  {
+    num: "04",
+    meta: "2024 — Present · Samsung Electronics",
+    title: <>AI-driven <em>MCP tooling</em> — 3× faster engineering</>,
+    description:
+      "~30 MCP server packages, 60+ registered tools, plus a plugin-aware server for the MFE platform. CLI wrappers for all 27 tools. Same servers power Cline AI and the team's parallel automation pipeline. Trained 30+ engineers across 5 R&D teams.",
+    metrics: ["~65% routine work automated", "3× dev speed boost", "30+ engineers trained", "27 CLI wrappers built"],
+    tags: ["Turborepo", "Model Context Protocol", "Claude Code", "pnpm", "GitHub Actions"],
+  },
+  {
+    num: "05",
     meta: "2023 — 2024 · Safex Chemicals",
     title: <>Golden Farms — B2B <em>e-commerce</em> for 15K+ distributors</>,
     description:
@@ -48,24 +68,13 @@ const caseStudies: CaseStudy[] = [
     linkLabel: "Play Store ↗",
   },
   {
-    num: "04",
+    num: "06",
     meta: "2023 — 2024 · Safex Chemicals",
     title: <>SAP integration + <em>LMS</em> for enterprise operations</>,
     description:
       "Consolidated three legacy systems into one React/Node interface. SAP web interface with Azure AD MSAL and JWT-based RBAC across 6 roles. LMS with Firebase video streaming onboarding 1,500+ employees.",
     metrics: ["500+ daily users", "↓70% notification tracking time", "9 courses digitised", "6 RBAC roles"],
     tags: ["React", "SAP Cloud Platform", "Azure AD MSAL", "Firebase", "Express"],
-  },
-  {
-    num: "05",
-    meta: "2024 — Present · Samsung Electronics",
-    title: <>Samsung <em>Design System</em> — 43 components, live Storybook</>,
-    description:
-      "Built the full component library and live Storybook for Samsung's enterprise design system — DataTable, AutoForm, Command Palette, Dialog. Token-driven dark/light mode, Radix UI + Tailwind CSS v4.",
-    metrics: ["43 components shipped", "↓40% handoff time", "10 token categories", "Live Storybook deployed"],
-    tags: ["React", "Radix UI", "Tailwind CSS v4", "Storybook", "TypeScript"],
-    link: "https://fluffy-churros-b798ad.netlify.app/?path=/docs/components-button--docs",
-    linkLabel: "Live Storybook ↗",
   },
 ];
 
@@ -105,7 +114,6 @@ const ShowcaseSection = () => {
             ref={(el) => { rowRefs.current[index] = el; }}
             style={{ borderBottom: "1px solid var(--rule)", padding: "2.2rem 0" }}
           >
-            {/* Top row: number + meta + link */}
             <div className="flex items-start justify-between gap-4 mb-3">
               <div className="flex items-center gap-5 flex-wrap">
                 <span className="section-eyebrow" style={{ color: "var(--accent-warm)", fontSize: "0.82rem" }}>
@@ -138,7 +146,6 @@ const ShowcaseSection = () => {
               )}
             </div>
 
-            {/* Title */}
             <div
               className="display-headline mb-5"
               style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.1rem)", lineHeight: 1.15 }}
@@ -146,7 +153,6 @@ const ShowcaseSection = () => {
               {cs.title}
             </div>
 
-            {/* Description + metrics */}
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
               <div className="xl:col-span-7">
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.97rem", lineHeight: 1.65, maxWidth: "64ch" }}>
@@ -159,7 +165,6 @@ const ShowcaseSection = () => {
                 </div>
               </div>
 
-              {/* Impact metrics */}
               <div className="xl:col-span-5 grid grid-cols-2 gap-2">
                 {cs.metrics.map((metric) => (
                   <div

@@ -4,9 +4,9 @@ export interface NavLink {
 }
 
 export const navLinks: NavLink[] = [
-  { name: "Projects", link: "#work" },
+  { name: "Work", link: "#work" },
   { name: "Experience", link: "#experience" },
-  { name: "Skills", link: "#skills" },
+  { name: "Writing", link: "#writing" },
+  { name: "Stack", link: "#skills" },
   { name: "About", link: "#about" },
-  { name: "Contact", link: "#contact" },
 ];
