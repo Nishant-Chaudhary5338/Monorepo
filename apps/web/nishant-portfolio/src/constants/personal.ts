@@ -12,12 +12,12 @@ export interface PersonalInfo {
 
 export const personalInfo: PersonalInfo = {
   name: "Nishant Chaudhary",
-  title: "Frontend Developer",
+  title: "Senior Frontend Engineer",
   location: "New Delhi, India",
-  email: "nishantchaudhary5338@gmail.com",
+  email: "nishantchaudhary.dev@gmail.com",
   phone: "+91 9560025338",
-  linkedin: "https://linkedin.com/in/nishantchaudhary",
+  linkedin: "https://www.linkedin.com/in/nishant-chaudhary/",
   github: "https://github.com/nishantchaudhary5338",
-  tagline: "Building scalable, high-performance web applications with React & TypeScript",
-  bio: "Frontend Developer with 4+ years of experience building modern, high-performance web applications across enterprise and product-based platforms. Expert in React.js, TypeScript, and creating scalable, pixel-perfect, responsive UIs with a focus on developer experience and architecture.",
+  tagline: "Building the platforms that let frontend teams ship faster · Micro-frontends · MCP Tooling · Turborepo",
+  bio: "Senior Frontend Engineer at Samsung Electronics with 4+ years of experience architecting micro-frontend platforms, custom MCP tooling, and AI-assisted developer systems. I work where architecture, developer experience, and production scale meet.",
 };

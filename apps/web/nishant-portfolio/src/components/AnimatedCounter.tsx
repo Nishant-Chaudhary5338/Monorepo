@@ -2,7 +2,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
-
 import { counterItems } from "../constants";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,20 +17,17 @@ const AnimatedCounter = () => {
       if (!numberElement) return;
       const item = counterItems[index];
 
-      // Set initial value to 0
       gsap.set(numberElement, { innerText: "0" });
 
-      // Create the counting animation
       gsap.to(numberElement, {
         innerText: item.value,
         duration: 2.5,
         ease: "power2.out",
-        snap: { innerText: 1 }, // Ensures whole numbers
+        snap: { innerText: 1 },
         scrollTrigger: {
           trigger: "#counter",
           start: "top center",
         },
-        // Add the suffix after counting is complete
         onComplete: () => {
           numberElement.textContent = `${item.value}${item.suffix}`;
         },
@@ -40,22 +36,22 @@ const AnimatedCounter = () => {
   }, []);
 
   return (
-    <div id="counter" ref={counterRef} className="padding-x-lg xl:mt-0 mt-32">
-      <div className="mx-auto grid-4-cols">
-        {counterItems.map((item, index) => (
-          <div
-            key={index}
-            ref={(el) => { countersRef.current[index] = el; }}
-            className="rounded-lg p-10 flex flex-col justify-center"
-            style={{ backgroundColor: "var(--bg-secondary)" }}
-          >
-            <div className="counter-number text-5xl font-bold mb-2" style={{ color: "var(--text-secondary)" }}>
-              0 {item.suffix}
-            </div>
-            <div className="text-lg" style={{ color: "var(--text-secondary)" }}>{item.label}</div>
+    <div id="counter" ref={counterRef} className="numbers-strip">
+      {counterItems.map((item, index) => (
+        <div
+          key={index}
+          ref={(el) => { countersRef.current[index] = el; }}
+          className="num-cell"
+        >
+          <div className="impact-number">
+            <span className="counter-number">0</span>
+            <span className="impact-number" style={{ fontSize: "0.45em", verticalAlign: "super", color: "var(--text-primary)" }}>
+              {item.suffix}
+            </span>
           </div>
-        ))}
-      </div>
+          <div className="mono-label" style={{ marginTop: "0.6rem" }}>{item.label}</div>
+        </div>
+      ))}
     </div>
   );
 };

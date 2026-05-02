@@ -1,18 +1,12 @@
 import { TitleHeaderProps } from '../types';
 
-const TitleHeader = ({ title, sub }: TitleHeaderProps) => {
-  return (
-    <div className="flex flex-col items-center gap-5">
-      <div className="hero-badge">
-        <p>{sub}</p>
-      </div>
-      <div>
-        <h1 className="font-semibold md:text-5xl text-3xl text-center">
-          {title}
-        </h1>
-      </div>
-    </div>
-  );
-};
+const TitleHeader = ({ num, label, title, className = "" }: TitleHeaderProps) => (
+  <div className={`flex flex-col gap-2 ${className}`}>
+    <div className="section-eyebrow">{num} / {label}</div>
+    <h2 className="display-headline" style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)" }}>
+      {title}
+    </h2>
+  </div>
+);
 
 export default TitleHeader;

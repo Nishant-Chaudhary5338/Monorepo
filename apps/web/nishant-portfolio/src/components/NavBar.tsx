@@ -1,25 +1,13 @@
 import { useState, useEffect } from "react";
-
-import { navLinks, personalInfo } from "../constants";
+import { navLinks } from "../constants";
 import ThemeToggle from "./ThemeToggle";
 
 const NavBar = () => {
-  // track if the user has scrolled down the page
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    // create an event listener for when the user scrolls
-    const handleScroll = () => {
-      // check if the user has scrolled down at least 10px
-      // if so, set the state to true
-      const isScrolled = window.scrollY > 10;
-      setScrolled(isScrolled);
-    };
-
-    // add the event listener to the window
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
-
-    // cleanup the event listener when the component is unmounted
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -27,33 +15,29 @@ const NavBar = () => {
     <header className={`navbar ${scrolled ? "scrolled" : "not-scrolled"}`}>
       <div className="inner">
         <a href="#hero" className="logo">
-          {personalInfo.name.split(" ")[0]} DEV
+          Nishant <em>Chaudhary</em>
         </a>
 
-        <nav className="desktop">
+        <nav className="desktop" aria-label="Primary">
           <ul>
             {navLinks.map(({ link, name }) => (
-              <li key={name} className="group">
-                <a href={link}>
-                  <span>{name}</span>
-                  <span className="underline" />
-                </a>
+              <li key={name}>
+                <a href={link}>{name}</a>
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <ThemeToggle />
-          <a href="#contact" className="contact-btn group">
-            <div className="inner">
-              <span>Contact me</span>
-            </div>
-          </a>
+          <div className="contact-btn">
+            <span className="availability-dot" />
+            <a href="#contact">Hire me</a>
+          </div>
         </div>
       </div>
     </header>
   );
-}
+};
 
 export default NavBar;

@@ -1,59 +1,61 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TitleHeader from "../components/TitleHeader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Skill {
-  name: string;
-  icon: string;
-  color: string;
+interface StackGroup {
   category: string;
+  items: string[];
 }
 
-const skills: Skill[] = [
-  { name: "React.js", icon: "⚛️", color: "#61DAFB", category: "Frontend" },
-  { name: "TypeScript", icon: "🔷", color: "#3178C6", category: "Language" },
-  { name: "Next.js", icon: "▲", color: "#000000", category: "Framework" },
-  { name: "Tailwind CSS", icon: "🎨", color: "#06B6D4", category: "Styling" },
-  { name: "Redux", icon: "🟣", color: "#764ABC", category: "State" },
-  { name: "Vite", icon: "⚡", color: "#646CFF", category: "Tooling" },
-  { name: "AWS", icon: "☁️", color: "#FF9900", category: "Cloud" },
-  { name: "Node.js", icon: "🟢", color: "#339933", category: "Backend" },
-  { name: "Git", icon: "📦", color: "#F05032", category: "Tools" },
-  { name: "REST APIs", icon: "🔗", color: "#FF6B6B", category: "Integration" },
-  { name: "Storybook", icon: "📕", color: "#FF4785", category: "UI Dev" },
-  { name: "Monorepo", icon: "📁", color: "#9B59B6", category: "Architecture" },
+const stackGroups: StackGroup[] = [
+  {
+    category: "Architecture & Platforms",
+    items: ["Micro-frontends", "Vite Module Federation", "Monorepos", "Turborepo", "pnpm workspaces", "Design Systems", "MCP Tooling", "Agentic workflows"],
+  },
+  {
+    category: "Languages & UI",
+    items: ["TypeScript", "JavaScript (ES6+)", "React", "Next.js", "HTML5", "CSS3", "Tailwind CSS", "GSAP", "Three.js"],
+  },
+  {
+    category: "State & Data",
+    items: ["Redux Toolkit", "Zustand", "RTK Query", "REST", "GraphQL"],
+  },
+  {
+    category: "Build, Test & DevOps",
+    items: ["Vite", "Vitest", "Playwright", "Storybook", "GitHub Actions", "Docker", "Web Vitals"],
+  },
+  {
+    category: "Cloud & Auth",
+    items: ["AWS (EC2 · S3 · VPC)", "Vercel", "Azure AD (MSAL)", "OAuth 2.0", "JWT", "Firebase"],
+  },
+  {
+    category: "AI-assisted Development",
+    items: ["Cline", "Claude Code", "Cursor", "Custom MCP servers", "Agentic code generation"],
+  },
 ];
 
 const TechStack = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    cardRefs.current.forEach((card, index) => {
-      if (!card) return;
+    groupRefs.current.forEach((group, i) => {
+      if (!group) return;
       gsap.fromTo(
-        card,
+        group,
+        { opacity: 0, y: 20 },
         {
-          y: 40,
-          opacity: 0,
-          scale: 0.95,
-        },
-        {
-          y: 0,
           opacity: 1,
-          scale: 1,
+          y: 0,
           duration: 0.6,
-          delay: index * 0.1,
+          delay: i * 0.08,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: card,
+            trigger: group,
             start: "top 85%",
-            toggleActions: "play none none none",
           },
         }
       );
@@ -61,35 +63,51 @@ const TechStack = () => {
   }, []);
 
   return (
-    <div id="skills" ref={sectionRef} className="flex-center section-padding">
-      <div className="w-full h-full md:px-10 px-5">
-        <TitleHeader
-          title="My Tech Stack"
-          sub="🛠️ Tools & Technologies I Work With"
-        />
-        <div className="grid-4-cols mt-16">
-          {skills.map((skill, index) => (
+    <section id="skills" className="px-5 md:px-20 py-20 md:py-32">
+      <TitleHeader
+        num="04"
+        label="Stack"
+        title={<>Tools I reach for, <em>daily.</em></>}
+        className="mb-10 md:mb-12"
+      />
+
+      <div className="stack-layout ruled-top pt-10">
+        {/* Left column — intentionally sparse for editorial feel */}
+        <div />
+
+        {/* Right column — grouped stack */}
+        <div>
+          {stackGroups.map((group, index) => (
             <div
-              key={skill.name}
-              ref={(el) => { cardRefs.current[index] = el; }}
-              className="card-border rounded-xl p-6 flex flex-col items-center gap-4 group transition-all duration-300 cursor-default opacity-0"
-              style={{ "--hover-bg": "var(--bg-secondary)" } as React.CSSProperties}
+              key={group.category}
+              ref={(el) => { groupRefs.current[index] = el; }}
+              className="mb-8"
             >
+              <h4 className="mono-label mb-3" style={{ color: "var(--text-muted)" }}>
+                {group.category}
+              </h4>
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl transition-transform duration-300 group-hover:scale-110"
-                style={{ backgroundColor: `${skill.color}15` }}
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.92rem",
+                  color: "var(--text-primary)",
+                  lineHeight: 1.8,
+                }}
               >
-                {skill.icon}
-              </div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>{skill.name}</h3>
-                <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>{skill.category}</p>
+                {group.items.map((item, i) => (
+                  <span key={item}>
+                    {item}
+                    {i < group.items.length - 1 && (
+                      <span style={{ color: "var(--text-muted)", margin: "0 0.55rem" }}>·</span>
+                    )}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

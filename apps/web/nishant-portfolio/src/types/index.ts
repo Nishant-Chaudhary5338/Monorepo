@@ -37,8 +37,10 @@ export interface GlowCardProps {
 }
 
 export interface TitleHeaderProps {
-  title: string;
-  sub: string;
+  num: string;
+  label: string;
+  title: ReactNode;
+  className?: string;
 }
 
 export interface LogoIconProps {

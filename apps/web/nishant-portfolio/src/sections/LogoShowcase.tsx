@@ -1,35 +1,33 @@
-import { logoIconsList } from "../constants";
-import { LogoIconProps } from "../types";
-
-const LogoIcon = ({ icon }: LogoIconProps) => {
-  return (
-    <div className="flex-none flex-center marquee-item">
-      <div
-        className="rounded-xl p-3 flex-center"
-        style={{ backgroundColor: "var(--bg-secondary)" }}
-      >
-        <img src={icon.imgPath} alt={icon.imgPath} className="size-14 object-contain" />
-      </div>
-    </div>
-  );
-};
+const companies = ["Samsung Electronics", "Safex Chemicals", "DevsLane"];
 
 const LogoShowcase = () => (
-  <div className="md:my-20 my-10 relative">
-    <div className="gradient-edge" />
-    <div className="gradient-edge" />
-
-    <div className="marquee h-52">
-      <div className="marquee-box md:gap-12 gap-5">
-        {logoIconsList.map((icon, index) => (
-          <LogoIcon key={index} icon={icon} />
-        ))}
-
-        {logoIconsList.map((icon, index) => (
-          <LogoIcon key={index} icon={icon} />
-        ))}
-      </div>
-    </div>
+  <div
+    className="py-5 px-5 md:px-20 flex items-center justify-center gap-4 flex-wrap"
+    style={{ borderTop: "1px solid var(--rule)", borderBottom: "1px solid var(--rule)" }}
+  >
+    <span
+      className="mono-label"
+      style={{ color: "var(--text-muted)", marginRight: "1rem" }}
+    >
+      Experience at
+    </span>
+    {companies.map((name, i) => (
+      <span key={name} className="flex items-center gap-4">
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.82rem",
+            letterSpacing: "0.04em",
+            color: "var(--text-secondary)",
+          }}
+        >
+          {name}
+        </span>
+        {i < companies.length - 1 && (
+          <span style={{ color: "var(--text-muted)" }}>·</span>
+        )}
+      </span>
+    ))}
   </div>
 );
 

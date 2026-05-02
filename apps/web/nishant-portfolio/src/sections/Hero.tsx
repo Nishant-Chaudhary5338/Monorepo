@@ -1,8 +1,6 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-
 import AnimatedCounter from "../components/AnimatedCounter";
-import Button from "../components/Button";
 import { words } from "../constants";
 import HeroExperience from "../components/models/hero_models/HeroExperience";
 
@@ -12,6 +10,11 @@ const Hero = () => {
       ".hero-text h1",
       { y: 50, opacity: 0 },
       { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: "power2.inOut" }
+    );
+    gsap.fromTo(
+      ".hero-eyebrow, .hero-meta-strip",
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.15, duration: 0.9, ease: "power2.out", delay: 0.1 }
     );
   });
 
@@ -23,42 +26,51 @@ const Hero = () => {
 
       <div className="hero-layout">
         {/* LEFT: Hero Content */}
-        <header className="flex flex-col justify-center md:w-full w-screen md:px-20 px-5">
-          <div className="flex flex-col gap-7">
-            <div className="hero-text">
-              <h1>
-                Shaping
-                <span className="slide">
-                  <span className="wrapper">
-                    {words.map((word, index) => (
-                      <span
-                        key={index}
-                        className="flex items-center md:gap-3 gap-1 pb-2"
-                      >
-                        <img
-                          src={word.imgPath}
-                          alt="person"
-                          className="xl:size-12 md:size-10 size-7 md:p-2 p-1 rounded-full bg-white-50"
-                        />
-                        <span>{word.text}</span>
-                      </span>
-                    ))}
-                  </span>
-                </span>
-              </h1>
-              <h1>into Real Projects</h1>
-              <h1>that Deliver Results</h1>
-            </div>
+        <header className="flex flex-col justify-center md:w-full w-screen md:px-20 px-5 gap-8">
 
-            <Button
-              text="See My Work"
-              className="md:w-80 md:h-16 w-60 h-12"
-              id="counter"
-            />
+          {/* Availability badge */}
+          <div className="hero-eyebrow flex items-center gap-3">
+            <span className="availability-dot" />
+            <span className="hero-badge">
+              Available · Senior &amp; Staff Frontend roles · Remote · Delhi, IN
+            </span>
+          </div>
+
+          {/* Editorial headline */}
+          <div className="hero-text">
+            <h1>
+              Building
+              <span className="slide">
+                <span className="wrapper">
+                  {words.map((word, index) => (
+                    <span
+                      key={index}
+                      className="flex items-center md:gap-3 gap-1 pb-2"
+                    >
+                      <img
+                        src={word.imgPath}
+                        alt=""
+                        className="xl:size-12 md:size-10 size-7 md:p-2 p-1 rounded-full bg-white-50"
+                      />
+                      <span>{word.text}</span>
+                    </span>
+                  ))}
+                </span>
+              </span>
+            </h1>
+            <h1>that let teams</h1>
+            <h1><em>ship faster.</em></h1>
+          </div>
+
+          {/* Hero meta strip */}
+          <div className="hero-meta-strip">
+            <span><b>Now</b>&nbsp;·&nbsp;Plugin-based MFE on Vite Module Federation</span>
+            <span><b>Stack</b>&nbsp;·&nbsp;React, TypeScript, Turborepo</span>
+            <span><b>Open to</b>&nbsp;·&nbsp;Remote · UK · EU · US · SG</span>
           </div>
         </header>
 
-        {/* RIGHT: 3D Model or Visual */}
+        {/* RIGHT: 3D Model */}
         <figure>
           <div className="hero-3d-layout">
             <HeroExperience />
@@ -66,6 +78,7 @@ const Hero = () => {
         </figure>
       </div>
 
+      {/* Numbers strip */}
       <AnimatedCounter />
     </section>
   );

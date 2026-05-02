@@ -59,12 +59,12 @@ export const projects: Project[] = [
 ];
 
 export const words = [
-  { text: "Scalable UIs", imgPath: "/images/ideas.svg" },
-  { text: "Design Systems", imgPath: "/images/concepts.svg" },
-  { text: "Dashboards", imgPath: "/images/designs.svg" },
-  { text: "Web Apps", imgPath: "/images/code.svg" },
-  { text: "Scalable UIs", imgPath: "/images/ideas.svg" },
-  { text: "Design Systems", imgPath: "/images/concepts.svg" },
-  { text: "Dashboards", imgPath: "/images/designs.svg" },
-  { text: "Web Apps", imgPath: "/images/code.svg" },
+  { text: "Micro-frontends", imgPath: "/images/ideas.svg" },
+  { text: "MCP Servers", imgPath: "/images/concepts.svg" },
+  { text: "Design Systems", imgPath: "/images/designs.svg" },
+  { text: "AI Workflows", imgPath: "/images/code.svg" },
+  { text: "Micro-frontends", imgPath: "/images/ideas.svg" },
+  { text: "MCP Servers", imgPath: "/images/concepts.svg" },
+  { text: "Design Systems", imgPath: "/images/designs.svg" },
+  { text: "AI Workflows", imgPath: "/images/code.svg" },
 ];

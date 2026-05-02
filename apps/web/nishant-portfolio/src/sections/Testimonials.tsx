@@ -1,126 +1,108 @@
-import { personalInfo } from "../constants";
 import TitleHeader from "../components/TitleHeader";
 
-const Testimonials = () => {
-  return (
-    <section id="about" className="flex-center section-padding">
-      <div className="w-full h-full md:px-10 px-5">
-        <TitleHeader
-          title="About Me"
-          sub="🚀 Who I Am & What Drives Me"
-        />
+const quickFacts = [
+  { metric: "<60s", label: "Plugin onboarding — down from days, via Vite Module Federation" },
+  { metric: "~65%", label: "Frontend workflows automated via custom MCP servers" },
+  { metric: "30+", label: "Engineers trained on AI-native dev across 5 Samsung R&D teams" },
+  { metric: "6", label: "Product teams shipping on the shared headless UI library" },
+  { metric: "25,000+", label: "B2B customers on the Safex e-commerce platform" },
+];
 
-        <div className="grid-12-cols mt-16 gap-10">
-          {/* Bio Section */}
-          <div className="xl:col-span-7">
-            <div className="card-border rounded-xl p-8 md:p-10">
-              <h3 className="text-2xl font-semibold mb-6" style={{ color: "var(--text-primary)" }}>
-                Hi, I'm {personalInfo.name}
-              </h3>
-              <div className="flex flex-col gap-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                <p>
-                  I'm a {personalInfo.title} based in {personalInfo.location} with
-                  4+ years of experience building modern, high-performance web
-                  applications across enterprise and product-based platforms.
-                </p>
-                <p>
-                  My work spans architecture, development, and deployment, with a
-                  strong focus on building reusable systems and improving
-                  engineering productivity. I specialize in React.js, TypeScript,
-                  and creating scalable, pixel-perfect, responsive UIs.
-                </p>
-                <p>
-                  One of my key differentiators is building an{" "}
-                  <span className="font-semibold" style={{ color: "var(--text-primary)" }}>
-                    AI-driven development system
-                  </span>{" "}
-                  using Monorepo architecture and custom MCP tools. This system
-                  automates UI generation, refactoring, and code standardization,
-                  reducing 60–70% of repetitive frontend work and improving
-                  development speed by ~3x.
-                </p>
-                <p>
-                  While I enjoy crafting pixel-perfect UI, I equally focus on
-                  architecture and developer experience — building systems that
-                  scale well, reduce friction, and enable teams to move faster with
-                  confidence.
+const openTo = [
+  "Senior & Staff frontend roles",
+  "Remote · UK · EU · US · SG",
+  "Product-led companies, platform teams",
+  "Plugin-based MFE on Vite Module Federation",
+  "Expanding MCP tooling into agent-assisted CI/CD",
+];
+
+const Testimonials = () => (
+  <section id="about" className="px-5 md:px-20 py-20 md:py-32">
+    <TitleHeader
+      num="05"
+      label="About"
+      title={<>The person behind <em>the platforms.</em></>}
+      className="mb-12 md:mb-16"
+    />
+
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-20 ruled-top pt-10">
+
+      {/* Left: Bio */}
+      <div className="xl:col-span-7 flex flex-col gap-6 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        <p>
+          I'm a{" "}
+          <strong style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)", fontStyle: "italic" }}>
+            Senior Frontend Engineer at Samsung Electronics
+          </strong>
+          , leading architecture for TVPlus TestSuite — a content-QA platform for Linear channels and VOD.
+          I work where micro-frontends, MCP tooling, and AI-assisted developer experience meet production scale.
+        </p>
+        <p>
+          I replaced redeploy-per-feature cycles with a{" "}
+          <strong style={{ color: "var(--text-primary)" }}>plugin-based MFE platform</strong>{" "}
+          on Vite Module Federation — cutting plugin onboarding from days to under 60 seconds,
+          enabling fully independent team deploys with no shared release trains.
+        </p>
+        <p>
+          I also built an{" "}
+          <strong style={{ color: "var(--text-primary)" }}>internal MCP tooling ecosystem</strong>{" "}
+          on Turborepo, automating ~65% of routine frontend work — UI generation, scaffolding, code review,
+          and test generation all become one-line invocations. I then trained 30+ engineers across 5 teams
+          to adopt these AI-native workflows.
+        </p>
+        <p>
+          I'm open to senior and staff-level roles at product-led companies where architecture,
+          developer experience, and engineering velocity are first-class priorities.
+        </p>
+      </div>
+
+      {/* Right: Facts + Open to */}
+      <div className="xl:col-span-5 flex flex-col gap-8">
+
+        {/* Quick facts */}
+        <div>
+          <div className="mono-label mb-5" style={{ color: "var(--accent-warm)" }}>Impact</div>
+          <div className="flex flex-col">
+            {quickFacts.map(({ metric, label }) => (
+              <div
+                key={metric}
+                className="flex items-start gap-5 py-4"
+                style={{ borderBottom: "1px solid var(--rule)" }}
+              >
+                <div
+                  className="display-headline shrink-0"
+                  style={{ fontSize: "1.6rem", color: "var(--accent-warm)", minWidth: "5rem" }}
+                >
+                  {metric}
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.55, paddingTop: "0.3rem" }}>
+                  {label}
                 </p>
               </div>
-            </div>
-          </div>
-
-          {/* Quick Facts */}
-          <div className="xl:col-span-5 flex flex-col gap-6">
-            <div className="card-border rounded-xl p-8">
-              <h3 className="text-xl font-semibold mb-5" style={{ color: "var(--text-primary)" }}>⚡ Quick Facts</h3>
-              <ul className="flex flex-col gap-4" style={{ color: "var(--text-secondary)" }}>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">▸</span>
-                  <span>
-                    <strong style={{ color: "var(--text-primary)" }}>4+ years</strong> of frontend
-                    development experience
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">▸</span>
-                  <span>
-                  Built systems serving{" "}
-                  <strong style={{ color: "var(--text-primary)" }}>15,000+</strong> B2B users
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">▸</span>
-                  <span>
-                  Automated{" "}
-                  <strong style={{ color: "var(--text-primary)" }}>60-70%</strong> of repetitive
-                    frontend tasks with AI tools
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">▸</span>
-                  <span>
-                  Reduced development time by{" "}
-                  <strong style={{ color: "var(--text-primary)" }}>~60%</strong> with reusable
-                    frameworks
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">▸</span>
-                  <span>
-                  Currently pursuing{" "}
-                  <strong style={{ color: "var(--text-primary)" }}>MCA</strong> at Chandigarh
-                    University
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="card-border rounded-xl p-8">
-              <h3 className="text-xl font-semibold mb-5" style={{ color: "var(--text-primary)" }}>🎯 Currently Focused On</h3>
-              <ul className="flex flex-col gap-4" style={{ color: "var(--text-secondary)" }}>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-400 mt-1">▸</span>
-                  <span>AI-driven development automation</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-400 mt-1">▸</span>
-                  <span>Scalable design systems & component libraries</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-400 mt-1">▸</span>
-                  <span>Performance optimization & web vitals</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-400 mt-1">▸</span>
-                  <span>Monorepo architecture & developer tooling</span>
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
         </div>
+
+        {/* Open to */}
+        <div>
+          <div className="mono-label mb-4" style={{ color: "var(--accent-warm)" }}>Open to</div>
+          <ul className="flex flex-col gap-3">
+            {openTo.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-3"
+                style={{ color: "var(--text-secondary)", fontSize: "0.97rem" }}
+              >
+                <span style={{ color: "var(--accent-warm)", flexShrink: 0 }}>▸</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default Testimonials;

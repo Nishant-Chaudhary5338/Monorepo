@@ -7,18 +7,23 @@ export interface Ability {
 export const abilities: Ability[] = [
   {
     imgPath: "/images/seo.png",
-    title: "AI-Driven Automation",
-    desc: "Built custom MCP tools and Monorepo systems that automate 60-70% of repetitive frontend tasks, accelerating development speed by 3x.",
+    title: "Plugin-based Micro-frontends",
+    desc: "Replaced redeploy-per-feature with runtime feature injection on Vite Module Federation — independent team deploys, sub-minute plugin onboarding, no shared release trains.",
   },
   {
     imgPath: "/images/chat.png",
-    title: "Reusable UI Frameworks",
-    desc: "Architecting headless, modular component systems with design tokens, Storybook, and TypeScript contracts for scalable design systems.",
+    title: "Custom MCP Tooling",
+    desc: "Bespoke Model Context Protocol servers for scaffolding, code review, and test generation — automating ~65% of routine frontend work into one-line invocations.",
   },
   {
     imgPath: "/images/time.png",
-    title: "Performance Engineering",
-    desc: "Optimizing React apps with code splitting, lazy loading, virtualization, and caching — achieving 40% faster load times and 30% better data fetching.",
+    title: "Headless Design Systems",
+    desc: "Production-grade headless UI libraries powering dashboards across 6 product teams. Drag-drop, dynamic resizing, API polling, and token-driven theming out of the box.",
+  },
+  {
+    imgPath: "/images/ideas.svg",
+    title: "AI-Native Team Leadership",
+    desc: "Trained 30+ engineers across 5 Samsung R&D teams on Cline, custom MCP tooling, and agentic workflows. Code-review standards and CI/CD infrastructure across a 5-person team.",
   },
 ];
 
