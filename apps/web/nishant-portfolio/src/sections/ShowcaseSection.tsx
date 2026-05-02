@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,6 +16,7 @@ interface CaseStudy {
   tags: string[];
   link?: string;
   linkLabel?: string;
+  caseStudyLink?: string;
 }
 
 const caseStudies: CaseStudy[] = [
@@ -35,6 +37,7 @@ const caseStudies: CaseStudy[] = [
       "Solo-built headless composition framework handling layout, drag-drop, resize, widget registration, persistence, polling, and widget-to-widget events. 11 built-in widgets. Teams register custom widgets and get DnD, settings panels, and persistence for free.",
     metrics: ["11 built-in widgets", "4 apps in production", "~12 product teams", "9,026 lines TypeScript"],
     tags: ["React 19", "Zustand", "dnd-kit", "Framer Motion", "Recharts · Nivo"],
+    caseStudyLink: "/work/headless-dashboard-library",
   },
   {
     num: "03",
@@ -46,6 +49,7 @@ const caseStudies: CaseStudy[] = [
     tags: ["React 19", "Radix UI", "Tailwind CSS v4", "CVA", "TanStack Table"],
     link: "https://fluffy-churros-b798ad.netlify.app/?path=/docs/components-button--docs",
     linkLabel: "Live Storybook ↗",
+    caseStudyLink: "/work/ui-component-library",
   },
   {
     num: "04",
@@ -165,23 +169,45 @@ const ShowcaseSection = () => {
                 </div>
               </div>
 
-              <div className="xl:col-span-5 grid grid-cols-2 gap-2">
-                {cs.metrics.map((metric) => (
-                  <div
-                    key={metric}
+              <div className="xl:col-span-5 flex flex-col gap-2">
+                <div className="grid grid-cols-2 gap-2">
+                  {cs.metrics.map((metric) => (
+                    <div
+                      key={metric}
+                      style={{
+                        padding: "0.75rem 1rem",
+                        background: "var(--bg-secondary)",
+                        borderLeft: "2px solid var(--accent-warm)",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.76rem",
+                        color: "var(--text-secondary)",
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {metric}
+                    </div>
+                  ))}
+                </div>
+                {cs.caseStudyLink && (
+                  <Link
+                    to={cs.caseStudyLink}
                     style={{
-                      padding: "0.75rem 1rem",
-                      background: "var(--bg-secondary)",
-                      borderLeft: "2px solid var(--accent-warm)",
                       fontFamily: "var(--font-mono)",
                       fontSize: "0.76rem",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.4,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      color: "var(--accent-warm)",
+                      textDecoration: "none",
+                      borderBottom: "1px solid var(--accent-warm)",
+                      paddingBottom: "1px",
+                      alignSelf: "flex-start",
+                      marginTop: "0.5rem",
+                      transition: "opacity 0.2s",
                     }}
                   >
-                    {metric}
-                  </div>
-                ))}
+                    Read case study →
+                  </Link>
+                )}
               </div>
             </div>
           </div>
