@@ -6,105 +6,192 @@ import TitleHeader from "../components/TitleHeader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface StackGroup {
+interface StackLayer {
+  num: string;
   category: string;
+  label: string;
   items: string[];
+  accent?: boolean;
 }
 
-const stackGroups: StackGroup[] = [
+const stackLayers: StackLayer[] = [
   {
-    category: "Architecture & Platforms",
-    items: ["Micro-frontends", "Vite Module Federation", "Monorepos", "Turborepo", "pnpm workspaces", "Design Systems", "MCP Tooling", "Agentic workflows"],
+    num: "05",
+    category: "AI & DX",
+    label: "Top of stack",
+    items: ["MCP Servers", "Claude Code", "Cline", "Cursor", "Agentic Workflows", "Custom Scaffolders"],
+    accent: true,
   },
   {
-    category: "Languages & UI",
-    items: ["TypeScript", "JavaScript (ES6+)", "React", "Next.js", "HTML5", "CSS3", "Tailwind CSS", "GSAP", "Three.js"],
+    num: "04",
+    category: "Platform",
+    label: "Distribution layer",
+    items: ["Vite Module Federation", "Turborepo", "pnpm workspaces", "Runtime plugin registry", "Design System tokens"],
   },
   {
+    num: "03",
+    category: "Application",
+    label: "UI runtime",
+    items: ["React 19", "TypeScript strict", "Next.js", "GSAP", "Three.js / R3F", "Framer Motion", "Tailwind CSS v4", "Radix UI · CVA"],
+  },
+  {
+    num: "02",
     category: "State & Data",
-    items: ["Redux Toolkit", "Zustand", "RTK Query", "REST", "GraphQL"],
+    label: "Data layer",
+    items: ["Zustand", "Redux Toolkit", "RTK Query", "REST", "GraphQL", "react-query"],
   },
   {
-    category: "Build, Test & DevOps",
-    items: ["Vite", "Vitest", "Playwright", "Storybook", "GitHub Actions", "Docker", "Web Vitals"],
-  },
-  {
-    category: "Cloud & Auth",
-    items: ["AWS (EC2 · S3 · VPC)", "Vercel", "Azure AD (MSAL)", "OAuth 2.0", "JWT", "Firebase"],
-  },
-  {
-    category: "AI-assisted Development",
-    items: ["Cline", "Claude Code", "Cursor", "Custom MCP servers", "Agentic code generation"],
+    num: "01",
+    category: "Build · Test · Ops",
+    label: "Foundation",
+    items: ["Vite", "Vitest", "Playwright", "Storybook", "GitHub Actions", "Docker", "AWS · Vercel", "Azure AD · Firebase"],
   },
 ];
 
 const TechStack = () => {
-  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    groupRefs.current.forEach((group, i) => {
-      if (!group) return;
+    if (headerRef.current) {
       gsap.fromTo(
-        group,
-        { opacity: 0, y: 20 },
+        headerRef.current,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out",
+          scrollTrigger: { trigger: headerRef.current, start: "top 85%", once: true } }
+      );
+    }
+
+    layerRefs.current.forEach((layer, i) => {
+      if (!layer) return;
+      gsap.fromTo(
+        layer,
+        { opacity: 0, x: -20 },
         {
           opacity: 1,
-          y: 0,
+          x: 0,
           duration: 0.6,
-          delay: i * 0.08,
+          delay: i * 0.07,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: group,
-            start: "top 85%",
-          },
+          scrollTrigger: { trigger: layer, start: "top 88%", once: true },
         }
       );
     });
   }, []);
 
   return (
-    <section id="skills" className="px-5 md:px-20 py-20 md:py-32">
-      <TitleHeader
-        num="04"
-        label="Stack"
-        title={<>Tools I reach for, <em>daily.</em></>}
-        className="mb-10 md:mb-12"
-      />
+    <section id="skills" style={{ paddingBlock: "var(--section-py)" }}>
+      <div className="site-container">
+        <div ref={headerRef}>
+          <TitleHeader
+            num="01"
+            label="Stack"
+            title={<>How I think about <em>systems.</em></>}
+            className="mb-10 md:mb-12"
+          />
+        </div>
 
-      <div className="stack-layout ruled-top pt-10">
-        {/* Left column — intentionally sparse for editorial feel */}
-        <div />
-
-        {/* Right column — grouped stack */}
-        <div>
-          {stackGroups.map((group, index) => (
+        {/* Architecture layer diagram */}
+        <div className="ruled-top">
+          {stackLayers.map((layer, index) => (
             <div
-              key={group.category}
-              ref={(el) => { groupRefs.current[index] = el; }}
-              className="mb-8"
+              key={layer.category}
+              ref={(el) => { layerRefs.current[index] = el; }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "4rem minmax(10rem, 18rem) 1fr",
+                gap: "clamp(1rem, 3vw, 2.5rem)",
+                padding: "1.5rem 0",
+                borderBottom: "1px solid var(--rule)",
+                alignItems: "start",
+              }}
             >
-              <h4 className="mono-label mb-3" style={{ color: "var(--text-muted)" }}>
-                {group.category}
-              </h4>
+              {/* Layer number */}
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "0.92rem",
-                  color: "var(--text-primary)",
-                  lineHeight: 1.8,
+                  fontSize: "0.72rem",
+                  color: layer.accent ? "var(--accent-warm)" : "var(--text-muted)",
+                  letterSpacing: "0.1em",
+                  paddingTop: "0.15rem",
                 }}
               >
-                {group.items.map((item, i) => (
-                  <span key={item}>
-                    {item}
-                    {i < group.items.length - 1 && (
-                      <span style={{ color: "var(--text-muted)", margin: "0 0.55rem" }}>·</span>
+                L{layer.num}
+              </div>
+
+              {/* Category + label */}
+              <div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.82rem",
+                    fontWeight: 500,
+                    color: layer.accent ? "var(--accent-warm)" : "var(--text-primary)",
+                    letterSpacing: "0.04em",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  {layer.category}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.68rem",
+                    color: "var(--text-muted)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  {layer.label}
+                </div>
+              </div>
+
+              {/* Items */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 0.55rem", alignItems: "center" }}>
+                {layer.items.map((item, i) => (
+                  <span key={item} style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.88rem",
+                        color: layer.accent ? "var(--text-primary)" : "var(--text-secondary)",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {item}
+                    </span>
+                    {i < layer.items.length - 1 && (
+                      <span style={{ color: "var(--border-color)", fontSize: "0.7rem" }}>·</span>
                     )}
                   </span>
                 ))}
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Stack legend */}
+        <div
+          style={{
+            marginTop: "2rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "2rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--rule)" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              L01 – L04 · Production stack
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--accent-warm)" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--accent-warm)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              L05 · AI-native layer
+            </span>
+          </div>
         </div>
       </div>
     </section>

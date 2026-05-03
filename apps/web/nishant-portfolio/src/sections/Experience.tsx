@@ -16,7 +16,7 @@ const Experience = () => {
         transformOrigin: "left left",
         duration: 1,
         ease: "power2.inOut",
-        scrollTrigger: { trigger: card, start: "top 80%" },
+        scrollTrigger: { trigger: card, start: "top 80%", once: true },
       });
     });
 
@@ -38,13 +38,14 @@ const Experience = () => {
         opacity: 0,
         duration: 1,
         ease: "power2.inOut",
-        scrollTrigger: { trigger: text, start: "top 60%" },
+        scrollTrigger: { trigger: text, start: "top 60%", once: true },
       });
     });
   }, []);
 
   return (
-    <section id="experience" className="px-5 md:px-20 py-20 md:py-32">
+    <section id="experience" style={{ paddingBlock: "var(--section-py)" }}>
+      <div className="site-container">
       <TitleHeader
         num="03"
         label="Experience"
@@ -147,6 +148,7 @@ const Experience = () => {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );

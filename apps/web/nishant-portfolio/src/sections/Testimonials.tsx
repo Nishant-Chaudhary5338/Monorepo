@@ -17,9 +17,10 @@ const openTo = [
 ];
 
 const Testimonials = () => (
-  <section id="about" className="px-5 md:px-20 py-20 md:py-32">
+  <section id="about" style={{ paddingBlock: "var(--section-py)" }}>
+    <div className="site-container">
     <TitleHeader
-      num="06"
+      num="05"
       label="About"
       title={<>The person behind <em>the platforms.</em></>}
       className="mb-12 md:mb-16"
@@ -101,6 +102,7 @@ const Testimonials = () => (
         </div>
 
       </div>
+    </div>
     </div>
   </section>
 );

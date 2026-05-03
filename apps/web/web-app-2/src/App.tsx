@@ -2,16 +2,18 @@ import { useState } from "react";
 import TVPlusDashboard from "./TVPlusDashboard";
 import TVPlusScheduler from "./TVPlusScheduler";
 import TVPlusJobStatus from "./TVPlusJobStatus";
+import DashCraftTest from "./DashCraftTest";
 import "./App.css";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard" },
   { id: "schedule",  label: "Schedule Test" },
   { id: "jobs",      label: "Job Status" },
+  { id: "dashcraft", label: "DashCraft Demo" },
 ];
 
 function App() {
-  const [active, setActive] = useState<"dashboard" | "schedule" | "jobs">("dashboard");
+  const [active, setActive] = useState<"dashboard" | "schedule" | "jobs" | "dashcraft">("dashboard");
 
   return (
     <div style={{ background: "#f0f2f7", height: "100vh", overflow: "hidden" }}>
@@ -64,6 +66,7 @@ function App() {
         {active === "dashboard" && <TVPlusDashboard />}
         {active === "schedule"  && <TVPlusScheduler />}
         {active === "jobs"      && <TVPlusJobStatus />}
+        {active === "dashcraft" && <DashCraftTest />}
       </div>
     </div>
   );

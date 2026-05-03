@@ -175,7 +175,6 @@ const TVPlusScheduler = () => {
         {STEPS.map((step, i) => {
           const isDone    = i < currentStep;
           const isActive  = i === currentStep;
-          const isFuture  = i > currentStep;
           return (
             <button
               key={i}

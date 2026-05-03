@@ -1,10 +1,8 @@
 const companies = ["Samsung Electronics", "Safex Chemicals", "DevsLane"];
 
 const LogoShowcase = () => (
-  <div
-    className="py-5 px-5 md:px-20 flex items-center justify-center gap-4 flex-wrap"
-    style={{ borderTop: "1px solid var(--rule)", borderBottom: "1px solid var(--rule)" }}
-  >
+  <div style={{ borderTop: "1px solid var(--rule)", borderBottom: "1px solid var(--rule)" }}>
+  <div className="site-container py-5 flex items-center justify-center gap-4 flex-wrap">
     <span
       className="mono-label"
       style={{ color: "var(--text-muted)", marginRight: "1rem" }}
@@ -28,6 +26,7 @@ const LogoShowcase = () => (
         )}
       </span>
     ))}
+  </div>
   </div>
 );
 

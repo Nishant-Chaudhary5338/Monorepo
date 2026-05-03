@@ -39,5 +39,11 @@ export {
   frameScheduler,
   AnimationEngine,
   animationEngine,
+  // Camera math (Prezi canvas)
+  computeCameraForFrame,
+  computeOverviewCamera,
+  cameraToTransform,
+  computePlanetLayout,
+  computePageLayout,
 } from "./core";
-export type { DeckAction, Priority } from "./core";
+export type { DeckAction, Priority, FrameBounds, CameraTarget, Viewport } from "./core";

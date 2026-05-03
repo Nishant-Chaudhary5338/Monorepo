@@ -8,7 +8,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.platypus import Table, TableStyle
 
-OUTPUT = "assets/NishantChaudhary_v2.pdf"
+OUTPUT = "/Users/nishantchaudhary/Desktop/NishantChaudhary.pdf"
 
 # ── Colours ──────────────────────────────────────────────────────────────────
 BLACK      = colors.HexColor("#111111")
@@ -83,12 +83,12 @@ def section_header(text):
     return [Paragraph(text.upper(), S["section"]), rule()]
 
 def bullet_item(text):
-    return Paragraph(f"\u2022\u2002{text}", S["bullet"])
+    return Paragraph(f"• {text}", S["bullet"])
 
 def job_header(company, role, dates):
     return [
         Paragraph(company, S["job_co"]),
-        Paragraph(f"{role}  \u2013  {dates}", S["job_meta"]),
+        Paragraph(f"{role}  –  {dates}", S["job_meta"]),
     ]
 
 # ── Content ───────────────────────────────────────────────────────────────────
@@ -99,8 +99,8 @@ def build_story():
     story.append(Paragraph("Nishant Chaudhary", S["name"]))
     story.append(Paragraph("Senior Frontend Engineer", S["title_s"]))
     story.append(Paragraph(
-        "New Delhi, India  \u00b7  nishantchaudhary5338@gmail.com  \u00b7  +91 9560025338  \u00b7  "
-        "github.com/nishantchaudhary5338  \u00b7  linkedin.com/in/nishantchaudhary5338",
+        "New Delhi, India  ·  nishantchaudhary5338@gmail.com  ·  +91 9560025338  ·  "
+        "github.com/nishantchaudhary5338  ·  linkedin.com/in/nishantchaudhary5338",
         S["contact"]
     ))
     story.append(Spacer(1, 6))
@@ -109,13 +109,11 @@ def build_story():
     # ── SUMMARY ───────────────────────────────────────────────────────────────
     story += section_header("Summary")
     story.append(Paragraph(
-        "Frontend engineer with 4+ years shipping production applications at enterprise scale. "
-        "I care about the full picture — from component API design to build pipeline to how a "
-        "new developer onboards to the codebase. At Samsung I built a shared dashboard library "
-        "adopted across teams and an AI-augmented tooling system that cut repetitive work by "
-        "60–70%. Before that, I led frontend delivery at a B2B SaaS platform serving 15,000+ users. "
-        "Strong in React, TypeScript, and modern build infrastructure. Looking for a senior or staff "
-        "role where there\u2019s real architecture to own.",
+        "Senior Frontend Engineer with 4+ years of experience — currently at Samsung, where I build "
+        "AI-assisted developer tooling, plugin-based micro-frontend platforms, and high-performance "
+        "production UIs. I think in systems: I’d rather automate a workflow once than repeat it a "
+        "hundred times. Strong hands-on experience in React, TypeScript, Vite, and Module Federation, "
+        "with a track record of building infrastructure that makes other engineers faster.",
         S["bullet"]
     ))
     story.append(Spacer(1, 4))
@@ -124,12 +122,13 @@ def build_story():
     story += section_header("Technical Skills")
 
     skill_rows = [
-        ("Core",         "JavaScript (ES6+), TypeScript, HTML5, CSS3"),
-        ("Frameworks",   "React.js, Next.js, Tailwind CSS, Radix UI, Framer Motion, GSAP, Three.js"),
-        ("State & Data", "Redux Toolkit, Zustand, React Query, REST APIs, GraphQL"),
-        ("Build & Infra","Vite, Turborepo, Webpack, Rollup, pnpm workspaces, CI/CD"),
-        ("Testing",      "Vitest, Jest, React Testing Library, Storybook, ESLint, Prettier"),
-        ("Cloud & Auth", "AWS, Azure AD (MSAL), Google OAuth 2.0, Firebase"),
+        ("Core",          "JavaScript (ES6+), TypeScript, HTML5, CSS3"),
+        ("Frameworks",    "React.js, Next.js, Tailwind CSS, Radix UI, Framer Motion, GSAP, Three.js"),
+        ("State & Data",  "Redux Toolkit, Zustand, React Query, REST APIs, GraphQL"),
+        ("Build & Infra", "Vite, Module Federation, Turborepo, Webpack, Rollup, pnpm Workspaces, CI/CD"),
+        ("Testing",       "Vitest, Jest, React Testing Library, Playwright, Cypress, Storybook, ESLint, Prettier"),
+        ("Performance",   "Lighthouse, Chrome DevTools, Web Vitals (LCP, CLS), Code Splitting, Lazy Loading, Virtualization"),
+        ("Cloud & Auth",  "AWS, Azure AD (MSAL), Google OAuth 2.0, Firebase, RBAC"),
     ]
 
     for cat, vals in skill_rows:
@@ -155,37 +154,38 @@ def build_story():
 
     # Samsung
     story += job_header(
-        "Samsung Electronics \u2014 Samsung R&D Institute India, Delhi",
+        "Samsung Electronics — Samsung R&D Institute India, Delhi",
         "Software Engineer, Frontend",
-        "Jul 2024 \u2013 Present"
+        "Jul 2024 – Present"
     )
     samsung_bullets = [
-        "Built an AI-augmented development system on top of a custom MCP server and Turborepo monorepo "
-        "that automates 60\u201370% of repetitive frontend work \u2014 code generation, refactoring, "
-        "component scaffolding. Onboarding a new app went from a day\u2019s work to under an hour.",
+        "Built an AI-assisted development platform (Turborepo + pnpm + 20+ custom MCP tools) that "
+        "automates 60–70% of repetitive frontend work — code generation, refactoring, code "
+        "review, and unit test writing — accessible from the browser, terminal, and AI coding "
+        "assistants simultaneously through the same REST API layer.",
+
+        "Architected a plugin-based Micro-Frontend (MFE) platform using Vite + Module Federation — "
+        "each plugin is independently built, versioned, and loaded at runtime by the shell app, with "
+        "route-level chunk isolation verified via content-hash diffing across releases. Includes a "
+        "DevTools UI for scaffolding new plugins and comparing build snapshots without touching the terminal.",
 
         "Authored <b>@repo/dashcraft</b>, a headless dashboard library (React + TypeScript + DnD Kit + "
         "Framer Motion) with grid layout, drag-and-drop, dynamic resizing, API polling, and theming. "
-        "Teams building new dashboards now start from a working product instead of a blank canvas \u2014 "
+        "Teams building new dashboards now start from a working product instead of a blank canvas — "
         "roughly 60% faster end-to-end.",
 
-        "Led the frontend for a content-verification Test Suite \u2014 an admin portal (React + Vite + "
-        "TypeScript) for authoring, scheduling, and monitoring automated quality checks of TVPlus "
-        "channels and VOD services on remote DTV farms via DAB protocol.",
+        "Led frontend development of an automation platform for content quality verification — teams "
+        "can create, schedule, and monitor test cases with real-time results, stream viewing, and "
+        "artifact reporting.",
 
-        "Engineered a browser-based HLS video player using Web Workers and Service Workers for adaptive "
-        "streaming and smart caching. Cold-start playback under 2 seconds.",
+        "Set up CI/CD pipelines (GitHub Actions, Docker) and AWS deployments inside a VPC (EC2); ran "
+        "release management, led code reviews, and set engineering standards across the team.",
 
-        "Merged five legacy internal portals into a single SPA: incident dashboards, live HLS streams, "
-        "structured logs, and metadata services in one place. Reduced MTTR and stopped the "
-        "\u201cwhich portal\u201d question entirely.",
+        "Engineered a high-performance HLS video + analytics player using Web & Service Workers, "
+        "reducing LCP by ~30%.",
 
-        "30% faster data fetching and 40% drop in incident-reporting latency through caching, "
-        "prefetching, and code-splitting \u2014 no library changes, just better patterns.",
-
-        "Run internal paired learning sessions at Samsung Research Center on agentic AI workflows "
-        "\u2014 teaching engineers how to actually work with tools like Cline and custom MCP tools "
-        "to get real productivity gains, not just hype.",
+        "Ran internal workshops on agentic AI workflows — walked engineers through Cline and custom "
+        "MCP tools, moving from demo to team-wide adoption for daily coding tasks.",
     ]
     for b in samsung_bullets:
         story.append(bullet_item(b))
@@ -194,25 +194,25 @@ def build_story():
     story += job_header(
         "Safex Chemicals India Pvt Ltd, Delhi",
         "Frontend Developer",
-        "Mar 2023 \u2013 Jun 2024"
+        "Mar 2023 – Jun 2024"
     )
     safex_bullets = [
         "Implemented Azure AD SSO (MSAL) and Google OAuth 2.0 with role-based access across the "
-        "platform \u2014 first proper authentication layer the product had.",
+        "platform — first proper authentication layer the product had.",
 
         "Built a SAP Cloud Platform integration (Node.js + Express backend, React frontend) that "
         "replaced a manual data-export workflow for 15,000+ B2B users.",
 
-        "Contributed to the core e-commerce product: order tracking, bulk ordering flows, "
-        "and Google Analytics instrumentation for product and ops teams.",
+        "Contributed to the core e-commerce product: order tracking, bulk ordering flows, and "
+        "Google Analytics instrumentation for product and ops teams.",
 
-        "Delivered a responsive LMS with video streaming, quiz modules, and real-time "
-        "Firebase sync. Whole thing from design handoff to production in about 10 weeks.",
+        "Delivered a responsive LMS with video streaming, quiz modules, and real-time Firebase sync. "
+        "Whole thing from design handoff to production in about 10 weeks.",
 
-        "Cut page load times by 40% through prefetching, memoization, lazy loading, "
-        "code splitting, and virtual lists \u2014 no backend changes required.",
+        "Cut page load times by 40% through prefetching, memoization, lazy loading, code splitting, "
+        "and virtual lists — no backend changes required.",
 
-        "Set up the team\u2019s first structured PR-review process and unit/integration test suite.",
+        "Set up the team’s first structured PR-review process and unit/integration test suite.",
     ]
     for b in safex_bullets:
         story.append(bullet_item(b))
@@ -221,17 +221,17 @@ def build_story():
     story += job_header(
         "DevsLane, Noida",
         "Frontend Engineer",
-        "Nov 2021 \u2013 Mar 2023"
+        "Nov 2021 – Mar 2023"
     )
     devslane_bullets = [
-        "Delivered pixel-perfect React UIs from Figma and Adobe XD designs across "
-        "multiple client projects \u2014 dashboards, landing pages, admin portals.",
+        "Delivered pixel-perfect React UIs from Figma and Adobe XD designs across multiple client "
+        "projects — dashboards, landing pages, admin portals.",
 
-        "Built and documented reusable component libraries with Storybook, picked up "
-        "across 3+ projects running concurrently.",
+        "Built and documented reusable component libraries with Storybook, picked up across 3+ "
+        "projects running concurrently.",
 
-        "Wired up REST API integrations with proper error boundaries, validation, "
-        "and loading states \u2014 the kind of detail that makes apps feel solid.",
+        "Wired up REST API integrations with proper error boundaries, validation, and loading states "
+        "— the kind of detail that makes apps feel solid.",
 
         "Applied semantic HTML and WCAG accessibility practices on all deliverables.",
     ]
@@ -243,22 +243,24 @@ def build_story():
     # ── PROJECTS ──────────────────────────────────────────────────────────────
     story += section_header("Personal Projects & Open Source")
 
-    # Project 1 — Monorepo
-    story.append(Paragraph("Production Turborepo Monorepo Platform", S["proj_name"]))
+    # Project 1 — AI Dev Platform / Monorepo
+    story.append(Paragraph("AI Dev Platform — Turborepo Monorepo", S["proj_name"]))
     story.append(Paragraph(
-        "A monorepo I\u2019ve been building as a proper platform \u2014 14 web apps, 8 shared packages, "
-        "and 35+ automation CLIs in a single pnpm workspace. The interesting parts:",
+        "A full automation platform built as a Turborepo monorepo — 14+ apps, 10+ shared packages, "
+        "and 20+ custom MCP tools for code generation, review, and testing. The same automation layer "
+        "is accessible from three surfaces at once: browser UI, terminal CLI, and AI coding assistants "
+        "(Cline) through a shared REST API. Adding a new app went from a day’s work to under an hour.",
         S["proj_body"]
     ))
     mono_bullets = [
-        "<b>@repo/dashcraft</b> \u2014 the headless widget/dashboard library. DnD, dynamic resizing, "
-        "Recharts/Nivo chart integrations, Zustand state, API polling, multi-theme support.",
+        "<b>@repo/dashcraft</b> — headless widget/dashboard library. DnD, dynamic resizing, "
+        "Recharts/Nivo integrations, Zustand state, API polling, multi-theme support.",
 
-        "<b>@repo/ui</b> \u2014 100+ Radix UI + Tailwind components with Storybook docs. "
-        "Used across all apps in the repo.",
+        "<b>@repo/ui</b> — 100+ Radix UI + Tailwind components with Storybook docs, "
+        "used across all apps in the repo.",
 
-        "35+ CLI tools for component generation, accessibility auditing, render performance "
-        "analysis, TypeScript enforcement, and automated refactoring.",
+        "20+ MCP tools for component generation, accessibility auditing, TypeScript enforcement, "
+        "render performance analysis, and automated refactoring.",
     ]
     for b in mono_bullets:
         story.append(bullet_item(b))
@@ -270,13 +272,13 @@ def build_story():
     # Project 2 — AI Builder
     story.append(Paragraph("AI-Powered UI Builder", S["proj_name"]))
     story.append(Paragraph(
-        "Describe a dashboard layout in plain English \u2014 get a working React layout rendered "
-        "on a dashcraft canvas. Integrates Ollama (llama3.2:3b) locally so nothing leaves the machine. "
+        "Describe a dashboard layout in plain English — get a working React layout rendered on a "
+        "dashcraft canvas. Integrates Ollama (llama3.2:3b) locally so nothing leaves the machine. "
         "Monaco Editor for live code editing alongside the preview.",
         S["proj_body"]
     ))
     story.append(Paragraph(
-        "<b>Tech:</b> React, TypeScript, Zustand, Ollama API, OpenAI SDK, Monaco Editor",
+        "<b>Tech:</b> React, TypeScript, Zustand, Ollama API, OpenRouter API, Monaco Editor",
         S["proj_body"]
     ))
 
@@ -284,8 +286,8 @@ def build_story():
     story.append(Paragraph("3D Interactive Portfolio", S["proj_name"]))
     story.append(Paragraph(
         "Performance-focused portfolio with GSAP scroll-triggered animations, clip-path transitions, "
-        "and Three.js postprocessing effects. EmailJS contact form. "
-        "Built to explore what the browser can actually do when you push it.",
+        "and Three.js postprocessing effects. Built to explore what the browser can actually do when "
+        "you push it.",
         S["proj_body"]
     ))
     story.append(Paragraph(
@@ -299,10 +301,10 @@ def build_story():
     story += section_header("Education")
 
     story.append(Paragraph("Master of Computer Applications (MCA)", S["edu_inst"]))
-    story.append(Paragraph("Chandigarh University \u2013 Sep 2023 \u2013 Present (Pursuing)", S["edu_detail"]))
+    story.append(Paragraph("Chandigarh University – Sep 2023 – Present (Pursuing)", S["edu_detail"]))
 
     story.append(Paragraph("Bachelor of Commerce (Hons)", S["edu_inst"]))
-    story.append(Paragraph("University of Delhi \u2013 Aug 2013 \u2013 Jul 2016", S["edu_detail"]))
+    story.append(Paragraph("University of Delhi – Aug 2013 – Jul 2016", S["edu_detail"]))
 
     story.append(Spacer(1, 4))
 

@@ -40,7 +40,8 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="px-5 md:px-20 py-20 md:py-32">
+    <section id="contact" style={{ paddingBlock: "var(--section-py)" }}>
+      <div className="site-container">
 
       {/* Editorial heading */}
       <div className="mb-12 md:mb-16">
@@ -143,6 +144,7 @@ const Contact = () => {
             <ContactExperience />
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

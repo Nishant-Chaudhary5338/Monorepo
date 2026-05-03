@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ixd-generator": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/my-turborepo/tools/ixd-generator/build/ixd-generator/src/index.js"
+      ]
+    }
+  }
+}

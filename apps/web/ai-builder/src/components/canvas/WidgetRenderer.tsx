@@ -1,4 +1,5 @@
 import { RechartsWidget, KPIWidget } from '@repo/dashcraft'
+import type { DataPoint, SeriesConfig, KPIFormat } from '@repo/dashcraft'
 import {
   Card,
   CardContent,
@@ -35,8 +36,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="bar"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -47,8 +48,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="line"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -59,8 +60,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="area"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -71,8 +72,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="pie"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -83,8 +84,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="scatter"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -95,8 +96,8 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           chartType="radar"
           title={title}
-          data={(props.data as object[]) ?? []}
-          series={(props.series as object[]) ?? []}
+          data={(props.data as DataPoint[]) ?? []}
+          series={(props.series as SeriesConfig[]) ?? []}
           xAxisKey={(props.xAxisKey as string) ?? 'name'}
         />
       )
@@ -107,7 +108,7 @@ export function WidgetRenderer({ widget }: Props) {
           id={widget.id}
           value={(props.value as number | string) ?? 0}
           label={(props.label as string) ?? title ?? ''}
-          format={(props.format as 'number' | 'currency' | 'percent') ?? 'number'}
+          format={(props.format as KPIFormat) ?? 'number'}
           previousValue={props.previousValue as number | undefined}
           trendLabel={props.trendLabel as string | undefined}
         />
@@ -120,9 +121,9 @@ export function WidgetRenderer({ widget }: Props) {
           {(props.title ?? title) && (
             <CardHeader>
               <CardTitle>{(props.title ?? title) as string}</CardTitle>
-              {props.description && (
+              {props.description ? (
                 <CardDescription>{props.description as string}</CardDescription>
-              )}
+              ) : null}
             </CardHeader>
           )}
           <CardContent>

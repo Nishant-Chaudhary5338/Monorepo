@@ -18,29 +18,29 @@ const capabilities: CapabilityBlock[] = [
     label: "Architecture",
     title: <>Plugin-based <em>micro-frontends</em> that don't get in your way.</>,
     description:
-      "Replaced redeploy-per-feature with runtime feature injection on Vite Module Federation. Independent team deploys, sub-minute plugin onboarding, no shared release trains.",
-    tags: ["Vite Module Federation", "Runtime composition", "Independent deploys", "Manifest-driven loading"],
+      "Replaced redeploy-per-feature cycles with runtime feature injection on Vite Module Federation. React 19 + TypeScript strict throughout — independent team deploys, sub-minute plugin onboarding, no shared release trains.",
+    tags: ["React 19", "TypeScript strict", "Vite Module Federation", "Runtime composition"],
   },
   {
     label: "DX & AI",
     title: <>Custom <em>MCP servers</em> that automate the work nobody wants to do.</>,
     description:
-      "Internal frontend tooling on Turborepo + pnpm with bespoke Model Context Protocol servers. Scaffolding, code review, and test generation become one-line invocations — automating ~65% of routine frontend work.",
+      "Internal frontend tooling on Turborepo + pnpm with bespoke Model Context Protocol servers. Scaffolding, code review, and test generation become one-line invocations — automating ~65% of routine React + TypeScript work.",
     tags: ["Model Context Protocol", "Cline · Claude Code", "Turborepo · pnpm", "Agentic workflows"],
   },
   {
     label: "Design Systems",
-    title: <>Headless <em>UI libraries</em> that scale across product teams.</>,
+    title: <>Typed, <em>accessible UI libraries</em> that scale across product teams.</>,
     description:
-      "Production-grade headless library powering dashboards across 6 product teams. Standardized drag-drop, dynamic resizing, and widget management — improving UX consistency and cross-team DX.",
-    tags: ["Headless components", "Token-driven theming", "Storybook", "Visual regression"],
+      "45-component React library on Radix UI + Tailwind CSS v4 + CVA serving 12 product teams with zero forks. Type-safe variants, 79 test files, 47 Storybook stories — drag-drop, resizable widgets, and real-time data out of the box.",
+    tags: ["React 19", "Tailwind CSS v4", "TypeScript · CVA", "Radix UI", "Storybook"],
   },
   {
     label: "Leadership",
     title: <>Coaching teams into <em>AI-native</em> engineering.</>,
     description:
-      "Trained 30+ engineers across 5 teams at Samsung R&D on Cline, custom MCP tooling, and agentic frontend workflows. Code-review standards, engineering guidelines, and release infrastructure across a team of 5.",
-    tags: ["Engineering standards", "CI/CD on GitHub Actions", "Docker · AWS", "Cross-team enablement"],
+      "Trained 30+ engineers across 5 Samsung R&D teams on AI-native React/TypeScript workflows, custom MCP tooling, and Cline. Code-review standards, engineering guidelines, and release infrastructure across a team of 5.",
+    tags: ["Engineering standards", "React · TypeScript mentoring", "CI/CD · GitHub Actions", "Cross-team enablement"],
   },
 ];
 
@@ -61,6 +61,7 @@ const FeatureCards = () => {
           scrollTrigger: {
             trigger: block,
             start: "top 80%",
+            once: true,
           },
         }
       );
@@ -68,9 +69,10 @@ const FeatureCards = () => {
   }, []);
 
   return (
-    <section id="wired-for" className="px-5 md:px-20 py-20 md:py-32">
+    <section id="wired-for" style={{ paddingBlock: "var(--section-py)" }}>
+      <div className="site-container">
       <TitleHeader
-        num="01"
+        num="02"
         label="What I'm wired for"
         title={<>Four problems I keep <em>solving.</em></>}
         className="mb-10 md:mb-12"
@@ -102,6 +104,7 @@ const FeatureCards = () => {
             </div>
           </article>
         ))}
+      </div>
       </div>
     </section>
   );

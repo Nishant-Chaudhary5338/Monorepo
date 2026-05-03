@@ -26,3 +26,11 @@ export {
   springPresets,
 } from "./engine";
 export type { SpringConfig } from "./engine";
+export {
+  computeCameraForFrame,
+  computeOverviewCamera,
+  cameraToTransform,
+  computePlanetLayout,
+  computePageLayout,
+} from "./camera";
+export type { FrameBounds, CameraTarget, Viewport } from "./camera";

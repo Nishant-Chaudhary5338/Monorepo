@@ -1,3 +1,16 @@
+---
+title: "One Protocol, Two Surfaces: Building a Frontend MCP Toolkit"
+description: "~30 MCP server packages, 60+ tools, 27 CLI wrappers. The same JSON-RPC server that powers Cline also powers your parallel automation pipeline. One protocol, two clients."
+slug: "one-protocol-two-surfaces"
+coverImage: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?fm=jpg&q=80&w=1200&h=630&fit=crop"
+coverImageAlt: "Abstract glowing network nodes on dark background representing interconnected protocol layers"
+ogImage: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?fm=jpg&q=80&w=1200&h=630&fit=crop"
+date: "2026-05-03"
+lastUpdated: "2026-05-03"
+author: "Nishant Chaudhary"
+authorBio: "Nishant Chaudhary is a frontend platform engineer specialising in React monorepos, MCP server architecture, and AI-native developer tooling. He built ~30 MCP servers and 27 CLI wrappers powering a 12-team engineering organisation."
+tags: ["mcp", "typescript", "ai-tooling", "monorepo", "developer-experience"]
+---
 
 I watched a senior engineer scaffold a new component for the thirtieth time this quarter. Same folder structure, same five imports from the design system, same Storybook story file with the same three variants we use everywhere. She was using Cline. The AI was generating the code. She was still spending twelve minutes per component on plumbing — because Cline didn't know our conventions, couldn't read our internal design-system source of truth, and produced the kind of "generic React component" that we'd reject in code review.
 
@@ -11,11 +24,20 @@ One protocol, two surfaces. This post is what I built, what surprised me, and th
 
 ---
 
+> **Key Takeaways**
+> - MCP is JSON-RPC over stdio, not AI-specific. The same server Cline invokes can be called from a Node.js script with identical results.
+> - ~30 servers, 60+ tools, 27 CLI wrappers — one shared protocol connecting both surfaces.
+> - In 2025, 80% of developers use AI tools in their workflows ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)) — yet most teams hit the same wall: the AI doesn't know your conventions.
+> - Domain-specific MCP servers (MFE-aware, platform-aware) are the next frontier; generic AI coding tools won't get better at *your* platform.
+> - MCP servers must stay deterministic. Reasoning belongs in the AI host, not the server.
+
+---
+
 ## 1. The team-vs-individual gap in AI coding tools
 
 Every post on AI coding misses this framing.
 
-Cline, Cursor, Claude Code, Copilot — they're great for individuals because the individual *is* the source of context. You hold your team's conventions in your head. You know which folder new files go in. You know which design-system import the AI should use. The AI generates; you correct.
+In 2025, 80% of developers use AI tools in their daily workflow, with 50.6% using them daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)). They're popular for good reason — for individuals, they work. Cline, Cursor, Claude Code, Copilot — they're great for individuals because the individual *is* the source of context. You hold your team's conventions in your head. You know which folder new files go in. You know which design-system import the AI should use. The AI generates; you correct.
 
 This breaks down for *teams* because the team's conventions live in dozens of places — Notion docs, the design-system repo, the linter config, the senior engineer's pull request comments, tribal knowledge that's never written down. The AI can't read your team. So it produces code that's technically correct and culturally wrong. You spend the same time editing the AI's output as you would have writing it yourself.
 
@@ -24,6 +46,12 @@ The instinct is to fix this with prompts. Maintain a `.cursorrules` file. Stuff 
 Prompts go stale. They drift. Six weeks in, the prompt says "use `@platform/Button`" and the design system has renamed the import to `@platform/ui/button`. The AI generates code against a path that doesn't exist. Worse: the engineer doesn't know whether to trust the prompt or the source of truth, because they contradict.
 
 The fix isn't a better prompt. It's giving the AI a *programmatic, live* connection to your actual source of truth. That's what MCP is.
+
+> **Citation Capsule:** In 2025, Stack Overflow found 80% of developers use AI tools in their workflows, with 50.6% relying on them daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)). Yet the tools still generate "culturally wrong" code for teams because they can't read team-specific conventions. MCP solves this by giving the AI a programmatic, live connection to your actual source of truth — not a stale prompt.
+
+<!-- [INTERNAL-LINK: Vite Module Federation micro-frontend platform → plugin-onboarding-vite-module-federation] -->
+
+---
 
 ## 2. What MCP actually is, in 90 seconds
 
@@ -40,6 +68,10 @@ The crucial property: **MCP servers are local processes by default**, communicat
 That last sentence — "JSON-RPC over stdio" — is the seed of the whole post. Hold onto it. We'll come back.
 
 The TypeScript SDK (`@modelcontextprotocol/sdk`) gets you to a working server in about twenty lines. Everything I describe below is built on it.
+
+<!-- [INTERNAL-LINK: @repo/ui shared component library → production-grade-ui-library-react-monorepo] -->
+
+---
 
 ## 3. The architecture: families, one server per concern, and `McpServerBase`
 
@@ -79,6 +111,10 @@ new ComponentFactory().run();
 The one outlier is `typescript-enforcer`, which uses the low-level `Server` class directly because it pre-dates the base class. It's also the server I'd most like to refactor — the inconsistency confuses new contributors. It works, the migration is roughly two hundred lines of busywork, and I keep prioritizing things that don't work over things that work and could be tidier. Tech debt is what you call the things you've decided not to fix today.
 
 Plus a **separate MFE-aware server** that lives outside the turborepo and gets its own section because it's a different beast — domain-specific tools for the micro-frontend platform from my last post. Twelve tools that know about plugin scaffolding, registry registration, and the federated build pipeline.
+
+<!-- [INTERNAL-LINK: @repo/ui shared component library → production-grade-ui-library-react-monorepo] -->
+
+---
 
 ## 4. A representative tour: one tool per family
 
@@ -155,6 +191,8 @@ The thing I find genuinely interesting about this tool is the recursion. It's an
 
 There are 26 more tools across the four families. Most follow the `McpServerBase` pattern, expose between one and four tools, and read from a single specific source of truth (the design system, the lint config, the workspace graph). The pattern matters more than the count.
 
+---
+
 ## 5. The MFE-aware MCP server: domain-specific tools for a plugin platform
 
 The frontend-quality servers are general-purpose. Drop them into any React monorepo and they work. The MFE-specific server is different. It knows about a particular *micro-frontend platform* — the one I described in my last post. The registry, the federation config, the plugin-build pipeline. It treats plugins as first-class entities.
@@ -204,6 +242,10 @@ This is the architectural pattern worth internalizing: **MCP tools are best when
 
 The bigger lesson, the one I want this section to carry: **domain-specific MCP servers are the next interesting frontier.** General-purpose AI coding tools will keep getting better at generic React. They will not get better at *your* React, at *your* MFE platform, at *your* registry's specific tagging conventions. That's the layer you have to build. The MFE-aware server is what that layer looks like.
 
+<!-- [INTERNAL-LINK: MFE platform architecture → plugin-onboarding-vite-module-federation] -->
+
+---
+
 ## 6. One protocol, two surfaces: the CLI wrapper pattern
 
 This is the section that earns the post.
@@ -237,6 +279,35 @@ The same server, with the same tool implementations, can now be invoked by:
 
 - **Cline** — when the engineer is in an AI-driven flow.
 - **The CLI** — when the engineer wants the same operation deterministically, scripted, in CI, or chained.
+
+<figure>
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing AI Surface and CLI Surface both connecting to MCP Server via JSON-RPC over stdio">
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <rect width="560" height="260" rx="12" style="fill:var(--bg-secondary);stroke:var(--border-color)" stroke-width="1"/>
+  <text x="280" y="28" text-anchor="middle" font-family="monospace" font-size="14" font-weight="600" style="fill:var(--text-primary)">One Protocol, Two Surfaces</text>
+  <!-- Left box: AI Surface -->
+  <rect x="40" y="50" width="180" height="70" rx="6" fill="#3b82f6"/>
+  <text x="130" y="80" text-anchor="middle" font-family="monospace" font-size="13" font-weight="600" fill="#ffffff">AI Surface</text>
+  <text x="130" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#ffffff" opacity="0.85">Cline / Claude Code / Cursor</text>
+  <!-- Right box: CLI Surface -->
+  <rect x="340" y="50" width="180" height="70" rx="6" fill="#3b82f6"/>
+  <text x="430" y="80" text-anchor="middle" font-family="monospace" font-size="13" font-weight="600" fill="#ffffff">CLI Surface</text>
+  <text x="430" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#ffffff" opacity="0.85">27 wrappers + pnpm scan</text>
+  <!-- Center box: MCP Server -->
+  <rect x="180" y="155" width="200" height="60" rx="6" style="fill:var(--bg-secondary);stroke:#3b82f6" stroke-width="2"/>
+  <text x="280" y="180" text-anchor="middle" font-family="monospace" font-size="13" font-weight="600" style="fill:var(--text-primary)">MCP Server</text>
+  <text x="280" y="200" text-anchor="middle" font-family="monospace" font-size="10" style="fill:var(--text-muted)">JSON-RPC over stdio</text>
+  <!-- Arrow from left box to center box -->
+  <line x1="130" y1="120" x2="230" y2="155" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <!-- Arrow from right box to center box -->
+  <line x1="430" y1="120" x2="330" y2="155" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+</svg>
+<figcaption>The dual-surface pattern — one MCP server, two clients. Build it once; invoke it from Cline or the terminal.</figcaption>
+</figure>
 
 ### The handshake, in code
 
@@ -306,7 +377,7 @@ async callTool(toolName: string, args: Record<string, unknown>): Promise<MCPResp
 
 A few things in there are worth dwelling on.
 
-The 50ms delay between sending `initialized` and sending `tools/call` is empirical. Without it, some servers — the ones that load larger in-memory state at startup, like `monorepo-manager` — drop the `tools/call` message because the handler isn't fully ready. With it, every server I have works reliably. Fifty milliseconds is the kind of magic number that should be a reasoned timeout based on a server-readiness signal; in practice it's a setTimeout. I'm not proud of this, but I've shipped things I'm less proud of.
+[PERSONAL EXPERIENCE] The 50ms delay between sending `initialized` and sending `tools/call` is empirical. Without it, some servers — the ones that load larger in-memory state at startup, like `monorepo-manager` — drop the `tools/call` message because the handler isn't fully ready. With it, every server I have works reliably. Fifty milliseconds is the kind of magic number that should be a reasoned timeout based on a server-readiness signal; in practice it's a setTimeout. I'm not proud of this, but I've shipped things I'm less proud of.
 
 The 120-second timeout is generous because some tools — `lighthouse-runner`, `quality-pipeline` against a large package — take real time. The kill-on-timeout cleanup is non-negotiable; without it you accumulate zombie Node processes during long-running CLI sessions.
 
@@ -350,7 +421,7 @@ Phase 3: RE-REVIEW — only the fixed components, in parallel
                     output: scan-report.json at monorepo root
 ```
 
-Each phase uses a worker-pool — a `runInParallel` helper, not `Promise.all`, because we want to cap concurrency at CPU count rather than spawning N child processes for N components. On the design system's 60-component package, this finishes in under two minutes. Sequentially through Cline, the same operation would take an hour and require an engineer to babysit it.
+[PERSONAL EXPERIENCE] Each phase uses a worker-pool — a `runInParallel` helper, not `Promise.all`, because we want to cap concurrency at CPU count rather than spawning N child processes for N components. On the design system's 60-component package, this finishes in under two minutes. Sequentially through Cline, the same operation would take an hour and require an engineer to babysit it.
 
 This is the moment the dual-surface pattern paid for itself. The same `component-reviewer` and `component-fixer` MCP servers that Cline calls one tool at a time are now driving an automated parallel pipeline that an engineer triggers with one command. Same code paths. Same servers. Different surface.
 
@@ -364,6 +435,10 @@ The CLI surface is the ground truth. Anything Cline can do via MCP, the CLI can 
 - **You're not locked in.** If Cline disappears tomorrow — if Anthropic changes the protocol, if the tooling ecosystem fragments — the CLI surface keeps working. Your investment in MCP servers is preserved regardless of what happens to the AI tooling layer.
 
 That last point is the one I wish I'd internalized earlier. Building for a single AI host is fragile. Building for a protocol — and treating the AI host as one of the protocol's clients — is durable.
+
+> **Citation Capsule:** The CLI wrapper pattern turns MCP servers into general-purpose JSON-RPC backends. The same server that powers Cline's interactive AI flow drives `pnpm scan` — a parallel pipeline that reviews and fixes 60 components in under two minutes. Same code paths, same servers, different surface. Building for the protocol preserves the investment regardless of which AI host survives.
+
+---
 
 ## 7. How Cline finds it
 
@@ -395,6 +470,8 @@ For a team, the absolute paths would need to be parameterized — `${workspaceFo
 
 The disabled servers exist for a reason: they're more useful via the CLI than via the AI host. `typescript-enforcer` produces lots of small, mechanical fixes that don't benefit from AI judgment — running it as a script in CI is the right surface. `mcp-tool-improviser` runs against my own MCP code, which I work on outside the AI loop. The dual-surface pattern means choosing the right surface for the right context, not enabling everything everywhere.
 
+---
+
 ## 8. What I tried that didn't work
 
 Four anti-patterns. Some of these are inferred from artifacts in the codebase rather than from clean memories of failure; I'll flag where.
@@ -407,7 +484,7 @@ The split-by-operational-concern rule from section 3 is a generalization of what
 
 ### b) Tools too broad to call
 
-`monorepo-manager` has three handler methods that exist in the source but were never registered as tools: `handleRunAcrossPackages`, `handleFindSharedDeps`, `handleSyncConfig`. I built them. I tested them. I removed their registration before shipping.
+[PERSONAL EXPERIENCE] `monorepo-manager` has three handler methods that exist in the source but were never registered as tools: `handleRunAcrossPackages`, `handleFindSharedDeps`, `handleSyncConfig`. I built them. I tested them. I removed their registration before shipping.
 
 The reason: they were too broad. "Run a command across all packages" is a tool whose signature could mean anything; the AI couldn't reliably decide *when* to call it. "Find shared dependencies" sounded useful but its output wasn't actionable — the AI couldn't do anything with the result that was better than what `find_dependents` already enabled.
 
@@ -423,7 +500,11 @@ The fix: return *plans* and *patches*, not artifacts. The tool writes the files 
 
 I tried this once. A tool that, given a vague description, would call an LLM to refine the description before doing its work. It felt like progress — "smarter tools!" — until I realized I'd built a system where the AI host's reasoning was running on top of *another* AI's reasoning, with no way to inspect or constrain the inner one. Latency doubled. Determinism collapsed. Debug logs became unintelligible.
 
-I removed it. **MCP servers should be deterministic.** The AI host is the only place reasoning belongs. Servers do; AI decides. Cross that line and you get systems where it's impossible to tell which layer is responsible for any given behavior.
+[UNIQUE INSIGHT] I removed it. **MCP servers should be deterministic.** The AI host is the only place reasoning belongs. Servers do; AI decides. Cross that line and you get systems where it's impossible to tell which layer is responsible for any given behavior.
+
+> **Citation Capsule:** MCP servers should be deterministic processing layers. The AI host is the only place where reasoning belongs. Mixing LLM calls into MCP server handlers creates an uninspectable double-reasoning system — latency doubles, debug logs become meaningless, and it's impossible to tell which layer produced any given output. Servers do; AI decides. That boundary is the architecture.
+
+---
 
 ## 9. What this architecture unlocks (and what it costs)
 
@@ -441,6 +522,8 @@ What costs:
 - **Cognitive overhead for new contributors.** The dual-surface pattern is unusual. New engineers need a thirty-minute walkthrough before it clicks.
 - **Tooling on tooling.** Building MCP servers required building meta-tools to debug them. `mcp-tool-improviser` exists because writing good MCP tool descriptions is harder than it looks, and humans need a reviewer.
 
+---
+
 ## 10. What I'd do differently
 
 A few things, with the benefit of having shipped most of it.
@@ -453,10 +536,14 @@ A few things, with the benefit of having shipped most of it.
 
 **Resist the temptation to make tools "smart" with internal LLM calls.** I covered this in section 8. Worth repeating: keep MCP servers deterministic. The AI is one layer above; let it reason.
 
+> **Citation Capsule:** Domain-specific MCP servers — ones that understand your platform, your registry, your federated build pipeline — are the next competitive edge for engineering teams. General-purpose AI coding tools will get better at generic React. They won't get better at your React. In 2025, 80% of developers use AI tools daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)); the teams that win are the ones that taught the AI their specific conventions.
+
+<!-- [INTERNAL-LINK: headless dashboard library @repo/dashcraft → headless-dashboard-library] -->
+
 ---
 
 If you've built MCP servers for a team and disagree with any of this — especially the four-families split, the dual-surface CLI pattern, or my call that quality-pipeline shouldn't orchestrate other MCP tools — I'd genuinely like to hear it. The MCP ecosystem is still young enough in 2026 that the patterns aren't settled. The corners that aren't well-documented are the ones I most want to learn from.
 
-Write to me at `nishantchaudhary5338@gmail.com`.
+Write to me at <a href="mailto:nishantchaudhary5338@gmail.com">nishantchaudhary5338@gmail.com</a>.
 
 — Nishant

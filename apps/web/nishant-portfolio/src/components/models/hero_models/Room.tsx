@@ -39,7 +39,7 @@ export function Room(props: RoomProps) {
     { geometry: nodes._________6_blinn1_0?.geometry, material: 'curtain' },
     { geometry: nodes.body1_blinn1_0?.geometry, material: 'body' },
     { geometry: nodes.cabin_blinn1_0?.geometry, material: 'table' },
-    { geometry: nodes.chair_body_blinn1_0?.geometry, material: 'chair' },
+    // chair_body removed
     { geometry: nodes.comp_blinn1_0?.geometry, material: 'comp' },
     { geometry: nodes.handls_blinn1_0?.geometry, material: 'default' },
     { geometry: nodes.keyboard_blinn1_0?.geometry, material: 'default' },
@@ -50,7 +50,7 @@ export function Room(props: RoomProps) {
     { geometry: nodes.monitor2_blinn1_0?.geometry, material: 'default' },
     { geometry: nodes.monitor3_blinn1_0?.geometry, material: 'default' },
     { geometry: nodes.pCylinder5_blinn1_0?.geometry, material: 'default' },
-    { geometry: nodes.pillows_blinn1_0?.geometry, material: 'pillow' },
+    // pillows (chair cushion) removed
     { geometry: nodes.polySurface53_blinn1_0?.geometry, material: 'default' },
     { geometry: nodes.radiator_blinn1_0?.geometry, material: 'radiator' },
     { geometry: nodes.radiator_blinn1_0001?.geometry, material: 'default' },

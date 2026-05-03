@@ -30,13 +30,18 @@ interface DeckContextValue {
 
 const DeckContext = createContext<DeckContextValue | null>(null);
 
-/** Hook to access deck context */
+/** Hook to access deck context — throws if used outside a Deck */
 export function useDeckContext(): DeckContextValue {
   const context = useContext(DeckContext);
   if (!context) {
     throw new Error("useDeckContext must be used within a Deck component");
   }
   return context;
+}
+
+/** Safe version — returns null when used outside a Deck */
+export function useDeckContextOptional(): DeckContextValue | null {
+  return useContext(DeckContext);
 }
 
 /** Deck props */

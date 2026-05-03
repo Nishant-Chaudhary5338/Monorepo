@@ -128,7 +128,7 @@ export interface DeckTheme {
 }
 
 // ─── Parallax ──────────────────────────────────────────────────────────
-export interface ParallaxLayer {
+export interface ParallaxLayerConfig {
   speed: number;
   children: ReactNode;
   zIndex?: number;
@@ -142,6 +142,21 @@ export interface CanvasStep {
   rotation?: number;
   duration?: number;
 }
+
+// ─── Prezi Spatial Canvas ──────────────────────────────────────────────
+export interface PreziFrame {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  label?: string;
+  rotation?: number;
+}
+
+export type PreziPath = string[];
+
+export type SubtopicLayout = "planet" | "page-horizontal" | "page-vertical";
 
 // ─── Progress ──────────────────────────────────────────────────────────
 export type ProgressVariant = "bar" | "circle" | "fraction" | "dots" | "none";

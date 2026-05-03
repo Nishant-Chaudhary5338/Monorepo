@@ -6,25 +6,20 @@ import Writing from "./sections/Writing";
 import Experience from "./sections/Experience";
 import Hero from "./sections/Hero";
 import ShowcaseSection from "./sections/ShowcaseSection";
-import LogoShowcase from "./sections/LogoShowcase";
-import FeatureCards from "./sections/FeatureCards";
 import Navbar from "./components/NavBar";
-import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => (
-  <ThemeProvider>
+  <>
     <Navbar />
     <Hero />
-    <LogoShowcase />
-    <FeatureCards />
+    <TechStack />
     <ShowcaseSection />
     <Experience />
-    <TechStack />
     <Writing />
     <Testimonials />
     <Contact />
     <Footer />
-  </ThemeProvider>
+  </>
 );
 
 export default App;

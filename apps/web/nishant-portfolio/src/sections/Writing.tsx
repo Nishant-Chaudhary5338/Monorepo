@@ -4,191 +4,246 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TitleHeader from "../components/TitleHeader";
+import { articleMeta } from "../articles/index";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Article {
-  status: "published" | "draft" | "idea";
-  statusLabel: string;
-  title: React.ReactNode;
-  description: string;
-  readTime: string;
-  tags: string[];
-  link?: string;
-}
-
-const articles: Article[] = [
-  {
-    status: "published",
-    statusLabel: "Long-form",
-    title: <>Plugin onboarding in under <em>60 seconds</em>: building an MFE platform on Vite Module Federation</>,
-    description:
-      "How I built a shell, four plugin remotes, a registry service, and a DevTools scaffolder. The registry trick, the shared-dependency war, and the chunk-hash technique that proves exactly which routes any given change affects.",
-    readTime: "~14 min read",
-    tags: ["Micro-frontends", "Vite", "Module Federation", "Platform Engineering"],
-    link: "/writing/plugin-onboarding-vite-module-federation",
-  },
-  {
-    status: "draft",
-    statusLabel: "In draft",
-    title: <>One protocol, <em>two surfaces</em>: building a frontend MCP toolkit</>,
-    description:
-      "~30 MCP server packages, 60+ tools, 27 CLI wrappers. The insight nobody told me: MCP is just JSON-RPC — the same server that powers Cline also powers your parallel automation pipeline. One protocol, two clients.",
-    readTime: "~14 min read",
-    tags: ["Model Context Protocol", "AI Tooling", "Developer Experience", "Frontend Platform"],
-    link: "/writing/one-protocol-two-surfaces",
-  },
-  {
-    status: "idea",
-    statusLabel: "Coming soon",
-    title: <>Turborepo at team scale: <em>cache invalidation</em> patterns I wish I'd known</>,
-    description:
-      "What happens when a shared package changes and twelve apps need to rebuild — and only some of them should. The mental model for Turbo's task graph that makes cache invalidation predictable.",
-    readTime: "Notes · ~6 min read",
-    tags: ["Turborepo", "Monorepo", "Build Systems", "Developer Experience"],
-  },
-];
-
-const statusColors: Record<Article["status"], string> = {
-  published: "var(--accent-warm)",
-  draft: "var(--text-muted)",
-  idea: "var(--text-muted)",
-};
-
 const Writing = () => {
+  const featuredRef = useRef<HTMLAnchorElement>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useGSAP(() => {
+    if (featuredRef.current) {
+      gsap.fromTo(
+        featuredRef.current,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+          scrollTrigger: { trigger: featuredRef.current, start: "top 85%", once: true } }
+      );
+    }
+
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
       gsap.fromTo(
         card,
         { opacity: 0, y: 20 },
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          delay: i * 0.1,
+          opacity: 1, y: 0, duration: 0.65,
+          delay: i * 0.08,
           ease: "power2.out",
-          scrollTrigger: { trigger: card, start: "top 85%" },
+          scrollTrigger: { trigger: card, start: "top 88%", once: true },
         }
       );
     });
   }, []);
 
-  return (
-    <section id="writing" className="px-5 md:px-20 py-20 md:py-32">
-      <TitleHeader
-        num="05"
-        label="Writing"
-        title={<>Notes from the <em>frontier.</em></>}
-        className="mb-10 md:mb-12"
-      />
+  const [featured, ...secondary] = articleMeta;
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {articles.map((article, index) => {
-          const cardStyle: React.CSSProperties = {
-            display: "flex",
-            flexDirection: "column",
-            padding: "2rem 1.8rem",
-            border: `1px solid ${article.status === "published" ? "var(--border-color)" : "var(--rule)"}`,
-            borderStyle: article.status !== "published" ? "dashed" : "solid",
+  return (
+    <section id="writing" style={{ paddingBlock: "var(--section-py)" }}>
+      <div className="site-container">
+        <TitleHeader
+          num="04"
+          label="Writing"
+          title={<>Notes from the <em>frontier.</em></>}
+          className="mb-10 md:mb-12"
+        />
+
+        {/* Featured article — full-width with cover image */}
+        <Link
+          to={`/writing/${featured.slug}`}
+          ref={featuredRef}
+          style={{
+            display: "block",
+            position: "relative",
+            overflow: "hidden",
             textDecoration: "none",
             color: "inherit",
-            minHeight: "260px",
-            transition: "border-color 0.22s ease, transform 0.22s ease",
-            cursor: article.link ? "pointer" : "default",
-          };
-          const handleEnter = (e: React.MouseEvent<HTMLElement>) => {
-            if (!article.link) return;
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--accent-warm)";
-            (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-          };
-          const handleLeave = (e: React.MouseEvent<HTMLElement>) => {
-            (e.currentTarget as HTMLElement).style.borderColor =
-              article.status === "published" ? "var(--border-color)" : "var(--rule)";
-            (e.currentTarget as HTMLElement).style.transform = "none";
-          };
-
-          return article.link ? (
-            <Link
-              key={index}
-              to={article.link}
-              ref={(el) => { cardRefs.current[index] = el as HTMLAnchorElement | null; }}
-              style={cardStyle}
-              onMouseEnter={handleEnter}
-              onMouseLeave={handleLeave}
-            >
-            {/* Status */}
-            <div
-              className="mono-label mb-4"
-              style={{ color: statusColors[article.status], fontSize: "0.72rem", letterSpacing: "0.12em" }}
-            >
-              {article.statusLabel}
-            </div>
-
-            {/* Title */}
-            <div
-              className="display-headline"
-              style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", lineHeight: 1.2, flexGrow: 1, marginBottom: "1rem" }}
-            >
-              {article.title}
-            </div>
-
-            {/* Description */}
-            <p
+            marginBottom: "1.5rem",
+            borderRadius: "2px",
+          }}
+          onMouseEnter={(e) => {
+            const img = (e.currentTarget as HTMLElement).querySelector(".cover-img") as HTMLElement | null;
+            if (img) img.style.transform = "scale(1.03)";
+          }}
+          onMouseLeave={(e) => {
+            const img = (e.currentTarget as HTMLElement).querySelector(".cover-img") as HTMLElement | null;
+            if (img) img.style.transform = "scale(1)";
+          }}
+        >
+          {/* Cover image */}
+          <div style={{ position: "relative", height: "clamp(260px, 40vw, 480px)", overflow: "hidden" }}>
+            <img
+              className="cover-img"
+              src={featured.coverImage}
+              alt={featured.coverImageAlt}
               style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "0.88rem",
-                color: "var(--text-muted)",
-                lineHeight: 1.6,
-                marginBottom: "1.2rem",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+                transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+            />
+            {/* Dark overlay gradient */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.05) 100%)",
+              }}
+            />
+            {/* Content over image */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: "clamp(1.5rem, 4vw, 3rem)",
               }}
             >
-              {article.description}
-            </p>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {article.tags.map((tag) => (
-                <span key={tag} className="editorial-tag" style={{ fontSize: "0.68rem" }}>{tag}</span>
-              ))}
-            </div>
-
-            {/* Read time */}
-            <div className="mono-label" style={{ color: "var(--text-muted)", fontSize: "0.72rem", marginTop: "auto" }}>
-              {article.readTime}
-            </div>
-            </Link>
-          ) : (
-            <div
-              key={index}
-              ref={(el) => { cardRefs.current[index] = el as HTMLAnchorElement | null; }}
-              style={cardStyle}
-              onMouseEnter={handleEnter}
-              onMouseLeave={handleLeave}
-            >
-              {/* Status */}
-              <div className="mono-label mb-4" style={{ color: statusColors[article.status], fontSize: "0.72rem", letterSpacing: "0.12em" }}>
-                {article.statusLabel}
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.7rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "var(--accent-warm)",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                Featured · {featured.readingTime}
               </div>
-              <div className="display-headline" style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", lineHeight: 1.2, flexGrow: 1, marginBottom: "1rem" }}>
-                {article.title}
-              </div>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", color: "var(--text-muted)", lineHeight: 1.6, marginBottom: "1.2rem" }}>
-                {article.description}
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 400,
+                  fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.025em",
+                  color: "#ffffff",
+                  maxWidth: "56ch",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                {featured.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.92rem",
+                  color: "rgba(255,255,255,0.7)",
+                  lineHeight: 1.6,
+                  maxWidth: "72ch",
+                  marginBottom: "1rem",
+                }}
+              >
+                {featured.description}
               </p>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {article.tags.map((tag) => (
-                  <span key={tag} className="editorial-tag" style={{ fontSize: "0.68rem" }}>{tag}</span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                {featured.tags.slice(0, 4).map((tag) => (
+                  <span
+                    key={tag}
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.68rem",
+                      padding: "0.2rem 0.5rem",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                      color: "rgba(255,255,255,0.7)",
+                      borderRadius: "2px",
+                    }}
+                  >
+                    {tag}
+                  </span>
                 ))}
               </div>
-              <div className="mono-label" style={{ color: "var(--text-muted)", fontSize: "0.72rem", marginTop: "auto" }}>
-                {article.readTime}
-              </div>
             </div>
-          );
-        })}
+          </div>
+        </Link>
+
+        {/* Secondary articles — 2-col list */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "0" }}>
+          {secondary.map((article, index) => (
+            <Link
+              key={article.slug}
+              to={`/writing/${article.slug}`}
+              ref={(el) => { cardRefs.current[index] = el; }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "1.75rem 0",
+                borderBottom: "1px solid var(--rule)",
+                borderRight: index % 2 === 0 && index < secondary.length - 1 ? "1px solid var(--rule)" : "none",
+                paddingRight: index % 2 === 0 ? "clamp(1rem, 3vw, 2.5rem)" : 0,
+                paddingLeft: index % 2 === 1 ? "clamp(1rem, 3vw, 2.5rem)" : 0,
+                textDecoration: "none",
+                color: "inherit",
+                transition: "background 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "var(--bg-secondary)";
+                (e.currentTarget as HTMLAnchorElement).style.paddingInline = "1rem";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                const isOdd = index % 2 === 1;
+                (e.currentTarget as HTMLAnchorElement).style.paddingLeft = isOdd ? "clamp(1rem, 3vw, 2.5rem)" : "0";
+                (e.currentTarget as HTMLAnchorElement).style.paddingRight = !isOdd ? "clamp(1rem, 3vw, 2.5rem)" : "0";
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.68rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "var(--accent-warm)",
+                  marginBottom: "0.6rem",
+                }}
+              >
+                {article.readingTime}
+              </div>
+
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 400,
+                  fontSize: "clamp(1.05rem, 1.6vw, 1.3rem)",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.015em",
+                  color: "var(--text-primary)",
+                  marginBottom: "0.65rem",
+                  flexGrow: 1,
+                }}
+              >
+                {article.title}
+              </h3>
+
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.85rem",
+                  color: "var(--text-muted)",
+                  lineHeight: 1.6,
+                  marginBottom: "1rem",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {article.description}
+              </p>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginTop: "auto" }}>
+                {article.tags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="editorial-tag" style={{ fontSize: "0.65rem" }}>{tag}</span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

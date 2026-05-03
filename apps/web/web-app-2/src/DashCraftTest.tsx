@@ -3,16 +3,93 @@ import {
   Dashboard,
   KPIWidget,
   RechartsWidget,
+  AreaChartWidget,
+  BarChartWidget,
   useDashboard,
 } from "@repo/dashcraft";
 import type React from "react";
 
-// ── Corner Action Buttons ──────────────────────────────────────────────────
+// ── Responsive KPI Views ────────────────────────────────────────────────────
+
+function MicroKPI({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="w-full h-full flex items-center justify-between px-1 gap-1 overflow-hidden">
+      <span className="text-[10px] text-gray-400 truncate min-w-0">{label}</span>
+      <span className="text-xs font-bold text-gray-900 shrink-0">{value}</span>
+    </div>
+  );
+}
+
+function CompactKPI({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-1">
+      <span className="text-xl font-bold text-gray-900 leading-none">{value}</span>
+      <span className="text-[11px] text-gray-500 text-center leading-tight">{label}</span>
+    </div>
+  );
+}
+
+function FullKPIView({
+  value,
+  label,
+  trend,
+  trendLabel,
+}: {
+  value: string;
+  label: string;
+  trend: "up" | "down" | "neutral";
+  trendLabel: string;
+}) {
+  const trendColor =
+    trend === "up" ? "text-emerald-500" : trend === "down" ? "text-red-500" : "text-gray-500";
+  const trendIcon = trend === "up" ? "↑" : trend === "down" ? "↓" : "–";
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center p-3 bg-linear-to-br from-white to-gray-50">
+      <div className="text-3xl font-bold tracking-tight text-gray-900">{value}</div>
+      <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
+      <div className={`mt-2 flex items-center gap-1 text-xs font-medium ${trendColor}`}>
+        <span>{trendIcon}</span>
+        <span>{trendLabel}</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Responsive Chart Summary ─────────────────────────────────────────────────
+
+function DataSummaryView({
+  title,
+  rows,
+}: {
+  title: string;
+  rows: { label: string; value: string }[];
+}) {
+  return (
+    <div className="w-full h-full flex flex-col p-2 overflow-auto">
+      <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
+        {title}
+      </div>
+      <div className="flex flex-col gap-0.5">
+        {rows.map((r) => (
+          <div
+            key={r.label}
+            className="flex justify-between items-center text-xs py-1 border-b border-gray-100"
+          >
+            <span className="text-gray-500">{r.label}</span>
+            <span className="font-semibold text-gray-800">{r.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Corner Action Buttons ───────────────────────────────────────────────────
 
 const TopRightControls = () => {
   const { isEditMode, toggleEditMode, resetLayout } = useDashboard();
   return (
-    <div style={{ position: "fixed", top: "12px", right: "16px", zIndex: 1000, display: "flex", gap: "8px" }}>
+    <div style={{ position: "fixed", top: "52px", right: "16px", zIndex: 1000, display: "flex", gap: "8px" }}>
       {isEditMode && (
         <button
           onClick={resetLayout}
@@ -63,7 +140,7 @@ const TopLeftBadge = () => (
   <div
     style={{
       position: "fixed",
-      top: "12px",
+      top: "52px",
       left: "16px",
       zIndex: 1000,
       background: "linear-gradient(135deg, #0f172a, #1e293b)",
@@ -136,7 +213,7 @@ const BottomRightExport = () => (
   </div>
 );
 
-// ── Chart Data ─────────────────────────────────────────────────────────────
+// ── Chart Data ──────────────────────────────────────────────────────────────
 
 const revenueData = [
   { name: "Jan", revenue: 42000, profit: 18000 },
@@ -182,7 +259,7 @@ const performanceData = [
   { subject: "Design", A: 79 },
 ];
 
-// ── Dashboard ─────────────────────────────────────────────────────────────
+// ── Dashboard ───────────────────────────────────────────────────────────────
 
 export default function DashCraftTest(): React.JSX.Element {
   return (
@@ -259,6 +336,8 @@ export default function DashCraftTest(): React.JSX.Element {
               flexShrink: 0,
             }}
           >
+            {/* Resize widgets in edit mode to see views switch:
+                < 160px → micro badge | 160–299px → compact | ≥ 300px → full */}
             <KPIWidget
               id="kpi-revenue"
               title="Total Revenue"
@@ -270,7 +349,13 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={0}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="$128K" label="Revenue" />,
+                160: <CompactKPI value="$128,450" label="Total Revenue" />,
+                300: <FullKPIView value="$128,450" label="Total Revenue" trend="up" trendLabel="+16.8%" />,
+              }}
             />
             <KPIWidget
               id="kpi-users"
@@ -282,7 +367,13 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={0}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="4,832" label="Users" />,
+                160: <CompactKPI value="4,832" label="Active Users" />,
+                300: <FullKPIView value="4,832" label="Active Users" trend="up" trendLabel="+15.0%" />,
+              }}
             />
             <KPIWidget
               id="kpi-conversion"
@@ -294,7 +385,13 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={1}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="3.2%" label="Conv." />,
+                160: <CompactKPI value="3.2%" label="Conversion Rate" />,
+                300: <FullKPIView value="3.2%" label="Conversion Rate" trend="up" trendLabel="+14.3%" />,
+              }}
             />
             <KPIWidget
               id="kpi-growth"
@@ -306,7 +403,13 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={1}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="16.8%" label="Growth" />,
+                160: <CompactKPI value="16.8%" label="MoM Growth" />,
+                300: <FullKPIView value="16.8%" label="MoM Growth" trend="up" trendLabel="+34.4%" />,
+              }}
             />
             <KPIWidget
               id="kpi-orders"
@@ -318,7 +421,13 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={0}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="9,241" label="Orders" />,
+                160: <CompactKPI value="9,241" label="Total Orders" />,
+                300: <FullKPIView value="9,241" label="Total Orders" trend="up" trendLabel="+15.8%" />,
+              }}
             />
             <KPIWidget
               id="kpi-arpu"
@@ -331,13 +440,17 @@ export default function DashCraftTest(): React.JSX.Element {
               decimals={2}
               draggable
               deletable
+              viewCycler
               className="bg-white rounded-lg shadow-sm"
+              viewBreakpoints={{
+                initial: <MicroKPI value="$26.60" label="ARPU" />,
+                160: <CompactKPI value="$26.60" label="Avg Rev / User" />,
+                300: <FullKPIView value="$26.60" label="Avg Rev / User" trend="up" trendLabel="+20.4%" />,
+              }}
             />
           </div>
 
           {/* ── Charts Grid ── */}
-          {/* Row 1: Area (large) | Line | Pie */}
-          {/* Row 2: Area (cont) | Bar  | Radar */}
           <div
             style={{
               flex: 1,
@@ -348,7 +461,7 @@ export default function DashCraftTest(): React.JSX.Element {
               gap: "8px",
             }}
           >
-            {/* Revenue Area Chart — spans both rows */}
+            {/* Revenue Area Chart — spans both rows, responsive: summary → full chart */}
             <div style={{ gridRow: "1 / 3", minHeight: 0 }}>
               <RechartsWidget
                 id="chart-revenue"
@@ -361,13 +474,45 @@ export default function DashCraftTest(): React.JSX.Element {
                 ]}
                 xAxisKey="name"
                 draggable
+                viewCycler
                 chartHeight="100%"
                 className="bg-white rounded-lg shadow-sm"
                 style={{ height: "100%", display: "flex", flexDirection: "column" }}
+                viewBreakpoints={{
+                  initial: (
+                    <DataSummaryView
+                      title="Revenue vs Profit"
+                      rows={[
+                        { label: "Jul Revenue", value: "$71,000" },
+                        { label: "Jun Revenue", value: "$63,000" },
+                        { label: "May Revenue", value: "$58,000" },
+                        { label: "Jul Profit", value: "$35,000" },
+                        { label: "Jun Profit", value: "$31,000" },
+                        { label: "Total (Jul)", value: "$106,000" },
+                      ]}
+                    />
+                  ),
+                  350: (
+                    <div className="w-full h-full min-h-50">
+                      <AreaChartWidget
+                        data={revenueData}
+                        series={[
+                          { dataKey: "revenue", name: "Revenue", color: "#6366f1" },
+                          { dataKey: "profit", name: "Profit", color: "#22d3ee" },
+                        ]}
+                        xAxisKey="name"
+                        showLegend={true}
+                        showTooltip={true}
+                        showGrid={true}
+                        animate={true}
+                      />
+                    </div>
+                  ),
+                }}
               />
             </div>
 
-            {/* User Growth Line */}
+            {/* User Growth Line — no viewBreakpoints (standard) */}
             <RechartsWidget
               id="chart-users"
               title="User Growth"
@@ -384,7 +529,7 @@ export default function DashCraftTest(): React.JSX.Element {
               style={{ height: "100%", display: "flex", flexDirection: "column" }}
             />
 
-            {/* Traffic Pie */}
+            {/* Traffic Pie — no viewBreakpoints (standard) */}
             <RechartsWidget
               id="chart-traffic"
               title="Traffic Sources"
@@ -398,7 +543,7 @@ export default function DashCraftTest(): React.JSX.Element {
               style={{ height: "100%", display: "flex", flexDirection: "column" }}
             />
 
-            {/* Regional Sales Bar */}
+            {/* Regional Sales Bar — responsive: summary → bar chart */}
             <RechartsWidget
               id="chart-region"
               title="Sales by Region"
@@ -407,12 +552,40 @@ export default function DashCraftTest(): React.JSX.Element {
               series={[{ dataKey: "sales", name: "Sales ($)", color: "#8b5cf6" }]}
               xAxisKey="name"
               draggable
+              viewCycler
               chartHeight="100%"
               className="bg-white rounded-lg shadow-sm"
               style={{ height: "100%", display: "flex", flexDirection: "column" }}
+              viewBreakpoints={{
+                initial: (
+                  <DataSummaryView
+                    title="Sales by Region"
+                    rows={[
+                      { label: "East", value: "$58,000" },
+                      { label: "West", value: "$47,000" },
+                      { label: "North", value: "$42,000" },
+                      { label: "South", value: "$31,000" },
+                      { label: "Central", value: "$25,000" },
+                    ]}
+                  />
+                ),
+                280: (
+                  <div className="w-full h-full min-h-37.5">
+                    <BarChartWidget
+                      data={regionData}
+                      series={[{ dataKey: "sales", name: "Sales ($)", color: "#8b5cf6" }]}
+                      xAxisKey="name"
+                      showLegend={false}
+                      showTooltip={true}
+                      showGrid={true}
+                      animate={true}
+                    />
+                  </div>
+                ),
+              }}
             />
 
-            {/* Performance Radar */}
+            {/* Performance Radar — no viewBreakpoints (standard) */}
             <RechartsWidget
               id="chart-radar"
               title="Team Performance"

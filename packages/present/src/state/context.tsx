@@ -70,10 +70,7 @@ export function DeckProvider({
   initialSlide = 0,
   onSlideChange,
 }: DeckProviderProps): React.JSX.Element {
-  const [state, dispatch] = useReducer<
-    typeof deckStateReducer,
-    number
-  >(deckStateReducer, totalSlides, (total) => {
+  const [state, dispatch] = useReducer(deckStateReducer, totalSlides, (total: number): DeckMachineState => {
     const initial = createDeckMachineState(total);
     if (initialSlide > 0) {
       return {

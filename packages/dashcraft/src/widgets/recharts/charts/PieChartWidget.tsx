@@ -31,11 +31,13 @@ export const PieChartWidget = React.memo(function PieChartWidget({
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         {showTooltip && <Tooltip formatter={(value, name) => [value, name]} />}
-        <Legend
-          iconType="circle"
-          iconSize={8}
-          wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
-        />
+        {showLegend && (
+          <Legend
+            iconType="circle"
+            iconSize={8}
+            wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+          />
+        )}
         <Pie
           data={[...data]}
           cx="50%"

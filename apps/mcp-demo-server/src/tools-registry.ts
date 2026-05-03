@@ -98,6 +98,17 @@ export const TOOLS_REGISTRY: ToolEntry[] = [
     status: 'working',
   },
 
+  // ── Design-to-Code ────────────────────────────────────────────────────────
+  {
+    id: 'ixd-generator',
+    name: 'IXD Generator',
+    serverName: 'ixd-generator',
+    category: 'Design-to-Code',
+    description: 'Upload a PDF page or image (IXD/wireframe), Claude/Cline visually analyzes it and generates React layout code using @repo/ui components',
+    tools: ['read_design_file', 'get_ui_catalog', 'write_layout', 'list_pdf_pages'],
+    status: 'working',
+  },
+
   // ── Analysis ──────────────────────────────────────────────────────────────
   {
     id: 'typescript-enforcer',
@@ -279,6 +290,7 @@ export const TOOLS_REGISTRY: ToolEntry[] = [
 ];
 
 export const CATEGORIES = [
+  'Design-to-Code',
   'Code Generation',
   'Transformation',
   'Analysis',

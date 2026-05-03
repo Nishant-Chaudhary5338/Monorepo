@@ -14,59 +14,59 @@
       "types": "./dist/index.d.ts"
     },
     "./core": {
-      "import": "./dist/core.js",
-      "require": "./dist/core.cjs",
-      "types": "./dist/core.d.ts"
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs",
+      "types": "./dist/core/index.d.ts"
     },
     "./state": {
-      "import": "./dist/state.js",
-      "require": "./dist/state.cjs",
-      "types": "./dist/state.d.ts"
+      "import": "./dist/state/index.js",
+      "require": "./dist/state/index.cjs",
+      "types": "./dist/state/index.d.ts"
     },
     "./animation": {
-      "import": "./dist/animation.js",
-      "require": "./dist/animation.cjs",
-      "types": "./dist/animation.d.ts"
+      "import": "./dist/animation/index.js",
+      "require": "./dist/animation/index.cjs",
+      "types": "./dist/animation/index.d.ts"
     },
     "./gestures": {
-      "import": "./dist/gestures.js",
-      "require": "./dist/gestures.cjs",
-      "types": "./dist/gestures.d.ts"
+      "import": "./dist/gestures/index.js",
+      "require": "./dist/gestures/index.cjs",
+      "types": "./dist/gestures/index.d.ts"
     },
     "./scroll": {
-      "import": "./dist/scroll.js",
-      "require": "./dist/scroll.cjs",
-      "types": "./dist/scroll.d.ts"
+      "import": "./dist/scroll/index.js",
+      "require": "./dist/scroll/index.cjs",
+      "types": "./dist/scroll/index.d.ts"
     },
     "./router": {
-      "import": "./dist/router.js",
-      "require": "./dist/router.cjs",
-      "types": "./dist/router.d.ts"
+      "import": "./dist/router/index.js",
+      "require": "./dist/router/index.cjs",
+      "types": "./dist/router/index.d.ts"
     },
     "./plugins": {
-      "import": "./dist/plugins.js",
-      "require": "./dist/plugins.cjs",
-      "types": "./dist/plugins.d.ts"
+      "import": "./dist/plugins/index.js",
+      "require": "./dist/plugins/index.cjs",
+      "types": "./dist/plugins/index.d.ts"
     },
     "./ui": {
-      "import": "./dist/ui.js",
-      "require": "./dist/ui.cjs",
-      "types": "./dist/ui.d.ts"
+      "import": "./dist/ui/index.js",
+      "require": "./dist/ui/index.cjs",
+      "types": "./dist/ui/index.d.ts"
     },
     "./themes": {
-      "import": "./dist/themes.js",
-      "require": "./dist/themes.cjs",
-      "types": "./dist/themes.d.ts"
+      "import": "./dist/themes/index.js",
+      "require": "./dist/themes/index.cjs",
+      "types": "./dist/themes/index.d.ts"
     },
     "./utils": {
-      "import": "./dist/utils.js",
-      "require": "./dist/utils.cjs",
-      "types": "./dist/utils.d.ts"
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs",
+      "types": "./dist/utils/index.d.ts"
     },
     "./types": {
-      "import": "./dist/types.js",
-      "require": "./dist/types.cjs",
-      "types": "./dist/types.d.ts"
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.cjs",
+      "types": "./dist/types/index.d.ts"
     },
     "./styles": "./dist/styles/styles/index.css"
   },
@@ -85,10 +85,12 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
+    "framer-motion": "^11.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
+    "@use-gesture/react": "^10.3.1",
     "clsx": "^2.1.1"
   },
   "devDependencies": {
@@ -96,14 +98,15 @@
     "@repo/typescript-config": "workspace:*",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "eslint": "^8.57.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "framer-motion": "^11.0.0",
     "jsdom": "^29.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "tsup": "^8.0.0",
-    "typescript": "5.5.4",
+    "typescript": "~5.9.3",
     "vitest": "^4.1.0"
   },
   "publishConfig": {

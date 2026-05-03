@@ -148,13 +148,13 @@ export function Builder() {
 
       const surviving = current.widgets.filter((w) => dashIds.has(w.id))
 
-      const updatedWidgets = surviving.map((w) => {
+      const updatedWidgets = surviving.map((w): typeof w => {
         const ds = dashState.widgets[w.id]
         if (!ds) return w
         return {
           ...w,
           defaultSize: ds.size ?? w.defaultSize,
-          settings: ds.settings ? { ...w.settings, ...ds.settings } : w.settings,
+          settings: (ds.settings ? { ...w.settings, ...ds.settings } : w.settings) as typeof w.settings,
         }
       })
 

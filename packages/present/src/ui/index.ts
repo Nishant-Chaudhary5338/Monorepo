@@ -1,3 +1,4 @@
-// UI module — Visual components
-// TODO: Implement Deck, Slide, Viewport, Transitions, Layouts, etc.
-export {};
+// UI entry point — re-exports all visual components
+// Import from "@repo/present/ui" for the components-only slice
+
+export * from "../components";

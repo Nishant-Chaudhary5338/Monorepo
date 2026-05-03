@@ -107,7 +107,346 @@
   height: 100vh;
 }
 
-/* ─── Overview Mode ──────────────────────────────────────────────────── */
+/* ─── Viewport ───────────────────────────────────────────────────────── */
+.present-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--present-background, #000);
+}
+
+.present-viewport-inner {
+  position: relative;
+  flex-shrink: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* ─── Prezi Spatial Canvas ───────────────────────────────────────────── */
+.present-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  --present-zoom: 1;
+  --present-accent: #6366f1;
+  /* Deep space background — Prezi's signature dark canvas */
+  background:
+    radial-gradient(ellipse 120% 80% at 30% 20%, rgba(30,20,60,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 60% at 70% 80%, rgba(10,30,50,0.5) 0%, transparent 60%),
+    #07071a;
+}
+
+/* ─── Ambient viewport orbs — fixed to viewport, drift slowly ───────────── */
+.present-canvas-ambience {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.present-canvas-ambience::before {
+  content: '';
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%);
+  top: -250px;
+  left: -350px;
+  animation: present-orb-1 28s ease-in-out infinite;
+}
+
+.present-canvas-ambience::after {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+  bottom: -180px;
+  right: -200px;
+  animation: present-orb-2 35s ease-in-out infinite;
+}
+
+@keyframes present-orb-1 {
+  0%,  100% { transform: translate(0, 0)       scale(1);    }
+  30%        { transform: translate(150px, 100px) scale(1.1);  }
+  65%        { transform: translate(40px, 190px)  scale(0.95); }
+  80%        { transform: translate(-70px, 80px)  scale(1.04); }
+}
+
+@keyframes present-orb-2 {
+  0%,  100% { transform: translate(0, 0)          scale(1);    }
+  40%        { transform: translate(-120px, -100px) scale(1.08); }
+  70%        { transform: translate(75px, -150px)   scale(0.93); }
+}
+
+/* Fixed dot-grid — does NOT move with canvas transforms */
+.present-canvas-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Subtle crosshair dots — Prezi-style infinite canvas feel */
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: 0 0;
+}
+
+.present-canvas-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  z-index: 1;
+}
+
+/* Legacy CanvasFrame */
+.present-canvas-frame {
+  position: absolute;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #12122a;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 32px 100px rgba(0,0,0,0.6);
+}
+
+/* ─── Frame ──────────────────────────────────────────────────────────── */
+.present-frame {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* The slide content surface — floats on the canvas */
+.present-frame-clip {
+  background: var(--present-frame-bg, #0d0d1f);
+  /* Multi-layer shadow: elevation + ambient glow at base */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 8px 24px rgba(0,0,0,0.5),
+    0 40px 100px rgba(0,0,0,0.7),
+    0 0 0 0 transparent; /* placeholder for active glow */
+}
+
+.present-frame-content {
+  width: 100%;
+  height: 100%;
+}
+
+/* Border overlay — no transitions (spring handles all motion) */
+.present-frame-border {
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Active: indicate current frame with a subtle ring — visible when zoomed in */
+.present-frame--active .present-frame-border {
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 0 40px rgba(99,102,241,0.12);
+}
+
+/* Active at overview zoom: stronger ring so it's visible at small size */
+.present-canvas--overview .present-frame--active .present-frame-border {
+  border-color: rgba(99,102,241,1.0);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.4), 0 0 50px rgba(99,102,241,0.25);
+}
+
+/* Frame label — reads --present-zoom from the container and:
+   • scales so it reads ~22px on screen regardless of canvas zoom
+   • fades OUT when zoomed in (label unneeded when filling the viewport)
+   • fades IN when zoomed out (overview mode) */
+.present-frame-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(calc(-100% - 14px));
+  font-size: clamp(10px, calc(22px / max(var(--present-zoom), 0.06)), 900px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
+  font-family: var(--present-font-family, system-ui, sans-serif);
+  color: rgba(255,255,255,0.30);
+  text-shadow: none;
+  opacity: clamp(0, calc((0.60 - var(--present-zoom)) / 0.45), 1);
+}
+
+.present-frame--active .present-frame-label {
+  color: rgba(160,165,255,0.95);
+  text-shadow: 0 0 30px rgba(99,102,241,0.6), 0 0 60px rgba(99,102,241,0.2);
+}
+
+/* Overview: frame thumbnails are clickable */
+.present-canvas--overview .present-frame {
+  cursor: pointer;
+}
+
+.present-canvas--overview .present-frame-clip {
+  transition: box-shadow 0.12s ease, transform 0.12s ease;
+}
+
+.present-canvas--overview .present-frame:hover .present-frame-clip {
+  box-shadow:
+    0 0 0 2px rgba(99,102,241,0.7),
+    0 0 0 4px rgba(99,102,241,0.2),
+    0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* ─── Topic ──────────────────────────────────────────────────────────── */
+.present-topic .present-frame-border {
+  border-color: rgba(139,92,246,0.15);
+}
+
+.present-topic.present-frame--active .present-frame-border {
+  border-color: rgba(139,92,246,0.6);
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.3), 0 0 60px rgba(139,92,246,0.2);
+}
+
+.present-topic-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Navigation bar — video-player style ────────────────────────────── */
+.present-canvas-nav {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 40px;
+  background: rgba(10,10,28,0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.5),
+    0 1px 0 rgba(255,255,255,0.06) inset;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--present-font-family, system-ui, sans-serif);
+  pointer-events: auto;
+  user-select: none;
+}
+
+.present-canvas-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px 9px;
+  border-radius: 28px;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.present-canvas-nav-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.09);
+  color: #fff;
+}
+
+.present-canvas-nav-btn:active:not(:disabled) {
+  background: rgba(255,255,255,0.15);
+}
+
+.present-canvas-nav-btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.present-canvas-nav-btn--active {
+  background: rgba(99,102,241,0.22);
+  color: #a5b4fc;
+}
+
+.present-canvas-nav-btn--active:hover:not(:disabled) {
+  background: rgba(99,102,241,0.32);
+  color: #c7d2fe;
+}
+
+.present-canvas-nav-counter {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.4);
+  font-variant-numeric: tabular-nums;
+  min-width: 56px;
+  text-align: center;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.present-canvas-nav-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.present-canvas-nav-dot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  transition: background 0.2s, transform 0.2s, width 0.2s;
+}
+
+.present-canvas-nav-dot--active {
+  background: var(--present-accent, #6366f1);
+  transform: scale(1.6);
+  width: 8px;
+  border-radius: 4px;
+}
+
+.present-canvas-nav-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+/* ─── Overview mode ──────────────────────────────────────────────────── */
+.present-canvas--overview {
+  cursor: default;
+}
+
+/* ─── Fullscreen — no chrome visible, nav stays accessible ───────────── */
+.present-canvas--fullscreen {
+  /* Container IS the fullscreen element */
+}
+
+.present-canvas--fullscreen .present-canvas-nav {
+  bottom: 32px;
+}
+
+/* ─── Legacy slide-based overview (Deck component) ───────────────────── */
 .present-overview {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -128,9 +467,47 @@
 }
 
 .present-overview .present-slide:hover {
-  border-color: var(--present-accent, #007bff);
+  border-color: var(--present-accent, #6366f1);
 }
 
 .present-overview .present-slide.present-current {
-  border-color: var(--present-primary, #007bff);
+  border-color: var(--present-accent, #6366f1);
 }
+
+/* ─── Legacy canvas step dots ────────────────────────────────────────── */
+.present-canvas-steps {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.present-canvas-step-counter {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.present-canvas-step-dots { display: flex; gap: 6px; }
+
+.present-canvas-step-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.present-canvas-step-dot:hover { background: rgba(255,255,255,0.5); transform: scale(1.2); }
+.present-canvas-step-dot--active { background: var(--present-accent,#6366f1); transform: scale(1.3); }
