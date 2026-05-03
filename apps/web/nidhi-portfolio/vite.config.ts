@@ -31,4 +31,8 @@ export default defineConfig({
   optimizeDeps: {
     include: ["gsap", "react", "react-dom", "react-router-dom"],
   },
+
+  server: {
+    port: 5180,
+  },
 });
