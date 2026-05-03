@@ -1,8 +1,11 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { words } from "../constants";
+import { useGeoCV } from "../hooks/useGeoCV";
 
 const Hero = () => {
+  const { downloadCV, status } = useGeoCV();
+
   useGSAP(() => {
     gsap.fromTo(
       ".hero-text h1",
@@ -80,6 +83,54 @@ const Hero = () => {
           <span><b>Now</b>&nbsp;·&nbsp;Plugin-based MFE on Vite Module Federation</span>
           <span><b>Stack</b>&nbsp;·&nbsp;React, TypeScript, Turborepo</span>
           <span><b>Open to</b>&nbsp;·&nbsp;Remote · UK · EU · US · SG</span>
+        </div>
+
+        {/* CTA row */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "2.5rem" }}>
+          <button
+            onClick={downloadCV}
+            disabled={status === "loading"}
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: status === "done" ? "var(--accent-warm)" : "var(--bg-primary)",
+              background: status === "done" ? "transparent" : "var(--text-primary)",
+              border: "1px solid var(--text-primary)",
+              padding: "0.6rem 1.4rem",
+              borderRadius: "2px",
+              cursor: status === "loading" ? "wait" : "pointer",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {status === "loading" ? "Detecting region…" : status === "done" ? "✓ Downloaded" : "Download CV"}
+          </button>
+          <a
+            href="mailto:nishantchaudhary.dev@gmail.com"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--text-muted)",
+              textDecoration: "none",
+              border: "1px solid var(--rule)",
+              padding: "0.6rem 1.4rem",
+              borderRadius: "2px",
+              transition: "color 0.2s, border-color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
+            }}
+          >
+            Get in touch →
+          </a>
         </div>
       </div>
     </section>

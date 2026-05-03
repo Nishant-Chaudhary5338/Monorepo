@@ -4,40 +4,263 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TitleHeader from "../components/TitleHeader";
-import { articleMeta } from "../articles/index";
+import { articleMeta, type ArticleMeta } from "../articles/index";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ── Article card (secondary) ───────────────────────── */
+const ArticleCard = ({
+  article,
+  index,
+  cardRef,
+}: {
+  article: ArticleMeta;
+  index: number;
+  cardRef: (el: HTMLAnchorElement | null) => void;
+}) => {
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  return (
+    <Link
+      to={`/writing/${article.slug}`}
+      ref={cardRef}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        background: "var(--bg-card)",
+        border: "1px solid var(--rule)",
+        borderRadius: "3px",
+        overflow: "hidden",
+        textDecoration: "none",
+        color: "inherit",
+        transition: "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
+        opacity: 0,
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-3px)";
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.08)";
+        if (imgRef.current) imgRef.current.style.transform = "scale(1.04)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
+        if (imgRef.current) imgRef.current.style.transform = "scale(1)";
+      }}
+    >
+      {/* Cover image */}
+      <div style={{ position: "relative", height: "180px", overflow: "hidden", flexShrink: 0 }}>
+        <img
+          ref={imgRef}
+          src={article.coverImage}
+          alt={article.coverImageAlt}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+            transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          }}
+        />
+        {/* Subtle dark overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)",
+          }}
+        />
+        {/* Reading time chip — bottom-left */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "0.65rem",
+            left: "0.75rem",
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.65rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.12em",
+            color: "rgba(255,255,255,0.85)",
+            background: "rgba(0,0,0,0.35)",
+            backdropFilter: "blur(4px)",
+            padding: "0.2rem 0.5rem",
+            borderRadius: "2px",
+          }}
+        >
+          {article.readingTime}
+        </div>
+        {/* Demo badge — top-right */}
+        {article.demoUrl && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0.65rem",
+              right: "0.75rem",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.6rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--accent-warm)",
+              background: "rgba(0,0,0,0.55)",
+              backdropFilter: "blur(4px)",
+              padding: "0.2rem 0.5rem",
+              borderRadius: "2px",
+              border: "1px solid rgba(183,65,31,0.5)",
+            }}
+          >
+            Live demo
+          </div>
+        )}
+      </div>
+
+      {/* Card body */}
+      <div style={{ display: "flex", flexDirection: "column", padding: "1.25rem", flexGrow: 1 }}>
+        {/* Tags */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginBottom: "0.75rem" }}>
+          {article.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.6rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: "var(--text-muted)",
+                border: "1px solid var(--rule)",
+                padding: "0.15rem 0.45rem",
+                borderRadius: "2px",
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Title */}
+        <h3
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: 400,
+            fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
+            lineHeight: 1.25,
+            letterSpacing: "-0.015em",
+            color: "var(--text-primary)",
+            marginBottom: "0.6rem",
+            flexGrow: 1,
+          }}
+        >
+          {article.title}
+        </h3>
+
+        {/* Description */}
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "0.82rem",
+            color: "var(--text-muted)",
+            lineHeight: 1.6,
+            marginBottom: "1rem",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {article.description}
+        </p>
+
+        {/* Footer — links */}
+        {(article.demoUrl || article.repoUrl) && (
+          <div
+            style={{ display: "flex", gap: "0.5rem", marginTop: "auto" }}
+            onClick={(e) => e.preventDefault()}
+          >
+            {article.repoUrl && (
+              <a
+                href={article.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.65rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: "var(--text-muted)",
+                  textDecoration: "none",
+                  border: "1px solid var(--rule)",
+                  padding: "0.2rem 0.55rem",
+                  borderRadius: "2px",
+                  transition: "color 0.2s, border-color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
+                }}
+              >
+                GitHub →
+              </a>
+            )}
+            {article.demoUrl && (
+              <a
+                href={article.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.65rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: "var(--accent-warm)",
+                  textDecoration: "none",
+                  border: "1px solid currentColor",
+                  padding: "0.2rem 0.55rem",
+                  borderRadius: "2px",
+                  transition: "background 0.2s, color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "var(--accent-warm)";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--bg-primary)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-warm)";
+                }}
+              >
+                {article.demoLabel ?? "View Live →"}
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+};
+
+/* ── Writing section ────────────────────────────────── */
 const Writing = () => {
-  const featuredRef = useRef<HTMLAnchorElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useGSAP(() => {
-    if (featuredRef.current) {
-      gsap.fromTo(
-        featuredRef.current,
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
-          scrollTrigger: { trigger: featuredRef.current, start: "top 85%", once: true } }
-      );
-    }
-
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
       gsap.fromTo(
         card,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1, y: 0, duration: 0.65,
-          delay: i * 0.08,
+          delay: i * 0.06,
           ease: "power2.out",
-          scrollTrigger: { trigger: card, start: "top 88%", once: true },
+          scrollTrigger: { trigger: gridRef.current, start: "top 85%", once: true },
         }
       );
     });
   }, []);
-
-  const [featured, ...secondary] = articleMeta;
 
   return (
     <section id="writing" style={{ paddingBlock: "var(--section-py)" }}>
@@ -49,199 +272,23 @@ const Writing = () => {
           className="mb-10 md:mb-12"
         />
 
-        {/* Featured article — full-width with cover image */}
-        <Link
-          to={`/writing/${featured.slug}`}
-          ref={featuredRef}
+        {/* ── Uniform 3×2 grid — all articles equal ── */}
+        <div
+          ref={gridRef}
           style={{
-            display: "block",
-            position: "relative",
-            overflow: "hidden",
-            textDecoration: "none",
-            color: "inherit",
-            marginBottom: "1.5rem",
-            borderRadius: "2px",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1.25rem",
           }}
-          onMouseEnter={(e) => {
-            const img = (e.currentTarget as HTMLElement).querySelector(".cover-img") as HTMLElement | null;
-            if (img) img.style.transform = "scale(1.03)";
-          }}
-          onMouseLeave={(e) => {
-            const img = (e.currentTarget as HTMLElement).querySelector(".cover-img") as HTMLElement | null;
-            if (img) img.style.transform = "scale(1)";
-          }}
+          className="writing-grid"
         >
-          {/* Cover image */}
-          <div style={{ position: "relative", height: "clamp(260px, 40vw, 480px)", overflow: "hidden" }}>
-            <img
-              className="cover-img"
-              src={featured.coverImage}
-              alt={featured.coverImageAlt}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-            />
-            {/* Dark overlay gradient */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.05) 100%)",
-              }}
-            />
-            {/* Content over image */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: "clamp(1.5rem, 4vw, 3rem)",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.7rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.14em",
-                  color: "var(--accent-warm)",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                Featured · {featured.readingTime}
-              </div>
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.025em",
-                  color: "#ffffff",
-                  maxWidth: "56ch",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                {featured.title}
-              </h3>
-              <p
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "0.92rem",
-                  color: "rgba(255,255,255,0.7)",
-                  lineHeight: 1.6,
-                  maxWidth: "72ch",
-                  marginBottom: "1rem",
-                }}
-              >
-                {featured.description}
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                {featured.tags.slice(0, 4).map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.68rem",
-                      padding: "0.2rem 0.5rem",
-                      border: "1px solid rgba(255,255,255,0.25)",
-                      color: "rgba(255,255,255,0.7)",
-                      borderRadius: "2px",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Secondary articles — 2-col list */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "0" }}>
-          {secondary.map((article, index) => (
-            <Link
+          {articleMeta.map((article, index) => (
+            <ArticleCard
               key={article.slug}
-              to={`/writing/${article.slug}`}
-              ref={(el) => { cardRefs.current[index] = el; }}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "1.75rem 0",
-                borderBottom: "1px solid var(--rule)",
-                borderRight: index % 2 === 0 && index < secondary.length - 1 ? "1px solid var(--rule)" : "none",
-                paddingRight: index % 2 === 0 ? "clamp(1rem, 3vw, 2.5rem)" : 0,
-                paddingLeft: index % 2 === 1 ? "clamp(1rem, 3vw, 2.5rem)" : 0,
-                textDecoration: "none",
-                color: "inherit",
-                transition: "background 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "var(--bg-secondary)";
-                (e.currentTarget as HTMLAnchorElement).style.paddingInline = "1rem";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-                const isOdd = index % 2 === 1;
-                (e.currentTarget as HTMLAnchorElement).style.paddingLeft = isOdd ? "clamp(1rem, 3vw, 2.5rem)" : "0";
-                (e.currentTarget as HTMLAnchorElement).style.paddingRight = !isOdd ? "clamp(1rem, 3vw, 2.5rem)" : "0";
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.68rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "var(--accent-warm)",
-                  marginBottom: "0.6rem",
-                }}
-              >
-                {article.readingTime}
-              </div>
-
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: "clamp(1.05rem, 1.6vw, 1.3rem)",
-                  lineHeight: 1.2,
-                  letterSpacing: "-0.015em",
-                  color: "var(--text-primary)",
-                  marginBottom: "0.65rem",
-                  flexGrow: 1,
-                }}
-              >
-                {article.title}
-              </h3>
-
-              <p
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "0.85rem",
-                  color: "var(--text-muted)",
-                  lineHeight: 1.6,
-                  marginBottom: "1rem",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }}
-              >
-                {article.description}
-              </p>
-
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginTop: "auto" }}>
-                {article.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="editorial-tag" style={{ fontSize: "0.65rem" }}>{tag}</span>
-                ))}
-              </div>
-            </Link>
+              article={article}
+              index={index}
+              cardRef={(el) => { cardRefs.current[index] = el; }}
+            />
           ))}
         </div>
       </div>

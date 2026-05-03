@@ -11,20 +11,20 @@ export interface CaseStudyMeta {
 export const caseStudyMeta: CaseStudyMeta[] = [
   {
     slug: "headless-dashboard-library",
-    title: "Headless Dashboard Library",
-    role: "Solo lead frontend engineer",
+    title: "interactive-dashboard-library",
+    role: "Solo — personal initiative",
     years: "2024 – Present",
     stack: "React 19 · Zustand · dnd-kit · re-resizable · Framer Motion · Recharts · Nivo · TypeScript strict",
-    status: "In production · 4 apps · ~12 product teams",
-    description: "A headless composition framework that handles layout, drag-drop, resize, widget registration, persistence, polling, and widget-to-widget events. 11 built-in widgets, 9,026 lines of TypeScript.",
+    status: "In production · monitoring, analytics, and customer-facing apps",
+    description: "A headless framework for interactive dashboards — drag, drop, resize, responsive widget views, real-time endpoint config. Published as an internal GitHub package. Teams went from static dashboards to fully interactive ones.",
   },
   {
     slug: "ui-component-library",
-    title: "Shared UI Component Library",
-    role: "Solo lead frontend engineer",
+    title: "shared-packages/ui",
+    role: "Solo — no designer",
     years: "2024 – Present",
     stack: "React 19 · Radix UI · Tailwind CSS v4 · CVA · TanStack Table · TypeScript strict",
-    status: "In production · 4 apps · ~12 product teams",
-    description: "A 45-component React library with zero forks across 12 teams. Custom 12-step design token system, type-safe variants via CVA, 79 test files, 47 Storybook stories.",
+    status: "UI standard for the React monorepo — every new team adopts it on join",
+    description: "45-component React library built solo. The shared UI foundation for our monorepo migration — every new team adopts it as their standard. DataTable with RBAC, AutoForm from Zod, AI-native docs.",
   },
 ];

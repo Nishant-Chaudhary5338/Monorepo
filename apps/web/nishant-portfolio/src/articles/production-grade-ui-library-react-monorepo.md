@@ -16,7 +16,7 @@ tags: ["react", "typescript", "monorepo", "component-library", "frontend", "desi
 
 Multiple apps. Multiple separate repos. No shared conventions. One team was on Material UI, another on Chakra, two were copy-pasting shadcn components and immediately editing them. Every `Button` had its own loading state implementation. Every `Modal` closed on a different key. The codebase felt like six different companies had built it simultaneously — because, in a way, they had.
 
-That was the state before the company began migrating towards a React monorepo. I built `shared-packages/ui` as the shared UI foundation for that migration, working solo at my desk with no designer and no dedicated design systems team. This is a practitioner's account of why I built it, how I architected it, and what it took to get 45 components, 79 test files, and 47 Storybook stories shipping to production across four apps — with every new team joining the monorepo adopting it as their UI standard from day one.
+That was the state before the company began migrating towards a React monorepo. I built `shared-packages/ui` as the shared UI foundation for that migration, working solo at my desk with no designer and no dedicated design systems team. This is a practitioner's account of why I built it, how I architected it, and what it took to get 45 components, 79 test files, and 47 Storybook stories shipping to production across four apps — with every new team joining the monorepo adopting it as their UI standard from day one. The source is on [GitHub](https://github.com/Nishant-Chaudhary5338/modern-ui) and all 47 stories are live at [modern-ui-storybook.netlify.app](https://modern-ui-storybook.netlify.app/).
 
 > **Key Takeaways**
 > - A shared React component library eliminates UI fragmentation as separate repos migrate into a monorepo.
@@ -123,7 +123,7 @@ Why does `Avatar.docs.md` exist alongside Storybook? Storybook is great for inte
 
 Is this structure overkill for a `Spinner` component? Maybe. But the discipline pays off at scale — a developer joining the monorepo can open any folder in `shared-packages/ui` and immediately understand the full surface of that component without asking anyone.
 
-Storybook has **89,673 GitHub stars** and is used in production by Airbnb, Slack, Dropbox, Shopify, IBM, Uber, and Coursera ([Storybook.js official blog, 2024](https://storybook.js.org/blog/future-of-storybook-2024/)). New engineers joining teams on the monorepo spend their first 30 minutes in Storybook, not in Slack asking "what button component should I use?"
+Storybook has **89,673 GitHub stars** and is used in production by Airbnb, Slack, Dropbox, Shopify, IBM, Uber, and Coursera ([Storybook.js official blog, 2024](https://storybook.js.org/blog/future-of-storybook-2024/)). New engineers joining teams on the monorepo spend their first 30 minutes in Storybook, not in Slack asking "what button component should I use?" You can browse all 47 stories live at [modern-ui-storybook.netlify.app](https://modern-ui-storybook.netlify.app/).
 
 [UNIQUE INSIGHT] The seven-file structure eliminates a specific and underappreciated friction: onboarding delay. When every component follows the same shape, a developer who has never seen `CommandMenu.tsx` can contribute to it the same day they join. The constraint isn't bureaucracy — it's a shared mental model that scales with each new team.
 

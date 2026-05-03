@@ -163,10 +163,74 @@ const ArticlePage = () => {
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: "1.5rem", color: "var(--text-primary)" }}>
             {meta.title}
           </h1>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "1px solid var(--rule)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.4rem", marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "1px solid var(--rule)" }}>
             {meta.tags.map((tag) => (
               <span key={tag} className="editorial-tag">{tag}</span>
             ))}
+            {(meta.demoUrl || meta.repoUrl) && (
+              <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                {meta.repoUrl && (
+                  <a
+                    href={meta.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.72rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "var(--text-muted)",
+                      textDecoration: "none",
+                      border: "1px solid var(--rule)",
+                      padding: "0.3rem 0.8rem",
+                      borderRadius: "2px",
+                      transition: "border-color 0.2s, color 0.2s",
+                      whiteSpace: "nowrap",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--text-primary)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
+                    }}
+                  >
+                    GitHub →
+                  </a>
+                )}
+                {meta.demoUrl && (
+                  <a
+                    href={meta.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.72rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "var(--accent-warm)",
+                      textDecoration: "none",
+                      border: "1px solid var(--accent-warm)",
+                      padding: "0.3rem 0.8rem",
+                      borderRadius: "2px",
+                      transition: "background 0.2s, color 0.2s",
+                      whiteSpace: "nowrap",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = "var(--accent-warm)";
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--bg-primary)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-warm)";
+                    }}
+                  >
+                    {meta.demoLabel ?? "View Live →"}
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
