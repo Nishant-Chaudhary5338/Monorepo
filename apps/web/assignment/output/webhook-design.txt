@@ -1,4 +1,0 @@
-Webhook Design 
-==============================
-
-To run the conversion automatically via a webhook, I would expose a lightweight HTTP endpoint (e.g., Express or serverless function) that accepts POST requests containing the annotation JSON payload. Upon receipt, the endpoint would pipe the JSON body through the same conversion logic used in convert.ts -- parsing the tasks, iterating annotations, and generating the CSV -- then either store the output to cloud storage (S3/GCS) with a presigned URL returned in the response, or stream the CSV directly back as the HTTP response body. This approach requires no file system writes, scales horizontally behind a load balancer, and can be triggered by any system that sends HTTP POST requests (e.g., Label Studio webhooks, Zapier, or internal job queues).
