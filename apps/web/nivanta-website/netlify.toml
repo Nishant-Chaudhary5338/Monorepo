@@ -1,0 +1,13 @@
+[build]
+  base = "/"
+  command = "pnpm --filter nivanta-website build"
+  publish = "apps/web/nivanta-website/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "8.15.6"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

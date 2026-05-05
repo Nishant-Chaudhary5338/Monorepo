@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8CC7A;
+  --color-gold-dark: #A07830;
+  --color-charcoal: #1A1A1A;
+  --color-charcoal-light: #2D2D2D;
+  --color-muted: #6B6B6B;
+  --color-muted-light: #9A9A9A;
+  --color-cream: #FAF8F4;
+  --color-cream-dark: #F0ECE4;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/*
+  All base/reset styles must live inside @layer base so that
+  @layer utilities (Tailwind utilities) can override them.
+  Unlayered CSS has higher priority than any @layer block,
+  so placing resets outside a layer would clobber mx-auto, px-*, py-*, etc.
+*/
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-charcoal);
+    background-color: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+  }
+
+  p, ul, ol, li, figure, blockquote {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}

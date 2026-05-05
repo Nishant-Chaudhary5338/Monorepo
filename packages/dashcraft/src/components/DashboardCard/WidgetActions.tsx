@@ -63,16 +63,15 @@ export const WidgetActionButton = React.memo(function WidgetActionButton({
       type="button"
       className={`widget-action-btn absolute ${positionStyles[position]}
         flex items-center justify-center
-        w-5 h-5 rounded
-        bg-white/80
-        border border-gray-200/50
-        text-gray-500
-        hover:text-gray-700
-        hover:bg-white
-        hover:border-gray-300
+        w-6 h-6 rounded
+        bg-slate-100
+        border border-slate-300
+        text-slate-600
+        hover:text-slate-800
+        hover:bg-slate-200
+        hover:border-slate-400
         shadow-sm hover:shadow-md
-        transition-all duration-200 ease-in-out
-        opacity-60 hover:opacity-100
+        transition-all duration-150 ease-in-out
         cursor-pointer
         pointer-events-auto
         z-10
@@ -234,16 +233,15 @@ export const ResizeHandleButton = React.memo(function ResizeHandleButton({
       data-resize-handle-btn=""
       className={`widget-action-btn absolute ${positionStyles[position]}
         flex items-center justify-center
-        w-5 h-5 rounded
-        bg-white/80
-        border border-gray-200/50
-        text-gray-500
-        hover:text-gray-700
-        hover:bg-white
-        hover:border-gray-300
+        w-6 h-6 rounded
+        bg-indigo-50
+        border border-indigo-200
+        text-indigo-500
+        hover:text-indigo-700
+        hover:bg-indigo-100
+        hover:border-indigo-400
         shadow-sm hover:shadow-md
-        transition-all duration-200 ease-in-out
-        opacity-60 hover:opacity-100
+        transition-all duration-150 ease-in-out
         cursor-nwse-resize
         pointer-events-auto
         z-10

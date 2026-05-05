@@ -196,9 +196,10 @@ export const SettingsPanel = React.memo(function SettingsPanel({
             wrapper (AnimatePresence) loses that boundary and every internal click
             is treated as "outside", instantly closing the panel. */}
         <Popover.Content
-          sideOffset={6}
-          align="end"
-          collisionPadding={12}
+          side="bottom"
+          sideOffset={4}
+          align="start"
+          collisionPadding={16}
           style={{ zIndex: 10000 }}
           className="outline-none"
         >

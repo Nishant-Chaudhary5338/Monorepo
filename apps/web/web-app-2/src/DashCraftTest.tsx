@@ -89,7 +89,7 @@ function DataSummaryView({
 const TopRightControls = () => {
   const { isEditMode, toggleEditMode, resetLayout } = useDashboard();
   return (
-    <div style={{ position: "fixed", top: "52px", right: "16px", zIndex: 1000, display: "flex", gap: "8px" }}>
+    <div style={{ position: "fixed", top: "52px", right: "16px", zIndex: 9999, display: "flex", gap: "8px" }}>
       {isEditMode && (
         <button
           onClick={resetLayout}
@@ -116,21 +116,26 @@ const TopRightControls = () => {
         style={{
           background: isEditMode
             ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
-            : "linear-gradient(135deg, #1e293b, #334155)",
+            : "linear-gradient(135deg, #4f46e5, #7c3aed)",
           color: "#fff",
-          border: "1px solid rgba(255,255,255,0.15)",
+          border: isEditMode
+            ? "1px solid rgba(255,255,255,0.25)"
+            : "1px solid rgba(255,255,255,0.35)",
           borderRadius: "8px",
-          padding: "7px 14px",
-          fontSize: "12px",
-          fontWeight: 600,
+          padding: "7px 16px",
+          fontSize: "13px",
+          fontWeight: 700,
           cursor: "pointer",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+          boxShadow: isEditMode
+            ? "0 4px 12px rgba(99,102,241,0.5)"
+            : "0 4px 16px rgba(79,70,229,0.6), 0 0 0 1px rgba(124,58,237,0.3)",
           display: "flex",
           alignItems: "center",
-          gap: "5px",
+          gap: "6px",
+          letterSpacing: "0.01em",
         }}
       >
-        {isEditMode ? "✏️ Editing" : "⚙️ Edit Layout"}
+        {isEditMode ? "✏️ Editing" : "✏️ Edit Layout"}
       </button>
     </div>
   );
@@ -142,7 +147,7 @@ const TopLeftBadge = () => (
       position: "fixed",
       top: "52px",
       left: "16px",
-      zIndex: 1000,
+      zIndex: 9999,
       background: "linear-gradient(135deg, #0f172a, #1e293b)",
       border: "1px solid rgba(99,102,241,0.4)",
       borderRadius: "8px",
@@ -163,7 +168,7 @@ const TopLeftBadge = () => (
 const BottomLeftStatus = () => {
   const [refreshed, setRefreshed] = useState(false);
   return (
-    <div style={{ position: "fixed", bottom: "14px", left: "16px", zIndex: 1000 }}>
+    <div style={{ position: "fixed", bottom: "14px", left: "16px", zIndex: 9999 }}>
       <button
         onClick={() => {
           setRefreshed(true);
@@ -191,7 +196,7 @@ const BottomLeftStatus = () => {
 };
 
 const BottomRightExport = () => (
-  <div style={{ position: "fixed", bottom: "14px", right: "16px", zIndex: 1000 }}>
+  <div style={{ position: "fixed", bottom: "14px", right: "16px", zIndex: 9999 }}>
     <button
       style={{
         background: "linear-gradient(135deg, #1e3a5f, #1e40af)",

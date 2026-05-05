@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback, useState, useRef } from "react";
-import { Settings, Trash2 } from "lucide-react";
+import { Settings, Trash2, GripHorizontal, ChevronRight } from "lucide-react";
 import type {
   WidgetConfig,
   Position,
@@ -11,7 +11,6 @@ import type { ResizeHandle } from "../../hooks/useResize";
 import { useDashboardContext } from "../Dashboard/Dashboard.context";
 import { ResizeHandleButton } from "./WidgetActions";
 import { SettingsPanel } from "../Settings/SettingsPanel";
-import { DashboardCardViewCycler } from "./DashboardCardViewCycler";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useDraggable } from "../../hooks/useDraggable";
 import { useResize } from "../../hooks/useResize";
@@ -244,28 +243,37 @@ export const DashboardCard = React.memo(function DashboardCard({
   // View Cycler State
   // ==========================================================
 
-  const [_viewIndex, setViewIndex] = useState(0);
+  // null = auto (ResizeObserver drives the view), number = user-selected index
+  const [viewCyclerIndex, setViewCyclerIndex] = useState<number | null>(null);
 
-  const handleViewCycle = useCallback(
-    (breakpoint: number | "initial") => {
-      if (!viewBreakpoints) return;
+  const viewCyclerKeys = useMemo<(number | "initial")[]>(() => {
+    if (!viewBreakpoints) return [];
+    return Object.keys(viewBreakpoints)
+      .map((k) => (k === "initial" ? ("initial" as const) : Number(k)))
+      .filter((k) => k === "initial" || !isNaN(k as number))
+      .sort((a, b) => {
+        if (a === "initial") return -1;
+        if (b === "initial") return 1;
+        return (a as number) - (b as number);
+      });
+  }, [viewBreakpoints]);
 
-      const keys = Object.keys(viewBreakpoints)
-        .map((k) => (k === "initial" ? "initial" : Number(k)))
-        .filter((k) => k === "initial" || !isNaN(k as number))
-        .sort((a, b) => {
-          if (a === "initial") return -1;
-          if (b === "initial") return 1;
-          return (a as number) - (b as number);
-        });
+  // Content forced by the cycler button (overrides auto-responsive while in edit mode)
+  const forcedContent = useMemo<React.ReactNode | undefined>(() => {
+    if (viewCyclerIndex === null || !viewBreakpoints || viewCyclerKeys.length === 0) return undefined;
+    const bp = viewCyclerKeys[viewCyclerIndex];
+    if (!bp) return undefined;
+    if (bp === "initial") return viewBreakpoints.initial ?? children;
+    return (viewBreakpoints as Record<number, React.ReactNode>)[bp as number] ?? viewBreakpoints.initial ?? children;
+  }, [viewCyclerIndex, viewBreakpoints, viewCyclerKeys, children]);
 
-      const index = keys.indexOf(breakpoint);
-      if (index !== -1) {
-        setViewIndex(index);
-      }
-    },
-    [viewBreakpoints]
-  );
+  // Label shown on the cycler button
+  const viewCyclerLabel = useMemo<string>(() => {
+    const bp = viewCyclerKeys[viewCyclerIndex ?? 0];
+    if (!bp || bp === "initial") return "S";
+    if ((bp as number) <= 300) return "M";
+    return "L";
+  }, [viewCyclerKeys, viewCyclerIndex]);
 
   // ==========================================================
   // Event Handlers
@@ -391,6 +399,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       editModeRenderTracker.delete(id);
       transitioningToEditMode.delete(id);
       capturedPositionsRef.delete(id);
+      setViewCyclerIndex(null);
     }
   }, [isEditMode, id]);
 
@@ -481,9 +490,11 @@ export const DashboardCard = React.memo(function DashboardCard({
       height: height,
       transform: `translate3d(${baseX + dragX}px, ${baseY + dragY}px, 0)`,
       willChange: isDragging || isResizing ? "transform, width, height" : "auto",
-      // During drag, override settings opacity with drag feedback value
       opacity: isDragging ? 0.92 : settingsOpacity,
-      transition: shouldTransition ? "transform 0.2s ease, opacity 0.2s ease" : "none",
+      transition: shouldTransition ? "transform 0.2s ease, opacity 0.2s ease, box-shadow 0.15s ease" : "none",
+      boxShadow: isDragging
+        ? "0 12px 35px rgba(0,0,0,0.25), 0 0 0 2px rgba(99,102,241,0.8)"
+        : "0 0 0 2px rgba(99,102,241,0.45)",
     };
   }, [
     style,
@@ -558,7 +569,10 @@ export const DashboardCard = React.memo(function DashboardCard({
     return null;
   }
 
-  const content = viewBreakpoints ? responsiveContent : children;
+  // In edit mode the cycler can override the auto-responsive view
+  const content = viewBreakpoints
+    ? (forcedContent !== undefined ? forcedContent : responsiveContent)
+    : children;
 
   return (
     <div
@@ -569,56 +583,93 @@ export const DashboardCard = React.memo(function DashboardCard({
       data-widget-id={id}
       data-widget-type={type}
     >
-      {/* Drag handle — invisible full-width strip at top, sits behind action buttons */}
-      {isEditMode && draggable && (
-        <button
-          type="button"
-          className="absolute inset-x-0 top-0 h-8 z-0
-            bg-transparent border-none outline-none
-            cursor-grab active:cursor-grabbing
-            pointer-events-auto"
-          aria-label="Drag to move"
-          {...(attributes ?? {})}
-          {...(listeners ?? {})}
-        />
-      )}
-
-      {/* View cycler — visible in edit mode */}
+      {/* ── Edit-mode toolbar ── */}
       {isEditMode && (
-        <DashboardCardViewCycler
-          breakpoints={viewBreakpoints}
-          onCycle={handleViewCycle}
-          visible={showViewCycler && !!viewBreakpoints}
-        />
+        <div className="absolute inset-x-0 top-0 h-7 z-10 flex items-stretch
+          bg-slate-100/90 border-b border-slate-200/70 rounded-t overflow-hidden">
+
+          {/* Settings gear */}
+          {showSettings && widgetState && (
+            <SettingsPanel
+              id={id}
+              settings={widgetState.settings}
+              {...(onSettingsChange !== undefined && { onSettingsChange })}
+              trigger={
+                <button
+                  type="button"
+                  className="w-7 shrink-0 flex items-center justify-center
+                    text-slate-500 hover:text-slate-800
+                    hover:bg-slate-200/80 border-r border-slate-200/70
+                    transition-colors cursor-pointer"
+                  title="Widget settings"
+                  aria-label="Widget settings"
+                >
+                  <Settings size={12} />
+                </button>
+              }
+            />
+          )}
+
+          {/* View cycler — only when widget has breakpoints */}
+          {showViewCycler && viewBreakpoints && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const nextIdx = ((viewCyclerIndex ?? 0) + 1) % viewCyclerKeys.length;
+                setViewCyclerIndex(nextIdx);
+              }}
+              className="w-8 shrink-0 flex items-center justify-center gap-0.5
+                text-indigo-500 hover:text-indigo-700
+                hover:bg-indigo-50/80 border-r border-slate-200/70
+                text-[10px] font-bold tracking-wide
+                transition-colors cursor-pointer"
+              title={`Cycle view (${viewCyclerLabel})`}
+              aria-label="Cycle view"
+            >
+              {viewCyclerLabel}
+              <ChevronRight size={9} />
+            </button>
+          )}
+
+          {/* Drag grip — takes remaining space */}
+          {draggable ? (
+            <button
+              type="button"
+              className="flex-1 flex items-center justify-center
+                text-slate-400 hover:text-slate-600
+                cursor-grab active:cursor-grabbing
+                transition-colors select-none"
+              aria-label="Drag to move"
+              {...(attributes ?? {})}
+              {...(listeners ?? {})}
+            >
+              <GripHorizontal size={13} />
+            </button>
+          ) : (
+            <div className="flex-1" />
+          )}
+
+          {/* Delete button */}
+          {deletable && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="w-7 shrink-0 flex items-center justify-center
+                text-red-400 hover:text-red-600
+                hover:bg-red-50/80 border-l border-slate-200/70
+                transition-colors cursor-pointer"
+              title="Delete widget"
+              aria-label="Delete widget"
+            >
+              <Trash2 size={12} />
+            </button>
+          )}
+        </div>
       )}
 
-      {/* Delete button — top-right, visible in edit mode when deletable */}
-      {isEditMode && deletable && (
-        <button
-          type="button"
-          onClick={handleDelete}
-          className="widget-action-btn absolute top-1 right-1
-            flex items-center justify-center
-            w-5 h-5 rounded
-            bg-white/80
-            border border-gray-200/50
-            text-red-400
-            hover:text-red-600
-            hover:bg-red-50
-            hover:border-red-300
-            shadow-sm hover:shadow-md
-            transition-all duration-200 ease-in-out
-            opacity-60 hover:opacity-100
-            cursor-pointer pointer-events-auto z-10"
-          title="Delete widget"
-          aria-label="Delete widget"
-        >
-          <Trash2 size={11} />
-        </button>
-      )}
-
-      {/* Settings gear — bottom-left corner, visibility controlled by settingsVisibility prop */}
-      {showSettings && (settingsVisibility === "always" || isEditMode) && widgetState && (
+      {/* Settings gear in view mode when settingsVisibility="always" */}
+      {!isEditMode && showSettings && settingsVisibility === "always" && widgetState && (
         <SettingsPanel
           id={id}
           settings={widgetState.settings}
@@ -627,18 +678,10 @@ export const DashboardCard = React.memo(function DashboardCard({
             <button
               type="button"
               className="widget-action-btn absolute top-1 left-1
-                flex items-center justify-center
-                w-5 h-5 rounded
-                bg-white/80
-                border border-gray-200/50
-                text-gray-500
-                hover:text-gray-700
-                hover:bg-white
-                hover:border-gray-300
-                shadow-sm hover:shadow-md
-                transition-all duration-200 ease-in-out
-                opacity-60 hover:opacity-100
-                cursor-pointer pointer-events-auto z-10"
+                flex items-center justify-center w-6 h-6 rounded
+                bg-slate-100 border border-slate-300 text-slate-600
+                hover:text-slate-800 hover:bg-slate-200 hover:border-slate-400
+                shadow-sm transition-all duration-150 cursor-pointer pointer-events-auto z-10"
               title="Widget settings"
               aria-label="Widget settings"
             >
@@ -649,7 +692,7 @@ export const DashboardCard = React.memo(function DashboardCard({
       )}
 
       {/* Content — lightweight placeholder when off-screen */}
-      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-6 pb-6">
+      <div className="dashcraft-card-content flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden p-3 pt-7 pb-6">
         <div className="flex-1 min-h-0 min-w-0 w-full h-full">
           {isVisible ? content : <div className="w-full h-full min-h-25" />}
         </div>
