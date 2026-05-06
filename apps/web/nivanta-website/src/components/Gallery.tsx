@@ -8,12 +8,12 @@ type GalleryProps = {
 };
 
 const CATEGORIES: { value: GalleryCategory; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "rooms", label: "Rooms" },
-  { value: "dining", label: "Dining" },
-  { value: "pool", label: "Pool" },
-  { value: "events", label: "Events" },
-  { value: "grounds", label: "Grounds" },
+  { value: "all",        label: "All" },
+  { value: "rooms",      label: "Rooms & Suites" },
+  { value: "restaurant", label: "Restaurant — Ember" },
+  { value: "pool",       label: "Pool — Tattva" },
+  { value: "events",     label: "Banquet & Events" },
+  { value: "gardens",    label: "Property & Gardens" },
 ];
 
 export default function Gallery({ images }: GalleryProps): React.JSX.Element {

@@ -1,66 +1,202 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════
+   SILVANZA RESORT — BRAND TOKENS
+   Source: Silvanza Brand Identity Guidelines v1.0 2026
+═══════════════════════════════════════════════════════ */
 @theme {
-  --color-gold: #C9A84C;
-  --color-gold-light: #E8CC7A;
-  --color-gold-dark: #A07830;
-  --color-charcoal: #1A1A1A;
-  --color-charcoal-light: #2D2D2D;
-  --color-muted: #6B6B6B;
-  --color-muted-light: #9A9A9A;
-  --color-cream: #FAF8F4;
-  --color-cream-dark: #F0ECE4;
+  /* Brand Palette */
+  --color-forest-deep:  #032105;
+  --color-forest-mid:   #253A11;
+  --color-gold:         #B98F39;
+  --color-gold-dark:    #725B29;
+  --color-gold-light:   #A69045;
+  --color-gold-pale:    #D4B870;
+  --color-gold-cream:   #F5EDD4;
+  --color-ivory:        #FAF7F0;
+  --color-charcoal:     #1A1A17;
+  --color-muted:        #5a5545;
 
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  /* Typography */
+  --font-display:  'Cormorant Garamond', Georgia, serif;
+  --font-body:     'Jost', system-ui, sans-serif;
+  --font-campaign: 'Playfair Display', Georgia, serif;
+
+  /* Transitions */
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/*
-  All base/reset styles must live inside @layer base so that
-  @layer utilities (Tailwind utilities) can override them.
-  Unlayered CSS has higher priority than any @layer block,
-  so placing resets outside a layer would clobber mx-auto, px-*, py-*, etc.
-*/
+/* ═══ GLOBAL RESET ═══ */
 @layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
   }
 
   body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    font-weight: 300;
+    background-color: var(--color-ivory);
     color: var(--color-charcoal);
-    background-color: var(--color-cream);
+    line-height: 1.8;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin: 0;
-    padding: 0;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 0;
-    padding: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--color-forest-deep);
   }
 
-  p, ul, ol, li, figure, blockquote {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  img  { max-width: 100%; height: auto; display: block; }
+  a    { color: inherit; text-decoration: none; }
+  button { cursor: pointer; font-family: var(--font-body); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
   }
 
-  img {
-    max-width: 100%;
-    height: auto;
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    background: var(--color-gold);
+    color: var(--color-forest-deep);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .skip-link:focus { top: 1rem; }
+}
+
+/* ═══ COMPONENTS ═══ */
+@layer components {
+
+  /* ── BUTTONS (square corners — brand rule) ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+  }
+  .btn-primary  { background: var(--color-gold); color: var(--color-forest-deep); }
+  .btn-primary:hover { background: var(--color-gold-pale); transform: translateY(-2px); }
+  .btn-outline  { background: transparent; color: var(--color-forest-deep); border: 1px solid var(--color-forest-deep); }
+  .btn-outline:hover { background: var(--color-forest-deep); color: var(--color-gold); }
+  .btn-ghost    { background: transparent; color: var(--color-gold); border: 1px solid var(--color-gold); }
+  .btn-ghost:hover { background: var(--color-gold); color: var(--color-forest-deep); }
+  .btn-dark     { background: var(--color-forest-deep); color: var(--color-gold); }
+  .btn-dark:hover { background: var(--color-forest-mid); transform: translateY(-2px); }
+
+  /* ── EYEBROW TEXT ── */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
     display: block;
   }
+  .eyebrow-light { color: var(--color-gold-light); }
+  .eyebrow-dark  { color: var(--color-gold-dark); }
 
-  button {
-    cursor: pointer;
+  /* ── DIVIDER ── */
+  .divider-gold { width: 50px; height: 1px; background: var(--color-gold); margin: 1.25rem 0 2rem; }
+
+  /* ── SECTION PADDING ── */
+  .section-pad { padding: 4rem 1.25rem; }
+  @media (min-width: 768px)  { .section-pad { padding: 5rem 3rem; } }
+  @media (min-width: 1280px) { .section-pad { padding: 6rem 5rem; } }
+
+  /* ── CONTAINER ── */
+  .container-brand { max-width: 1280px; margin: 0 auto; width: 100%; }
+
+  /* ── HEADINGS ── */
+  .heading-display { font-family: var(--font-display); font-weight: 300; line-height: 1.08; letter-spacing: -0.01em; }
+  .heading-section { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 400; line-height: 1.15; color: var(--color-forest-deep); }
+
+  /* ── FORM INPUTS ── */
+  .input-brand {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 300;
+    background: white;
+    border: 1px solid rgba(185,143,57,0.35);
+    border-radius: 0;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    color: var(--color-charcoal);
+    transition: border-color var(--transition-base);
+  }
+  .input-brand:focus { outline: none; border-color: var(--color-gold); }
+  .input-brand::placeholder { color: var(--color-muted); font-weight: 300; }
+
+  /* ── DARK / GOLD-CREAM SECTIONS ── */
+  .section-dark        { background: var(--color-forest-deep); color: var(--color-ivory); }
+  .section-forest-mid  { background: var(--color-forest-mid);  color: var(--color-ivory); }
+  .section-gold-cream  { background: var(--color-gold-cream); }
+
+  /* ── BLOG ARTICLE CONTENT ── */
+  .blog-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+    font-weight: 500;
+    color: var(--color-forest-deep);
+    margin: 2.5rem 0 0.75rem;
+  }
+  .blog-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-forest-mid);
+    margin: 1.75rem 0 0.5rem;
+  }
+  .blog-content p { font-size: 1rem; font-weight: 300; line-height: 1.9; margin-bottom: 1.25rem; }
+  .blog-content blockquote {
+    border-left: 3px solid var(--color-gold);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--color-gold-cream);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--color-gold-dark);
+  }
+  .blog-content ul { list-style: none; margin: 1rem 0 1.5rem; padding: 0; }
+  .blog-content ul li { padding: 0.3rem 0 0.3rem 1.25rem; position: relative; font-weight: 300; }
+  .blog-content ul li::before { content: '—'; position: absolute; left: 0; color: var(--color-gold); }
+  .blog-content strong { font-weight: 500; color: var(--color-forest-deep); }
+  .blog-content em { font-style: italic; color: var(--color-gold-dark); }
+
+  /* ── SKELETON LOADER ── */
+  .skeleton-pulse {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    background: linear-gradient(90deg, var(--color-gold-cream) 25%, var(--color-ivory) 50%, var(--color-gold-cream) 75%);
+    background-size: 200% 100%;
+  }
+  @keyframes skeleton-pulse {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 }

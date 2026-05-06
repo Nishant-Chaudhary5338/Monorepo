@@ -1,141 +1,41 @@
 import type { GalleryImage } from "../types";
+import { GALLERY_IMAGES } from "../assets/media";
 
 export const galleryImages: GalleryImage[] = [
-  // Rooms
-  {
-    id: "r1",
-    src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop",
-    alt: "Apex Suite interior with king bed and forest view",
-    category: "rooms",
-  },
-  {
-    id: "r2",
-    src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
-    alt: "Aura room with elegant furnishings",
-    category: "rooms",
-  },
-  {
-    id: "r3",
-    src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&h=600&fit=crop",
-    alt: "Haven room overlooking the pool",
-    category: "rooms",
-  },
-  {
-    id: "r4",
-    src: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&h=600&fit=crop",
-    alt: "Breeze room with courtyard view",
-    category: "rooms",
-  },
-  {
-    id: "r5",
-    src: "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=800&h=600&fit=crop",
-    alt: "Luxury bathroom in Apex Suite",
-    category: "rooms",
-  },
-  {
-    id: "r6",
-    src: "https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=800&h=600&fit=crop",
-    alt: "Origin room with garden view",
-    category: "rooms",
-  },
-  // Dining
-  {
-    id: "d1",
-    src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop",
-    alt: "Ember restaurant dining ambiance",
-    category: "dining",
-  },
-  {
-    id: "d2",
-    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
-    alt: "Ember restaurant interior with warm lighting",
-    category: "dining",
-  },
-  {
-    id: "d3",
-    src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=600&fit=crop",
-    alt: "Signature dish at Ember",
-    category: "dining",
-  },
-  {
-    id: "d4",
-    src: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=600&fit=crop",
-    alt: "Al fresco dining by the pool",
-    category: "dining",
-  },
-  // Pool
-  {
-    id: "p1",
-    src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
-    alt: "Tattva adult pool surrounded by greenery",
-    category: "pool",
-  },
-  {
-    id: "p2",
-    src: "https://images.unsplash.com/photo-1543968996-ee822b8176ba?w=800&h=600&fit=crop",
-    alt: "Family pool area at Tattva",
-    category: "pool",
-  },
-  {
-    id: "p3",
-    src: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&h=600&fit=crop",
-    alt: "Poolside lounge at Silvanza",
-    category: "pool",
-  },
-  {
-    id: "p4",
-    src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop",
-    alt: "Evening pool with ambient lighting",
-    category: "pool",
-  },
-  // Events
-  {
-    id: "e1",
-    src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&h=600&fit=crop",
-    alt: "Orana banquet hall setup for a grand event",
-    category: "events",
-  },
-  {
-    id: "e2",
-    src: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&h=600&fit=crop",
-    alt: "Flaura lawn decorated for a garden wedding",
-    category: "events",
-  },
-  {
-    id: "e3",
-    src: "https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=800&h=600&fit=crop",
-    alt: "Corporate event setup at Silvanza",
-    category: "events",
-  },
-  {
-    id: "e4",
-    src: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&h=600&fit=crop",
-    alt: "Wedding celebration at Flaura lawn",
-    category: "events",
-  },
-  // Grounds
-  {
-    id: "g1",
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    alt: "Scenic forest surroundings near Jim Corbett",
-    category: "grounds",
-  },
-  {
-    id: "g2",
-    src: "https://images.unsplash.com/photo-1439853949212-36589f9f4d23?w=800&h=600&fit=crop",
-    alt: "Manicured garden pathways at Silvanza",
-    category: "grounds",
-  },
-  {
-    id: "g3",
-    src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=600&fit=crop",
-    alt: "Natural landscape around the resort",
-    category: "grounds",
-  },
-  {
-    id: "g4",
-    src: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=600&fit=crop",
-    alt: "Forest trail near the resort",
-    category: "grounds",
-  },
+  // Rooms & Suites
+  { id: "r1", src: GALLERY_IMAGES.rooms[0], alt: "Apex Suite — king bedroom with private terrace at Silvanza Resort", category: "rooms", width: 1200, height: 800 },
+  { id: "r2", src: GALLERY_IMAGES.rooms[1], alt: "Aura room — pool view room at Silvanza Resort Jim Corbett", category: "rooms", width: 1200, height: 800 },
+  { id: "r3", src: GALLERY_IMAGES.rooms[2], alt: "Haven room — garden sit-out at Silvanza Resort", category: "rooms", width: 1200, height: 800 },
+  { id: "r4", src: GALLERY_IMAGES.rooms[3], alt: "Lush room — private balcony with garden view at Silvanza", category: "rooms", width: 1200, height: 800 },
+  { id: "r5", src: GALLERY_IMAGES.rooms[4], alt: "Breeze room — interior at Silvanza Resort Ramnagar", category: "rooms", width: 1200, height: 800 },
+  { id: "r6", src: GALLERY_IMAGES.rooms[5], alt: "Origin room — cosy luxury at Silvanza Resort", category: "rooms", width: 1200, height: 800 },
+  // Restaurant — Ember
+  { id: "d1", src: GALLERY_IMAGES.restaurant[0], alt: "Ember restaurant — dining with pool view at Silvanza Resort", category: "restaurant", width: 1200, height: 800 },
+  { id: "d2", src: GALLERY_IMAGES.restaurant[1], alt: "Kumaoni cuisine at Ember restaurant, Silvanza Resort", category: "restaurant", width: 1200, height: 800 },
+  { id: "d3", src: GALLERY_IMAGES.restaurant[2], alt: "Bar at Ember — cocktails and fine spirits at Silvanza", category: "restaurant", width: 1200, height: 800 },
+  { id: "d4", src: GALLERY_IMAGES.restaurant[3], alt: "Al fresco dining at Ember restaurant, Silvanza Jim Corbett", category: "restaurant", width: 1200, height: 800 },
+  // Pool — Tattva
+  { id: "p1", src: GALLERY_IMAGES.pool[0], alt: "Tattva adults pool — Silvanza Resort Jim Corbett", category: "pool", width: 1200, height: 800 },
+  { id: "p2", src: GALLERY_IMAGES.pool[1], alt: "Tattva family pool with children's splash zone, Silvanza Resort", category: "pool", width: 1200, height: 800 },
+  { id: "p3", src: GALLERY_IMAGES.pool[2], alt: "Poolside lounge at Silvanza Resort, Dhikuli", category: "pool", width: 1200, height: 800 },
+  { id: "p4", src: GALLERY_IMAGES.pool[3], alt: "Golden hour at Tattva pool, Silvanza Resort Ramnagar", category: "pool", width: 1200, height: 800 },
+  // Banquet & Events
+  { id: "e1", src: GALLERY_IMAGES.events[0], alt: "Flaura lawn — wedding celebration at Silvanza Resort", category: "events", width: 1200, height: 800 },
+  { id: "e2", src: GALLERY_IMAGES.events[1], alt: "Orana banquet hall — corporate event at Silvanza Resort", category: "events", width: 1200, height: 800 },
+  { id: "e3", src: GALLERY_IMAGES.events[2], alt: "Destination wedding setup at Silvanza Resort Jim Corbett", category: "events", width: 1200, height: 800 },
+  { id: "e4", src: GALLERY_IMAGES.events[3], alt: "Evening celebration under stars at Flaura lawn, Silvanza", category: "events", width: 1200, height: 800 },
+  // Property & Gardens
+  { id: "g1", src: GALLERY_IMAGES.gardens[0], alt: "Forest surroundings near Jim Corbett National Park — Silvanza Resort", category: "gardens", width: 1200, height: 800 },
+  { id: "g2", src: GALLERY_IMAGES.gardens[1], alt: "Manicured gardens at Silvanza Resort, Dhikuli Ramnagar", category: "gardens", width: 1200, height: 800 },
+  { id: "g3", src: GALLERY_IMAGES.gardens[2], alt: "4-acre grounds at Silvanza Resort — lawns and landscaping", category: "gardens", width: 1200, height: 800 },
+  { id: "g4", src: GALLERY_IMAGES.gardens[3], alt: "Natural landscape around Silvanza Resort — Kosi Valley, Uttarakhand", category: "gardens", width: 1200, height: 800 },
 ];
+
+export const GALLERY_CATEGORY_LABELS: Record<string, string> = {
+  all:        "All",
+  rooms:      "Rooms & Suites",
+  restaurant: "Restaurant — Ember",
+  pool:       "Pool — Tattva",
+  events:     "Banquet & Events",
+  gardens:    "Property & Gardens",
+};

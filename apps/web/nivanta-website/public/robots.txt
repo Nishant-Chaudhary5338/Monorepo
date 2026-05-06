@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://silvanzaresort.com/sitemap.xml
+
+# Disallow admin/private paths (add if needed)
+# Disallow: /admin/
