@@ -13,8 +13,9 @@ export const HERO_VIDEO_URL = "/videos/hero.mp4";
 
 // Hero background image — Unsplash forest (WebP, 1920×1080, fetchPriority high)
 // Preloaded in index.html <link rel="preload"> for best LCP score.
+// Must match the preload URL in index.html exactly so the browser uses the cached version
 export const HERO_VIDEO_POSTER =
-  "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&h=1080&fit=crop&q=85&fm=webp&auto=format";
+  "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1280&h=720&fit=crop&q=80&fm=webp";
 
 // ── HELPER: Pexels WebP URL builder ──────────────────────
 // Pexels CDN supports auto-format (WebP on supporting browsers) via fm=webp
