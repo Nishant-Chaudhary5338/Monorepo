@@ -61,6 +61,17 @@ export default function Navbar(): React.JSX.Element {
         className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between"
         aria-label="Primary navigation"
       >
+        {/* Hidden PNG probe — outside the Link so it doesn't affect accessible name */}
+        <img
+          src="/logo-light.png"
+          alt=""
+          className="sr-only"
+          onLoad={() => setLogoLoaded(true)}
+          onError={() => {}}
+          aria-hidden="true"
+          role="presentation"
+        />
+
         {/* ── Logo ─────────────────────────────────────── */}
         <Link to="/" className="block" aria-label="Silvanza Resort — Home">
           {logoLoaded ? (
@@ -76,17 +87,7 @@ export default function Navbar(): React.JSX.Element {
               }}
             />
           ) : (
-            <>
-              <img
-                src="/logo-light.png"
-                alt=""
-                className="hidden"
-                onLoad={() => setLogoLoaded(true)}
-                onError={() => {}}
-                aria-hidden="true"
-              />
-              <LogoWordmark scrolled={scrolled} />
-            </>
+            <LogoWordmark scrolled={scrolled} />
           )}
         </Link>
 

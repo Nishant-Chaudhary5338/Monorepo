@@ -1,44 +1,68 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HERO_VIDEO_URL, HERO_VIDEO_POSTER } from "../assets/media";
 
 export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   return (
     <section
       className="relative h-screen min-h-150 flex items-center justify-center overflow-hidden"
       aria-label="Silvanza Resort hero — Where the Forest Meets Finesse"
     >
-      {/* Video background */}
+      {/* ── Background layer ───────────────────────────── */}
       <div className="absolute inset-0">
+        {/*
+         * Fallback background image — always visible, reliable Unsplash CDN.
+         * Replaced by the video layer when the client's video file is placed at
+         * public/videos/hero.mp4  (HERO_VIDEO_URL points there by default).
+         */}
+        {/* Hero background image — WebP, preloaded in index.html for best LCP */}
+        <img
+          src={HERO_VIDEO_POSTER}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={1920}
+          height={1080}
+          aria-hidden="true"
+        />
+
+        {/* Video — sits on top of the image; only visible when it actually plays */}
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
-          poster={HERO_VIDEO_POSTER}
-          className="w-full h-full object-cover"
+          preload="none"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            videoPlaying ? "opacity-100" : "opacity-0"
+          }`}
           aria-hidden="true"
+          onCanPlay={() => setVideoPlaying(true)}
+          onError={() => setVideoPlaying(false)}
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
-        {/* Forest-deep gradient overlay — brand spec */}
+
+        {/* Brand gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(3,33,5,0.55) 0%, rgba(3,33,5,0.3) 55%, rgba(3,33,5,0.72) 100%)",
+              "linear-gradient(to bottom, rgba(3,33,5,0.55) 0%, rgba(3,33,5,0.28) 55%, rgba(3,33,5,0.75) 100%)",
           }}
+          aria-hidden="true"
         />
       </div>
 
-      {/* Content */}
+      {/* ── Content ─────────────────────────────────────── */}
       <div className="relative z-10 text-center px-5 max-w-5xl mx-auto">
-        {/* Eyebrow */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,7 +72,6 @@ export default function Hero(): React.JSX.Element {
           Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
         </motion.p>
 
-        {/* Main headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -61,7 +84,6 @@ export default function Hero(): React.JSX.Element {
           <span className="italic text-gold-pale">Meets Finesse</span>
         </motion.h1>
 
-        {/* Sub-headline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,7 +96,6 @@ export default function Hero(): React.JSX.Element {
           and the elegance of thoughtfully designed spaces come together in one unforgettable stay.
         </motion.p>
 
-        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,7 +111,7 @@ export default function Hero(): React.JSX.Element {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll indicator ─────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -98,13 +119,16 @@ export default function Hero(): React.JSX.Element {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <span className="eyebrow text-white/50" style={{ letterSpacing: "0.3em", fontSize: "0.55rem" }}>
+        <span
+          className="eyebrow text-white/50"
+          style={{ letterSpacing: "0.3em", fontSize: "0.55rem" }}
+        >
           Discover
         </span>
         <motion.div
           animate={{ y: [0, 7, 0] }}
           transition={{ duration: 1.6, repeat: Infinity }}
-          className="w-px h-8 bg-gradient-to-b from-gold-pale/70 to-transparent"
+          className="w-px h-8 bg-linear-to-b from-gold-pale/70 to-transparent"
         />
       </motion.div>
     </section>
