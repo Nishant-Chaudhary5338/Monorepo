@@ -7,8 +7,10 @@
 
 // ── HERO VIDEO ──────────────────────────────────────────
 // Replace with client's 30-second scenic property video (MP4)
+// Mixkit free video — forest stream in sunlight. CORS-open, 1080p, commercial use free.
+// Replace with client's 30-second property video when received.
 export const HERO_VIDEO_URL =
-  "https://videos.pexels.com/video-files/3571264/3571264-hd_1920_1080_25fps.mp4";
+  "https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4";
 
 // Replace with a high-quality still frame from the hero video
 export const HERO_VIDEO_POSTER =

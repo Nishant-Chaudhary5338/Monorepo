@@ -26,20 +26,50 @@ const stagger = (i: number) => ({ ...fadeUp, transition: { duration: 0.55, delay
 
 // ── Inline section components ────────────────────────────
 
+// ── Luxury SVG icons for stats strip ────────────────────
+const STAT_ICONS = [
+  // Leaf / nature — Acres
+  <svg key="acres" viewBox="0 0 32 32" fill="none" className="w-8 h-8 mx-auto" aria-hidden="true">
+    <path d="M16 28 C16 28 4 22 4 12 C4 6 10 2 16 2 C22 2 28 6 28 12 C28 22 16 28 16 28Z" stroke="#D4B870" strokeWidth="1.5" fill="none"/>
+    <path d="M16 28 L16 14" stroke="#B98F39" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M16 20 C13 18 10 16 10 12" stroke="#A69045" strokeWidth="1" strokeLinecap="round" fill="none"/>
+    <path d="M16 20 C19 18 22 16 22 12" stroke="#A69045" strokeWidth="1" strokeLinecap="round" fill="none"/>
+  </svg>,
+  // Key — Rooms
+  <svg key="rooms" viewBox="0 0 32 32" fill="none" className="w-8 h-8 mx-auto" aria-hidden="true">
+    <circle cx="11" cy="13" r="7" stroke="#D4B870" strokeWidth="1.5" fill="none"/>
+    <circle cx="11" cy="13" r="3" stroke="#B98F39" strokeWidth="1" fill="none"/>
+    <path d="M17 17 L28 28" stroke="#D4B870" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M24 24 L24 28 L28 28" stroke="#A69045" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>,
+  // Arch / event hall — Sq Ft
+  <svg key="sqft" viewBox="0 0 32 32" fill="none" className="w-8 h-8 mx-auto" aria-hidden="true">
+    <path d="M4 28 L4 16 Q4 4 16 4 Q28 4 28 16 L28 28" stroke="#D4B870" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+    <path d="M4 28 L28 28" stroke="#B98F39" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M10 28 L10 18 Q10 12 16 12 Q22 12 22 18 L22 28" stroke="#A69045" strokeWidth="1" strokeLinecap="round" fill="none"/>
+  </svg>,
+  // Crescent + star — 24x7 service
+  <svg key="service" viewBox="0 0 32 32" fill="none" className="w-8 h-8 mx-auto" aria-hidden="true">
+    <circle cx="16" cy="16" r="12" stroke="#D4B870" strokeWidth="1.5" fill="none"/>
+    <path d="M16 8 L16 16 L22 16" stroke="#B98F39" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="16" cy="16" r="1.5" fill="#B98F39"/>
+    <path d="M16 4 L16 6" stroke="#A69045" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M16 26 L16 28" stroke="#A69045" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M4 16 L6 16" stroke="#A69045" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M26 16 L28 16" stroke="#A69045" strokeWidth="1.2" strokeLinecap="round"/>
+  </svg>,
+];
+
 function StatsStrip(): React.JSX.Element {
   return (
-    <section className="bg-forest-deep py-10" aria-label="Resort highlights">
+    <section className="bg-forest-deep py-12" aria-label="Resort highlights">
       <div className="container-brand mx-auto px-5">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              {...stagger(i)}
-              className="text-center"
-            >
-              <div className="text-2xl mb-1" aria-hidden="true">{s.icon}</div>
-              <p className="font-serif text-3xl font-light text-gold mb-1">{s.value}</p>
-              <p className="eyebrow eyebrow-light" style={{ letterSpacing: "0.2em" }}>{s.label}</p>
+            <motion.div key={s.label} {...stagger(i)} className="text-center">
+              <div className="mb-3">{STAT_ICONS[i]}</div>
+              <p className="font-serif text-4xl font-light text-gold mb-1">{s.value}</p>
+              <p className="eyebrow eyebrow-light" style={{ letterSpacing: "0.18em", fontSize: "0.58rem" }}>{s.label}</p>
             </motion.div>
           ))}
         </div>
@@ -368,26 +398,20 @@ function LocationSection(): React.JSX.Element {
             </p>
           </motion.div>
 
-          {/* Map placeholder */}
+          {/* Google Maps embed */}
           <motion.div {...fadeUp} transition={{ delay: 0.2 }} className="flex flex-col gap-4">
-            <div
-              className="flex-1 min-h-64 bg-forest-mid/40 border border-gold/15 flex items-center justify-center"
-              aria-label="Google Maps location placeholder — Silvanza Resort, Dhikuli, Ramnagar"
-            >
-              {/* Replace with Google Maps embed in next session */}
-              <div className="text-center p-8">
-                <div className="text-4xl mb-4" aria-hidden="true">📍</div>
-                <p className="font-serif text-ivory/60 text-lg mb-2">Silvanza Resort by Nivanta</p>
-                <p className="text-ivory/35 text-xs font-light">Village Dhikuli, Ramnagar, Uttarakhand 244715</p>
-                <a
-                  href="https://maps.google.com/?q=Dhikuli+Ramnagar+Uttarakhand"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost text-xs mt-5 inline-block"
-                >
-                  Open in Google Maps
-                </a>
-              </div>
+            <div className="flex-1 min-h-72 overflow-hidden border border-gold/20">
+              <iframe
+                src="https://maps.google.com/maps?q=Dhikuli,Ramnagar,Uttarakhand&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                title="Silvanza Resort location — Dhikuli, Ramnagar, Uttarakhand"
+                width="100%"
+                height="100%"
+                className="w-full h-72 grayscale-30 contrast-[1.05]"
+                style={{ border: 0, minHeight: "18rem" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                aria-label="Google Maps showing Silvanza Resort location in Dhikuli, Ramnagar"
+              />
             </div>
 
             {/* Quick contact */}

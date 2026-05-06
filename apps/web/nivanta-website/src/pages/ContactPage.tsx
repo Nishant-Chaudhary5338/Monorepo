@@ -184,23 +184,26 @@ export default function ContactPage(): React.JSX.Element {
                 </a>
               </div>
 
-              {/* Map placeholder */}
-              <div
-                className="w-full aspect-video bg-[#253A11]/10 border border-[#B98F39]/30 flex items-center justify-center"
-              >
-                <div className="text-center">
-                  <p className="text-[#5a5545] font-light text-sm mb-2">
-                    Village Dhikuli, Ramnagar
-                  </p>
-                  <a
-                    href="https://maps.google.com/?q=Dhikuli+Ramnagar+Uttarakhand"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-outline text-xs"
-                  >
-                    Open in Google Maps
-                  </a>
-                </div>
+              {/* Google Maps embed */}
+              <div className="w-full overflow-hidden border border-gold/20">
+                <iframe
+                  src="https://maps.google.com/maps?q=Dhikuli,Ramnagar,Uttarakhand&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  title="Silvanza Resort — Dhikuli, Ramnagar, Uttarakhand"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0, display: "block" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  aria-label="Silvanza Resort location map"
+                />
+                <a
+                  href="https://maps.google.com/?q=Dhikuli+Ramnagar+Uttarakhand"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center py-2 text-xs text-gold hover:underline bg-gold-cream"
+                >
+                  Open in Google Maps →
+                </a>
               </div>
             </motion.div>
 

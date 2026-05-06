@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { rooms, STANDARD_ROOM_AMENITIES } from "../data/rooms";
+import Lightbox from "../components/Lightbox";
 
 export default function RoomsPage(): React.JSX.Element {
+  const [lightbox, setLightbox] = useState<{ images: { src: string; alt: string }[]; index: number } | null>(null);
+
   usePageMeta({
     title: "Rooms & Suites — Silvanza Resort by Nivanta Jim Corbett",
     description:
@@ -62,8 +66,21 @@ export default function RoomsPage(): React.JSX.Element {
                 transition={{ duration: 0.55, delay: i * 0.08 }}
                 className="group bg-white border border-gold/15 overflow-hidden"
               >
-                <Link to={`/rooms/${room.slug}`} className="block">
-                  <div className="overflow-hidden aspect-[4/3]">
+                {/* Image — click opens lightbox, card navigates to detail */}
+                <button
+                  className="block w-full text-left cursor-zoom-in"
+                  onClick={() =>
+                    setLightbox({
+                      images: room.images.map((src, idx) => ({
+                        src,
+                        alt: `${room.name} — image ${idx + 1} at Silvanza Resort`,
+                      })),
+                      index: 0,
+                    })
+                  }
+                  aria-label={`View ${room.name} photos`}
+                >
+                  <div className="overflow-hidden aspect-[4/3] relative">
                     <img
                       src={room.image}
                       alt={`${room.name} at Silvanza Resort — ${room.view}`}
@@ -72,7 +89,14 @@ export default function RoomsPage(): React.JSX.Element {
                       width={600}
                       height={450}
                     />
+                    <div className="absolute inset-0 bg-forest-deep/0 group-hover:bg-forest-deep/25 transition-colors duration-300 flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-forest-deep/70 text-gold text-xs tracking-widest uppercase px-3 py-1.5">
+                        View Photos
+                      </span>
+                    </div>
                   </div>
+                </button>
+                <Link to={`/rooms/${room.slug}`} className="block">
                   <div className="p-6">
                     <span className="eyebrow eyebrow-dark mb-1">{room.view}</span>
                     <h2 className="font-serif text-2xl font-medium text-forest-deep mt-1">{room.name}</h2>
@@ -100,6 +124,16 @@ export default function RoomsPage(): React.JSX.Element {
           </div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          initialIndex={lightbox.index}
+          open={lightbox !== null}
+          onClose={() => setLightbox(null)}
+        />
+      )}
 
       {/* Standard amenities */}
       <section className="section-pad section-gold-cream" aria-labelledby="standard-amenities-heading">

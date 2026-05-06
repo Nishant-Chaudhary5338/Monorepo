@@ -90,7 +90,7 @@ export default function Lightbox({ images, initialIndex, open, onClose }: Lightb
                   key={i}
                   onClick={(e) => { e.stopPropagation(); setIndex(i); }}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === index ? "bg-[#C9A84C]" : "bg-white/40"
+                    i === index ? "bg-gold" : "bg-white/40"
                   }`}
                 />
               ))}
