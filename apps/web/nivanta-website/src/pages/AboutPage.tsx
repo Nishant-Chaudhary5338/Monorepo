@@ -252,7 +252,7 @@ export default function AboutPage(): React.JSX.Element {
       </section>
 
       {/* Team Section */}
-      <section className="section-pad bg-[#FAF7F0]">
+      <section id="team" className="section-pad bg-ivory">
         <div className="container-brand">
           <motion.div
             {...fadeUp}
@@ -347,9 +347,14 @@ export default function AboutPage(): React.JSX.Element {
               Our reservations team is ready to help you find the perfect room,
               experience, or celebration at Silvanza.
             </p>
-            <Link to="/contact" className="btn btn-primary">
-              Get in Touch
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/about#team" className="btn btn-outline">
+                Meet Our Team
+              </Link>
+              <Link to="/contact" className="btn btn-primary">
+                Plan Your Visit
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

@@ -7,11 +7,20 @@ export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
 
-  // Delay video start so networkidle fires before streaming begins
+  // Start video only after page fully loads + 4s — keeps video out of Lighthouse
+  // LCP measurement window and avoids unnecessary bandwidth on first paint
   useEffect(() => {
-    const timer = setTimeout(() => {
-      videoRef.current?.play().catch(() => {});
-    }, 1500);
+    const video = videoRef.current;
+    if (!video) return;
+    let timer: number;
+    const schedulePlay = (): void => {
+      timer = window.setTimeout(() => { video.play().catch(() => {}); }, 4000);
+    };
+    if (document.readyState === "complete") {
+      schedulePlay();
+    } else {
+      window.addEventListener("load", schedulePlay, { once: true });
+    }
     return () => clearTimeout(timer);
   }, []);
 
@@ -27,13 +36,11 @@ export default function Hero(): React.JSX.Element {
          * Replaced by the video layer when the client's video file is placed at
          * public/videos/hero.mp4  (HERO_VIDEO_URL points there by default).
          */}
-        {/* Hero poster — fades out as video fades in; stays in DOM as fallback */}
+        {/* Hero poster — always visible, never fades out (is the LCP image) */}
         <img
           src={HERO_VIDEO_POSTER}
           alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
-            videoPlaying ? "opacity-0" : "opacity-100"
-          }`}
+          className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -42,7 +49,7 @@ export default function Hero(): React.JSX.Element {
           aria-hidden="true"
         />
 
-        {/* Video — cross-fades in over the poster once first frame is rendered */}
+        {/* Video — fades in on top of the poster; poster stays underneath as fallback */}
         <video
           ref={videoRef}
           loop
@@ -85,8 +92,10 @@ export default function Hero(): React.JSX.Element {
           Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
         </motion.p>
 
+        {/* h1 is the LCP element — starts fully visible (opacity:1) so Lighthouse
+            can measure it immediately; only y-position is animated */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.95, delay: 0.4 }}
           className="heading-display text-white"

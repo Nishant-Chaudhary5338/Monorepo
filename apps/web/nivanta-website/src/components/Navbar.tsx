@@ -74,7 +74,7 @@ export default function Navbar(): React.JSX.Element {
         />
 
         {/* ── Logo ─────────────────────────────────────── */}
-        <Link to="/" className="block" aria-label="Silvanza Resort — Home">
+        <Link to="/" className="flex flex-col items-start leading-none" aria-label="Silvanza Resort — Home">
           {logoLoaded ? (
             <img
               src="/logo-light.png"
@@ -90,6 +90,15 @@ export default function Navbar(): React.JSX.Element {
           ) : (
             <LogoWordmark scrolled={scrolled} />
           )}
+          <span
+            className="tracking-[0.18em] uppercase font-light mt-0.5 transition-colors duration-300"
+            style={{
+              fontSize: "0.48rem",
+              color: scrolled ? "var(--color-gold-dark)" : "rgba(212,184,112,0.8)",
+            }}
+          >
+            A Signature Experience Crafted Especially for You
+          </span>
         </Link>
 
         {/* ── Desktop nav ── */}

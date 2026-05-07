@@ -28,5 +28,5 @@ export const stats: Stat[] = [
   { value: "4", label: "Acres of Lush Resort Grounds", icon: "🌿" },
   { value: "50", label: "Rooms Across Six Categories", icon: "🏨" },
   { value: "22,500", label: "Sq. Ft. of Event & Banquet Space", icon: "🎪" },
-  { value: "24×7", label: "Dedicated Hospitality Service", icon: "✦" },
+  { value: "24×7×365", label: "Dedicated Hospitality Service", icon: "✦" },
 ];

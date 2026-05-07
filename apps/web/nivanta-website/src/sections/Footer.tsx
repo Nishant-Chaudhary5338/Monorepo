@@ -56,12 +56,21 @@ const socials = [
       </svg>
     ),
   },
+  {
+    label: "Twitter / X",
+    href: "https://x.com/nivantaindia",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    ),
+  },
 ];
 
 export default function Footer(): React.JSX.Element {
   return (
     <footer
-      className="bg-[#020f03] text-white/60"
+      className="bg-[#020f03] text-white/75"
       role="contentinfo"
       aria-label="Site footer"
     >
@@ -94,7 +103,7 @@ export default function Footer(): React.JSX.Element {
             <p className="text-xs font-serif italic text-gold-light mb-4 leading-relaxed">
               "A Signature Experience Crafted Especially for You"
             </p>
-            <p className="text-xs leading-relaxed text-white/60 mb-5">
+            <p className="text-xs leading-relaxed text-white/75 mb-5">
               A 4-acre luxury sanctuary in Dhikuli, Ramnagar — at the gateway to Jim Corbett National Park.
             </p>
 
@@ -152,7 +161,7 @@ export default function Footer(): React.JSX.Element {
           {/* Contact */}
           <address className="not-italic">
             <p className="eyebrow eyebrow-light mb-5">Contact</p>
-            <div className="space-y-3 text-xs text-white/65">
+            <div className="space-y-3 text-xs text-white/80">
               <p className="leading-relaxed">
                 Village – Dhikuli, Ramnagar,<br />
                 Uttarakhand 244715, India
