@@ -27,11 +27,13 @@ export default function Hero(): React.JSX.Element {
          * Replaced by the video layer when the client's video file is placed at
          * public/videos/hero.mp4  (HERO_VIDEO_URL points there by default).
          */}
-        {/* Hero background image — WebP, preloaded in index.html for best LCP */}
+        {/* Hero poster — fades out as video fades in; stays in DOM as fallback */}
         <img
           src={HERO_VIDEO_POSTER}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+            videoPlaying ? "opacity-0" : "opacity-100"
+          }`}
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -40,18 +42,18 @@ export default function Hero(): React.JSX.Element {
           aria-hidden="true"
         />
 
-        {/* Video — sits on top of the image; only visible when it actually plays */}
+        {/* Video — cross-fades in over the poster once first frame is rendered */}
         <video
           ref={videoRef}
           loop
           muted
           playsInline
           preload="none"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
             videoPlaying ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden="true"
-          onCanPlay={() => setVideoPlaying(true)}
+          onPlaying={() => setVideoPlaying(true)}
           onError={() => setVideoPlaying(false)}
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
@@ -74,7 +76,11 @@ export default function Hero(): React.JSX.Element {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="eyebrow eyebrow-light mb-6"
+          className="eyebrow mb-6"
+          style={{
+            color: "rgba(255,255,255,0.92)",
+            textShadow: "0 1px 4px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.7)",
+          }}
         >
           Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
         </motion.p>

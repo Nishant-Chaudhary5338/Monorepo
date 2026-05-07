@@ -23,37 +23,55 @@ export const PROPERTY_IMAGES = {
 };
 
 // ── ROOM IMAGES ──────────────────────────────────────────
-// Each room uses 3 full-size images (hero card + lightbox slides)
+// All available shots per room — index 0 is the card hero, rest shown in lightbox
 export const ROOM_IMAGES = {
   apexSuites: [
     "/images/rooms/apex/apex-01-full.webp",
     "/images/rooms/apex/apex-02-full.webp",
     "/images/rooms/apex/apex-03-full.webp",
+    "/images/rooms/apex/apex-04-full.webp",
+    "/images/rooms/apex/apex-05-full.webp",
   ],
   aura: [
     "/images/rooms/aura/aura-01-full.webp",
     "/images/rooms/aura/aura-02-full.webp",
     "/images/rooms/aura/aura-03-full.webp",
+    "/images/rooms/aura/aura-04-full.webp",
+    "/images/rooms/aura/aura-05-full.webp",
   ],
   haven: [
     "/images/rooms/haven/haven-01-full.webp",
     "/images/rooms/haven/haven-02-full.webp",
     "/images/rooms/haven/haven-03-full.webp",
+    "/images/rooms/haven/haven-04-full.webp",
+    "/images/rooms/haven/haven-05-full.webp",
   ],
   lush: [
     "/images/rooms/lush/lush-01-full.webp",
     "/images/rooms/lush/lush-02-full.webp",
     "/images/rooms/lush/lush-03-full.webp",
+    "/images/rooms/lush/lush-04-full.webp",
+    "/images/rooms/lush/lush-05-full.webp",
+    "/images/rooms/lush/lush-06-full.webp",
+    "/images/rooms/lush/lush-07-full.webp",
+    "/images/rooms/lush/lush-08-full.webp",
   ],
   breeze: [
     "/images/rooms/breeze/breeze-01-full.webp",
     "/images/rooms/breeze/breeze-02-full.webp",
     "/images/rooms/breeze/breeze-03-full.webp",
+    "/images/rooms/breeze/breeze-04-full.webp",
+    "/images/rooms/breeze/breeze-05-full.webp",
+    "/images/rooms/breeze/breeze-06-full.webp",
   ],
   origin: [
     "/images/rooms/origin/origin-01-full.webp",
     "/images/rooms/origin/origin-02-full.webp",
     "/images/rooms/origin/origin-03-full.webp",
+    "/images/rooms/origin/origin-04-full.webp",
+    "/images/rooms/origin/origin-05-full.webp",
+    "/images/rooms/origin/origin-06-full.webp",
+    "/images/rooms/origin/origin-07-full.webp",
   ],
 };
 

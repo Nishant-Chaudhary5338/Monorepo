@@ -3,11 +3,17 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { rooms, STANDARD_ROOM_AMENITIES } from "../data/rooms";
+import Lightbox from "../components/Lightbox";
 
 export default function RoomDetailPage(): React.JSX.Element {
   const { slug } = useParams<{ slug: string }>();
   const room = rooms.find((r) => r.slug === slug);
   const [activeImg, setActiveImg] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const lightboxImages = room
+    ? room.images.map((src, i) => ({ src, alt: `${room.name} — view ${i + 1} at Silvanza Resort` }))
+    : [];
 
   usePageMeta(
     room
@@ -61,7 +67,15 @@ export default function RoomDetailPage(): React.JSX.Element {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Gallery */}
             <div>
-              <div className="overflow-hidden aspect-[4/3] mb-3">
+              {/* Main image — click to open lightbox */}
+              <div
+                className="overflow-hidden aspect-4/3 mb-3 cursor-zoom-in relative group"
+                onClick={() => setLightboxOpen(true)}
+                role="button"
+                aria-label="Open image gallery"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === "Enter" && setLightboxOpen(true)}
+              >
                 <motion.img
                   key={activeImg}
                   initial={{ opacity: 0 }}
@@ -69,25 +83,32 @@ export default function RoomDetailPage(): React.JSX.Element {
                   transition={{ duration: 0.4 }}
                   src={room.images[activeImg]}
                   alt={`${room.name} — view ${activeImg + 1} at Silvanza Resort`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="eager"
                   width={800}
                   height={600}
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-xs tracking-[0.25em] uppercase bg-black/40 px-4 py-2">
+                    View Gallery
+                  </span>
+                </div>
               </div>
+
+              {/* Thumbnails — click to select + open lightbox */}
               {room.images.length > 1 && (
                 <div className="flex gap-2">
                   {room.images.map((src, i) => (
                     <button
                       key={src}
-                      onClick={() => setActiveImg(i)}
-                      className={`flex-1 aspect-square overflow-hidden border-2 transition-colors ${i === activeImg ? "border-gold" : "border-transparent"}`}
+                      onClick={() => { setActiveImg(i); setLightboxOpen(true); }}
+                      className={`flex-1 aspect-square overflow-hidden border-2 transition-colors ${i === activeImg ? "border-gold" : "border-transparent hover:border-gold/40"}`}
                       aria-label={`View image ${i + 1}`}
                     >
                       <img
                         src={src}
                         alt={`${room.name} thumbnail ${i + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                         width={200}
                         height={200}
@@ -97,6 +118,13 @@ export default function RoomDetailPage(): React.JSX.Element {
                 </div>
               )}
             </div>
+
+            <Lightbox
+              images={lightboxImages}
+              initialIndex={activeImg}
+              open={lightboxOpen}
+              onClose={() => setLightboxOpen(false)}
+            />
 
             {/* Info */}
             <div>
@@ -171,7 +199,7 @@ export default function RoomDetailPage(): React.JSX.Element {
             {otherRooms.map((r) => (
               <article key={r.id} className="group bg-white border border-gold/15 overflow-hidden">
                 <Link to={`/rooms/${r.slug}`} className="block">
-                  <div className="overflow-hidden aspect-[4/3]">
+                  <div className="overflow-hidden aspect-4/3">
                     <img
                       src={r.image}
                       alt={`${r.name} at Silvanza Resort`}

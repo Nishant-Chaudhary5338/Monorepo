@@ -8,10 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:visual": "playwright test",
-    "test:visual:headed": "playwright test --headed",
-    "test:visual:report": "playwright show-report",
-    "qa": "pnpm build && pnpm test:visual"
+    "test:visual": "playwright test tests/visual.spec.ts",
+    "test:visual:headed": "playwright test tests/visual.spec.ts --headed",
+    "test:interaction": "playwright test tests/interaction.spec.ts",
+    "test:a11y": "playwright test tests/a11y.spec.ts",
+    "test:performance": "playwright test tests/performance.spec.ts",
+    "test:all": "playwright test",
+    "test:report": "playwright show-report",
+    "ci": "pnpm build && pnpm test:all"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -23,6 +27,7 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^9.39.4",
     "@playwright/test": "^1.59.1",
     "@repo/eslint-config": "workspace:*",
