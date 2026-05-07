@@ -56,25 +56,25 @@ export default function Overview(): React.JSX.Element {
             className="grid grid-cols-2 gap-4"
           >
             <img
-              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop"
+              src="/images/exteriors/exterior-05-full.webp"
               alt="Resort exterior"
               loading="lazy"
               className="w-full h-56 object-cover"
             />
             <img
-              src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop"
+              src="/images/amenities/pool/pool-02-full.webp"
               alt="Pool at Silvanza"
               loading="lazy"
               className="w-full h-56 object-cover mt-8"
             />
             <img
-              src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop"
+              src="/images/amenities/restaurant/restaurant-03-full.webp"
               alt="Ember restaurant"
               loading="lazy"
               className="w-full h-56 object-cover -mt-8"
             />
             <img
-              src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop"
+              src="/images/amenities/banquet/banquet-02-full.webp"
               alt="Banquet hall"
               loading="lazy"
               className="w-full h-56 object-cover"

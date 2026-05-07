@@ -8,7 +8,7 @@ const venues = [
     area: "4,500 sq ft",
     capacity: "500 guests",
     features: ["Pillar-free", "A/V setup", "Climate controlled", "Catering included"],
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=700&h=500&fit=crop",
+    image: "/images/amenities/banquet/banquet-01-full.webp",
   },
   {
     name: "Flaura",
@@ -16,7 +16,7 @@ const venues = [
     area: "18,000 sq ft",
     capacity: "1000+ guests",
     features: ["Open-air", "Scenic backdrop", "Garden lighting", "Full event support"],
-    image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=700&h=500&fit=crop",
+    image: "/images/amenities/outdoor-dining/dining-07-full.webp",
   },
 ];
 

@@ -1,56 +1,78 @@
 /* ═══════════════════════════════════════════════════════
-   SILVANZA RESORT — MEDIA ASSET REGISTRY
+   NIVANTA RESORT — MEDIA ASSET REGISTRY
    Single source of truth for all images and videos.
    TO SWAP: replace the URL string — no structural changes needed.
-   Real photos/video arrive next session.
-   All images use WebP format for optimal performance.
+   All images served locally as WebP (quality 85, max 1920 px).
 ═══════════════════════════════════════════════════════ */
 
 // ── HERO VIDEO ──────────────────────────────────────────
-// Place client's 30-second property video at public/videos/hero.mp4
-// Then this URL (/videos/hero.mp4) works automatically with no code change.
 export const HERO_VIDEO_URL = "/videos/hero.mp4";
 
-// Hero background image — Unsplash forest (WebP, 1920×1080, fetchPriority high)
+// Hero poster: extracted frame from the property video (WebP, 1920px, quality 90)
 // Preloaded in index.html <link rel="preload"> for best LCP score.
-// Must match the preload URL in index.html exactly so the browser uses the cached version
-export const HERO_VIDEO_POSTER =
-  "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1280&h=720&fit=crop&q=80&fm=webp";
-
-// ── HELPER: Pexels WebP URL builder ──────────────────────
-// Pexels CDN supports auto-format (WebP on supporting browsers) via fm=webp
-const px = (id: number, w = 1200, h?: number): string =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}${h ? `&h=${h}` : ""}&fm=webp`;
+// Must match the preload URL in index.html exactly.
+export const HERO_VIDEO_POSTER = "/videos/hero-poster.webp";
 
 // ── PROPERTY IMAGES ─────────────────────────────────────
+// Four overview shots from the Exteriors set (drone + ground)
 export const PROPERTY_IMAGES = {
-  overview1: px(258154,  800),
-  overview2: px(261102,  800),
-  overview3: px(2034335, 800),
-  overview4: px(189296,  800),
+  overview1: "/images/exteriors/exterior-01-full.webp",
+  overview2: "/images/exteriors/exterior-02-full.webp",
+  overview3: "/images/exteriors/exterior-03-full.webp",
+  overview4: "/images/exteriors/exterior-04-full.webp",
 };
 
 // ── ROOM IMAGES ──────────────────────────────────────────
+// Each room uses 3 full-size images (hero card + lightbox slides)
 export const ROOM_IMAGES = {
-  apexSuites: [px(1743231), px(1457842), px(2029694)],
-  aura:       [px(1428348), px(271624),  px(164595)],
-  haven:      [px(2034335), px(237371),  px(1838554)],
-  lush:       [px(262048),  px(210265),  px(1743229)],
-  breeze:     [px(271618),  px(164595),  px(1457842)],
-  origin:     [px(2029697), px(271624),  px(262048)],
+  apexSuites: [
+    "/images/rooms/apex/apex-01-full.webp",
+    "/images/rooms/apex/apex-02-full.webp",
+    "/images/rooms/apex/apex-03-full.webp",
+  ],
+  aura: [
+    "/images/rooms/aura/aura-01-full.webp",
+    "/images/rooms/aura/aura-02-full.webp",
+    "/images/rooms/aura/aura-03-full.webp",
+  ],
+  haven: [
+    "/images/rooms/haven/haven-01-full.webp",
+    "/images/rooms/haven/haven-02-full.webp",
+    "/images/rooms/haven/haven-03-full.webp",
+  ],
+  lush: [
+    "/images/rooms/lush/lush-01-full.webp",
+    "/images/rooms/lush/lush-02-full.webp",
+    "/images/rooms/lush/lush-03-full.webp",
+  ],
+  breeze: [
+    "/images/rooms/breeze/breeze-01-full.webp",
+    "/images/rooms/breeze/breeze-02-full.webp",
+    "/images/rooms/breeze/breeze-03-full.webp",
+  ],
+  origin: [
+    "/images/rooms/origin/origin-01-full.webp",
+    "/images/rooms/origin/origin-02-full.webp",
+    "/images/rooms/origin/origin-03-full.webp",
+  ],
 };
 
 // ── AMENITY IMAGES ────────────────────────────────────────
+// Thumb-size (800 px) for amenity tiles; switch to -full.webp for detail views
 export const AMENITY_IMAGES = {
-  ember:    px(262978),
-  tattva:   px(261403),
-  orana:    px(1395967),
-  flaura:   px(169190),
-  security: px(430208),
-  parking:  px(1004409),
+  ember:    "/images/amenities/restaurant/restaurant-01-thumb.webp",
+  tattva:   "/images/amenities/pool/pool-01-thumb.webp",
+  orana:    "/images/amenities/banquet/banquet-01-thumb.webp",
+  flaura:   "/images/amenities/outdoor-dining/dining-01-thumb.webp",
+  security: "https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp",
+  parking:  "https://images.pexels.com/photos/1004409/pexels-photo-1004409.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp",
 };
 
 // ── BLOG THUMBNAILS ───────────────────────────────────────
+// No blog-specific photos delivered — keeping Pexels CDN for now
+const px = (id: number, w = 1200, h?: number): string =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}${h ? `&h=${h}` : ""}&fm=webp`;
+
 export const BLOG_IMAGES = {
   cuisine:      px(1640772, 800),
   wellness:     px(3822622, 800),
@@ -59,14 +81,43 @@ export const BLOG_IMAGES = {
 };
 
 // ── GALLERY IMAGES ────────────────────────────────────────
+// Thumb-size (800 px) for grid; rooms/events cross-reference real room shots
 export const GALLERY_IMAGES = {
-  rooms:      [px(1743231), px(1428348), px(271624),  px(2034335), px(237371),  px(1457842)],
-  restaurant: [px(262978),  px(1640772), px(941861),  px(1395967)],
-  pool:       [px(261403),  px(189296),  px(2034335), px(258154)],
-  events:     [px(169190),  px(1395967), px(1729797), px(210186)],
-  gardens:    [px(3225531), px(167699),  px(210265),  px(430208)],
+  rooms: [
+    "/images/rooms/apex/apex-01-thumb.webp",
+    "/images/rooms/aura/aura-01-thumb.webp",
+    "/images/rooms/haven/haven-01-thumb.webp",
+    "/images/rooms/lush/lush-01-thumb.webp",
+    "/images/rooms/breeze/breeze-01-thumb.webp",
+    "/images/rooms/origin/origin-01-thumb.webp",
+  ],
+  restaurant: [
+    "/images/amenities/restaurant/restaurant-01-thumb.webp",
+    "/images/amenities/restaurant/restaurant-02-thumb.webp",
+    "/images/amenities/restaurant/restaurant-03-thumb.webp",
+    "/images/amenities/restaurant/restaurant-04-thumb.webp",
+  ],
+  pool: [
+    "/images/amenities/pool/pool-01-thumb.webp",
+    "/images/amenities/pool/pool-02-thumb.webp",
+    "/images/amenities/pool/pool-03-thumb.webp",
+    "/images/gallery/gallery-01-thumb.webp",
+  ],
+  events: [
+    "/images/amenities/banquet/banquet-01-thumb.webp",
+    "/images/amenities/banquet/banquet-02-thumb.webp",
+    "/images/amenities/banquet/banquet-03-thumb.webp",
+    "/images/gallery/gallery-02-thumb.webp",
+  ],
+  gardens: [
+    "/images/amenities/outdoor-dining/dining-01-thumb.webp",
+    "/images/amenities/outdoor-dining/dining-02-thumb.webp",
+    "/images/amenities/outdoor-dining/dining-03-thumb.webp",
+    "/images/amenities/outdoor-dining/dining-04-thumb.webp",
+  ],
 };
 
 // ── OG / SHARE IMAGE ─────────────────────────────────────
-// Replace with actual designed OG image (1200×630px) once available
-export const OG_IMAGE = px(3225531, 1200, 630);
+// Best aerial drone exterior shot, served at full 1920 px
+// (crop to 1200×630 is handled by meta tag consumers)
+export const OG_IMAGE = "/images/exteriors/exterior-01-full.webp";

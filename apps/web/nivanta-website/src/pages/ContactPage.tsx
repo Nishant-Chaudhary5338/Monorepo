@@ -287,10 +287,10 @@ export default function ContactPage(): React.JSX.Element {
                   </div>
 
                   <div>
-                    <label className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
+                    <label htmlFor="enquiryType" className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
                       Type of Enquiry *
                     </label>
-                    <select {...register("enquiryType")} className="input-brand">
+                    <select id="enquiryType" {...register("enquiryType")} className="input-brand">
                       <option value="stay">Stay</option>
                       <option value="events">Events &amp; Weddings</option>
                       <option value="corporate">Corporate</option>
@@ -300,20 +300,22 @@ export default function ContactPage(): React.JSX.Element {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
+                      <label htmlFor="checkin" className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
                         Check-in Date
                       </label>
                       <input
+                        id="checkin"
                         {...register("checkin")}
                         type="date"
                         className="input-brand"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
+                      <label htmlFor="checkout" className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">
                         Check-out Date
                       </label>
                       <input
+                        id="checkout"
                         {...register("checkout")}
                         type="date"
                         className="input-brand"

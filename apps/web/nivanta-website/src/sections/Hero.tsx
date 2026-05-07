@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HERO_VIDEO_URL, HERO_VIDEO_POSTER } from "../assets/media";
@@ -6,6 +6,14 @@ import { HERO_VIDEO_URL, HERO_VIDEO_POSTER } from "../assets/media";
 export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
+
+  // Delay video start so networkidle fires before streaming begins
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      videoRef.current?.play().catch(() => {});
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section
@@ -35,7 +43,6 @@ export default function Hero(): React.JSX.Element {
         {/* Video — sits on top of the image; only visible when it actually plays */}
         <video
           ref={videoRef}
-          autoPlay
           loop
           muted
           playsInline

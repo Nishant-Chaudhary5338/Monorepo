@@ -17,6 +17,8 @@ const ROUTES = [
   { path: "/gallery",    name: "gallery" },
   { path: "/contact",    name: "contact" },
   { path: "/blog",       name: "blog" },
+  { path: "/blog/journey-through-traditional-cuisine", name: "blog-detail" },
+  { path: "/nonexistent-page", name: "not-found" },
 ];
 
 const VIEWPORTS = [
@@ -74,7 +76,8 @@ for (const viewport of VIEWPORTS) {
 
         if (route.name === "contact") {
           await expect(page.locator("form[data-netlify='true']")).toBeVisible();
-          await expect(page.locator("[href^='tel:']")).toHaveCount.greaterThan ? undefined : undefined;
+          // Scope to main — the navbar tel link is hidden on mobile
+          await expect(page.locator("main [href^='tel:']").first()).toBeVisible();
         }
 
         if (route.name === "rooms") {

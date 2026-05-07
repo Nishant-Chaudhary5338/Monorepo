@@ -52,15 +52,14 @@
     <!-- ═══ FONT PRECONNECT ═══ -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://images.pexels.com" />
 
-    <!-- ═══ LCP IMAGE PRELOAD — hero background (Unsplash, WebP) ═══ -->
+    <!-- ═══ LCP IMAGE PRELOAD — hero poster (local WebP, extracted from hero video) ═══ -->
     <!-- This is the Largest Contentful Paint element; preloading it improves LCP by 2–3s -->
-    <!-- Hero image preload — 1280px WebP (faster than 1920, looks identical on most screens) -->
     <link
       rel="preload"
       as="image"
-      href="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1280&h=720&fit=crop&q=80&fm=webp"
+      href="/videos/hero-poster.webp"
       type="image/webp"
       fetchpriority="high"
     />
