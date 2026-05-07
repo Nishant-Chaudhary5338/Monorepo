@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LogoWordmark } from "./LogoSVG";
 
 const navLinks = [
-  { label: "About Us",      to: "/about" },
-  { label: "Our Rooms",     to: "/rooms" },
-  { label: "Our Amenities", to: "/amenities" },
-  { label: "Restaurant",    to: "/restaurant" },
-  { label: "Gallery",       to: "/gallery" },
-  { label: "Contact Us",    to: "/contact" },
+  { label: "About Us",         to: "/about" },
+  { label: "Our Rooms",        to: "/rooms" },
+  { label: "Our Amenities",    to: "/amenities" },
+  { label: "Restaurant",       to: "/restaurant" },
+  { label: "Events & Weddings", to: "/events" },
+  { label: "Gallery",          to: "/gallery" },
+  { label: "Contact Us",       to: "/contact" },
 ];
 
 export default function Navbar(): React.JSX.Element {

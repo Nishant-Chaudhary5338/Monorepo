@@ -75,6 +75,22 @@ export const ROOM_IMAGES = {
   ],
 };
 
+// ── EVENTS / WEDDINGS IMAGES ─────────────────────────────
+export const EVENT_IMAGES = {
+  orana: [
+    "/images/amenities/banquet/banquet-01-full.webp",
+    "/images/amenities/banquet/banquet-02-full.webp",
+    "/images/amenities/banquet/banquet-03-full.webp",
+  ],
+  flaura: [
+    "/images/amenities/outdoor-dining/dining-07-full.webp",
+    "/images/amenities/outdoor-dining/dining-05-full.webp",
+    "/images/amenities/outdoor-dining/dining-11-full.webp",
+    "/images/amenities/outdoor-dining/dining-12-full.webp",
+  ],
+  hero: "/images/amenities/banquet/banquet-01-full.webp",
+};
+
 // ── AMENITY IMAGES ────────────────────────────────────────
 // Thumb-size (800 px) for amenity tiles; switch to -full.webp for detail views
 export const AMENITY_IMAGES = {
