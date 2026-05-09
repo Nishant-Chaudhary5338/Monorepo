@@ -1,7 +1,11 @@
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { amenities } from "../data/amenities";
+import GoldIcon from "../components/GoldIcon";
+import Lightbox from "../components/Lightbox";
+import type { Amenity } from "../types";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -23,12 +27,171 @@ const standardInclusions = [
   "Air-conditioning and blackout curtains in all rooms",
 ];
 
+// ── Icon helpers ───────────────────────────────────────────
+function ChevLeft(): React.JSX.Element {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+function ChevRight(): React.JSX.Element {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+function GridIcon(): React.JSX.Element {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+    </svg>
+  );
+}
+
+// ── Carousel component ────────────────────────────────────
+type CarouselProps = {
+  amenity: Amenity;
+  bgGradient: string;
+  onOpenLightbox: (images: { src: string; alt: string }[], idx: number) => void;
+};
+
+function AmenityCarousel({ amenity, bgGradient, onOpenLightbox }: CarouselProps): React.JSX.Element {
+  const [idx, setIdx] = useState(0);
+  const gallery = (amenity.images && amenity.images.length > 0)
+    ? amenity.images
+    : [amenity.image].filter(Boolean) as string[];
+  const total = gallery.length;
+
+  const prev = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i - 1 + total) % total);
+  }, [total]);
+
+  const next = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIdx((i) => (i + 1) % total);
+  }, [total]);
+
+  const open = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onOpenLightbox(
+      gallery.map((src, i) => ({ src, alt: `${amenity.name} — view ${i + 1} at Silvanza Resort` })),
+      idx
+    );
+  }, [gallery, amenity.name, idx, onOpenLightbox]);
+
+  return (
+    <div className="relative">
+      {/* Overflow container */}
+      <div className="aspect-4/3 w-full overflow-hidden relative group" style={{ background: bgGradient }}>
+        {gallery[idx] && (
+          <img
+            src={gallery[idx]}
+            alt={`${amenity.name} — ${amenity.subtitle} at Silvanza Resort`}
+            loading="lazy"
+            width={800}
+            height={600}
+            className="w-full h-full object-cover transition-opacity duration-500"
+          />
+        )}
+
+        {/* Hover scrim */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
+
+        {/* Prev arrow */}
+        {total > 1 && (
+          <button
+            onClick={prev}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
+            aria-label="Previous image"
+          >
+            <ChevLeft />
+          </button>
+        )}
+
+        {/* Next arrow */}
+        {total > 1 && (
+          <button
+            onClick={next}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
+            aria-label="Next image"
+          >
+            <ChevRight />
+          </button>
+        )}
+
+        {/* Gallery button + counter — bottom right */}
+        {total > 0 && (
+          <button
+            onClick={open}
+            className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/60 hover:bg-black/85 text-white text-[0.58rem] tracking-widest uppercase px-2.5 py-1.5 transition-colors duration-200 z-10 opacity-0 group-hover:opacity-100"
+            aria-label={`View all ${total} photos of ${amenity.name}`}
+          >
+            <GridIcon />
+            {total > 1 && <span>{idx + 1} / {total}</span>}
+            {total === 1 && <span>View Photo</span>}
+          </button>
+        )}
+
+        {/* Dot indicators */}
+        {total > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            {gallery.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
+                className={`block rounded-full transition-all duration-200 ${
+                  i === idx ? "w-5 h-1.5 bg-gold" : "w-1.5 h-1.5 bg-white/60 hover:bg-white"
+                }`}
+                aria-label={`Go to image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Decorative corner — outside overflow container so it's visible */}
+      <div
+        className="absolute -bottom-4 -right-4 w-24 h-24 border border-gold"
+        style={{ pointerEvents: "none" }}
+      />
+    </div>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────
 export default function AmenitiesPage(): React.JSX.Element {
+  const [lightbox, setLightbox] = useState<{ images: { src: string; alt: string }[]; index: number } | null>(null);
+
+  const openLightbox = useCallback((images: { src: string; alt: string }[], index: number) => {
+    setLightbox({ images, index });
+  }, []);
+
+  const bgGradients = [
+    "linear-gradient(135deg, #032105 0%, #253A11 100%)",
+    "linear-gradient(135deg, #1A1A17 0%, #032105 100%)",
+    "linear-gradient(135deg, #253A11 0%, #B98F39 100%)",
+    "linear-gradient(135deg, #032105 0%, #253A11 100%)",
+    "linear-gradient(135deg, #1A1A17 0%, #253A11 100%)",
+    "linear-gradient(135deg, #1A1A17 0%, #253A11 100%)",
+  ];
+
   usePageMeta({
     title: "Our Amenities — Silvanza Resort Jim Corbett",
     description:
       "Discover Silvanza Resort's amenities: Tattva pools, Ember restaurant, Orana 4500 sq ft banquet hall, Flaura 18000 sq ft lawn, free parking and 24x7 security.",
     canonical: "/amenities",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://silvanzaresort.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Amenities", "item": "https://silvanzaresort.com/amenities" }
+      ]
+    },
   });
 
   return (
@@ -40,23 +203,16 @@ export default function AmenitiesPage(): React.JSX.Element {
       >
         <div
           className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse at 70% 40%, #B98F39 0%, transparent 65%)",
-          }}
+          style={{ backgroundImage: "radial-gradient(ellipse at 70% 40%, #B98F39 0%, transparent 65%)" }}
         />
         <div className="container-brand section-pad relative z-10 pb-20">
-          <motion.span
-            {...fadeUp}
-            transition={{ duration: 0.6 }}
-            className="eyebrow eyebrow-light mb-6"
-          >
+          <motion.span {...fadeUp} transition={{ duration: 0.6 }} className="eyebrow eyebrow-light mb-6">
             Silvanza Resort
           </motion.span>
           <motion.h1
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif text-[#FAF7F0] font-light"
+            className="font-serif text-ivory font-light"
             style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
           >
             A Lifestyle, Not a List
@@ -64,10 +220,9 @@ export default function AmenitiesPage(): React.JSX.Element {
           <motion.p
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-5 text-[#D4B870] font-light max-w-lg"
+            className="mt-5 text-gold-pale font-light max-w-lg"
           >
-            Every amenity at Silvanza exists to deepen your experience — not to
-            fill a brochure.
+            Every amenity at Silvanza exists to deepen your experience — not to fill a brochure.
           </motion.p>
         </div>
       </section>
@@ -78,7 +233,7 @@ export default function AmenitiesPage(): React.JSX.Element {
         return (
           <section
             key={amenity.id}
-            className={`section-pad ${i % 2 === 0 ? "bg-[#FAF7F0]" : "bg-[#F5EDD4]"}`}
+            className={`section-pad ${i % 2 === 0 ? "bg-ivory" : "bg-gold-cream"}`}
           >
             <div className="container-brand">
               <div
@@ -86,41 +241,15 @@ export default function AmenitiesPage(): React.JSX.Element {
                   isEven ? "" : "lg:[&>*:first-child]:order-2"
                 }`}
               >
-                {/* Image side */}
+                {/* Image carousel */}
                 <motion.div
                   {...fadeUp}
                   transition={{ duration: 0.7, delay: isEven ? 0 : 0.1 }}
-                  className="relative"
                 >
-                  <div
-                    className="aspect-[4/3] w-full overflow-hidden"
-                    style={{
-                      background:
-                        i === 0
-                          ? "linear-gradient(135deg, #032105 0%, #253A11 100%)"
-                          : i === 1
-                          ? "linear-gradient(135deg, #1A1A17 0%, #032105 100%)"
-                          : i === 2
-                          ? "linear-gradient(135deg, #253A11 0%, #B98F39 100%)"
-                          : i === 3
-                          ? "linear-gradient(135deg, #032105 0%, #253A11 100%)"
-                          : "linear-gradient(135deg, #1A1A17 0%, #253A11 100%)",
-                    }}
-                  >
-                    {amenity.image && (
-                      <img
-                        src={amenity.image}
-                        alt={`${amenity.name} — ${amenity.subtitle} at Silvanza Resort`}
-                        loading="lazy"
-                        width={800}
-                        height={600}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div
-                    className="absolute -bottom-4 -right-4 w-24 h-24 border border-[#B98F39]"
-                    style={{ pointerEvents: "none" }}
+                  <AmenityCarousel
+                    amenity={amenity}
+                    bgGradient={bgGradients[i] ?? bgGradients[0]}
+                    onOpenLightbox={openLightbox}
                   />
                 </motion.div>
 
@@ -129,16 +258,19 @@ export default function AmenitiesPage(): React.JSX.Element {
                   {...fadeUp}
                   transition={{ duration: 0.7, delay: isEven ? 0.1 : 0 }}
                 >
-                  <span className="eyebrow eyebrow-dark mb-5">{amenity.icon} {amenity.subtitle}</span>
+                  <span className="eyebrow eyebrow-dark mb-5 flex items-center gap-2">
+                    {amenity.icon && <GoldIcon name={amenity.icon} size={14} className="text-gold inline-block" />}
+                    {amenity.subtitle}
+                  </span>
                   <h2 className="heading-section mb-5">{amenity.name}</h2>
                   <div className="divider-gold" />
-                  <p className="text-[#5a5545] font-light leading-relaxed mb-8">
+                  <p className="text-muted font-light leading-relaxed mb-8">
                     {amenity.description}
                   </p>
                   <ul className="space-y-3">
                     {amenity.details.map((detail) => (
-                      <li key={detail} className="flex items-start gap-3 text-[#5a5545] font-light">
-                        <span className="text-[#B98F39] mt-1 shrink-0">—</span>
+                      <li key={detail} className="flex items-start gap-3 text-muted font-light">
+                        <span className="text-gold mt-1 shrink-0">—</span>
                         <span>{detail}</span>
                       </li>
                     ))}
@@ -153,16 +285,9 @@ export default function AmenitiesPage(): React.JSX.Element {
       {/* Standard Inclusions */}
       <section className="section-dark section-pad">
         <div className="container-brand">
-          <motion.div
-            {...fadeUp}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
+          <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="text-center mb-14">
             <span className="eyebrow eyebrow-light mb-5">Every Room, Every Night</span>
-            <h2
-              className="font-serif text-[#FAF7F0] font-light"
-              style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)" }}
-            >
+            <h2 className="font-serif text-ivory font-light" style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)" }}>
               Standard Inclusions
             </h2>
             <div className="divider-gold mx-auto" />
@@ -173,10 +298,10 @@ export default function AmenitiesPage(): React.JSX.Element {
                 key={item}
                 {...fadeUp}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="flex items-start gap-3 border border-[#B98F39]/20 p-5"
+                className="flex items-start gap-3 border border-gold/20 p-5"
               >
-                <span className="text-[#B98F39] shrink-0 mt-0.5">✓</span>
-                <p className="text-[#D4B870] font-light text-sm">{item}</p>
+                <span className="text-gold shrink-0 mt-0.5">✓</span>
+                <p className="text-gold-pale font-light text-sm">{item}</p>
               </motion.div>
             ))}
           </div>
@@ -184,28 +309,31 @@ export default function AmenitiesPage(): React.JSX.Element {
       </section>
 
       {/* Booking CTA */}
-      <section className="section-pad bg-[#F5EDD4] text-center">
+      <section className="section-pad bg-gold-cream text-center">
         <div className="container-brand">
           <motion.div {...fadeUp} transition={{ duration: 0.7 }}>
             <span className="eyebrow eyebrow-dark mb-5">Reserve Your Stay</span>
-            <h2 className="heading-section mb-4">
-              Experience Silvanza First-Hand
-            </h2>
-            <p className="text-[#5a5545] font-light max-w-md mx-auto mb-10">
-              Amenities are best experienced — not just read about. We look
-              forward to welcoming you.
+            <h2 className="heading-section mb-4">Experience Silvanza First-Hand</h2>
+            <p className="text-muted font-light max-w-md mx-auto mb-10">
+              Amenities are best experienced — not just read about. We look forward to welcoming you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/contact" className="btn btn-primary">
-                Book a Stay
-              </Link>
-              <Link to="/rooms" className="btn btn-outline">
-                View Rooms
-              </Link>
+              <Link to="/contact" className="btn btn-primary">Book a Stay</Link>
+              <Link to="/rooms" className="btn btn-outline">View Rooms</Link>
             </div>
           </motion.div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          initialIndex={lightbox.index}
+          open={lightbox !== null}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </>
   );
 }

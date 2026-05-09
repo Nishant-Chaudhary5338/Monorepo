@@ -82,6 +82,9 @@ export default function Contact(): React.JSX.Element {
                   <a href="tel:+919792109111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
                     +91 979 210 9111
                   </a>
+                  <a href="tel:+919792108111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
+                    +91 979 210 8111
+                  </a>
                 </div>
               </div>
               <div>

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
+import GoldIcon from "../components/GoldIcon";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -13,31 +14,31 @@ const menuHighlights = [
     title: "Buffet Breakfast",
     description:
       "Start every day with a lavish spread — fresh-baked breads, hot dishes, cereals, fruit, eggs to order, and the finest Kumaoni morning staples.",
-    icon: "☀",
+    icon: "sun",
   },
   {
     title: "À La Carte Dining",
     description:
       "A full menu celebrating Indian, Kumaoni, and continental traditions. From slow-cooked bhatt ki dal to perfectly grilled continental mains.",
-    icon: "🍽",
+    icon: "fork",
   },
   {
     title: "Pool & Lawn View",
     description:
       "Every table at Ember is positioned to frame either the Tattva pool or the Kosi Valley — dining here is always a visual experience.",
-    icon: "🌿",
+    icon: "leaf",
   },
   {
     title: "Bar & Beverages",
     description:
       "A curated selection of spirits, cocktails, mocktails, and wines. Ask for the Pahadi Mule — an Ember signature inspired by the mountain evening.",
-    icon: "🥃",
+    icon: "glass",
   },
   {
     title: "Private Dining",
     description:
       "Intimate dinners arranged on request — candlelit terrace setups, poolside tables, or a private corner of the restaurant for special occasions.",
-    icon: "✦",
+    icon: "star",
   },
 ];
 
@@ -62,6 +63,33 @@ export default function RestaurantPage(): React.JSX.Element {
     description:
       "Ember is Silvanza Resort's 2000 sq ft pool-view multi-cuisine restaurant. Buffet breakfast, à la carte dining, bar with cocktails and wines. Jim Corbett, Ramnagar.",
     canonical: "/restaurant",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://silvanzaresort.com/restaurant#ember",
+      "name": "Ember at Silvanza Resort",
+      "description": "Ember is Silvanza Resort's 2,000 sq ft multi-cuisine restaurant offering buffet breakfast, à la carte Indian, Kumaoni and continental dining, a curated bar, and private dining on request. Pool and Kosi Valley views.",
+      "url": "https://silvanzaresort.com/restaurant",
+      "telephone": "+919792106111",
+      "servesCuisine": ["Indian", "Kumaoni", "Continental"],
+      "priceRange": "₹₹₹",
+      "hasMenu": "https://silvanzaresort.com/restaurant",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Village Dhikuli",
+        "addressLocality": "Ramnagar",
+        "addressRegion": "Uttarakhand",
+        "postalCode": "244715",
+        "addressCountry": "IN"
+      },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "07:00", "closes": "10:30", "name": "Breakfast" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "12:30", "closes": "15:30", "name": "Lunch" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "19:30", "closes": "22:30", "name": "Dinner" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "12:00", "closes": "23:00", "name": "Bar" }
+      ],
+      "parentOrganization": { "@id": "https://silvanzaresort.com/#hotel" }
+    },
   });
 
   return (
@@ -181,7 +209,7 @@ export default function RestaurantPage(): React.JSX.Element {
                 transition={{ duration: 0.6, delay: i * 0.08 }}
                 className="bg-[#FAF7F0] p-8 border-t-2 border-[#B98F39]"
               >
-                <span className="text-2xl mb-4 block">{item.icon}</span>
+                <div className="mb-4 flex justify-start"><GoldIcon name={item.icon} size={28} className="text-gold" /></div>
                 <h3
                   className="font-serif text-[#032105] mb-3"
                   style={{ fontSize: "1.2rem" }}

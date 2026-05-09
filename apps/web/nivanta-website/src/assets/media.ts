@@ -92,14 +92,53 @@ export const EVENT_IMAGES = {
 };
 
 // ── AMENITY IMAGES ────────────────────────────────────────
-// Thumb-size (800 px) for amenity tiles; switch to -full.webp for detail views
+// Single hero image (card/tile use) + full gallery arrays for lightbox
 export const AMENITY_IMAGES = {
-  ember:    "/images/amenities/restaurant/restaurant-01-thumb.webp",
-  tattva:   "/images/amenities/pool/pool-01-thumb.webp",
-  orana:    "/images/amenities/banquet/banquet-01-thumb.webp",
-  flaura:   "/images/amenities/outdoor-dining/dining-01-thumb.webp",
+  ember:    "/images/amenities/restaurant/restaurant-01-full.webp",
+  tattva:   "/images/amenities/pool/pool-01-full.webp",
+  orana:    "/images/amenities/banquet/banquet-01-full.webp",
+  flaura:   "/images/amenities/outdoor-dining/dining-01-full.webp",
   security: "https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp",
   parking:  "https://images.pexels.com/photos/1004409/pexels-photo-1004409.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp",
+};
+
+// Full image sets for amenities with multiple real photos
+export const AMENITY_GALLERY = {
+  tattva: [
+    "/images/amenities/pool/pool-01-full.webp",
+    "/images/amenities/pool/pool-02-full.webp",
+    "/images/amenities/pool/pool-03-full.webp",
+  ],
+  ember: [
+    "/images/amenities/restaurant/restaurant-01-full.webp",
+    "/images/amenities/restaurant/restaurant-02-full.webp",
+    "/images/amenities/restaurant/restaurant-03-full.webp",
+    "/images/amenities/restaurant/restaurant-04-full.webp",
+    "/images/amenities/restaurant/restaurant-05-full.webp",
+    "/images/amenities/restaurant/restaurant-06-full.webp",
+    "/images/amenities/restaurant/restaurant-07-full.webp",
+    "/images/amenities/restaurant/restaurant-08-full.webp",
+    "/images/amenities/restaurant/restaurant-09-full.webp",
+  ],
+  orana: [
+    "/images/amenities/banquet/banquet-01-full.webp",
+    "/images/amenities/banquet/banquet-02-full.webp",
+    "/images/amenities/banquet/banquet-03-full.webp",
+  ],
+  flaura: [
+    "/images/amenities/outdoor-dining/dining-01-full.webp",
+    "/images/amenities/outdoor-dining/dining-02-full.webp",
+    "/images/amenities/outdoor-dining/dining-03-full.webp",
+    "/images/amenities/outdoor-dining/dining-04-full.webp",
+    "/images/amenities/outdoor-dining/dining-05-full.webp",
+    "/images/amenities/outdoor-dining/dining-06-full.webp",
+    "/images/amenities/outdoor-dining/dining-07-full.webp",
+    "/images/amenities/outdoor-dining/dining-08-full.webp",
+    "/images/amenities/outdoor-dining/dining-09-full.webp",
+    "/images/amenities/outdoor-dining/dining-10-full.webp",
+    "/images/amenities/outdoor-dining/dining-11-full.webp",
+    "/images/amenities/outdoor-dining/dining-12-full.webp",
+  ],
 };
 
 // ── BLOG THUMBNAILS ───────────────────────────────────────

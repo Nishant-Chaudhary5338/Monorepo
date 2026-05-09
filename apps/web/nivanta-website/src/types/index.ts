@@ -23,6 +23,7 @@ export type Amenity = {
   subtitle: string;
   description: string;
   image: string;
+  images?: string[];
   details: string[];
   icon?: string;
 };

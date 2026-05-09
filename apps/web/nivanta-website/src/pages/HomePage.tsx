@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { useInView } from "../hooks/useInView";
 import Hero from "../sections/Hero";
+import GoldIcon from "../components/GoldIcon";
 import { rooms } from "../data/rooms";
 import { amenities } from "../data/amenities";
 import { testimonials } from "../data/testimonials";
@@ -215,7 +216,7 @@ function AmenitiesPreview(): React.JSX.Element {
         <div className="grid sm:grid-cols-2 gap-6 mb-10">
           {featured.map((a, i) => (
             <motion.div key={a.id} {...stagger(i)} className="flex gap-5 bg-white border border-gold/15 p-6 group hover:shadow-sm transition-shadow">
-              <div className="text-3xl flex-shrink-0" aria-hidden="true">{a.icon}</div>
+              <div className="shrink-0 flex items-center justify-center w-10 h-10"><GoldIcon name={a.icon ?? "star"} size={28} /></div>
               <div>
                 <p className="eyebrow eyebrow-dark mb-1">{a.subtitle}</p>
                 <h3 className="font-serif text-xl font-medium text-forest-deep mb-2">{a.name}</h3>
@@ -340,7 +341,7 @@ function NewsSection(): React.JSX.Element {
 
 function LocationSection(): React.JSX.Element {
   const distances = [
-    { place: "Jim Corbett National Park (Dhikuli Gate)", dist: "~5 km" },
+    { place: "Dhikala Zone, Jim Corbett National Park", dist: "~5 km" },
     { place: "Ramnagar Town", dist: "~8 km" },
     { place: "Corbett Waterfall", dist: "~20 km" },
     { place: "Nainital", dist: "~65 km" },
@@ -350,9 +351,9 @@ function LocationSection(): React.JSX.Element {
   ];
 
   const getHere = [
-    { mode: "By Road", icon: "🚗", detail: "Well-connected via NH 9 from Delhi. Taxis and cabs readily available from Delhi, Dehradun, and Nainital." },
-    { mode: "By Train", icon: "🚂", detail: "Ramnagar Railway Station is the nearest railhead with direct trains from Delhi (Kathgodam Express, Corbett Link Express)." },
-    { mode: "By Air", icon: "✈️", detail: "Pantnagar Airport (~75 km). Indira Gandhi International Airport, Delhi (~290 km) with onward road transfer." },
+    { mode: "By Road", icon: "car", detail: "Well-connected via NH 9 from Delhi. Taxis and cabs readily available from Delhi, Dehradun, and Nainital." },
+    { mode: "By Train", icon: "train", detail: "Ramnagar Railway Station is the nearest railhead with direct trains from Delhi (Kathgodam Express, Corbett Link Express)." },
+    { mode: "By Air", icon: "plane", detail: "Pantnagar Airport (~75 km). Indira Gandhi International Airport, Delhi (~290 km) with onward road transfer." },
   ];
 
   return (
@@ -384,7 +385,7 @@ function LocationSection(): React.JSX.Element {
             <div className="space-y-4">
               {getHere.map((g) => (
                 <div key={g.mode} className="flex gap-4">
-                  <span className="text-xl flex-shrink-0" aria-hidden="true">{g.icon}</span>
+                  <GoldIcon name={g.icon} size={20} className="text-gold shrink-0" />
                   <div>
                     <p className="text-gold text-sm font-medium mb-0.5">{g.mode}</p>
                     <p className="text-ivory/50 text-xs font-light leading-relaxed">{g.detail}</p>

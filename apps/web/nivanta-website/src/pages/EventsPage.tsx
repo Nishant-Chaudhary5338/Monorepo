@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import GoldIcon from "../components/GoldIcon";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
 import Lightbox from "../components/Lightbox";
@@ -53,13 +54,13 @@ const venues = [
 ];
 
 const eventTypes = [
-  { title: "Destination Weddings & Receptions", icon: "💍" },
-  { title: "Engagement & Mehendi Ceremonies", icon: "🌸" },
-  { title: "Anniversary & Milestone Celebrations", icon: "🥂" },
-  { title: "Birthday Bashes & Private Parties", icon: "🎂" },
-  { title: "Corporate Offsites & Team Retreats", icon: "🏕️" },
-  { title: "Conferences & Product Launches", icon: "🎤" },
-  { title: "Family Reunions & Group Getaways", icon: "👨‍👩‍👧‍👦" },
+  { title: "Destination Weddings & Receptions", icon: "ring" },
+  { title: "Engagement & Mehendi Ceremonies", icon: "flower" },
+  { title: "Anniversary & Milestone Celebrations", icon: "champagne" },
+  { title: "Birthday Bashes & Private Parties", icon: "cake" },
+  { title: "Corporate Offsites & Team Retreats", icon: "building" },
+  { title: "Conferences & Product Launches", icon: "mic" },
+  { title: "Family Reunions & Group Getaways", icon: "people" },
 ];
 
 const whyChoose = [
@@ -84,6 +85,32 @@ export default function EventsPage(): React.JSX.Element {
     description:
       "Host your dream wedding or event at Silvanza Resort — 22,500 sq ft of stunning indoor and outdoor event space in Jim Corbett. Orana banquet hall and Flaura celebration lawn.",
     canonical: "/events",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "EventVenue",
+      "@id": "https://silvanzaresort.com/events#venue",
+      "name": "Silvanza Resort — Events & Weddings",
+      "description": "22,500+ sq ft of premium event space in Jim Corbett. Orana: 4,500 sq ft fully air-conditioned banquet hall for 300 guests. Flaura: 18,000 sq ft open-air celebration lawn for 500 guests. Ideal for destination weddings, receptions, corporate events, and private celebrations.",
+      "url": "https://silvanzaresort.com/events",
+      "telephone": "+919792106111",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Village Dhikuli",
+        "addressLocality": "Ramnagar",
+        "addressRegion": "Uttarakhand",
+        "postalCode": "244715",
+        "addressCountry": "IN"
+      },
+      "maximumAttendeeCapacity": 500,
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Air Conditioning", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "AV System", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Outdoor Lawn", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Catering by Ember", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Free Parking", "value": true }
+      ],
+      "containedInPlace": { "@id": "https://silvanzaresort.com/#hotel" }
+    },
   });
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -299,7 +326,7 @@ export default function EventsPage(): React.JSX.Element {
                 transition={{ duration: 0.6, delay: i * 0.07 }}
                 className="border border-gold/25 p-6 hover:border-gold hover:bg-gold-cream transition-all duration-300 text-center"
               >
-                <span className="text-2xl block mb-3" aria-hidden="true">{type.icon}</span>
+                <div className="flex justify-center mb-3"><GoldIcon name={type.icon} size={28} className="text-gold" /></div>
                 <h3 className="font-serif text-forest-deep text-sm leading-snug">{type.title}</h3>
               </motion.div>
             ))}

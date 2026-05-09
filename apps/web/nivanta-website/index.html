@@ -116,7 +116,7 @@
           "alternateName": "Silvanza Resort",
           "description": "A 4-acre luxury resort in Dhikuli, Ramnagar, at the edge of Jim Corbett National Park. 50 rooms across 6 categories, multi-cuisine restaurant Ember, Tattva pool, Orana banquet hall and Flaura celebration lawn.",
           "url": "https://silvanzaresort.com",
-          "telephone": "+919792106111",
+          "telephone": ["+919792106111", "+919792107111", "+919792108111", "+919792109111"],
           "email": "contact@nivantahospitality.com",
           "address": {
             "@type": "PostalAddress",
@@ -174,7 +174,82 @@
           "@id": "https://silvanzaresort.com/#website",
           "url": "https://silvanzaresort.com",
           "name": "Silvanza Resort by Nivanta",
-          "publisher": { "@id": "https://silvanzaresort.com/#organization" }
+          "publisher": { "@id": "https://silvanzaresort.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://silvanzaresort.com/rooms?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://silvanzaresort.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Where is Silvanza Resort located?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Silvanza Resort by Nivanta is located in Village Dhikuli, Ramnagar, Uttarakhand 244715, India — approximately 5 km from the Dhikala Zone of Jim Corbett National Park."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the check-in and check-out time at Silvanza Resort?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Check-in at Silvanza Resort is at 2:00 PM and check-out is at 12:00 noon. Early check-in and late check-out can be arranged on request, subject to availability."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many rooms does Silvanza Resort have?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Silvanza Resort offers 50 rooms across six distinctive categories: Apex Suites, Aura, Haven, Lush, Breeze, and Origin — ranging from 210 sq ft to 500 sq ft and priced from ₹10,000 per night."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Silvanza Resort have a swimming pool?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Silvanza Resort features Tattva — a dedicated adults' pool alongside a family pool with a children's splash zone. The pool deck has sunbeds and opens to the resort lawns."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I host a wedding or event at Silvanza Resort?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Silvanza Resort offers 22,500+ sq ft of event space across two venues: Orana — a 4,500 sq ft fully air-conditioned banquet hall for up to 300 guests, and Flaura — an 18,000 sq ft open-air celebration lawn for up to 500 guests."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What dining options are available at Silvanza Resort?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ember is Silvanza's 2,000 sq ft multi-cuisine restaurant offering lavish buffet breakfast, à la carte Indian, Kumaoni and continental dishes, a full bar with cocktails and wines, and private dining on request. Operating hours: Breakfast 7–10:30 AM, Lunch 12:30–3:30 PM, Dinner 7:30–10:30 PM."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How far is Silvanza Resort from Delhi?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Silvanza Resort is approximately 290 km from New Delhi (about a 5–6 hour drive via NH 9). The nearest railway station is Ramnagar (~8 km) with direct trains from Delhi. Pantnagar Airport is the nearest airport, ~75 km away."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is parking available at Silvanza Resort?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Silvanza Resort offers complimentary parking for all guests, including space for large vehicles, coaches, and group arrivals. The parking area is monitored 24 hours."
+              }
+            }
+          ]
         }
       ]
     }

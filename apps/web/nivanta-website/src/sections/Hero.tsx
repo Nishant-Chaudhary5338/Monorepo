@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HERO_VIDEO_URL, HERO_VIDEO_POSTER } from "../assets/media";
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
@@ -26,17 +28,12 @@ export default function Hero(): React.JSX.Element {
 
   return (
     <section
-      className="relative h-screen min-h-150 flex items-center justify-center overflow-hidden"
+      className="relative h-screen min-h-150 flex flex-col overflow-hidden"
       aria-label="Silvanza Resort hero — Where the Forest Meets Finesse"
     >
-      {/* ── Background layer ───────────────────────────── */}
+      {/* ── Background layer ──────────────────────────────── */}
       <div className="absolute inset-0">
-        {/*
-         * Fallback background image — always visible, reliable Unsplash CDN.
-         * Replaced by the video layer when the client's video file is placed at
-         * public/videos/hero.mp4  (HERO_VIDEO_URL points there by default).
-         */}
-        {/* Hero poster — always visible, never fades out (is the LCP image) */}
+        {/* Poster — always visible, is the LCP image */}
         <img
           src={HERO_VIDEO_POSTER}
           alt=""
@@ -49,14 +46,14 @@ export default function Hero(): React.JSX.Element {
           aria-hidden="true"
         />
 
-        {/* Video — fades in on top of the poster; poster stays underneath as fallback */}
+        {/* Video — fades in on top; poster stays as fallback */}
         <video
           ref={videoRef}
           loop
           muted
           playsInline
           preload="none"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-2000 ease-in-out ${
             videoPlaying ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden="true"
@@ -66,19 +63,26 @@ export default function Hero(): React.JSX.Element {
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
 
-        {/* Brand gradient overlay */}
+        {/* Gradient — heavier at bottom for text legibility */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(3,33,5,0.55) 0%, rgba(3,33,5,0.28) 55%, rgba(3,33,5,0.75) 100%)",
+              "linear-gradient(to bottom, rgba(3,33,5,0.45) 0%, rgba(3,33,5,0.18) 45%, rgba(3,33,5,0.72) 100%)",
           }}
           aria-hidden="true"
         />
       </div>
 
-      {/* ── Content ─────────────────────────────────────── */}
-      <div className="relative z-10 text-center px-5 max-w-5xl mx-auto">
+      {/* ── Top spacer — always flex:1, absorbs space freed by the bottom spacer ── */}
+      <div className="flex-1" />
+
+      {/* ── Content ─────────────────────────────────────────── */}
+      <motion.div
+        className="relative z-10 text-center px-5 max-w-5xl mx-auto w-full"
+        animate={{ paddingBottom: videoPlaying ? "56px" : "0px" }}
+        transition={{ duration: 1.2, ease: EASE }}
+      >
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,8 +96,7 @@ export default function Hero(): React.JSX.Element {
           Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
         </motion.p>
 
-        {/* h1 is the LCP element — starts fully visible (opacity:1) so Lighthouse
-            can measure it immediately; only y-position is animated */}
+        {/* h1 is the LCP element — starts opacity:1 so Lighthouse measures immediately */}
         <motion.h1
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -131,14 +134,22 @@ export default function Hero(): React.JSX.Element {
             Explore the Resort
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
-      {/* ── Scroll indicator ─────────────────────────────── */}
+      {/* ── Bottom spacer — shrinks when video plays, sliding content toward bottom ── */}
+      <motion.div
+        initial={false}
+        animate={{ flexGrow: videoPlaying ? 0 : 1 }}
+        style={{ flexShrink: 0, minHeight: "56px" }}
+        transition={{ duration: 1.2, ease: EASE }}
+      />
+
+      {/* ── Scroll indicator — fades out once video plays ─────── */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        animate={{ opacity: videoPlaying ? 0 : 1 }}
+        transition={{ duration: 0.6, delay: videoPlaying ? 0 : 1.4 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
         aria-hidden="true"
       >
         <span
