@@ -11,11 +11,9 @@ gsap.registerPlugin(ScrollTrigger);
 /* ── Article card (secondary) ───────────────────────── */
 const ArticleCard = ({
   article,
-  index,
   cardRef,
 }: {
   article: ArticleMeta;
-  index: number;
   cardRef: (el: HTMLAnchorElement | null) => void;
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -286,7 +284,6 @@ const Writing = () => {
             <ArticleCard
               key={article.slug}
               article={article}
-              index={index}
               cardRef={(el) => { cardRefs.current[index] = el; }}
             />
           ))}

@@ -1,7 +1,5 @@
 import { useState, useCallback } from "react";
 
-type Region = "india" | "eu" | "loading";
-
 async function detectRegion(): Promise<"india" | "eu"> {
   try {
     const res = await fetch("https://api.country.is/", { signal: AbortSignal.timeout(3000) });
