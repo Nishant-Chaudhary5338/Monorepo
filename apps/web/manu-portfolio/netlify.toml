@@ -1,0 +1,30 @@
+[build]
+  base = "/"
+  command = "pnpm --filter manu-portfolio build"
+  publish = "apps/web/manu-portfolio/dist"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- apps/web/manu-portfolio/ packages/"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "8.15.6"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ── Security headers ──────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options        = "nosniff"
+    X-Frame-Options               = "SAMEORIGIN"
+    Referrer-Policy               = "strict-origin-when-cross-origin"
+    Cross-Origin-Opener-Policy    = "same-origin-allow-popups"
+    Permissions-Policy            = "camera=(), microphone=(), geolocation=(self)"
+
+# ── Long-cache for versioned static assets ────────────────
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

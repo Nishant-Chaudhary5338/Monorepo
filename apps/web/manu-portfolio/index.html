@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ── Favicon ── -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ── Theme flash prevention (must run before first paint) ── -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem("manu-theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = saved === "dark" || saved === "light" ? saved : (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.classList.add("no-transition");
+        window.addEventListener("DOMContentLoaded", function () {
+          setTimeout(function () {
+            document.documentElement.classList.remove("no-transition");
+          }, 100);
+        });
+      })();
+    </script>
+
+    <!-- ── Primary SEO ── -->
+    <title>Manu Siwatch — Senior Digital Marketing Specialist &amp; Trainer | Paid Acquisition · Growth · DSIM | Delhi</title>
+    <meta name="description" content="Senior digital marketing specialist &amp; trainer. 5+ years across paid acquisition, growth strategy, and training at Delhi School of Internet Marketing." />
+    <meta name="keywords" content="manu siwatch, senior digital marketing specialist, digital marketing trainer Delhi, DSIM trainer, paid acquisition consultant, Google Ads specialist, Meta Ads expert, LinkedIn Ads, growth marketing consultant, DTC growth strategist, SEO consultant Delhi" />
+    <meta name="author" content="Manu Siwatch" />
+    <link rel="canonical" href="https://manu.digitribe.world/" />
+
+    <!-- ── Open Graph ── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://manu.digitribe.world/" />
+    <meta property="og:title" content="Manu Siwatch — Senior Digital Marketing Specialist &amp; Trainer" />
+    <meta property="og:description" content="5+ years across paid acquisition, growth strategy, and training the next generation of digital marketers." />
+    <meta property="og:image" content="/images/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content="Manu Siwatch" />
+
+    <!-- ── Twitter Card ── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Manu Siwatch — Senior Digital Marketing Specialist &amp; Trainer" />
+    <meta name="twitter:description" content="Paid acquisition · Growth · Training. 5+ years." />
+    <meta name="twitter:image" content="/images/og-card.png" />
+
+    <!-- ── Theme color ── -->
+    <meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090B" media="(prefers-color-scheme: dark)" />
+
+    <!-- ── Google Fonts ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ── JSON-LD Person Schema ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Manu Siwatch",
+      "jobTitle": "Senior Digital Marketing Specialist & Trainer",
+      "description": "Senior digital marketing specialist with 5+ years of experience in paid acquisition, growth strategy, and training.",
+      "url": "https://manu.digitribe.world/",
+      "email": "mailto:manu@digitribe.world",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Delhi",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": [
+        "Digital Marketing",
+        "Paid Acquisition",
+        "Google Ads",
+        "Meta Ads",
+        "LinkedIn Ads",
+        "SEO",
+        "Email Marketing Automation",
+        "Growth Strategy",
+        "Conversion Rate Optimization",
+        "Marketing Training"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/manu-siwatch-6b7a07285/"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Digitribe",
+        "url": "https://digitribe.co"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
