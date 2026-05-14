@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogoWordmark } from "./LogoSVG";
 
 const navLinks = [
   { label: "About Us",         to: "/about" },
@@ -14,9 +13,8 @@ const navLinks = [
 ];
 
 export default function Navbar(): React.JSX.Element {
-  const [scrolled, setScrolled]     = useState(false);
-  const [menuOpen, setMenuOpen]     = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export default function Navbar(): React.JSX.Element {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-ivory shadow-sm" : "bg-transparent"
+        scrolled ? "bg-ivory shadow-sm" : "bg-forest-deep"
       }`}
       role="banner"
     >
@@ -62,43 +60,13 @@ export default function Navbar(): React.JSX.Element {
         className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between"
         aria-label="Primary navigation"
       >
-        {/* Hidden PNG probe — outside the Link so it doesn't affect accessible name */}
-        <img
-          src="/logo-light.png"
-          alt=""
-          className="sr-only"
-          onLoad={() => setLogoLoaded(true)}
-          onError={() => {}}
-          aria-hidden="true"
-          role="presentation"
-        />
-
         {/* ── Logo ─────────────────────────────────────── */}
-        <Link to="/" className="flex flex-col items-start leading-none" aria-label="Silvanza Resort — Home">
-          {logoLoaded ? (
-            <img
-              src="/logo-light.png"
-              alt="Silvanza Resort by Nivanta"
-              height={52}
-              className="h-13 w-auto object-contain"
-              style={{
-                filter: scrolled
-                  ? "none"
-                  : "brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)",
-              }}
-            />
-          ) : (
-            <LogoWordmark scrolled={scrolled} />
-          )}
-          <span
-            className="tracking-[0.18em] uppercase font-light mt-0.5 transition-colors duration-300"
-            style={{
-              fontSize: "0.48rem",
-              color: scrolled ? "var(--color-gold-dark)" : "rgba(212,184,112,0.8)",
-            }}
-          >
-            A Signature Experience Crafted Especially for You
-          </span>
+        <Link to="/" className="shrink-0" aria-label="Silvanza Resort — Home">
+          <img
+            src={scrolled ? "/logo-light.svg" : "/logo-dark.svg"}
+            alt="Silvanza Resort by Nivanta"
+            className="h-12 w-auto object-contain transition-all duration-500"
+          />
         </Link>
 
         {/* ── Desktop nav ── */}

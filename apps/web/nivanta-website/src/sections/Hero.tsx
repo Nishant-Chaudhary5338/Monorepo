@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { HERO_VIDEO_URL, HERO_VIDEO_POSTER } from "../assets/media";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -9,8 +9,6 @@ export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
 
-  // Start video only after page fully loads + 4s — keeps video out of Lighthouse
-  // LCP measurement window and avoids unnecessary bandwidth on first paint
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -28,12 +26,11 @@ export default function Hero(): React.JSX.Element {
 
   return (
     <section
-      className="relative h-screen min-h-150 flex flex-col overflow-hidden"
+      className="relative h-screen min-h-150 overflow-hidden"
       aria-label="Silvanza Resort hero — Where the Forest Meets Finesse"
     >
-      {/* ── Background layer ──────────────────────────────── */}
+      {/* ── Background ────────────────────────────────────── */}
       <div className="absolute inset-0">
-        {/* Poster — always visible, is the LCP image */}
         <img
           src={HERO_VIDEO_POSTER}
           alt=""
@@ -45,8 +42,6 @@ export default function Hero(): React.JSX.Element {
           height={1080}
           aria-hidden="true"
         />
-
-        {/* Video — fades in on top; poster stays as fallback */}
         <video
           ref={videoRef}
           loop
@@ -62,108 +57,154 @@ export default function Hero(): React.JSX.Element {
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
-
-        {/* Gradient — heavier at bottom for text legibility */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(3,33,5,0.45) 0%, rgba(3,33,5,0.18) 45%, rgba(3,33,5,0.72) 100%)",
+              "linear-gradient(to bottom, rgba(3,33,5,0.45) 0%, rgba(3,33,5,0.1) 40%, rgba(3,33,5,0.85) 100%)",
           }}
           aria-hidden="true"
         />
       </div>
 
-      {/* ── Top spacer — always flex:1, absorbs space freed by the bottom spacer ── */}
-      <div className="flex-1" />
+      {/* ── BEFORE VIDEO: centered column ─────────────────── */}
+      <AnimatePresence>
+        {!videoPlaying && (
+          <motion.div
+            key="center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-5"
+          >
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+              className="eyebrow mb-6"
+              style={{
+                color: "rgba(255,255,255,0.9)",
+                textShadow: "0 1px 4px rgba(0,0,0,0.9)",
+              }}
+            >
+              Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
+            </motion.p>
 
-      {/* ── Content ─────────────────────────────────────────── */}
-      <motion.div
-        className="relative z-10 text-center px-5 max-w-5xl mx-auto w-full"
-        animate={{ paddingBottom: videoPlaying ? "56px" : "0px" }}
-        transition={{ duration: 1.2, ease: EASE }}
-      >
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="eyebrow mb-6"
-          style={{
-            color: "rgba(255,255,255,0.92)",
-            textShadow: "0 1px 4px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.7)",
-          }}
-        >
-          Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
-        </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.95, delay: 0.4, ease: EASE }}
+              className="heading-display text-white max-w-4xl"
+              style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
+            >
+              Where the Forest
+              <br />
+              <span className="italic text-gold-pale">Meets Finesse</span>
+            </motion.h1>
 
-        {/* h1 is the LCP element — starts opacity:1 so Lighthouse measures immediately */}
-        <motion.h1
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.95, delay: 0.4 }}
-          className="heading-display text-white"
-          style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
-        >
-          Where the Forest
-          <br />
-          <span className="italic text-gold-pale">Meets Finesse</span>
-        </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.65, ease: EASE }}
+              className="mt-6 mb-8 text-white/70 font-light leading-relaxed max-w-2xl"
+              style={{ fontSize: "clamp(0.9rem, 1.8vw, 1.05rem)" }}
+            >
+              Silvanza Resort by Nivanta is Jim Corbett's newest address in luxury — a
+              four-acre sanctuary where the whisper of the Kosi Valley, the warmth of
+              curated hospitality, and the elegance of thoughtfully designed spaces come
+              together in one unforgettable stay.
+            </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.65 }}
-          className="mt-5 mb-8 text-white/75 font-light leading-relaxed max-w-2xl mx-auto"
-          style={{ fontSize: "clamp(0.9rem, 1.8vw, 1.05rem)" }}
-        >
-          Silvanza Resort by Nivanta is Jim Corbett's newest address in luxury — a four-acre
-          sanctuary where the whisper of the Kosi Valley, the warmth of curated hospitality,
-          and the elegance of thoughtfully designed spaces come together in one unforgettable stay.
-        </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <Link to="/contact" className="btn btn-primary">Check Availability</Link>
+              <Link to="/rooms" className="btn btn-ghost">Explore the Resort</Link>
+            </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.85 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <Link to="/contact" className="btn btn-primary">
-            Check Availability
-          </Link>
-          <Link to="/rooms" className="btn btn-ghost">
-            Explore the Resort
-          </Link>
-        </motion.div>
-      </motion.div>
+            {/* Scroll indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+              className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+              aria-hidden="true"
+            >
+              <span className="eyebrow text-white/40" style={{ letterSpacing: "0.3em", fontSize: "0.55rem" }}>
+                Discover
+              </span>
+              <motion.div
+                animate={{ y: [0, 7, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity }}
+                className="w-px h-8 bg-linear-to-b from-gold-pale/60 to-transparent"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* ── Bottom spacer — shrinks when video plays, sliding content toward bottom ── */}
-      <motion.div
-        initial={false}
-        animate={{ flexGrow: videoPlaying ? 0 : 1 }}
-        style={{ flexShrink: 0, minHeight: "56px" }}
-        transition={{ duration: 1.2, ease: EASE }}
-      />
+      {/* ── WHEN VIDEO PLAYS: row at bottom ───────────────── */}
+      <AnimatePresence>
+        {videoPlaying && (
+          <motion.div
+            key="bottom"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="absolute bottom-0 inset-x-0 z-10 px-8 lg:px-16 pb-12"
+          >
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="eyebrow mb-4 text-center"
+              style={{
+                color: "rgba(255,255,255,0.85)",
+                textShadow: "0 1px 4px rgba(0,0,0,0.9)",
+              }}
+            >
+              Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
+            </motion.p>
 
-      {/* ── Scroll indicator — fades out once video plays ─────── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: videoPlaying ? 0 : 1 }}
-        transition={{ duration: 0.6, delay: videoPlaying ? 0 : 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
-        aria-hidden="true"
-      >
-        <span
-          className="eyebrow text-white/50"
-          style={{ letterSpacing: "0.3em", fontSize: "0.55rem" }}
-        >
-          Discover
-        </span>
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity }}
-          className="w-px h-8 bg-linear-to-b from-gold-pale/70 to-transparent"
-        />
-      </motion.div>
+            <div className="flex flex-col sm:flex-row items-end gap-8 lg:gap-14">
+              {/* Left: heading */}
+              <h2
+                className="heading-display text-white flex-1 text-left leading-none"
+                style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
+              >
+                Where the Forest
+                <br />
+                <span className="italic text-gold-pale">Meets Finesse</span>
+              </h2>
+
+              {/* Divider */}
+              <div className="hidden sm:block w-px self-stretch bg-gold-pale/25 shrink-0" />
+
+              {/* Right: description + buttons */}
+              <div className="flex-1 flex flex-col gap-5 justify-end">
+                <p
+                  className="text-white/70 font-light leading-relaxed"
+                  style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)" }}
+                >
+                  Silvanza Resort by Nivanta is Jim Corbett's newest address in luxury — a
+                  four-acre sanctuary where the whisper of the Kosi Valley, the warmth of
+                  curated hospitality, and the elegance of thoughtfully designed spaces come
+                  together in one unforgettable stay.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link to="/contact" className="btn btn-primary">Check Availability</Link>
+                  <Link to="/rooms" className="btn btn-ghost">Explore the Resort</Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

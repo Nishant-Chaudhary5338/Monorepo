@@ -401,14 +401,13 @@ function LocationSection(): React.JSX.Element {
 
           {/* Google Maps embed */}
           <motion.div {...fadeUp} transition={{ delay: 0.2 }} className="flex flex-col gap-4">
-            <div className="flex-1 min-h-72 overflow-hidden border border-gold/20">
+            <div className="overflow-hidden border border-gold/20">
               <iframe
-                src="https://maps.google.com/maps?q=Dhikuli,Ramnagar,Uttarakhand&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                title="Silvanza Resort location — Dhikuli, Ramnagar, Uttarakhand"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3472.6!2d79.0484!3d29.3812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09723b8e6a5e7%3A0x1!2sDhikuli%2C+Ramnagar%2C+Uttarakhand!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                title="Silvanza Resort — Dhikuli, Ramnagar, Uttarakhand"
                 width="100%"
-                height="100%"
-                className="w-full h-72 grayscale-30 contrast-[1.05]"
-                style={{ border: 0, minHeight: "18rem" }}
+                height="340"
+                style={{ border: 0, display: "block" }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 aria-label="Google Maps showing Silvanza Resort location in Dhikuli, Ramnagar"
@@ -417,14 +416,18 @@ function LocationSection(): React.JSX.Element {
 
             {/* Quick contact */}
             <div className="grid grid-cols-3 gap-3">
-              {["+91 979 210 6111", "+91 979 210 7111", "+91 979 210 9111"].map((ph) => (
+              {[
+                { label: "Reservations", number: "+91 979 210 6111" },
+                { label: "Events & Weddings", number: "+91 979 210 6222" },
+                { label: "General Enquiries", number: "+91 979 210 6333" },
+              ].map((p) => (
                 <a
-                  key={ph}
-                  href={`tel:${ph.replace(/\s/g, "")}`}
+                  key={p.number}
+                  href={`tel:${p.number.replace(/\s/g, "")}`}
                   className="flex flex-col items-center gap-1 p-3 border border-gold/20 text-center hover:border-gold transition-colors group"
                 >
-                  <span className="text-lg" aria-hidden="true">📞</span>
-                  <span className="text-gold-light text-xs font-light group-hover:text-gold transition-colors">{ph}</span>
+                  <span className="text-gold/60 text-xs tracking-widest uppercase font-light">{p.label}</span>
+                  <span className="text-gold-light text-xs font-light group-hover:text-gold transition-colors">{p.number}</span>
                 </a>
               ))}
             </div>
