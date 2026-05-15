@@ -71,20 +71,36 @@ export default function Contact(): React.JSX.Element {
                 </p>
               </div>
               <div>
-                <p className="text-[#C9A84C] text-xs tracking-widest uppercase mb-2 font-medium">Phone</p>
-                <div className="space-y-1">
-                  <a href="tel:+919792106111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
-                    +91 979 210 6111
-                  </a>
-                  <a href="tel:+919792107111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
-                    +91 979 210 7111
-                  </a>
-                  <a href="tel:+919792109111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
-                    +91 979 210 9111
-                  </a>
-                  <a href="tel:+919792108111" className="block text-[#6B6B6B] hover:text-[#C9A84C] transition-colors">
-                    +91 979 210 8111
-                  </a>
+                <p className="text-[#C9A84C] text-xs tracking-widest uppercase mb-3 font-medium">Phone</p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[#9a8f7a] text-[0.65rem] tracking-widest uppercase mb-1">Sales &amp; Reservations</p>
+                    <p className="text-[#6B6B6B]">
+                      <a href="tel:+919792106111" className="hover:text-[#C9A84C] transition-colors">+91 9792106111</a>
+                      <span className="mx-1">/</span>
+                      <a href="tel:+919792107111" className="hover:text-[#C9A84C] transition-colors">7111</a>
+                      <span className="mx-1">/</span>
+                      <a href="tel:+919792108111" className="hover:text-[#C9A84C] transition-colors">8111</a>
+                      <span className="mx-1">/</span>
+                      <a href="tel:+919792109111" className="hover:text-[#C9A84C] transition-colors">9111</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[#9a8f7a] text-[0.65rem] tracking-widest uppercase mb-1">Events &amp; Wedding</p>
+                    <p className="text-[#6B6B6B]">
+                      <a href="tel:+919792106111" className="hover:text-[#C9A84C] transition-colors">+91 9792106111</a>
+                      <span className="mx-1">/</span>
+                      <a href="tel:+919792109111" className="hover:text-[#C9A84C] transition-colors">9111</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[#9a8f7a] text-[0.65rem] tracking-widest uppercase mb-1">General Enquiries</p>
+                    <p className="text-[#6B6B6B]">
+                      <a href="tel:+919792106111" className="hover:text-[#C9A84C] transition-colors">+91 9792106111</a>
+                      <span className="mx-1">/</span>
+                      <a href="tel:+919792109111" className="hover:text-[#C9A84C] transition-colors">9111</a>
+                    </p>
+                  </div>
                 </div>
               </div>
               <div>

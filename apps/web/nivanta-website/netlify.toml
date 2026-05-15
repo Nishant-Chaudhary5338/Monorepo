@@ -24,6 +24,13 @@
     Cross-Origin-Opener-Policy    = "same-origin-allow-popups"
     Permissions-Policy            = "camera=(), microphone=(), geolocation=(self)"
 
+# ── Never cache index.html so clients always get the latest deploy ──
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma        = "no-cache"
+
 # ── Long-cache for versioned static assets ────────────────
 [[headers]]
   for = "/assets/*"

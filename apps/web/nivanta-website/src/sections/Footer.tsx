@@ -84,20 +84,11 @@ export default function Footer(): React.JSX.Element {
             <Link to="/" aria-label="Silvanza Resort — Home" className="mb-4 block">
               {/* Try PNG logo first */}
               <img
-                src="/logo-light.png"
+                src="/logo-rect.png"
                 alt="Silvanza Resort by Nivanta"
-                height={140}
-                className="h-35 w-auto object-contain"
-                style={{ mixBlendMode: "screen" }}
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                  e.currentTarget.nextElementSibling?.removeAttribute("hidden");
-                }}
+                className="h-16 w-auto object-contain"
+                style={{ filter: "brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)" }}
               />
-              {/* SVG fallback — hidden until img errors */}
-              <span hidden>
-                <LogoFull variant="light" />
-              </span>
             </Link>
 
             <p className="text-xs font-serif italic text-gold-light mb-4 leading-relaxed">
@@ -166,11 +157,35 @@ export default function Footer(): React.JSX.Element {
                 Village – Dhikuli, Ramnagar,<br />
                 Uttarakhand 244715, India
               </p>
-              <div className="space-y-0">
-                <a href="tel:+919792106111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6111</a>
-                <a href="tel:+919792106222" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6222</a>
-                <a href="tel:+919792106333" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6333</a>
-                <a href="tel:+919792108111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 8111</a>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-white/35 text-[0.6rem] tracking-widest uppercase mb-1">Sales &amp; Reservations</p>
+                  <p>
+                    <a href="tel:+919792106111" className="hover:text-gold transition-colors">+91 9792106111</a>
+                    <span className="text-white/30 mx-1">/</span>
+                    <a href="tel:+919792107111" className="hover:text-gold transition-colors">7111</a>
+                    <span className="text-white/30 mx-1">/</span>
+                    <a href="tel:+919792108111" className="hover:text-gold transition-colors">8111</a>
+                    <span className="text-white/30 mx-1">/</span>
+                    <a href="tel:+919792109111" className="hover:text-gold transition-colors">9111</a>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/35 text-[0.6rem] tracking-widest uppercase mb-1">Events &amp; Wedding</p>
+                  <p>
+                    <a href="tel:+919792106111" className="hover:text-gold transition-colors">+91 9792106111</a>
+                    <span className="text-white/30 mx-1">/</span>
+                    <a href="tel:+919792109111" className="hover:text-gold transition-colors">9111</a>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/35 text-[0.6rem] tracking-widest uppercase mb-1">General Enquiries</p>
+                  <p>
+                    <a href="tel:+919792106111" className="hover:text-gold transition-colors">+91 9792106111</a>
+                    <span className="text-white/30 mx-1">/</span>
+                    <a href="tel:+919792109111" className="hover:text-gold transition-colors">9111</a>
+                  </p>
+                </div>
               </div>
               <a href="mailto:sales@nivantahospitality.com" className="block hover:text-gold transition-colors break-all">
                 sales@nivantahospitality.com
@@ -183,11 +198,11 @@ export default function Footer(): React.JSX.Element {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-[0.65rem] text-white/25">
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-[0.65rem] text-white/55">
           <p>© 2026 Silvanza Resort by Nivanta. All Rights Reserved. Managed by Nivanta Hospitality LLP.</p>
-          <p className="text-white/20">Designed with love — <span className="text-white/35">Timelapse Creatives Marketing Solutions</span></p>
+          <p className="flex items-center gap-1">Designed with <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-rose-400 inline-block"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" /></svg> — <span className="text-white/70">Timelapse Creatives Marketing Solutions</span></p>
           <div className="flex gap-4">
-            <Link to="/contact" className="hover:text-gold transition-colors">Privacy Policy</Link>
+            <Link to="/contact" className="text-white/70 hover:text-gold transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </div>

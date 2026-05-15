@@ -23,11 +23,30 @@ const contactSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-const phones = [
-  { label: "Reservations", number: "+91 979 210 6111", href: "tel:+919792106111" },
-  { label: "Events & Weddings", number: "+91 979 210 6222", href: "tel:+919792106222" },
-  { label: "General Enquiries", number: "+91 979 210 6333", href: "tel:+919792106333" },
-  { label: "Direct Line", number: "+91 979 210 8111", href: "tel:+919792108111" },
+const phoneCategories = [
+  {
+    label: "Sales & Reservations",
+    numbers: [
+      { display: "+91 9792106111", href: "tel:+919792106111" },
+      { display: "7111", href: "tel:+919792107111" },
+      { display: "8111", href: "tel:+919792108111" },
+      { display: "9111", href: "tel:+919792109111" },
+    ],
+  },
+  {
+    label: "Events & Wedding",
+    numbers: [
+      { display: "+91 9792106111", href: "tel:+919792106111" },
+      { display: "9111", href: "tel:+919792109111" },
+    ],
+  },
+  {
+    label: "General Enquiries",
+    numbers: [
+      { display: "+91 9792106111", href: "tel:+919792106111" },
+      { display: "9111", href: "tel:+919792109111" },
+    ],
+  },
 ];
 
 export default function ContactPage(): React.JSX.Element {
@@ -134,19 +153,20 @@ export default function ContactPage(): React.JSX.Element {
                 <p className="text-xs tracking-widest uppercase text-[#5a5545] font-light mb-4">
                   Phone
                 </p>
-                <div className="space-y-3">
-                  {phones.map((p) => (
-                    <div key={p.href}>
-                      <p className="text-xs text-[#5a5545] font-light mb-0.5">
-                        {p.label}
+                <div className="space-y-4">
+                  {phoneCategories.map((cat) => (
+                    <div key={cat.label}>
+                      <p className="text-xs text-[#5a5545] font-light mb-1">
+                        {cat.label}
                       </p>
-                      <a
-                        href={p.href}
-                        className="font-serif text-[#032105] hover:text-[#B98F39] transition-colors"
-                        style={{ fontSize: "1.1rem" }}
-                      >
-                        {p.number}
-                      </a>
+                      <p className="font-serif text-forest-deep" style={{ fontSize: "1.05rem" }}>
+                        {cat.numbers.map((p, i) => (
+                          <span key={p.href}>
+                            {i > 0 && <span className="text-muted mx-1">/</span>}
+                            <a href={p.href} className="hover:text-gold transition-colors">{p.display}</a>
+                          </span>
+                        ))}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -172,12 +192,12 @@ export default function ContactPage(): React.JSX.Element {
                   Website
                 </p>
                 <a
-                  href="https://silvanzaresort.com"
+                  href="https://nivantahospitality.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#5a5545] font-light hover:text-[#B98F39] transition-colors"
+                  className="text-[#5a5545] font-light hover:text-gold transition-colors"
                 >
-                  silvanzaresort.com
+                  nivantahospitality.com
                 </a>
               </div>
 
@@ -357,18 +377,19 @@ export default function ContactPage(): React.JSX.Element {
       <section className="section-dark section-pad py-10">
         <div className="container-brand">
           <div className="grid sm:grid-cols-3 gap-px bg-[#B98F39]/20">
-            {phones.map((p) => (
-              <div key={p.href} className="bg-[#032105] p-8 text-center">
+            {phoneCategories.map((cat) => (
+              <div key={cat.label} className="bg-forest-deep p-8 text-center">
                 <p className="text-xs tracking-widest uppercase text-[#D4B870] font-light mb-3">
-                  {p.label}
+                  {cat.label}
                 </p>
-                <a
-                  href={p.href}
-                  className="font-serif text-[#FAF7F0] hover:text-[#B98F39] transition-colors"
-                  style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)" }}
-                >
-                  {p.number}
-                </a>
+                <p className="font-serif text-ivory" style={{ fontSize: "clamp(0.95rem, 2vw, 1.15rem)" }}>
+                  {cat.numbers.map((p, i) => (
+                    <span key={p.href}>
+                      {i > 0 && <span className="text-white/30 mx-1">/</span>}
+                      <a href={p.href} className="hover:text-gold transition-colors">{p.display}</a>
+                    </span>
+                  ))}
+                </p>
               </div>
             ))}
           </div>

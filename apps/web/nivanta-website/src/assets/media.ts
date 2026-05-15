@@ -33,11 +33,11 @@ export const ROOM_IMAGES = {
     "/images/rooms/apex/apex-05-full.webp",
   ],
   aura: [
-    "/images/rooms/aura/aura-01-full.webp",
-    "/images/rooms/aura/aura-02-full.webp",
+    "/images/rooms/aura/aura-05-full.webp",
     "/images/rooms/aura/aura-03-full.webp",
     "/images/rooms/aura/aura-04-full.webp",
-    "/images/rooms/aura/aura-05-full.webp",
+    "/images/rooms/aura/aura-01-full.webp",
+    "/images/rooms/aura/aura-02-full.webp",
   ],
   haven: [
     "/images/rooms/haven/haven-01-full.webp",
