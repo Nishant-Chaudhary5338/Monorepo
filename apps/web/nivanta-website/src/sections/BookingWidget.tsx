@@ -182,9 +182,9 @@ export default function BookingWidget(): React.JSX.Element {
               >
                 {isSubmitting ? "Sending…" : "Check Availability"}
               </button>
-              <p className="text-ivory/40 text-xs font-light text-center sm:text-left">
+              <p className="text-ivory/75 text-base font-light text-center sm:text-left">
                 Best rates guaranteed when you book direct.{" "}
-                <a href="tel:+919792106111" className="text-gold hover:underline">+91 979 210 6111</a>
+                <a href="tel:+919792106111" className="text-gold hover:underline font-medium">+91 979 210 6111</a>
                 {" "}for group bookings.
               </p>
             </div>

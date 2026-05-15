@@ -168,11 +168,12 @@ export default function Footer(): React.JSX.Element {
               </p>
               <div className="space-y-0">
                 <a href="tel:+919792106111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6111</a>
-                <a href="tel:+919792107111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 7111</a>
-                <a href="tel:+919792109111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 9111</a>
+                <a href="tel:+919792106222" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6222</a>
+                <a href="tel:+919792106333" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 6333</a>
+                <a href="tel:+919792108111" className="flex items-center min-h-11 py-1.5 hover:text-gold transition-colors">+91 979 210 8111</a>
               </div>
-              <a href="mailto:contact@nivantahospitality.com" className="block hover:text-gold transition-colors break-all">
-                contact@nivantahospitality.com
+              <a href="mailto:sales@nivantahospitality.com" className="block hover:text-gold transition-colors break-all">
+                sales@nivantahospitality.com
               </a>
               <a href="https://nivantahospitality.com" target="_blank" rel="noopener noreferrer" className="block hover:text-gold transition-colors">
                 nivantahospitality.com
@@ -184,6 +185,7 @@ export default function Footer(): React.JSX.Element {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-[0.65rem] text-white/25">
           <p>© 2026 Silvanza Resort by Nivanta. All Rights Reserved. Managed by Nivanta Hospitality LLP.</p>
+          <p className="text-white/20">Designed with love — <span className="text-white/35">Timelapse Creatives Marketing Solutions</span></p>
           <div className="flex gap-4">
             <Link to="/contact" className="hover:text-gold transition-colors">Privacy Policy</Link>
           </div>

@@ -147,60 +147,35 @@ export default function Hero(): React.JSX.Element {
         )}
       </AnimatePresence>
 
-      {/* ── WHEN VIDEO PLAYS: row at bottom ───────────────── */}
+      {/* ── WHEN VIDEO PLAYS: minimal centered strip at very bottom ── */}
       <AnimatePresence>
         {videoPlaying && (
           <motion.div
             key="bottom"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="absolute bottom-0 inset-x-0 z-10 px-8 lg:px-16 pb-12"
+            className="absolute bottom-0 inset-x-0 z-10 text-center px-6 pb-8"
           >
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="eyebrow mb-4 text-center"
-              style={{
-                color: "rgba(255,255,255,0.85)",
-                textShadow: "0 1px 4px rgba(0,0,0,0.9)",
-              }}
+            <p
+              className="eyebrow mb-2"
+              style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.5rem", letterSpacing: "0.3em" }}
             >
               Dhikuli, Ramnagar &nbsp;·&nbsp; Jim Corbett &nbsp;·&nbsp; Uttarakhand
-            </motion.p>
+            </p>
 
-            <div className="flex flex-col sm:flex-row items-end gap-8 lg:gap-14">
-              {/* Left: heading */}
-              <h2
-                className="heading-display text-white flex-1 text-left leading-none"
-                style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
-              >
-                Where the Forest
-                <br />
-                <span className="italic text-gold-pale">Meets Finesse</span>
-              </h2>
+            <h2
+              className="heading-display text-white leading-none mb-5"
+              style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)" }}
+            >
+              Where the Forest &nbsp;
+              <span className="italic text-gold-pale">Meets Finesse</span>
+            </h2>
 
-              {/* Divider */}
-              <div className="hidden sm:block w-px self-stretch bg-gold-pale/25 shrink-0" />
-
-              {/* Right: description + buttons */}
-              <div className="flex-1 flex flex-col gap-5 justify-end">
-                <p
-                  className="text-white/70 font-light leading-relaxed"
-                  style={{ fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)" }}
-                >
-                  Silvanza Resort by Nivanta is Jim Corbett's newest address in luxury — a
-                  four-acre sanctuary where the whisper of the Kosi Valley, the warmth of
-                  curated hospitality, and the elegance of thoughtfully designed spaces come
-                  together in one unforgettable stay.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to="/contact" className="btn btn-primary">Check Availability</Link>
-                  <Link to="/rooms" className="btn btn-ghost">Explore the Resort</Link>
-                </div>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/contact" className="btn btn-primary">Check Availability</Link>
+              <Link to="/rooms" className="btn btn-ghost">Explore the Resort</Link>
             </div>
           </motion.div>
         )}

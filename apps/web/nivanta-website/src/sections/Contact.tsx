@@ -90,10 +90,10 @@ export default function Contact(): React.JSX.Element {
               <div>
                 <p className="text-[#C9A84C] text-xs tracking-widest uppercase mb-2 font-medium">Email</p>
                 <a
-                  href="mailto:contact@nivantahospitality.com"
+                  href="mailto:sales@nivantahospitality.com"
                   className="text-[#6B6B6B] hover:text-[#C9A84C] transition-colors"
                 >
-                  contact@nivantahospitality.com
+                  sales@nivantahospitality.com
                 </a>
               </div>
             </div>

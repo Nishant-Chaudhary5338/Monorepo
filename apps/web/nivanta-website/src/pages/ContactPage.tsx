@@ -27,13 +27,14 @@ const phones = [
   { label: "Reservations", number: "+91 979 210 6111", href: "tel:+919792106111" },
   { label: "Events & Weddings", number: "+91 979 210 6222", href: "tel:+919792106222" },
   { label: "General Enquiries", number: "+91 979 210 6333", href: "tel:+919792106333" },
+  { label: "Direct Line", number: "+91 979 210 8111", href: "tel:+919792108111" },
 ];
 
 export default function ContactPage(): React.JSX.Element {
   usePageMeta({
     title: "Contact Us — Silvanza Resort by Nivanta",
     description:
-      "Contact Silvanza Resort by Nivanta. Plan your stay, enquire about events or weddings. Call +91 979 210 6111 or email contact@nivantahospitality.com",
+      "Contact Silvanza Resort by Nivanta. Plan your stay, enquire about events or weddings. Call +91 979 210 6111 or email sales@nivantahospitality.com",
     canonical: "/contact",
   });
 
@@ -49,17 +50,13 @@ export default function ContactPage(): React.JSX.Element {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const formData = new FormData();
-    formData.append("form-name", "contact");
-    Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined) formData.append(key, String(value));
-    });
-
     try {
-      await fetch("/", {
+      const res = await fetch("/.netlify/functions/send-enquiry", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
+      if (!res.ok) throw new Error("Send failed");
       setSubmitted(true);
     } catch {
       setSubmitted(true);
@@ -161,11 +158,11 @@ export default function ContactPage(): React.JSX.Element {
                   Email
                 </p>
                 <a
-                  href="mailto:contact@nivantahospitality.com"
+                  href="mailto:sales@nivantahospitality.com"
                   className="font-serif text-[#032105] hover:text-[#B98F39] transition-colors"
                   style={{ fontSize: "1.05rem" }}
                 >
-                  contact@nivantahospitality.com
+                  sales@nivantahospitality.com
                 </a>
               </div>
 
@@ -234,10 +231,8 @@ export default function ContactPage(): React.JSX.Element {
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   name="contact"
-                  data-netlify="true"
                   className="space-y-5"
                 >
-                  <input type="hidden" name="form-name" value="contact" />
 
                   <div>
                     <label className="block text-xs tracking-widest uppercase text-[#5a5545] font-light mb-2">

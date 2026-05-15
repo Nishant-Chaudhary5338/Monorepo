@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Lightbox from "../components/Lightbox";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { useInView } from "../hooks/useInView";
 import Hero from "../sections/Hero";
@@ -143,7 +144,83 @@ function WelcomeSection(): React.JSX.Element {
   );
 }
 
+function RoomCard({ room, i, onLightbox }: { room: typeof rooms[0]; i: number; onLightbox: (imgs: {src:string;alt:string}[], idx: number) => void }): React.JSX.Element {
+  const images = room.images?.length ? room.images : [room.image];
+  const [imgIdx, setImgIdx] = useState(0);
+
+  const prev = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    setImgIdx((n) => (n - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  const next = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    setImgIdx((n) => (n + 1) % images.length);
+  }, [images.length]);
+
+  const openLightbox = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    onLightbox(images.map((src, idx) => ({ src, alt: `${room.name} photo ${idx + 1}` })), imgIdx);
+  }, [images, imgIdx, onLightbox, room.name]);
+
+  return (
+    <motion.article key={room.id} {...stagger(i)} className="group overflow-hidden border border-gold/15">
+      {/* Image carousel */}
+      <div className="relative overflow-hidden aspect-4/3 bg-gold-cream">
+        <img
+          src={images[imgIdx]}
+          alt={`${room.name} — ${room.view}`}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+          width={600}
+          height={450}
+        />
+        {/* Prev / Next */}
+        {images.length > 1 && (
+          <>
+            <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors" aria-label="Previous photo">‹</button>
+            <button onClick={next} className="absolute right-10 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors" aria-label="Next photo">›</button>
+            <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/70 text-[0.6rem] bg-black/30 px-1.5 py-0.5 rounded">{imgIdx + 1}/{images.length}</span>
+          </>
+        )}
+        {/* Lightbox button */}
+        <button
+          onClick={openLightbox}
+          className="absolute right-2 top-2 bg-black/40 hover:bg-black/70 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors"
+          aria-label="View all photos"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </button>
+      </div>
+
+      {/* Card info */}
+      <Link to={`/rooms/${room.slug}`} className="block p-5">
+        <span className="eyebrow eyebrow-dark mb-1">{room.view}</span>
+        <h3 className="font-serif text-xl font-medium text-forest-deep mt-1 mb-1">{room.name}</h3>
+        <p className="text-xs text-muted font-light italic mb-3">{room.tagline}</p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {room.features.slice(0, 4).map((f) => (
+            <span key={f} className="text-[0.6rem] tracking-wide px-2 py-0.5 border border-gold/25 text-muted">{f}</span>
+          ))}
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="font-serif text-gold-dark">{room.priceLabel} <span className="text-xs text-muted font-light">/ night</span></p>
+          <span className="text-xs text-gold tracking-widest uppercase">View Room →</span>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}
+
 function RoomsPreview(): React.JSX.Element {
+  const [lbOpen, setLbOpen] = useState(false);
+  const [lbImages, setLbImages] = useState<{src:string;alt:string}[]>([]);
+  const [lbIdx, setLbIdx] = useState(0);
+
+  const openLightbox = useCallback((imgs: {src:string;alt:string}[], idx: number) => {
+    setLbImages(imgs); setLbIdx(idx); setLbOpen(true);
+  }, []);
+
   return (
     <section id="rooms" className="section-pad bg-white" aria-labelledby="rooms-heading">
       <div className="container-brand mx-auto">
@@ -158,36 +235,7 @@ function RoomsPreview(): React.JSX.Element {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {rooms.map((room, i) => (
-            <motion.article key={room.id} {...stagger(i)} className="group overflow-hidden border border-gold/15">
-              <Link to={`/rooms/${room.slug}`} className="block">
-                <div className="overflow-hidden aspect-[4/3]">
-                  <img
-                    src={room.image}
-                    alt={`${room.name} — ${room.view} at Silvanza Resort Jim Corbett`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                    width={600}
-                    height={450}
-                  />
-                </div>
-                <div className="p-5">
-                  <span className="eyebrow eyebrow-dark mb-1">{room.view}</span>
-                  <h3 className="font-serif text-xl font-medium text-forest-deep mt-1 mb-1">{room.name}</h3>
-                  <p className="text-xs text-muted font-light italic mb-3">{room.tagline}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {room.features.slice(0, 4).map((f) => (
-                      <span key={f} className="text-[0.6rem] tracking-wide px-2 py-0.5 border border-gold/25 text-muted">{f}</span>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="font-serif text-gold-dark">
-                      {room.priceLabel} <span className="text-xs text-muted font-light">/ night</span>
-                    </p>
-                    <span className="text-xs text-gold tracking-widest uppercase">View Room →</span>
-                  </div>
-                </div>
-              </Link>
-            </motion.article>
+            <RoomCard key={room.id} room={room} i={i} onLightbox={openLightbox} />
           ))}
         </div>
 
@@ -195,6 +243,8 @@ function RoomsPreview(): React.JSX.Element {
           <Link to="/rooms" className="btn btn-dark">View All Rooms & Check Availability</Link>
         </div>
       </div>
+
+      <Lightbox images={lbImages} initialIndex={lbIdx} open={lbOpen} onClose={() => setLbOpen(false)} />
     </section>
   );
 }
@@ -214,16 +264,30 @@ function AmenitiesPreview(): React.JSX.Element {
         </motion.div>
 
         <div className="grid sm:grid-cols-2 gap-6 mb-10">
-          {featured.map((a, i) => (
-            <motion.div key={a.id} {...stagger(i)} className="flex gap-5 bg-white border border-gold/15 p-6 group hover:shadow-sm transition-shadow">
-              <div className="shrink-0 flex items-center justify-center w-10 h-10"><GoldIcon name={a.icon ?? "star"} size={28} /></div>
-              <div>
-                <p className="eyebrow eyebrow-dark mb-1">{a.subtitle}</p>
-                <h3 className="font-serif text-xl font-medium text-forest-deep mb-2">{a.name}</h3>
-                <p className="text-sm text-muted font-light leading-relaxed">{a.description.slice(0, 140)}…</p>
-              </div>
-            </motion.div>
-          ))}
+          {featured.map((a, i) => {
+            const linkMap: Record<string, string> = {
+              tattva: "/amenities",
+              ember: "/restaurant",
+              orana: "/events",
+              flaura: "/events",
+            };
+            return (
+              <motion.div key={a.id} {...stagger(i)}>
+                <Link
+                  to={linkMap[a.id] ?? "/amenities"}
+                  className="flex gap-5 bg-white border border-gold/15 p-6 group hover:shadow-sm hover:border-gold/40 transition-all"
+                >
+                  <div className="shrink-0 flex items-center justify-center w-10 h-10"><GoldIcon name={a.icon ?? "star"} size={28} /></div>
+                  <div className="flex-1">
+                    <p className="eyebrow eyebrow-dark mb-1">{a.subtitle}</p>
+                    <h3 className="font-serif text-xl font-medium text-forest-deep mb-2 group-hover:text-gold transition-colors">{a.name}</h3>
+                    <p className="text-sm text-muted font-light leading-relaxed">{a.description.slice(0, 140)}…</p>
+                    <span className="text-gold text-xs tracking-widest uppercase font-light mt-3 inline-block group-hover:underline">Explore →</span>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
         <div className="text-center">
@@ -400,36 +464,39 @@ function LocationSection(): React.JSX.Element {
           </motion.div>
 
           {/* Google Maps embed */}
-          <motion.div {...fadeUp} transition={{ delay: 0.2 }} className="flex flex-col gap-4">
-            <div className="overflow-hidden border border-gold/20">
+          <motion.div {...fadeUp} transition={{ delay: 0.2 }} className="flex flex-col h-full">
+            <div className="flex-1 overflow-hidden border border-gold/20">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3472.6!2d79.0484!3d29.3812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09723b8e6a5e7%3A0x1!2sDhikuli%2C+Ramnagar%2C+Uttarakhand!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 title="Silvanza Resort — Dhikuli, Ramnagar, Uttarakhand"
                 width="100%"
-                height="340"
-                style={{ border: 0, display: "block" }}
+                height="100%"
+                style={{ border: 0, display: "block", minHeight: "380px" }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 aria-label="Google Maps showing Silvanza Resort location in Dhikuli, Ramnagar"
               />
             </div>
 
-            {/* Quick contact */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: "Reservations", number: "+91 979 210 6111" },
-                { label: "Events & Weddings", number: "+91 979 210 6222" },
-                { label: "General Enquiries", number: "+91 979 210 6333" },
-              ].map((p) => (
-                <a
-                  key={p.number}
-                  href={`tel:${p.number.replace(/\s/g, "")}`}
-                  className="flex flex-col items-center gap-1 p-3 border border-gold/20 text-center hover:border-gold transition-colors group"
-                >
-                  <span className="text-gold/60 text-xs tracking-widest uppercase font-light">{p.label}</span>
-                  <span className="text-gold-light text-xs font-light group-hover:text-gold transition-colors">{p.number}</span>
-                </a>
-              ))}
+            {/* Quick contact — single heading, 4 numbers */}
+            <div className="mt-4">
+              <p className="text-gold/60 text-xs tracking-widest uppercase font-light text-center mb-2">Call Us</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  "+91 979 210 6111",
+                  "+91 979 210 6222",
+                  "+91 979 210 6333",
+                  "+91 979 210 8111",
+                ].map((number) => (
+                  <a
+                    key={number}
+                    href={`tel:${number.replace(/\s/g, "")}`}
+                    className="flex items-center justify-center gap-2 p-2.5 border border-gold/20 text-center hover:border-gold transition-colors group"
+                  >
+                    <span className="text-gold-light text-xs font-light group-hover:text-gold transition-colors">{number}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>

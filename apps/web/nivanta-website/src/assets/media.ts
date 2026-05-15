@@ -45,6 +45,7 @@ export const ROOM_IMAGES = {
     "/images/rooms/haven/haven-03-full.webp",
     "/images/rooms/haven/haven-04-full.webp",
     "/images/rooms/haven/haven-05-full.webp",
+    "/images/rooms/haven/haven-06-full.webp",
   ],
   lush: [
     "/images/rooms/lush/lush-01-full.webp",

@@ -48,11 +48,11 @@ export default function Navbar(): React.JSX.Element {
           📞 +91 979 210 6111
         </a>
         <a
-          href="mailto:contact@nivantahospitality.com"
+          href="mailto:sales@nivantahospitality.com"
           className={`hover:text-gold transition-colors ${scrolled ? "text-muted" : "text-white/60"}`}
           aria-label="Email Silvanza Resort"
         >
-          ✉ contact@nivantahospitality.com
+          ✉ sales@nivantahospitality.com
         </a>
       </div>
 
@@ -63,9 +63,10 @@ export default function Navbar(): React.JSX.Element {
         {/* ── Logo ─────────────────────────────────────── */}
         <Link to="/" className="shrink-0" aria-label="Silvanza Resort — Home">
           <img
-            src={scrolled ? "/logo-light.svg" : "/logo-dark.svg"}
+            src="/logo-rect.png"
             alt="Silvanza Resort by Nivanta"
-            className="h-12 w-auto object-contain transition-all duration-500"
+            className="h-11 w-auto object-contain transition-all duration-500"
+            style={scrolled ? {} : { filter: "brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(5deg)" }}
           />
         </Link>
 
