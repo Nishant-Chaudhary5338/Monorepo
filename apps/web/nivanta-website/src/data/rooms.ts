@@ -50,8 +50,8 @@ export const rooms: Room[] = [
     size: 300,
     view: "Pool View & Lawn View",
     bedType: "1 King Size Bed",
-    image: ROOM_IMAGES.haven[0],
-    images: ROOM_IMAGES.haven,
+    image: ROOM_IMAGES.aura[0],
+    images: ROOM_IMAGES.aura,
     features: ["300 sq ft", "Up to 3 Adults", "King Bed", "Private Balcony", "Pool View", "Lawn View"],
     description:
       "Waking up to the gentle glimmer of the pool and the soft green of the resort lawns — that is the Aura experience. These 300 sq ft rooms for three are finished with warm textures and serene colour palettes, offering pool and lawn views that make every hour inside feel like a scene from a slow, beautiful film. A king-size bed, a private balcony, and every thoughtful amenity complete the picture.",
@@ -67,8 +67,8 @@ export const rooms: Room[] = [
     size: 255,
     view: "Garden View & Lawn View",
     bedType: "1 King Size Bed",
-    image: ROOM_IMAGES.aura[0],
-    images: ROOM_IMAGES.aura,
+    image: ROOM_IMAGES.haven[0],
+    images: ROOM_IMAGES.haven,
     features: ["255 sq ft", "Up to 3 Adults", "King Bed", "Private Balcony", "Garden View", "Lawn View"],
     description:
       "True to its name, Haven is where you exhale. These 255 sq ft rooms face the gardens and lawns with a private balcony — the perfect spot for a morning cup of chai or a quiet evening with a book. Designed for guests who appreciate a balance of openness and privacy, Haven rooms are finished with care and appointed with every comfort of home — only better.",
