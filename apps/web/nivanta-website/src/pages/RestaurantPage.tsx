@@ -35,12 +35,6 @@ const menuHighlights = [
     icon: "leaf",
   },
   {
-    title: "Bar & Beverages",
-    description:
-      "A curated selection of spirits, cocktails, mocktails, and wines. Ask for the Pahadi Mule — an Ember signature inspired by the mountain evening.",
-    icon: "glass",
-  },
-  {
     title: "Private Dining",
     description:
       "Intimate dinners arranged on request — candlelit terrace setups, poolside tables, or a private corner of the restaurant for special occasions.",
@@ -56,17 +50,14 @@ const menuHighlights = [
 
 const menus = [
   { title: "Main Course Menu", note: "Available at the restaurant" },
-  { title: "Bar Book", note: "Cocktails, spirits & wines" },
   { title: "Breakfast Menu", note: "Daily buffet & à la carte" },
-  { title: "Wine List", note: "Available on request" },
 ];
 
 const hours = [
-  { meal: "Breakfast", time: "7:00 AM — 10:30 AM" },
-  { meal: "Lunch", time: "12:30 PM — 3:30 PM" },
-  { meal: "Evening Snacks", time: "4:30 PM — 6:30 PM" },
-  { meal: "Dinner", time: "7:30 PM — 10:30 PM" },
-  { meal: "Bar", time: "12:00 PM — 11:00 PM" },
+  { meal: "Breakfast", time: "8:30 AM — 10:30 AM" },
+  { meal: "Lunch", time: "1:30 PM — 3:30 PM" },
+  { meal: "Evening Hi Tea", time: "5:30 PM — 6:30 PM" },
+  { meal: "Dinner", time: "8:00 PM — 10:00 PM" },
 ];
 
 export default function RestaurantPage(): React.JSX.Element {
@@ -76,7 +67,7 @@ export default function RestaurantPage(): React.JSX.Element {
   usePageMeta({
     title: "Ember Restaurant — Silvanza Resort Jim Corbett",
     description:
-      "Ember is Silvanza Resort's 2000 sq ft pool-view multi-cuisine restaurant. Buffet breakfast, à la carte dining, bar with cocktails and wines. Jim Corbett, Ramnagar.",
+      "Ember is Silvanza Resort's 2000 sq ft pool-view multi-cuisine restaurant. Buffet breakfast, à la carte dining, evening hi tea, and private dining. Jim Corbett, Ramnagar.",
     canonical: "/restaurant",
     schema: {
       "@context": "https://schema.org",
@@ -98,10 +89,10 @@ export default function RestaurantPage(): React.JSX.Element {
         "addressCountry": "IN"
       },
       "openingHoursSpecification": [
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "07:00", "closes": "10:30", "name": "Breakfast" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "12:30", "closes": "15:30", "name": "Lunch" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "19:30", "closes": "22:30", "name": "Dinner" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "12:00", "closes": "23:00", "name": "Bar" }
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "08:30", "closes": "10:30", "name": "Breakfast" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "13:30", "closes": "15:30", "name": "Lunch" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "17:30", "closes": "18:30", "name": "Evening Hi Tea" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "20:00", "closes": "22:00", "name": "Dinner" }
       ],
       "parentOrganization": { "@id": "https://silvanzaresort.com/#hotel" }
     },

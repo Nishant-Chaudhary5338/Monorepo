@@ -32,7 +32,6 @@ export const amenities: Amenity[] = [
       "Lavish buffet breakfast daily",
       "À la carte Indian, continental & world cuisine",
       "Pool & Kosi Valley view setting",
-      "Curated bar — spirits, cocktails, mocktails, wines",
       "Private dining on request",
       "2,000 sq ft restaurant space",
     ],
