@@ -146,21 +146,24 @@ export default function AboutPage(): React.JSX.Element {
               className="space-y-4"
             >
               <div className="grid grid-cols-2 gap-4">
-                <div
-                  className="aspect-[4/5] bg-[#253A11] rounded-none"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #253A11 0%, #032105 100%)",
-                  }}
+                <img
+                  src="/images/about/about-team-full.webp"
+                  alt="Silvanza Resort full team"
+                  className="aspect-[4/5] w-full object-cover object-top"
+                  loading="lazy"
                 />
                 <div className="space-y-4">
-                  <div
-                    className="aspect-square bg-[#B98F39]"
-                    style={{ opacity: 0.15 }}
+                  <img
+                    src="/images/about/about-chefs-full.webp"
+                    alt="Ember restaurant chef team"
+                    className="aspect-square w-full object-cover"
+                    loading="lazy"
                   />
-                  <div
-                    className="h-32 bg-[#F5EDD4]"
-                    style={{ background: "#F5EDD4" }}
+                  <img
+                    src="/images/about/about-staff-full.webp"
+                    alt="Silvanza hospitality team"
+                    className="h-32 w-full object-cover"
+                    loading="lazy"
                   />
                 </div>
               </div>

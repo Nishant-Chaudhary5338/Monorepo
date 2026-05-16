@@ -2,6 +2,7 @@ import { lazy, Suspense, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Lightbox from "../components/Lightbox";
+import ImageCarousel from "../components/ImageCarousel";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { useInView } from "../hooks/useInView";
 import Hero from "../sections/Hero";
@@ -146,52 +147,16 @@ function WelcomeSection(): React.JSX.Element {
 
 function RoomCard({ room, i, onLightbox }: { room: typeof rooms[0]; i: number; onLightbox: (imgs: {src:string;alt:string}[], idx: number) => void }): React.JSX.Element {
   const images = room.images?.length ? room.images : [room.image];
-  const [imgIdx, setImgIdx] = useState(0);
-
-  const prev = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); e.stopPropagation();
-    setImgIdx((n) => (n - 1 + images.length) % images.length);
-  }, [images.length]);
-
-  const next = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); e.stopPropagation();
-    setImgIdx((n) => (n + 1) % images.length);
-  }, [images.length]);
-
-  const openLightbox = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); e.stopPropagation();
-    onLightbox(images.map((src, idx) => ({ src, alt: `${room.name} photo ${idx + 1}` })), imgIdx);
-  }, [images, imgIdx, onLightbox, room.name]);
 
   return (
     <motion.article key={room.id} {...stagger(i)} className="group overflow-hidden border border-gold/15">
-      {/* Image carousel */}
-      <div className="relative overflow-hidden aspect-4/3 bg-gold-cream">
-        <img
-          src={images[imgIdx]}
-          alt={`${room.name} — ${room.view}`}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy"
-          width={600}
-          height={450}
-        />
-        {/* Prev / Next */}
-        {images.length > 1 && (
-          <>
-            <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors" aria-label="Previous photo">‹</button>
-            <button onClick={next} className="absolute right-10 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors" aria-label="Next photo">›</button>
-            <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/70 text-[0.6rem] bg-black/30 px-1.5 py-0.5 rounded">{imgIdx + 1}/{images.length}</span>
-          </>
-        )}
-        {/* Lightbox button */}
-        <button
-          onClick={openLightbox}
-          className="absolute right-2 top-2 bg-black/40 hover:bg-black/70 text-white w-7 h-7 flex items-center justify-center rounded-full transition-colors"
-          aria-label="View all photos"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-        </button>
-      </div>
+      <ImageCarousel
+        images={images}
+        alt={room.name}
+        className="aspect-4/3"
+
+        onLightbox={(idx) => onLightbox(images.map((src, j) => ({ src, alt: `${room.name} photo ${j + 1}` })), idx)}
+      />
 
       {/* Card info */}
       <Link to={`/rooms/${room.slug}`} className="block p-5">
@@ -484,9 +449,9 @@ function LocationSection(): React.JSX.Element {
               <div className="grid grid-cols-2 gap-2">
                 {[
                   "+91 979 210 6111",
-                  "+91 979 210 6222",
-                  "+91 979 210 6333",
+                  "+91 979 210 7111",
                   "+91 979 210 8111",
+                  "+91 979 210 9111",
                 ].map((number) => (
                   <a
                     key={number}

@@ -103,19 +103,6 @@ export default function Hero(): React.JSX.Element {
               <span className="italic text-gold-pale">Meets Finesse</span>
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.65, ease: EASE }}
-              className="mt-6 mb-8 text-white/70 font-light leading-relaxed max-w-2xl"
-              style={{ fontSize: "clamp(0.9rem, 1.8vw, 1.05rem)" }}
-            >
-              Silvanza Resort by Nivanta is Jim Corbett's newest address in luxury — a
-              four-acre sanctuary where the whisper of the Kosi Valley, the warmth of
-              curated hospitality, and the elegance of thoughtfully designed spaces come
-              together in one unforgettable stay.
-            </motion.p>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

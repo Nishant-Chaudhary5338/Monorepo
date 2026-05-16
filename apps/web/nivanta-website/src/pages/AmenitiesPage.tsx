@@ -5,6 +5,7 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import { amenities } from "../data/amenities";
 import GoldIcon from "../components/GoldIcon";
 import Lightbox from "../components/Lightbox";
+import ImageCarousel from "../components/ImageCarousel";
 import type { Amenity } from "../types";
 
 const fadeUp = {
@@ -85,73 +86,12 @@ function AmenityCarousel({ amenity, bgGradient, onOpenLightbox }: CarouselProps)
 
   return (
     <div className="relative">
-      {/* Overflow container */}
-      <div className="aspect-4/3 w-full overflow-hidden relative group" style={{ background: bgGradient }}>
-        {gallery[idx] && (
-          <img
-            src={gallery[idx]}
-            alt={`${amenity.name} — ${amenity.subtitle} at Silvanza Resort`}
-            loading="lazy"
-            width={800}
-            height={600}
-            className="w-full h-full object-cover transition-opacity duration-500"
-          />
-        )}
-
-        {/* Hover scrim */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
-
-        {/* Prev arrow */}
-        {total > 1 && (
-          <button
-            onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
-            aria-label="Previous image"
-          >
-            <ChevLeft />
-          </button>
-        )}
-
-        {/* Next arrow */}
-        {total > 1 && (
-          <button
-            onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
-            aria-label="Next image"
-          >
-            <ChevRight />
-          </button>
-        )}
-
-        {/* Gallery button + counter — bottom right */}
-        {total > 0 && (
-          <button
-            onClick={open}
-            className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/60 hover:bg-black/85 text-white text-[0.58rem] tracking-widest uppercase px-2.5 py-1.5 transition-colors duration-200 z-10 opacity-0 group-hover:opacity-100"
-            aria-label={`View all ${total} photos of ${amenity.name}`}
-          >
-            <GridIcon />
-            {total > 1 && <span>{idx + 1} / {total}</span>}
-            {total === 1 && <span>View Photo</span>}
-          </button>
-        )}
-
-        {/* Dot indicators */}
-        {total > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-            {gallery.map((_, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); setIdx(i); }}
-                className={`block rounded-full transition-all duration-200 ${
-                  i === idx ? "w-5 h-1.5 bg-gold" : "w-1.5 h-1.5 bg-white/60 hover:bg-white"
-                }`}
-                aria-label={`Go to image ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <ImageCarousel
+        images={gallery}
+        alt={amenity.name}
+        className="aspect-4/3 w-full"
+        onLightbox={(i) => onOpenLightbox(gallery.map((src, j) => ({ src, alt: `${amenity.name} — view ${j + 1}` })), i)}
+      />
 
       {/* Decorative corner — outside overflow container so it's visible */}
       <div

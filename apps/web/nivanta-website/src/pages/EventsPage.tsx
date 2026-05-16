@@ -61,6 +61,7 @@ const eventTypes = [
   { title: "Corporate Offsites & Team Retreats", icon: "building" },
   { title: "Conferences & Product Launches", icon: "mic" },
   { title: "Family Reunions & Group Getaways", icon: "people" },
+  { title: "Alumni Meets & College Reunions", icon: "star" },
 ];
 
 const whyChoose = [

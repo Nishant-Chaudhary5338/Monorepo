@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
 import GoldIcon from "../components/GoldIcon";
+import ImageCarousel from "../components/ImageCarousel";
+import Lightbox from "../components/Lightbox";
+import { AMENITY_IMAGES, AMENITY_GALLERY } from "../assets/media";
+
+const restaurantImages = AMENITY_GALLERY.ember ?? [AMENITY_IMAGES.ember];
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -40,6 +46,12 @@ const menuHighlights = [
       "Intimate dinners arranged on request — candlelit terrace setups, poolside tables, or a private corner of the restaurant for special occasions.",
     icon: "star",
   },
+  {
+    title: "Kumaoni Specials",
+    description:
+      "Bhatt ki dal, kafuli, aloo ke gutke — authentic Kumaoni recipes passed through generations, served at Ember with the pride of the hills.",
+    icon: "leaf",
+  },
 ];
 
 const menus = [
@@ -58,6 +70,9 @@ const hours = [
 ];
 
 export default function RestaurantPage(): React.JSX.Element {
+  const [lbOpen, setLbOpen] = useState(false);
+  const [lbIdx, setLbIdx] = useState(0);
+  const lbImages = restaurantImages.map((src, i) => ({ src, alt: `Ember Restaurant — photo ${i + 1}` }));
   usePageMeta({
     title: "Ember Restaurant — Silvanza Resort Jim Corbett",
     description:
@@ -168,20 +183,18 @@ export default function RestaurantPage(): React.JSX.Element {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="relative"
             >
-              <div
+              <ImageCarousel
+                images={restaurantImages}
+                alt="Ember Restaurant"
                 className="aspect-[4/3] w-full"
-                style={{ background: "linear-gradient(135deg, #1A1A17 0%, #032105 100%)" }}
+                onLightbox={(i) => { setLbIdx(i); setLbOpen(true); }}
               />
               <div
-                className="absolute -bottom-6 -left-6 w-48 h-32 bg-[#F5EDD4] border border-[#B98F39]/40 flex items-center justify-center"
+                className="absolute -bottom-6 -left-6 w-48 h-32 bg-[#F5EDD4] border border-[#B98F39]/40 flex items-center justify-center z-10"
               >
                 <div className="text-center">
-                  <p className="font-serif text-[#032105]" style={{ fontSize: "2rem" }}>
-                    2,000
-                  </p>
-                  <p className="text-xs tracking-widest uppercase text-[#5a5545] font-light">
-                    sq ft of dining
-                  </p>
+                  <p className="font-serif text-[#032105]" style={{ fontSize: "2rem" }}>2,000</p>
+                  <p className="text-xs tracking-widest uppercase text-[#5a5545] font-light">sq ft of dining</p>
                 </div>
               </div>
             </motion.div>
@@ -328,6 +341,8 @@ export default function RestaurantPage(): React.JSX.Element {
           </motion.div>
         </div>
       </section>
+
+      <Lightbox images={lbImages} initialIndex={lbIdx} open={lbOpen} onClose={() => setLbOpen(false)} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { rooms, STANDARD_ROOM_AMENITIES } from "../data/rooms";
 import Lightbox from "../components/Lightbox";
+import ImageCarousel from "../components/ImageCarousel";
 import type { Room } from "../types";
 
 // ── Icon SVGs ─────────────────────────────────────────────
@@ -40,27 +41,6 @@ type RoomCardProps = {
 };
 
 function RoomCard({ room, cardIdx, onOpenLightbox }: RoomCardProps): React.JSX.Element {
-  const [imgIdx, setImgIdx] = useState(0);
-  const total = room.images.length;
-
-  const prev = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setImgIdx((i) => (i - 1 + total) % total);
-  }, [total]);
-
-  const next = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setImgIdx((i) => (i + 1) % total);
-  }, [total]);
-
-  const openGallery = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onOpenLightbox(room.id, imgIdx);
-  }, [room.id, imgIdx, onOpenLightbox]);
-
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -69,67 +49,13 @@ function RoomCard({ room, cardIdx, onOpenLightbox }: RoomCardProps): React.JSX.E
       transition={{ duration: 0.55, delay: cardIdx * 0.08 }}
       className="group bg-white border border-gold/15 overflow-hidden"
     >
-      {/* ── Image area with carousel controls ── */}
-      <div className="overflow-hidden aspect-4/3 relative">
-        {/* Main image */}
-        <img
-          src={room.images[imgIdx]}
-          alt={`${room.name} at Silvanza Resort — view ${imgIdx + 1}`}
-          className="w-full h-full object-cover transition-opacity duration-500"
-          loading="lazy"
-          width={600}
-          height={450}
-        />
-
-        {/* Dark scrim on hover for better control visibility */}
-        <div className="absolute inset-0 bg-forest-deep/0 group-hover:bg-forest-deep/20 transition-colors duration-300" />
-
-        {/* Prev arrow */}
-        {total > 1 && (
-          <button
-            onClick={prev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
-            aria-label="Previous image"
-          >
-            <ChevronLeft />
-          </button>
-        )}
-
-        {/* Next arrow */}
-        {total > 1 && (
-          <button
-            onClick={next}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/75 z-10"
-            aria-label="Next image"
-          >
-            <ChevronRight />
-          </button>
-        )}
-
-        {/* Gallery button + counter — bottom-right */}
-        <button
-          onClick={openGallery}
-          className="absolute bottom-2 right-2 flex items-center gap-1.5 bg-black/60 hover:bg-black/80 text-white text-[0.6rem] tracking-widest uppercase px-2.5 py-1.5 transition-colors duration-200 z-10 opacity-0 group-hover:opacity-100"
-          aria-label={`View all ${total} photos of ${room.name}`}
-        >
-          <GridIcon />
-          <span>{imgIdx + 1} / {total}</span>
-        </button>
-
-        {/* Dot indicators */}
-        {total > 1 && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-            {room.images.map((_, i) => (
-              <span
-                key={i}
-                className={`block rounded-full transition-all duration-200 ${
-                  i === imgIdx ? "w-4 h-1.5 bg-gold" : "w-1.5 h-1.5 bg-white/60"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {/* ── Image carousel ── */}
+      <ImageCarousel
+        images={room.images}
+        alt={room.name}
+        className="aspect-4/3"
+        onLightbox={(i) => onOpenLightbox(room.id, i)}
+      />
 
       {/* ── Card content ── */}
       <Link to={`/rooms/${room.slug}`} className="block">
