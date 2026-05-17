@@ -9,7 +9,7 @@ type GalleryProps = {
 
 const CATEGORIES: { value: GalleryCategory; label: string }[] = [
   { value: "all",        label: "All" },
-  { value: "rooms",      label: "Rooms & Suites" },
+  { value: "lifestyle",  label: "Lifestyle & Experiences" },
   { value: "restaurant", label: "Restaurant — Ember" },
   { value: "pool",       label: "Pool — Tattva" },
   { value: "events",     label: "Banquet & Events" },

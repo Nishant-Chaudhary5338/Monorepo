@@ -37,7 +37,7 @@ export type Testimonial = {
 };
 
 // ═══ GALLERY ═══
-export type GalleryCategory = 'all' | 'rooms' | 'restaurant' | 'pool' | 'events' | 'gardens';
+export type GalleryCategory = 'all' | 'lifestyle' | 'restaurant' | 'pool' | 'events' | 'gardens';
 
 export type GalleryImage = {
   id: string;
