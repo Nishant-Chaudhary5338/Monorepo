@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://silvanzaresort.com/sitemap.xml
+Sitemap: https://nivantahospitality.com/sitemap.xml

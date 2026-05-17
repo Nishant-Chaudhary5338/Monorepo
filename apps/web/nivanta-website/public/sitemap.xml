@@ -4,19 +4,19 @@
 
   <!-- Home -->
   <url>
-    <loc>https://silvanzaresort.com/</loc>
+    <loc>https://nivantahospitality.com/</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://silvanzaresort.com/og-image.jpg</image:loc>
+      <image:loc>https://nivantahospitality.com/og-image.jpg</image:loc>
       <image:title>Silvanza Resort by Nivanta — Jim Corbett Luxury Resort</image:title>
     </image:image>
   </url>
 
   <!-- About -->
   <url>
-    <loc>https://silvanzaresort.com/about</loc>
+    <loc>https://nivantahospitality.com/about</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -24,7 +24,7 @@
 
   <!-- Rooms index -->
   <url>
-    <loc>https://silvanzaresort.com/rooms</loc>
+    <loc>https://nivantahospitality.com/rooms</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
@@ -32,37 +32,37 @@
 
   <!-- Individual rooms -->
   <url>
-    <loc>https://silvanzaresort.com/rooms/apex-suites</loc>
+    <loc>https://nivantahospitality.com/rooms/apex-suites</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/rooms/aura</loc>
+    <loc>https://nivantahospitality.com/rooms/aura</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/rooms/haven</loc>
+    <loc>https://nivantahospitality.com/rooms/haven</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/rooms/lush</loc>
+    <loc>https://nivantahospitality.com/rooms/lush</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/rooms/breeze</loc>
+    <loc>https://nivantahospitality.com/rooms/breeze</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/rooms/origin</loc>
+    <loc>https://nivantahospitality.com/rooms/origin</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -70,7 +70,7 @@
 
   <!-- Amenities -->
   <url>
-    <loc>https://silvanzaresort.com/amenities</loc>
+    <loc>https://nivantahospitality.com/amenities</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -78,7 +78,7 @@
 
   <!-- Restaurant -->
   <url>
-    <loc>https://silvanzaresort.com/restaurant</loc>
+    <loc>https://nivantahospitality.com/restaurant</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -86,7 +86,7 @@
 
   <!-- Events -->
   <url>
-    <loc>https://silvanzaresort.com/events</loc>
+    <loc>https://nivantahospitality.com/events</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -94,7 +94,7 @@
 
   <!-- Gallery -->
   <url>
-    <loc>https://silvanzaresort.com/gallery</loc>
+    <loc>https://nivantahospitality.com/gallery</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -102,7 +102,7 @@
 
   <!-- Contact -->
   <url>
-    <loc>https://silvanzaresort.com/contact</loc>
+    <loc>https://nivantahospitality.com/contact</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -110,7 +110,7 @@
 
   <!-- Blog index -->
   <url>
-    <loc>https://silvanzaresort.com/blog</loc>
+    <loc>https://nivantahospitality.com/blog</loc>
     <lastmod>2026-05-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
@@ -118,25 +118,25 @@
 
   <!-- Blog posts -->
   <url>
-    <loc>https://silvanzaresort.com/blog/journey-through-traditional-cuisine</loc>
+    <loc>https://nivantahospitality.com/blog/journey-through-traditional-cuisine</loc>
     <lastmod>2026-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/blog/stay-healthy-while-travelling</loc>
+    <loc>https://nivantahospitality.com/blog/stay-healthy-while-travelling</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/blog/celebrate-birthday-silvanza-way</loc>
+    <loc>https://nivantahospitality.com/blog/celebrate-birthday-silvanza-way</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://silvanzaresort.com/blog/live-music-corbett-nights-silvanza</loc>
+    <loc>https://nivantahospitality.com/blog/live-music-corbett-nights-silvanza</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
