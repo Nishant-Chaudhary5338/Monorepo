@@ -5,8 +5,10 @@ type PageMeta = {
   description: string;
   canonical?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   ogType?: string;
   schema?: Record<string, unknown>;
+  noIndex?: boolean;
 };
 
 const BASE_URL = "https://silvanzaresort.com";
@@ -47,23 +49,30 @@ function removeSchema(id: string): void {
   document.getElementById(id)?.remove();
 }
 
-export function usePageMeta({ title, description, canonical, ogImage, ogType = "website", schema }: PageMeta): void {
+export function usePageMeta({ title, description, canonical, ogImage, ogImageAlt, ogType = "website", schema, noIndex = false }: PageMeta): void {
   useEffect(() => {
     const fullTitle = title.includes("Silvanza")
       ? title
       : `${title} — Silvanza Resort by Nivanta`;
 
+    const image = ogImage ?? DEFAULT_OG_IMAGE;
+    const imageAlt = ogImageAlt ?? "Silvanza Resort by Nivanta — Luxury resort in Jim Corbett, Uttarakhand";
+
     document.title = fullTitle;
 
+    setMeta("robots", noIndex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
     setMeta("description", description);
     setMeta("og:title", fullTitle, "property");
     setMeta("og:description", description, "property");
     setMeta("og:type", ogType, "property");
-    setMeta("og:image", ogImage ?? DEFAULT_OG_IMAGE, "property");
+    setMeta("og:image", image, "property");
+    setMeta("og:image:alt", imageAlt, "property");
+    setMeta("og:image:type", "image/jpeg", "property");
     setMeta("og:url", canonical ? `${BASE_URL}${canonical}` : window.location.href, "property");
     setMeta("twitter:title", fullTitle);
     setMeta("twitter:description", description);
-    setMeta("twitter:image", ogImage ?? DEFAULT_OG_IMAGE);
+    setMeta("twitter:image", image);
+    setMeta("twitter:image:alt", imageAlt);
 
     if (canonical) setLink("canonical", `${BASE_URL}${canonical}`);
 
@@ -76,5 +85,5 @@ export function usePageMeta({ title, description, canonical, ogImage, ogType = "
     return () => {
       removeSchema("page-schema");
     };
-  }, [title, description, canonical, ogImage, ogType, schema]);
+  }, [title, description, canonical, ogImage, ogImageAlt, ogType, schema, noIndex]);
 }

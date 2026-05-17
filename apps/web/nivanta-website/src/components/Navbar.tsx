@@ -32,30 +32,6 @@ export default function Navbar(): React.JSX.Element {
       }`}
       role="banner"
     >
-      {/* Contact strip — desktop only */}
-      <div
-        className={`hidden lg:flex items-center justify-end gap-6 px-10 py-1.5 text-xs tracking-wide border-b transition-all duration-500 ${
-          scrolled
-            ? "border-gold/20 bg-gold-cream"
-            : "border-white/10 bg-forest-deep/40"
-        }`}
-      >
-        <a
-          href="tel:+919792106111"
-          className={`hover:text-gold transition-colors ${scrolled ? "text-muted" : "text-white/60"}`}
-          aria-label="Call Silvanza Resort"
-        >
-          📞 +91 979 210 6111
-        </a>
-        <a
-          href="mailto:sales@nivantahospitality.com"
-          className={`hover:text-gold transition-colors ${scrolled ? "text-muted" : "text-white/60"}`}
-          aria-label="Email Silvanza Resort"
-        >
-          ✉ sales@nivantahospitality.com
-        </a>
-      </div>
-
       <nav
         className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between"
         aria-label="Primary navigation"
@@ -88,8 +64,29 @@ export default function Navbar(): React.JSX.Element {
           ))}
         </ul>
 
-        {/* ── Book Now CTA ── */}
-        <div className="hidden lg:flex items-center">
+        {/* ── Book Now CTA + contact icons ── */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a
+            href="tel:+919792106111"
+            aria-label="Call Silvanza Resort: +91 979 210 6111"
+            title="+91 979 210 6111"
+            className={`p-1.5 rounded-full transition-colors hover:text-gold ${scrolled ? "text-forest-deep" : "text-white"}`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/>
+            </svg>
+          </a>
+          <a
+            href="mailto:sales@nivantahospitality.com"
+            aria-label="Email Silvanza Resort: sales@nivantahospitality.com"
+            title="sales@nivantahospitality.com"
+            className={`p-1.5 rounded-full transition-colors hover:text-gold ${scrolled ? "text-forest-deep" : "text-white"}`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </a>
           <button
             onClick={() => navigate("/contact")}
             className="btn btn-primary text-[0.65rem]"
@@ -149,12 +146,27 @@ export default function Navbar(): React.JSX.Element {
                   Book Now
                 </Link>
               </li>
-              <li className="pt-3 border-t border-gold/20">
+              <li className="pt-3 border-t border-gold/20 flex gap-4">
                 <a
                   href="tel:+919792106111"
-                  className="block text-sm text-muted hover:text-gold transition-colors"
+                  aria-label="Call Silvanza Resort: +91 979 210 6111"
+                  title="+91 979 210 6111"
+                  className="p-2 text-forest-deep hover:text-gold transition-colors"
                 >
-                  📞 +91 979 210 6111
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/>
+                  </svg>
+                </a>
+                <a
+                  href="mailto:sales@nivantahospitality.com"
+                  aria-label="Email Silvanza Resort: sales@nivantahospitality.com"
+                  title="sales@nivantahospitality.com"
+                  className="p-2 text-forest-deep hover:text-gold transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
                 </a>
               </li>
             </ul>

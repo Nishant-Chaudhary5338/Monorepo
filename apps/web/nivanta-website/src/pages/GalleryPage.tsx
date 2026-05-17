@@ -17,8 +17,16 @@ export default function GalleryPage(): React.JSX.Element {
   usePageMeta({
     title: "Gallery — Silvanza Resort by Nivanta Jim Corbett",
     description:
-      "Explore Silvanza Resort through our curated gallery. Rooms, Ember restaurant, Tattva pool, banquet events, and the gardens of Dhikuli, Jim Corbett.",
+      "Explore Silvanza Resort through our curated gallery. Lifestyle experiences, Ember restaurant, Tattva pool, banquet events, and the gardens of Dhikuli, Jim Corbett.",
     canonical: "/gallery",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "ImageGallery",
+      "name": "Silvanza Resort Photo Gallery",
+      "description": "Photo gallery of Silvanza Resort by Nivanta — lifestyle experiences, Ember restaurant, Tattva pool, banquet events, and lush gardens in Dhikuli, Jim Corbett.",
+      "url": "https://silvanzaresort.com/gallery",
+      "author": { "@type": "Organization", "name": "Nivanta Hospitality LLP" },
+    },
   });
 
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");

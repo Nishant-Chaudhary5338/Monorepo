@@ -6,6 +6,7 @@ export default function NotFoundPage(): React.JSX.Element {
   usePageMeta({
     title: "Page Not Found — Silvanza Resort",
     description: "This page could not be found. Return to Silvanza Resort.",
+    noIndex: true,
   });
 
   return (

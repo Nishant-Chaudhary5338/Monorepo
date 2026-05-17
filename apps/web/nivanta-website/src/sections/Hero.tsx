@@ -7,21 +7,12 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero(): React.JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    let timer: number;
-    const schedulePlay = (): void => {
-      timer = window.setTimeout(() => { video.play().catch(() => {}); }, 4000);
-    };
-    if (document.readyState === "complete") {
-      schedulePlay();
-    } else {
-      window.addEventListener("load", schedulePlay, { once: true });
-    }
-    return () => clearTimeout(timer);
+    video.play().catch(() => {});
   }, []);
 
   return (
@@ -47,10 +38,9 @@ export default function Hero(): React.JSX.Element {
           loop
           muted
           playsInline
-          preload="none"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-2000 ease-in-out ${
-            videoPlaying ? "opacity-100" : "opacity-0"
-          }`}
+          autoPlay
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"
           onPlaying={() => setVideoPlaying(true)}
           onError={() => setVideoPlaying(false)}
