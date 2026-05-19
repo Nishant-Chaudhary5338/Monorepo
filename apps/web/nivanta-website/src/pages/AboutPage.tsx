@@ -9,10 +9,10 @@ const fadeUp = {
 };
 
 const team = [
-  { name: "Mukesh Kr. Pandey", role: "Resort Manager" },
+  { name: "Avinaash Niraala", role: "Vice President, Marketing & Sales" },
+  { name: "Rekha Sahu Dubey", role: "Sr. Manager, Reservations & Sales" },
+  { name: "Mukesh Kumar Pandey", role: "Resort Manager" },
   { name: "Vinod Pathak", role: "Front Office Manager" },
-  { name: "Rekha Dubey", role: "Manager, Reservations" },
-  { name: "Avinaash Niraala", role: "VP, Marketing & Sales" },
   { name: "Atul Rai", role: "Manager, Housekeeping" },
 ];
 

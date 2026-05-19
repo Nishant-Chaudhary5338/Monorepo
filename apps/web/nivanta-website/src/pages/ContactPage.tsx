@@ -34,6 +34,12 @@ const phoneCategories = [
     ],
   },
   {
+    label: "Reception / Front Office",
+    numbers: [
+      { display: "+91 9517666696", href: "tel:+919517666696" },
+    ],
+  },
+  {
     label: "Events & Wedding",
     numbers: [
       { display: "+91 9792106111", href: "tel:+919792106111" },
