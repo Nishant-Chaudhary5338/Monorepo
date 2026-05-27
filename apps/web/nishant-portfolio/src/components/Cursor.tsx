@@ -76,7 +76,7 @@ const Cursor = () => {
         width: enlarged ? "32px" : "8px",
         height: enlarged ? "32px" : "8px",
         borderRadius: "50%",
-        backgroundColor: "var(--accent-warm)",
+        backgroundColor: "var(--accent)",
         pointerEvents: "none",
         zIndex: 9999,
         opacity: visible ? (enlarged ? 0.5 : 0.85) : 0,

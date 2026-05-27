@@ -57,14 +57,14 @@ const Contact = () => {
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.84rem",
-            color: "var(--text-muted)",
+            color: "var(--fg-muted)",
             letterSpacing: "0.04em",
           }}
         >
           Drop a line at{" "}
           <a
             href={`mailto:${personalInfo.email}`}
-            style={{ color: "var(--accent-warm)", borderBottom: "1px solid var(--accent-warm)" }}
+            style={{ color: "var(--accent)", borderBottom: "1px solid var(--accent)" }}
           >
             {personalInfo.email}
           </a>
@@ -114,22 +114,8 @@ const Contact = () => {
 
             <button
               type="submit"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.84rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "var(--text-primary)",
-                background: "none",
-                border: "none",
-                borderBottom: "1.5px solid var(--accent-warm)",
-                paddingBottom: "0.2rem",
-                cursor: "pointer",
-                alignSelf: "flex-start",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "var(--accent-warm)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)"; }}
+              className="btn"
+              style={{ alignSelf: "flex-start" }}
             >
               {loading ? "Sending..." : sent ? "Message sent →" : "Send message →"}
             </button>
@@ -139,7 +125,7 @@ const Contact = () => {
         <div className="xl:col-span-7 min-h-96">
           <div
             className="w-full h-full hover:cursor-grab rounded-2xl overflow-hidden"
-            style={{ backgroundColor: "var(--bg-secondary)", minHeight: "400px" }}
+            style={{ backgroundColor: "var(--surface)", minHeight: "400px" }}
           >
             <ContactExperience />
           </div>

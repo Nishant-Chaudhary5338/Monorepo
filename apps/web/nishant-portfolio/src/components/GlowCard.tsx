@@ -40,7 +40,7 @@ const GlowCard = ({ card, index, children }: GlowCardProps) => {
         ))}
       </div>
       <div className="mb-5">
-        <p className="text-lg" style={{ color: "var(--text-secondary)" }}>{card.review}</p>
+        <p className="text-lg" style={{ color: "var(--fg-2)" }}>{card.review}</p>
       </div>
       {children}
     </div>

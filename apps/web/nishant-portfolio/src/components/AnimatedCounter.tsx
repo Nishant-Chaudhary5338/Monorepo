@@ -45,7 +45,7 @@ const AnimatedCounter = () => {
         >
           <div className="impact-number">
             <span className="counter-number">0</span>
-            <span className="impact-number" style={{ fontSize: "0.45em", verticalAlign: "super", color: "var(--text-primary)" }}>
+            <span className="impact-number" style={{ fontSize: "0.45em", verticalAlign: "super", color: "var(--fg)" }}>
               {item.suffix}
             </span>
           </div>

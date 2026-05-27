@@ -10,7 +10,7 @@ const links = [
 const Footer = () => (
   <footer
     style={{
-      borderTop: "1px solid var(--rule)",
+      borderTop: "1px solid var(--border)",
       padding: "5rem 0 3rem",
       margin: "4rem 0 0",
     }}
@@ -35,14 +35,14 @@ const Footer = () => (
               fontFamily: "var(--font-mono)",
               fontSize: "0.96rem",
               marginTop: "1.5rem",
-              color: "var(--text-primary)",
+              color: "var(--fg)",
               textDecoration: "none",
-              borderBottom: "1.5px solid var(--accent-warm)",
+              borderBottom: "1.5px solid var(--accent)",
               paddingBottom: "0.2rem",
               transition: "color 0.2s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-warm)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--fg)"; }}
           >
             {personalInfo.email} →
           </a>
@@ -62,21 +62,21 @@ const Footer = () => (
                 alignItems: "baseline",
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.88rem",
-                color: "var(--text-muted)",
+                color: "var(--fg-muted)",
                 textDecoration: "none",
-                borderBottom: "1px dashed var(--border-color)",
+                borderBottom: "1px dashed var(--border)",
                 padding: "0.6rem 0",
                 transition: "color 0.18s, border-color 0.18s",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLAnchorElement;
-                el.style.color = "var(--accent-warm)";
-                el.style.borderBottomColor = "var(--accent-warm)";
+                el.style.color = "var(--accent)";
+                el.style.borderBottomColor = "var(--accent)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLAnchorElement;
-                el.style.color = "var(--text-muted)";
-                el.style.borderBottomColor = "var(--border-color)";
+                el.style.color = "var(--fg-muted)";
+                el.style.borderBottomColor = "var(--border)";
               }}
             >
               <span>{label}</span>
@@ -89,7 +89,7 @@ const Footer = () => (
       {/* Colophon */}
       <div
         style={{
-          borderTop: "1px solid var(--rule)",
+          borderTop: "1px solid var(--border)",
           paddingTop: "2rem",
           display: "flex",
           justifyContent: "space-between",
@@ -97,12 +97,12 @@ const Footer = () => (
           gap: "0.75rem",
           fontFamily: "var(--font-mono)",
           fontSize: "0.72rem",
-          color: "var(--text-muted)",
+          color: "var(--fg-muted)",
           textTransform: "uppercase",
           letterSpacing: "0.08em",
         }}
       >
-        <span>Set in Instrument Serif · JetBrains Mono</span>
+        <span>Set in Space Grotesk · Geist Mono</span>
         <span>© {new Date().getFullYear()} {personalInfo.name}</span>
         <span>Delhi, India · 28.61° N, 77.21° E</span>
       </div>

@@ -1,0 +1,22 @@
+{
+  "name": "handoff-to-figma-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "build/handoff-to-figma/src/index.js",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/handoff-to-figma/src/index.js', '755')\"",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@tools/shared": "workspace:*",
+    "unzipper": "^0.12.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/unzipper": "^0.10.9",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

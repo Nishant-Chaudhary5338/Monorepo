@@ -12,3 +12,7 @@ public/dist
 
 *storybook.log
 storybook-static
+
+# Browser automation
+.playwright-session.json
+.chrome-debug-profile/

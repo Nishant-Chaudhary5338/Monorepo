@@ -1,10 +1,27 @@
+import { useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { words } from "../constants";
 import { useGeoCV } from "../hooks/useGeoCV";
+import FloatingModulesScene from "../components/hero/FloatingModulesScene";
+
+const HERO_WORDS = ['MFE platforms', 'MCP tooling', 'design systems', 'AI workflows'];
+
+const IMPACT_METRICS = [
+  { value: "3×", label: "dev velocity", sub: "speed gain" },
+  { value: "65%", label: "automation", sub: "MCP-driven" },
+  { value: "<60s", label: "onboarding", sub: "plugin spin-up" },
+] as const;
 
 const Hero = () => {
   const { downloadCV, status } = useGeoCV();
+  const [wordIdx, setWordIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setWordIdx((i) => (i + 1) % HERO_WORDS.length);
+    }, 2800);
+    return () => clearInterval(id);
+  }, []);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -13,37 +30,46 @@ const Hero = () => {
       { y: 0, opacity: 1, stagger: 0.18, duration: 1, ease: "power2.inOut" }
     );
     gsap.fromTo(
-      ".hero-eyebrow, .hero-meta-strip",
+      ".hero-eyebrow, .hero-meta-strip, .hero-cta, .hero-metrics",
       { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.15, duration: 0.9, ease: "power2.out", delay: 0.2 }
+      { y: 0, opacity: 1, stagger: 0.12, duration: 0.9, ease: "power2.out", delay: 0.3 }
     );
   });
 
   return (
-    <section id="hero" className="relative overflow-hidden">
-      {/* Background texture */}
-      <div className="absolute top-0 left-0 z-10 pointer-events-none">
-        <img src="/images/bg.png" alt="" />
-      </div>
-      {/* Warm radial glow */}
+    <section
+      id="hero"
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        minHeight: "100vh",
+        paddingTop: "168px",
+        paddingBottom: "112px",
+      }}
+    >
+      {/* Hero-specific 3D scene — holographic floating modules */}
+      <FloatingModulesScene />
+
+      {/* Vignette — darkens hero behind text for legibility over site Canvas */}
       <div
         aria-hidden="true"
+        className="hero-vignette"
         style={{
           position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: "radial-gradient(ellipse 80% 60% at 55% 40%, var(--hero-glow), transparent 70%)",
-          zIndex: 5,
+          inset: 0,
+          zIndex: 1,
           pointerEvents: "none",
+          background:
+            "radial-gradient(ellipse 80% 100% at 30% 50%, rgba(7,8,15,0.82) 0%, rgba(7,8,15,0.35) 55%, transparent 100%)",
         }}
       />
 
-      <div
-        className="relative z-10 site-container"
-        style={{
-          paddingTop: "clamp(7rem, 16vw, 14rem)",
-          paddingBottom: "clamp(4rem, 8vw, 8rem)",
-        }}
-      >
+      {/* 3. Lamp glow */}
+      <div className="lamp" aria-hidden="true" style={{ zIndex: 1 }} />
+
+      {/* 4. Content */}
+      <div className="site-container" style={{ position: "relative", zIndex: 2 }}>
+
         {/* Availability badge */}
         <div className="hero-eyebrow flex items-center gap-3 mb-8">
           <span className="availability-dot" />
@@ -52,30 +78,37 @@ const Hero = () => {
           </span>
         </div>
 
-        {/* Editorial headline — inline slider, full width available */}
+        {/* Headline with inline word rotator */}
         <div className="hero-text">
           <h1>
-            Building
-            <span className="slide">
-              <span className="wrapper">
-                {words.map((word, index) => (
-                  <span
-                    key={index}
-                    className="flex items-center md:gap-3 gap-1 pb-2"
-                  >
-                    <img
-                      src={word.imgPath}
-                      alt=""
-                      className="xl:size-12 md:size-10 size-7 md:p-2 p-1 rounded-full bg-white-50"
-                    />
-                    <span>{word.text}</span>
-                  </span>
-                ))}
+            Building{" "}
+            <span
+              style={{
+                display: "inline-block",
+                height: "1em",
+                lineHeight: "1em",
+                overflow: "hidden",
+                verticalAlign: "bottom",
+                position: "relative",
+                minWidth: "12ch",
+              }}
+            >
+              <span
+                key={wordIdx}
+                style={{
+                  display: "block",
+                  color: "var(--accent)",
+                  animation: "hero-word-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both",
+                }}
+              >
+                {HERO_WORDS[wordIdx]}
               </span>
             </span>
           </h1>
-          <h1>that let teams</h1>
-          <h1><em>ship faster.</em></h1>
+          <h1 style={{ color: "var(--fg)" }}>that let teams</h1>
+          <h1>
+            <em style={{ color: "var(--data)", fontStyle: "italic" }}>ship faster.</em>
+          </h1>
         </div>
 
         {/* Hero meta strip */}
@@ -85,52 +118,76 @@ const Hero = () => {
           <span><b>Open to</b>&nbsp;·&nbsp;Remote · UK · EU · US · SG</span>
         </div>
 
-        {/* CTA row */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "2.5rem" }}>
+        {/* CTA buttons */}
+        <div
+          className="hero-cta"
+          style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "2.5rem" }}
+        >
           <button
             onClick={downloadCV}
             disabled={status === "loading"}
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.75rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: status === "done" ? "var(--accent-warm)" : "var(--bg-primary)",
-              background: status === "done" ? "transparent" : "var(--text-primary)",
-              border: "1px solid var(--text-primary)",
-              padding: "0.6rem 1.4rem",
-              borderRadius: "2px",
-              cursor: status === "loading" ? "wait" : "pointer",
-              transition: "all 0.2s ease",
-            }}
+            className="btn"
+            style={
+              status === "done"
+                ? { background: "transparent", color: "var(--accent)", borderColor: "var(--accent-line)" }
+                : undefined
+            }
           >
             {status === "loading" ? "Detecting region…" : status === "done" ? "✓ Downloaded" : "Download CV"}
           </button>
           <a
             href="mailto:nishantchaudhary.dev@gmail.com"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.75rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: "var(--text-muted)",
-              textDecoration: "none",
-              border: "1px solid var(--rule)",
-              padding: "0.6rem 1.4rem",
-              borderRadius: "2px",
-              transition: "color 0.2s, border-color 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
-            }}
+            className="btn btn--ghost"
+            style={{ textDecoration: "none" }}
           >
             Get in touch →
           </a>
+        </div>
+
+        {/* Impact metrics — 3-col glass strip */}
+        <div
+          className="hero-metrics numbers-strip"
+          style={{ marginTop: "3rem", maxWidth: "540px" }}
+        >
+          {IMPACT_METRICS.map(({ value, label, sub }) => (
+            <div key={label} className="num-cell">
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
+                  fontWeight: 600,
+                  letterSpacing: "-0.025em",
+                  color: "var(--data)",
+                  lineHeight: 1,
+                }}
+              >
+                {value}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "var(--fg-muted)",
+                  marginTop: "6px",
+                }}
+              >
+                {label}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.08em",
+                  color: "var(--fg-dim)",
+                  marginTop: "2px",
+                }}
+              >
+                {sub}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

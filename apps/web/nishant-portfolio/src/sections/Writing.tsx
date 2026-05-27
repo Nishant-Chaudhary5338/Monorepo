@@ -16,8 +16,6 @@ const ArticleCard = ({
   article: ArticleMeta;
   cardRef: (el: HTMLAnchorElement | null) => void;
 }) => {
-  const imgRef = useRef<HTMLImageElement>(null);
-
   return (
     <Link
       to={`/writing/${article.slug}`}
@@ -25,41 +23,32 @@ const ArticleCard = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        background: "var(--bg-card)",
-        border: "1px solid var(--rule)",
+        background: "var(--surface)",
+        border: "1px solid var(--border)",
         borderRadius: "3px",
         overflow: "hidden",
         textDecoration: "none",
         color: "inherit",
-        transition: "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
+        transition: "border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease",
         opacity: 0,
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
-        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-3px)";
-        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.08)";
-        if (imgRef.current) imgRef.current.style.transform = "scale(1.04)";
+        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent-line)";
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 24px -10px var(--accent-glow)";
+        (e.currentTarget as HTMLAnchorElement).style.background = "var(--surface-2)";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
-        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+        (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border)";
         (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
-        if (imgRef.current) imgRef.current.style.transform = "scale(1)";
+        (e.currentTarget as HTMLAnchorElement).style.background = "var(--surface)";
       }}
     >
       {/* Cover image */}
       <div style={{ position: "relative", height: "180px", overflow: "hidden", flexShrink: 0 }}>
         <img
-          ref={imgRef}
           src={article.coverImage}
           alt={article.coverImageAlt}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-            transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
         {/* Subtle dark overlay */}
         <div
@@ -99,7 +88,7 @@ const ArticleCard = ({
               fontSize: "0.6rem",
               textTransform: "uppercase",
               letterSpacing: "0.1em",
-              color: "var(--accent-warm)",
+              color: "var(--accent)",
               background: "rgba(0,0,0,0.55)",
               backdropFilter: "blur(4px)",
               padding: "0.2rem 0.5rem",
@@ -124,8 +113,8 @@ const ArticleCard = ({
                 fontSize: "0.6rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
-                color: "var(--text-muted)",
-                border: "1px solid var(--rule)",
+                color: "var(--fg-muted)",
+                border: "1px solid var(--border)",
                 padding: "0.15rem 0.45rem",
                 borderRadius: "2px",
               }}
@@ -143,7 +132,7 @@ const ArticleCard = ({
             fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
             lineHeight: 1.25,
             letterSpacing: "-0.015em",
-            color: "var(--text-primary)",
+            color: "var(--fg)",
             marginBottom: "0.6rem",
             flexGrow: 1,
           }}
@@ -154,9 +143,9 @@ const ArticleCard = ({
         {/* Description */}
         <p
           style={{
-            fontFamily: "var(--font-body)",
+            fontFamily: "var(--font-sans)",
             fontSize: "0.82rem",
-            color: "var(--text-muted)",
+            color: "var(--fg-muted)",
             lineHeight: 1.6,
             marginBottom: "1rem",
             display: "-webkit-box",
@@ -170,67 +159,60 @@ const ArticleCard = ({
 
         {/* Footer — links */}
         {(article.demoUrl || article.repoUrl) && (
-          <div
-            style={{ display: "flex", gap: "0.5rem", marginTop: "auto" }}
-            onClick={(e) => e.preventDefault()}
-          >
+          <div style={{ display: "flex", gap: "0.5rem", marginTop: "auto" }}>
             {article.repoUrl && (
-              <a
-                href={article.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={(e) => { e.preventDefault(); window.open(article.repoUrl, "_blank", "noopener,noreferrer"); }}
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.65rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
-                  color: "var(--text-muted)",
-                  textDecoration: "none",
-                  border: "1px solid var(--rule)",
+                  color: "var(--fg-muted)",
+                  background: "transparent",
+                  border: "1px solid var(--border)",
                   padding: "0.2rem 0.55rem",
-                  borderRadius: "2px",
+                  cursor: "pointer",
                   transition: "color 0.2s, border-color 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border-color)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--fg)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-strong)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--rule)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--fg-muted)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
                 }}
               >
                 GitHub →
-              </a>
+              </button>
             )}
             {article.demoUrl && (
-              <a
-                href={article.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={(e) => { e.preventDefault(); window.open(article.demoUrl, "_blank", "noopener,noreferrer"); }}
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.65rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
-                  color: "var(--accent-warm)",
-                  textDecoration: "none",
-                  border: "1px solid currentColor",
+                  color: "var(--accent)",
+                  background: "transparent",
+                  border: "1px solid var(--accent)",
                   padding: "0.2rem 0.55rem",
-                  borderRadius: "2px",
+                  cursor: "pointer",
                   transition: "background 0.2s, color 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "var(--accent-warm)";
-                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--bg-primary)";
+                  (e.currentTarget as HTMLButtonElement).style.background = "var(--accent)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#fff";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent-warm)";
+                  (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--accent)";
                 }}
               >
                 {article.demoLabel ?? "View Live →"}
-              </a>
+              </button>
             )}
           </div>
         )}

@@ -71,7 +71,7 @@ const NavBar = () => {
             left: 0,
             height: "1.5px",
             width: `${scrollProgress}%`,
-            backgroundColor: "var(--accent-warm)",
+            backgroundColor: "var(--accent)",
             transition: "width 0.1s linear",
             pointerEvents: "none",
           }}
@@ -79,7 +79,7 @@ const NavBar = () => {
 
         <div className="inner">
           <a href="#hero" className="logo" onClick={closeMenu}>
-            Nishant <em>Chaudhary</em>
+            Nishant <span>Chaudhary</span>
           </a>
 
           {/* Desktop nav */}
@@ -93,8 +93,8 @@ const NavBar = () => {
                     <a
                       href={link}
                       style={{
-                        color: isActive ? "var(--text-primary)" : undefined,
-                        borderBottom: isActive ? "1px solid var(--accent-warm)" : "1px solid transparent",
+                        color: isActive ? "var(--fg)" : undefined,
+                        borderBottom: isActive ? "1px solid var(--accent)" : "1px solid transparent",
                         paddingBottom: "2px",
                         transition: "color 0.2s, border-color 0.2s",
                       }}
@@ -130,7 +130,7 @@ const NavBar = () => {
                 border: "none",
                 cursor: "pointer",
                 padding: "4px",
-                color: "var(--text-primary)",
+                color: "var(--fg)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "5px",
@@ -178,7 +178,7 @@ const NavBar = () => {
           position: "fixed",
           inset: 0,
           zIndex: 90,
-          backgroundColor: "var(--bg-primary)",
+          backgroundColor: "var(--bg)",
           display: "flex",
           flexDirection: "column",
           padding: "7rem 1.5rem 3rem",
@@ -197,7 +197,7 @@ const NavBar = () => {
                 <li
                   key={name}
                   style={{
-                    borderBottom: "1px solid var(--rule)",
+                    borderBottom: "1px solid var(--border)",
                     transform: menuOpen ? "translateY(0)" : "translateY(-12px)",
                     opacity: menuOpen ? 1 : 0,
                     transition: `transform 0.35s ease ${i * 0.05}s, opacity 0.3s ease ${i * 0.05}s`,
@@ -213,7 +213,7 @@ const NavBar = () => {
                       fontSize: "clamp(1.8rem, 7vw, 2.5rem)",
                       fontWeight: 400,
                       letterSpacing: "-0.02em",
-                      color: isActive ? "var(--accent-warm)" : "var(--text-primary)",
+                      color: isActive ? "var(--accent)" : "var(--fg)",
                       textDecoration: "none",
                       transition: "color 0.2s",
                     }}
@@ -239,7 +239,7 @@ const NavBar = () => {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.78rem",
-                color: "var(--text-muted)",
+                color: "var(--fg-muted)",
                 letterSpacing: "0.06em",
               }}
             >
@@ -255,9 +255,9 @@ const NavBar = () => {
               fontSize: "0.84rem",
               textTransform: "uppercase",
               letterSpacing: "0.1em",
-              color: "var(--text-primary)",
+              color: "var(--fg)",
               textDecoration: "none",
-              borderBottom: "1.5px solid var(--accent-warm)",
+              borderBottom: "1.5px solid var(--accent)",
               paddingBottom: "0.2rem",
             }}
           >

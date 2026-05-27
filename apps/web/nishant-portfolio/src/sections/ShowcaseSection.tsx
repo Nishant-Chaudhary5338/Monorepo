@@ -1,33 +1,33 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import TitleHeader from "../components/TitleHeader";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Project {
   num: string;
+  shortTitle: string;
   meta: string;
-  title: React.ReactNode;
+  titleHTML: string;
   description: string;
-  metrics: string[];
+  metrics: Array<{ v: string; l: string }>;
   tags: string[];
   liveLink?: string;
   liveLinkLabel?: string;
-  githubLink?: string;
   caseStudyLink?: string;
 }
 
-const projects: Project[] = [
+const PROJECTS: Project[] = [
   {
     num: "01",
+    shortTitle: "Shared UI Library",
     meta: "2024 — Present · Samsung Electronics",
-    title: <>Shared <em>UI Library</em> — 45 components, zero forks</>,
+    titleHTML: "Shared <em>UI Library</em> — 45 components, zero forks",
     description:
       "45-component React library on Radix UI + Tailwind CSS v4 serving ~12 product teams. Custom 12-step design token system, type-safe variants via CVA, TanStack Table v8, dual ESM/CJS output. 79 test files, 47 Storybook stories, auto-doc from JSDoc.",
-    metrics: ["45 components shipped", "79 test files", "47 Storybook stories", "~12 teams · 0 forks"],
+    metrics: [
+      { v: "45",  l: "components shipped" },
+      { v: "79",  l: "test files" },
+      { v: "47",  l: "Storybook stories" },
+      { v: "~12", l: "teams · 0 forks" },
+    ],
     tags: ["React 19", "Radix UI", "Tailwind CSS v4", "CVA", "TypeScript strict"],
     liveLink: "https://fluffy-churros-b798ad.netlify.app/?path=/docs/components-button--docs",
     liveLinkLabel: "Live Storybook ↗",
@@ -35,152 +35,181 @@ const projects: Project[] = [
   },
   {
     num: "02",
+    shortTitle: "Dashboard Library",
     meta: "2024 — Present · Samsung Electronics",
-    title: <>Headless <em>Dashboard Library</em> — the substrate every team builds on</>,
+    titleHTML: "Headless <em>Dashboard Library</em> — the substrate every team builds on",
     description:
       "Solo-built headless composition framework handling layout, drag-drop, resize, widget registration, persistence, polling, and widget-to-widget events. 11 built-in widgets. Teams register custom widgets and get DnD, settings panels, and persistence for free.",
-    metrics: ["11 built-in widgets", "4 apps in production", "~12 product teams", "9,026 lines TypeScript"],
+    metrics: [
+      { v: "11",    l: "built-in widgets" },
+      { v: "4",     l: "apps in production" },
+      { v: "~12",   l: "product teams" },
+      { v: "9,026", l: "lines TypeScript" },
+    ],
     tags: ["React 19", "Zustand", "dnd-kit", "Framer Motion", "Recharts · Nivo"],
     caseStudyLink: "/work/headless-dashboard-library",
   },
   {
     num: "03",
+    shortTitle: "AI Dev Platform",
     meta: "2024 — Present · Samsung Electronics",
-    title: <>AI-assisted <em>dev platform</em> — scaffold, build, review, deploy</>,
+    titleHTML: "AI-assisted <em>dev platform</em> — scaffold, build, review, deploy",
     description:
       "End-to-end agentic frontend workflow: scaffolds a component from a web form, runs the quality pipeline, compares chunk hashes to decide testing scope, generates code, runs review, audit, and coordinates deployment. ~65% of routine work automated.",
-    metrics: ["~65% routine work automated", "3× dev speed", "27 CLI wrappers", "30+ engineers trained"],
+    metrics: [
+      { v: "~65%", l: "routine work automated" },
+      { v: "3×",   l: "dev speed gain" },
+      { v: "27",   l: "CLI wrappers" },
+      { v: "30+",  l: "engineers trained" },
+    ],
     tags: ["Model Context Protocol", "Claude Code", "Turborepo", "GitHub Actions", "TypeScript"],
   },
   {
     num: "04",
+    shortTitle: "MCP Toolkit",
     meta: "2024 — Present · Samsung Electronics",
-    title: <>Custom <em>MCP toolkit</em> — 30 servers, 60+ tools, 2 surfaces</>,
+    titleHTML: "Custom <em>MCP toolkit</em> — 30 servers, 60+ tools, 2 surfaces",
     description:
       "~30 MCP server packages, 60+ registered tools, plus a plugin-aware server for the MFE platform. CLI wrappers for all 27 tools. The same servers that power Cline AI also power the team's parallel automation pipeline — one protocol, two clients.",
-    metrics: ["~30 MCP server packages", "60+ registered tools", "27 CLI wrappers", "Cline + automation"],
+    metrics: [
+      { v: "~30", l: "MCP server packages" },
+      { v: "60+", l: "registered tools" },
+      { v: "27",  l: "CLI wrappers" },
+      { v: "2",   l: "surfaces (Cline + CI)" },
+    ],
     tags: ["Model Context Protocol", "TypeScript", "Turborepo", "pnpm", "Cline"],
   },
 ];
 
-const ShowcaseSection = () => {
-  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useGSAP(() => {
-    rowRefs.current.forEach((row) => {
-      if (!row) return;
-      gsap.fromTo(
-        row,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: { trigger: row, start: "top 85%", once: true },
-        }
-      );
-    });
-  }, []);
-
+function ProjectPane({ project }: { project: Project }) {
   return (
-    <section id="work" style={{ paddingBlock: "var(--section-py)" }}>
-      <div className="site-container">
-        <TitleHeader
-          num="02"
-          label="Projects"
-          title={<>Things I've <em>built.</em></>}
-          className="mb-10 md:mb-12"
-        />
-
-        <div className="ruled-top">
-          {projects.map((project, index) => (
-            <div
-              key={project.num}
-              ref={(el) => { rowRefs.current[index] = el; }}
-              style={{ borderBottom: "1px solid var(--rule)", padding: "2.2rem 0" }}
+    <div style={{
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
+      borderTop: "none",
+      padding: "32px",
+    }}>
+      {/* Meta row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <span style={{ font: "var(--label)", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent-2)" }}>
+            {project.num}
+          </span>
+          <span style={{ font: "var(--mono)", fontSize: 11.5, color: "var(--fg-dim)", letterSpacing: "0.04em" }}>
+            {project.meta}
+          </span>
+        </div>
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          {project.liveLink && (
+            <a
+              href={project.liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono-link"
             >
-              {/* Row header */}
-              <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
-                <div className="flex items-center gap-5 flex-wrap">
-                  <span className="section-eyebrow" style={{ color: "var(--accent-warm)", fontSize: "0.82rem" }}>
-                    {project.num}
-                  </span>
-                  <span className="mono-label" style={{ color: "var(--text-muted)", fontSize: "0.74rem" }}>
-                    {project.meta}
-                  </span>
-                </div>
-                {/* External links */}
-                <div className="flex items-center gap-4 shrink-0">
-                  {project.githubLink && (
-                    <a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", textDecoration: "none", borderBottom: "1px solid var(--border-color)", paddingBottom: "1px", transition: "color 0.2s, border-color 0.2s", whiteSpace: "nowrap" }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)"; (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = "var(--text-primary)"; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)"; (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = "var(--border-color)"; }}
-                    >
-                      GitHub ↗
-                    </a>
-                  )}
-                  {project.liveLink && (
-                    <a
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent-warm)", textDecoration: "none", borderBottom: "1px solid var(--accent-warm)", paddingBottom: "1px", whiteSpace: "nowrap" }}
-                    >
-                      {project.liveLinkLabel}
-                    </a>
-                  )}
-                </div>
+              {project.liveLinkLabel}
+            </a>
+          )}
+          {project.caseStudyLink && (
+            <Link to={project.caseStudyLink} className="mono-link" style={{ textDecoration: "none" }}>
+              Read case study →
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Title + description + metrics */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr min(320px, 38%)", gap: 40, alignItems: "start" }}>
+        <div>
+          <h3
+            style={{ font: "var(--h3)", letterSpacing: "-0.015em", marginBottom: 16 }}
+            dangerouslySetInnerHTML={{ __html: project.titleHTML }}
+          />
+          <p style={{ font: "var(--p)", color: "var(--fg-2)", lineHeight: 1.65, marginBottom: 20 }}>
+            {project.description}
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {project.tags.map((tag) => (
+              <span key={tag} className="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Metrics grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 1,
+          background: "var(--border)",
+          border: "1px solid var(--border)",
+        }}>
+          {project.metrics.map(({ v, l }) => (
+            <div key={l} className="glass" style={{ padding: "18px 16px" }}>
+              <div style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
+                fontWeight: 600,
+                letterSpacing: "-0.025em",
+                color: "var(--data)",
+                lineHeight: 1,
+                marginBottom: 6,
+              }}>
+                {v}
               </div>
-
-              {/* Title */}
-              <div
-                className="display-headline mb-5"
-                style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.1rem)", lineHeight: 1.15 }}
-              >
-                {project.title}
-              </div>
-
-              {/* Description + metrics */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                <div className="xl:col-span-7">
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.97rem", lineHeight: 1.65, maxWidth: "64ch" }}>
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="editorial-tag">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="xl:col-span-5 flex flex-col gap-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    {project.metrics.map((metric) => (
-                      <div
-                        key={metric}
-                        style={{ padding: "0.75rem 1rem", background: "var(--bg-secondary)", borderLeft: "2px solid var(--accent-warm)", fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--text-secondary)", lineHeight: 1.4 }}
-                      >
-                        {metric}
-                      </div>
-                    ))}
-                  </div>
-                  {project.caseStudyLink && (
-                    <Link
-                      to={project.caseStudyLink}
-                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent-warm)", textDecoration: "none", borderBottom: "1px solid var(--accent-warm)", paddingBottom: "1px", alignSelf: "flex-start", marginTop: "0.5rem", transition: "opacity 0.2s" }}
-                    >
-                      Read case study →
-                    </Link>
-                  )}
-                </div>
+              <div style={{ font: "var(--mono)", fontSize: 10.5, color: "var(--fg-dim)", letterSpacing: "0.06em", lineHeight: 1.4 }}>
+                {l}
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ShowcaseSection = () => {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  return (
+    <section id="work" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
+      <div className="site-container">
+        <div className="section-header">
+          <div className="num">// 04 · Work</div>
+          <h2>
+            Things I've{" "}
+            <span style={{ color: "var(--accent)", fontStyle: "italic" }}>built.</span>
+          </h2>
+          <div className="sub">Platform-scale projects at Samsung Electronics, 2024–present.</div>
+        </div>
+
+        {/* Tab bar */}
+        <div className="project-tabs">
+          {PROJECTS.map((p, i) => (
+            <button
+              key={p.num}
+              className={`project-tab${activeIdx === i ? " active" : ""}`}
+              onClick={() => setActiveIdx(i)}
+            >
+              {p.num} · {p.shortTitle}
+            </button>
+          ))}
+        </div>
+
+        {/* Active project pane */}
+        <ProjectPane project={PROJECTS[activeIdx]} />
+
+        {/* Footer */}
+        <div style={{
+          marginTop: 24,
+          paddingTop: 18,
+          borderTop: "1px solid var(--border)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          font: "var(--mono)", fontSize: 11.5, color: "var(--fg-dim)",
+        }}>
+          <span>{activeIdx + 1} of {PROJECTS.length}</span>
+          <span style={{ letterSpacing: "0.04em" }}>Samsung Electronics · New Delhi, India</span>
         </div>
       </div>
     </section>

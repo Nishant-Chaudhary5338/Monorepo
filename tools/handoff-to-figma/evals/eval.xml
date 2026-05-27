@@ -1,0 +1,51 @@
+<evaluation>
+  <qa_pair>
+    <question>After calling parse_handoff on the padel-co-handoff zip, what is the projectName returned?</question>
+    <answer>Padel Co</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>How many pages does parse_handoff return for the padel-co-handoff (3) zip that contains merch and guidelines?</question>
+    <answer>2</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>What is the primary brand color hex value for the "clay" token extracted from brand.jsx?</question>
+    <answer>#9f5031</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>After calling parse_handoff on the padel mobile handoff, what font families are in the fonts array?</question>
+    <answer>Antonio, Inter</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>How many screens does the Mobile page contain in the padel-co-handoff zip?</question>
+    <answer>4</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>What are the screen component names in the Mobile page of the padel mobile handoff?</question>
+    <answer>HomeScreen, BookingScreen, MembershipScreen, AcademyScreen</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>When calling list_handoffs with no arguments and there are no zips containing "handoff", "padel", or "design" in ~/Downloads, what does the tool return?</question>
+    <answer>An error message saying no handoff zips were found with instructions to check the file name or provide a different searchDir</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>When calling read_screen_content with an incorrect screenName not present in the file, what does the error message include?</question>
+    <answer>The list of available component names from that file</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>What subdirectory structure triggers the "Merch" page in parse_handoff?</question>
+    <answer>project/merch/ directory containing at least one .jsx file with Screen/App/Module components</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>What is the maximum content length (in bytes) for a single screen component body before parse_handoff truncates it?</question>
+    <answer>4096</answer>
+  </qa_pair>
+</evaluation>

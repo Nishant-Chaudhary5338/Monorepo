@@ -1,0 +1,240 @@
+/* =========================================================================
+   Nishant Chaudhary — Design System
+   "Dark precision engineering" — mission control meets modern SaaS.
+   Editorial polish techniques applied: noise overlay · glass cards ·
+   lamp-glow · sharp 0px corners · purple→cyan gradient line.
+   ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+/* Geist Mono — Vercel CDN (the canonical source) */
+@import url("https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css");
+
+:root {
+  /* ---------- Color — surfaces ----------------------------------------- */
+  --bg:              #07080F;     /* near-black, slight indigo undertone   */
+  --bg-deep:         #04050A;     /* darker pocket                         */
+  --surface:         #0F1018;     /* card / panel base                     */
+  --surface-2:       #161827;     /* raised cards, hover                   */
+  --surface-3:       #1B1E2E;     /* code blocks                           */
+  --glass:           rgba(255,255,255,0.025);
+  --glass-strong:    rgba(255,255,255,0.045);
+
+  /* ---------- Color — line / divider ---------------------------------- */
+  --border:          #1E2030;
+  --border-strong:   #2A2D42;
+  --rule:            rgba(255,255,255,0.06);
+
+  /* ---------- Color — text -------------------------------------------- */
+  --fg:              #F8F9FF;
+  --fg-2:            #C9CEDE;
+  --fg-muted:        #94A3B8;
+  --fg-dim:          #8999AB;     /* WCAG AA: ≥4.5:1 on both --surface and glass cards */
+
+  /* ---------- The three accents (each has a job) ---------------------- */
+  /* INDIGO — interactive · brand · links · focus · AI                  */
+  --accent:          #6B6CF3;  /* +contrast: 4.79:1 on --bg, 4.51:1 on --surface (WCAG AA) */
+  --accent-btn:      #5254ED;  /* for white-text buttons: 5.47:1 contrast (WCAG AA) */
+  --accent-2:        #8B8DF5;
+  --accent-soft:     rgba(99, 102, 241, 0.12);
+  --accent-line:     rgba(99, 102, 241, 0.40);
+  --accent-glow:     rgba(99, 102, 241, 0.55);
+
+  /* CYAN — data · metrics · live readouts · the "value" color          */
+  --data:            #22D3EE;
+  --data-2:          #67E8F9;
+  --data-soft:       rgba(34, 211, 238, 0.10);
+  --data-line:       rgba(34, 211, 238, 0.40);
+  --data-glow:       rgba(34, 211, 238, 0.45);
+
+  /* ORANGE — impact · standout stat · seldom used                      */
+  --highlight:       #F97316;
+  --highlight-2:     #FB923C;
+  --highlight-soft:  rgba(249, 115, 22, 0.10);
+  --highlight-line:  rgba(249, 115, 22, 0.40);
+
+  /* Status */
+  --ok:              #22C55E;
+  --warn:            #EAB308;
+  --err:             #EF4444;
+
+  /* ---------- Type — families (the three-font triangle) -------------- */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---------- Type — display scale (Space Grotesk, -0.02em) ---------- */
+  --h1: 700 clamp(2.75rem, 5.6vw, 4.75rem)/0.98 var(--font-display);
+  --h2: 700 clamp(2rem, 3.8vw, 3rem)/1.02 var(--font-display);
+  --h3: 600 clamp(1.5rem, 2.2vw, 1.875rem)/1.15 var(--font-display);
+  --h4: 600 1.25rem/1.25 var(--font-display);
+  --h5: 600 1rem/1.3 var(--font-display);
+
+  /* ---------- Type — body (Inter) ----------------------------------- */
+  --p-lg:  400 1.125rem/1.65 var(--font-body);
+  --p:     400 1rem/1.65 var(--font-body);
+  --p-sm:  400 0.875rem/1.6 var(--font-body);
+
+  /* ---------- Type — mono (Geist Mono — labels · stats · live) ------ */
+  --label:  500 0.6875rem/1 var(--font-mono);
+  --label-tracking: 0.16em;
+  --mono:   500 0.8125rem/1.5 var(--font-mono);
+  --code:   500 0.875rem/1.55 var(--font-mono);
+  --metric: 600 clamp(2.25rem, 3.6vw, 3rem)/1 var(--font-mono);
+
+  /* ---------- Spacing scale (8-based, mirrors the dot grid) ---------- */
+  --s-0:0; --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px;
+  --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px;
+
+  /* ---------- Radius — strictly 0 (editorial, intentional) ----------- */
+  --radius-card: 0px;
+  --r-0: 0; --r-1: 0; --r-2: 0; --r-3: 0;
+  --r-pill: 999px;        /* status dots only */
+
+  /* ---------- Decorative gradient line (indigo → cyan) --------------- */
+  --grad-accent:
+    linear-gradient(90deg,
+      var(--accent) 0%,
+      var(--accent) 40%,
+      var(--data) 100%);
+
+  /* ---------- Lamp-light hero glow ----------------------------------- */
+  --lamp-glow:
+    radial-gradient(ellipse 70% 55% at 50% 30%,
+      rgba(99, 102, 241, 0.28) 0%,
+      rgba(34, 211, 238, 0.10) 35%,
+      transparent 70%);
+
+  /* ---------- Elevation — flat + line + glass + glow ----------------- */
+  --elev-glass:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 0 0 1px rgba(255,255,255,0.04);
+  --elev-glow-indigo:
+    0 0 0 1px var(--accent-line) inset,
+    0 0 40px -8px var(--accent-glow);
+  --elev-glow-cyan:
+    0 0 0 1px var(--data-line) inset,
+    0 0 40px -10px var(--data-glow);
+
+  /* ---------- Dot grid texture (8px, subtle) ------------------------ */
+  --dot-grid:
+    radial-gradient(circle at 1px 1px, rgba(148,163,184,0.06) 1px, transparent 0);
+  --dot-grid-size: 8px 8px;
+
+  /* ---------- Motion ------------------------------------------------ */
+  --ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:  120ms;
+  --dur:       260ms;
+  --dur-slow:  500ms;
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font: var(--p);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1 { font: var(--h1); letter-spacing: -0.02em; color: var(--fg); }
+h2 { font: var(--h2); letter-spacing: -0.02em; color: var(--fg); }
+h3 { font: var(--h3); letter-spacing: -0.015em; color: var(--fg); }
+h4 { font: var(--h4); letter-spacing: -0.01em; color: var(--fg); }
+h5 { font: var(--h5); letter-spacing: -0.01em; color: var(--fg); }
+p  { font: var(--p);  color: var(--fg-2); }
+code, kbd, pre, samp { font: var(--code); color: var(--data); }
+small { font: var(--p-sm); color: var(--fg-muted); }
+hr   { border: 0; border-top: 1px solid var(--border); }
+::selection { background: var(--accent); color: var(--fg); }
+
+/* =========================================================================
+   Utility primitives
+   ========================================================================= */
+.label {
+  font: var(--label);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.label--indigo    { color: var(--accent); }
+.label--cyan      { color: var(--data); }
+.label--highlight { color: var(--highlight); }
+
+.mono { font: var(--mono); color: var(--fg-2); }
+
+/* Numbers — always in cyan, always in Geist Mono */
+.num, .metric {
+  font-family: var(--font-mono);
+  color: var(--data);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Glass card — frosted dark, sharp 0px */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: var(--elev-glass);
+  border-radius: 0;
+}
+
+/* Solid surface card */
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+/* 8px dot grid background utility */
+.dot-grid {
+  background-image: var(--dot-grid);
+  background-size: var(--dot-grid-size);
+}
+
+/* Gradient line — indigo → cyan */
+.grad-line {
+  height: 1px;
+  background: var(--grad-accent);
+  border: 0;
+  width: 100%;
+}
+
+/* Fractal-noise overlay — adds analogue grain.
+   Apply once at the top level (z-index 1 below content z-index 2). */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.65  0 0 0 0 0.85  0 0 0 0.045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Lamp-light glow — drop into a position:relative parent */
+.lamp {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--lamp-glow);
+  filter: blur(40px);
+  z-index: 0;
+}
+
+/* Tick-bracket corners (engineering annotation aesthetic) */
+.tick-corners { position: relative; }
+.tick-corners::before,
+.tick-corners::after {
+  content: "";
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 1px solid var(--accent);
+}
+.tick-corners::before { top: -1px; left: -1px;  border-right: 0; border-bottom: 0; }
+.tick-corners::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }

@@ -1,75 +1,91 @@
-# Nishant's Turborepo
+# Monorepo
 
-Personal monorepo — pnpm 8.15.6 · Turbo 2.x · TypeScript strict · ESM-first
+A production-grade Turborepo containing 14 apps, 8 shared packages, and 28 custom MCP dev-tool servers — all wired together with strict TypeScript, a shared design system, and a unified CI/build pipeline.
 
-## Quick Start
-
-```sh
-pnpm install
-pnpm dev          # start all apps in parallel
-pnpm build        # build all packages + apps
-```
-
-Filter to a single app or package:
-
-```sh
-pnpm --filter <name> dev
-pnpm --filter <name> build
-```
-
-> Filter uses the `name` field in `package.json`, not the directory path.
+**Stack:** pnpm 8 · Turbo 2.x · React 19 · TypeScript strict · ESM-first · Vite · tsup
 
 ---
 
-## Apps
+## Architecture
 
-| App | Package name | Port | Purpose |
-|---|---|---|---|
-| `nishant-portfolio` | `three-d-portfolio-2025` | 5173 | Personal portfolio — 3D (Three.js/Fiber), GSAP, editorial design |
-| `nidhi-portfolio` | `nidhi-portfolio` | 5180 | Nidhi's portfolio — Playfair Display, alternating case-study rows |
-| `ai-builder` | `ai-builder` | 5174 | Prompt → UI builder, Monaco Editor, OpenAI SDK |
-| `mcp-demo` | `mcp-demo` | 5175 | MCP tool showcase frontend, Zustand state |
-| `mcp-demo-server` | `mcp-demo-server` | 3001 | Express REST API proxy for MCP tools |
-| `web-app-1` | `web-app-1` | 5173 | React Router v7 demo, React Hook Form, Zod |
-| `web-app-2` | `web-app-2` | 5173 | Charts (Nivo, Recharts), dashcraft library |
-| `web-app-3` | `web-app-3` | 5173 | Framer Motion animations, present library |
-| `web-app-4` | `web-app-4` | 5173 | Legacy CRA app — do not migrate without discussion |
-| `award-winning-website` | `award-winning-website` | 5173 | GSAP animation showcase |
-| `briar-frontend` | `briar-frontend` | 5173 | Azure MSAL auth, CoreUI, data tables |
-| `safex-calendar` | `safex-calendar` | 5173 | Audio player, Tailwind |
-| `safex-lms` | `safex-lms` | 5173 | Firebase, Google auth, YouTube embeds |
-| `jobs-bot` | `jobs-bot` | — | Claude vision + Playwright, agentic job applications |
+```
+apps/
+  web/            12 frontend apps (portfolios, AI tools, dashboards, hotel site)
+  jobs-bot/       Agentic job-application bot — Claude + Playwright + SQLite
+  mcp-demo-server/ Express REST API proxy for MCP tool invocation
+packages/         8 shared workspace packages (UI system, libraries, configs)
+tools/            28 custom MCP servers for automated component and code tooling
+```
+
+**Key architectural decisions:**
+
+- All reusable UI lives in `@repo/ui` — 50+ Radix + Tailwind components, Storybook on port 6006. Apps consume it via workspace refs, never duplicating.
+- All shared logic lives in `@repo/utils` — API helpers, validation, hooks, auth, date, storage.
+- Libraries (`@repo/dashcraft`, `@repo/present`) use `tsup` → ESM `dist/`. Apps use Vite. Each layer has one job.
+- TypeScript strict mode across every package. No `any`. Zod at every system boundary.
+- The 28 MCP servers automate the repetitive layer — scaffolding, linting, render profiling, test generation — so engineering time goes to product work.
 
 ---
 
-## Packages
+## Applications
 
-| Package | Import alias | Purpose |
+| App | Purpose | Key tech |
 |---|---|---|
-| `@repo/ui` | `@repo/ui` | 50+ Radix + Tailwind components · Storybook port 6006 |
-| `@repo/utils` | `@repo/utils` | API, validation, hooks, auth, date, storage helpers |
-| `@repo/dashcraft` | `@repo/dashcraft` | Headless dashboard — cards, widgets, HTTP client, store |
-| `@repo/present` | `@repo/present` | Presentation library — core, state, animation, gestures |
-| `@repo/router` | `@repo/router` | Config-driven React Router v7 wrapper |
-| `@repo/tailwind-config` | (CSS import) | Shared Tailwind CSS config + PostCSS setup |
-| `@repo/typescript-config` | (tsconfig extends) | Shared tsconfig base templates |
-| `@repo/eslint-config` | (eslint extends) | Shared ESLint + TypeScript + Prettier rules |
+| `ai-builder` | Prompt → live dashboard UI generator | OpenAI SDK · Monaco Editor · JSON diff-patching · `@repo/dashcraft` |
+| `jobs-bot` | Agentic job-application pipeline | Claude (Anthropic) · Playwright · SQLite · 4 CV templates |
+| `nishant-portfolio` | Personal 3D portfolio | Three.js · GSAP · postprocessing |
+| `nidhi-portfolio` | 3D portfolio | Three.js/Fiber · GSAP · Tailwind |
+| `nivanta-website` | Luxury hotel website | Framer Motion · React Hook Form · Zod · Resend |
+| `award-winning-website` | GSAP animation showcase | GSAP · React 19 |
+| `mcp-demo` | MCP tool showcase frontend | Zustand · Vite |
+| `mcp-demo-server` | REST API proxy for MCP tools | Express · TypeScript |
+| `briar-frontend` | Enterprise data management | Azure MSAL · CoreUI · Excel export |
+| `safex-lms` | Learning management system | Firebase · Google Auth · YouTube API |
+| `safex-calendar` | Interactive calendar | Audio player · Tailwind |
+| `web-app-1` | React Router v7 demo | React Hook Form · Zod · `@repo/router` |
 
 ---
 
-## MCP Tools (`/tools`)
+## Shared Packages
 
-28 Model Context Protocol servers for component development, code quality, and monorepo management.
+| Package | What it provides |
+|---|---|
+| `@repo/ui` | 50+ Radix + Tailwind components — Button, Dialog, Table, Form, and more. Storybook docs included. |
+| `@repo/dashcraft` | Headless React dashboard library. Composable cards, widgets, HTTP client, Zustand store. Zero opinion on styling. |
+| `@repo/present` | React presentation library with Prezi-style spatial navigation, fullscreen mode, gestures, themes, and animation primitives. |
+| `@repo/utils` | API helpers, form validation, auth utilities, date formatting, pagination, local storage hooks. |
+| `@repo/router` | Config-driven React Router v7 wrapper. Declare routes as data, not JSX. |
+| `@repo/tailwind-config` | Shared Tailwind CSS config and PostCSS setup — one source of truth for design tokens. |
+| `@repo/typescript-config` | Shared `tsconfig` base templates — strict, bundler-optimised, and ESM-first. |
+| `@repo/eslint-config` | Shared ESLint + TypeScript + Prettier rules across all apps and packages. |
 
-**Component development:** `component-factory` · `component-fixer` · `component-improver` · `component-reviewer` · `storybook-generator`
+---
 
-**Code quality:** `code-modernizer` · `typescript-enforcer` · `accessibility-checker` · `generate-tests` · `fix-failing-tests` · `render-analyzer` · `performance-audit` · `lighthouse-runner` · `quality-pipeline`
+## MCP Dev-Tool Servers (`/tools`)
 
-**Monorepo:** `monorepo-manager` · `dep-auditor` · `legacy-analyzer` · `refactor-executor` · `config-manager`
+28 Model Context Protocol servers that automate the development workflow. Each server exposes tools Claude Code or any MCP client can invoke.
 
-**Utilities:** `json-viewer` · `docs` · `utils-scaffolder` · `mcp-tool-improviser`
+**Component development**
+`component-factory` — scaffold a new `@repo/ui` component from a description  
+`component-reviewer` — audit TypeScript errors, test coverage, and accessibility  
+`component-improver` — add variants, Storybook stories, and tests to an existing component  
+`storybook-generator` — generate Storybook stories for any component  
 
-Build a tool before invoking:
+**Code quality**
+`typescript-enforcer` — scan and fix TypeScript violations across a path  
+`accessibility-checker` — WCAG compliance audit  
+`generate-tests` — generate Vitest + RTL unit and integration tests  
+`fix-failing-tests` — diagnose and repair broken test suites  
+`render-analyzer` — React render performance profiling  
+`lighthouse-runner` — Web Vitals and Lighthouse audit  
+`code-modernizer` — convert JS → TS, generate types, optimise state  
+
+**Monorepo management**
+`monorepo-manager` — workspace operations and dependency graph visualisation  
+`dep-auditor` — vulnerability scanning and dependency analysis  
+`refactor-executor` — execute planned refactors across the codebase  
+
+Build a tool before invoking it:
 
 ```sh
 pnpm --filter <tool-name> build
@@ -77,16 +93,19 @@ pnpm --filter <tool-name> build
 
 ---
 
-## Architecture
+## Quick Start
 
-- **Workspace refs** — `"@repo/ui": "workspace:*"` — always local, never published
-- **Builds** — Libraries use `tsup` → ESM `dist/`. Apps use Vite.
-- **Shared configs** — All apps extend `@repo/eslint-config`, `@repo/typescript-config`, `@repo/tailwind-config`
-- **Memory** — `memory.json` at repo root is a shared knowledge graph used by Claude Code and Cline
+```sh
+pnpm install
 
----
+pnpm dev                        # start all apps in parallel
+pnpm build                      # build all packages + apps
 
-## Tooling
+pnpm --filter ai-builder dev    # start one app
+pnpm --filter @repo/ui dev      # start one package (Storybook)
+```
+
+> `--filter` uses the `name` field in `package.json`, not the directory path.
 
 | Command | What it does |
 |---|---|

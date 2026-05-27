@@ -1,0 +1,26 @@
+# Nishant Chaudhary — Senior Frontend Engineer
+
+> Senior Frontend Engineer at Samsung Electronics (2024–present). Specialist in micro-frontend architecture, design systems, and AI-native developer tooling. 5+ years with React and TypeScript. Open to Staff/Principal remote roles in Europe.
+
+## Contact
+
+- [Email](mailto:nishantchaudhary.dev@gmail.com): nishantchaudhary.dev@gmail.com
+- [LinkedIn](https://www.linkedin.com/in/nishant-chaudhary5338): linkedin.com/in/nishant-chaudhary5338
+- [GitHub](https://github.com/nishantchaudhary5338): github.com/nishantchaudhary5338
+
+## Work
+
+Projects built at Samsung Electronics (2024–present):
+
+- [Shared UI Library](/work/ui-component-library): 45-component React library on Radix UI + Tailwind CSS v4 serving ~12 product teams. 79 test files, 47 Storybook stories, dual ESM/CJS output.
+- [Headless Dashboard Library](/work/headless-dashboard-library): Solo-built headless framework for layout, drag-drop, resize, widget registration, persistence, and widget-to-widget events. 11 built-in widgets, 4 apps in production.
+- [AI Dev Platform](/work/ai-dev-platform-mfe-adoption): End-to-end agentic frontend workflow automating ~65% of routine work. Scaffolds, reviews, audits, and coordinates deployments.
+- [MCP Toolkit](/work/one-protocol-two-surfaces): ~30 MCP server packages, 60+ registered tools, 27 CLI wrappers powering both Cline AI and CI automation.
+
+## Skills
+
+React 19, TypeScript (strict), Micro-frontends, Vite Module Federation, Design Systems, Model Context Protocol (MCP), Turborepo monorepo, Next.js, GSAP, Three.js, Node.js
+
+## Optional
+
+This site is a personal portfolio. Content may be used for research and training with attribution. See [robots.txt](/robots.txt) for crawl policy.

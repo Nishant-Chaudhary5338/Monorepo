@@ -102,7 +102,7 @@ const TechStack = () => {
                 gridTemplateColumns: "4rem minmax(10rem, 18rem) 1fr",
                 gap: "clamp(1rem, 3vw, 2.5rem)",
                 padding: "1.5rem 0",
-                borderBottom: "1px solid var(--rule)",
+                borderBottom: "1px solid var(--border)",
                 alignItems: "start",
               }}
             >
@@ -111,7 +111,7 @@ const TechStack = () => {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.72rem",
-                  color: layer.accent ? "var(--accent-warm)" : "var(--text-muted)",
+                  color: layer.accent ? "var(--accent)" : "var(--fg-muted)",
                   letterSpacing: "0.1em",
                   paddingTop: "0.15rem",
                 }}
@@ -126,7 +126,7 @@ const TechStack = () => {
                     fontFamily: "var(--font-mono)",
                     fontSize: "0.82rem",
                     fontWeight: 500,
-                    color: layer.accent ? "var(--accent-warm)" : "var(--text-primary)",
+                    color: layer.accent ? "var(--accent)" : "var(--fg)",
                     letterSpacing: "0.04em",
                     marginBottom: "0.2rem",
                   }}
@@ -137,7 +137,7 @@ const TechStack = () => {
                   style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: "0.68rem",
-                    color: "var(--text-muted)",
+                    color: "var(--fg-muted)",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
                   }}
@@ -154,14 +154,14 @@ const TechStack = () => {
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: "0.88rem",
-                        color: layer.accent ? "var(--text-primary)" : "var(--text-secondary)",
+                        color: layer.accent ? "var(--fg)" : "var(--fg-2)",
                         lineHeight: 1.6,
                       }}
                     >
                       {item}
                     </span>
                     {i < layer.items.length - 1 && (
-                      <span style={{ color: "var(--border-color)", fontSize: "0.7rem" }}>·</span>
+                      <span style={{ color: "var(--border)", fontSize: "0.7rem" }}>·</span>
                     )}
                   </span>
                 ))}
@@ -181,14 +181,14 @@ const TechStack = () => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--rule)" }} />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--border)" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--fg-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
               L01 – L04 · Production stack
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--accent-warm)" }} />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--accent-warm)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            <div style={{ width: "2rem", height: "1px", backgroundColor: "var(--accent)" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
               L05 · AI-native layer
             </span>
           </div>

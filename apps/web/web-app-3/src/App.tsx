@@ -14,10 +14,21 @@ import {
   ROISlide,
   CTASlide,
 } from "./slides";
+import {
+  MCPTitle, MCPProblem, MCPAnalogy, MCPDefinition,
+  MCPPlayers, MCPPrimitives, MCPAISees, MCPProtocol,
+  MCPStdio, MCPHttp, MCPTransportCompare, MCPHandshake,
+  MCPBuildTS, MCPBuildPython, MCPStackChoice,
+  MCPToolkit, MCPClineSetup, MCPClineConfig, MCPClineUse,
+  MCPSkillIntro, MCPSkillUniversal, MCPSkillDemo,
+  MCPBackend, MCPvsFunctions, MCPEcosystem, MCPContributions,
+} from "./slides/mcp";
 import "./presentation.css";
 
+type Mode = "deck" | "prezi" | "mcp";
+
 export default function App() {
-  const [mode, setMode] = useState<"deck" | "prezi">("deck");
+  const [mode, setMode] = useState<Mode>("mcp");
 
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
@@ -38,11 +49,11 @@ export default function App() {
           boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
           // Hide toggle when in Prezi mode so it doesn't overlap the canvas
           opacity:    mode === "prezi" ? 0 : 1,
-          pointerEvents: mode === "prezi" ? "none" : "auto",
+          pointerEvents: mode === "prezi" ? "none" : "auto" as const,
           transition: "opacity 0.25s",
         }}
       >
-        {(["deck", "prezi"] as const).map((m) => (
+        {(["mcp", "deck", "prezi"] as const).map((m) => (
           <button
             key={m}
             onClick={() => setMode(m)}
@@ -62,7 +73,7 @@ export default function App() {
               color: mode === m ? "#fff" : "rgba(255,255,255,0.35)",
             }}
           >
-            {m === "deck" ? "Deck" : "✦ Prezi"}
+            {m === "mcp" ? "⚡ MCP Talk" : m === "deck" ? "Deck" : "✦ Prezi"}
           </button>
         ))}
       </div>
@@ -96,7 +107,37 @@ export default function App() {
         </button>
       )}
 
-      {mode === "deck" ? (
+      {mode === "mcp" ? (
+        <SlideEngine>
+          {/* 26-slide MCP deep-dive */}
+          <MCPTitle />
+          <MCPProblem />
+          <MCPAnalogy />
+          <MCPDefinition />
+          <MCPPlayers />
+          <MCPPrimitives />
+          <MCPAISees />
+          <MCPProtocol />
+          <MCPStdio />
+          <MCPHttp />
+          <MCPTransportCompare />
+          <MCPHandshake />
+          <MCPBuildTS />
+          <MCPBuildPython />
+          <MCPStackChoice />
+          <MCPToolkit />
+          <MCPClineSetup />
+          <MCPClineConfig />
+          <MCPClineUse />
+          <MCPSkillIntro />
+          <MCPSkillUniversal />
+          <MCPSkillDemo />
+          <MCPBackend />
+          <MCPvsFunctions />
+          <MCPEcosystem />
+          <MCPContributions />
+        </SlideEngine>
+      ) : mode === "deck" ? (
         <SlideEngine>
           <TitleSlide />
           <ProblemSlide />

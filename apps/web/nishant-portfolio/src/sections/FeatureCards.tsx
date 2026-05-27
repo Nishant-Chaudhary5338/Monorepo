@@ -93,12 +93,12 @@ const FeatureCards = () => {
               >
                 {cap.title}
               </h3>
-              <p style={{ color: "var(--text-secondary)", lineHeight: 1.65, maxWidth: "60ch" }}>
+              <p style={{ color: "var(--fg-2)", lineHeight: 1.65, maxWidth: "60ch" }}>
                 {cap.description}
               </p>
               <div className="flex flex-wrap gap-2 mt-5">
                 {cap.tags.map((tag) => (
-                  <span key={tag} className="editorial-tag">{tag}</span>
+                  <span key={tag} className="tag">{tag}</span>
                 ))}
               </div>
             </div>

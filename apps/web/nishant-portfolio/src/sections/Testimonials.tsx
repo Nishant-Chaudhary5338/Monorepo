@@ -29,10 +29,10 @@ const Testimonials = () => (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-20 ruled-top pt-10">
 
       {/* Left: Bio */}
-      <div className="xl:col-span-7 flex flex-col gap-6 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+      <div className="xl:col-span-7 flex flex-col gap-6 text-lg leading-relaxed" style={{ color: "var(--fg-2)" }}>
         <p>
           I'm a{" "}
-          <strong style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)", fontStyle: "italic" }}>
+          <strong style={{ color: "var(--fg)", fontFamily: "var(--font-display)", fontStyle: "italic" }}>
             Senior Frontend Engineer at Samsung Electronics
           </strong>
           , leading architecture for TVPlus TestSuite — a content-QA platform for Linear channels and VOD.
@@ -40,13 +40,13 @@ const Testimonials = () => (
         </p>
         <p>
           I replaced redeploy-per-feature cycles with a{" "}
-          <strong style={{ color: "var(--text-primary)" }}>plugin-based MFE platform</strong>{" "}
+          <strong style={{ color: "var(--fg)" }}>plugin-based MFE platform</strong>{" "}
           on Vite Module Federation — cutting plugin onboarding from days to under 60 seconds,
           enabling fully independent team deploys with no shared release trains.
         </p>
         <p>
           I also built an{" "}
-          <strong style={{ color: "var(--text-primary)" }}>internal MCP tooling ecosystem</strong>{" "}
+          <strong style={{ color: "var(--fg)" }}>internal MCP tooling ecosystem</strong>{" "}
           on Turborepo, automating ~65% of routine frontend work — UI generation, scaffolding, code review,
           and test generation all become one-line invocations. I then trained 30+ engineers across 5 teams
           to adopt these AI-native workflows.
@@ -62,21 +62,21 @@ const Testimonials = () => (
 
         {/* Quick facts */}
         <div>
-          <div className="mono-label mb-5" style={{ color: "var(--accent-warm)" }}>Impact</div>
+          <div className="mono-label mb-5" style={{ color: "var(--accent)" }}>Impact</div>
           <div className="flex flex-col">
             {quickFacts.map(({ metric, label }) => (
               <div
                 key={metric}
                 className="flex items-start gap-5 py-4"
-                style={{ borderBottom: "1px solid var(--rule)" }}
+                style={{ borderBottom: "1px solid var(--border)" }}
               >
                 <div
                   className="display-headline shrink-0"
-                  style={{ fontSize: "1.6rem", color: "var(--accent-warm)", minWidth: "5rem" }}
+                  style={{ fontSize: "1.6rem", color: "var(--data)", minWidth: "5rem" }}
                 >
                   {metric}
                 </div>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.55, paddingTop: "0.3rem" }}>
+                <p style={{ color: "var(--fg-2)", fontSize: "0.95rem", lineHeight: 1.55, paddingTop: "0.3rem" }}>
                   {label}
                 </p>
               </div>
@@ -86,15 +86,15 @@ const Testimonials = () => (
 
         {/* Open to */}
         <div>
-          <div className="mono-label mb-4" style={{ color: "var(--accent-warm)" }}>Open to</div>
+          <div className="mono-label mb-4" style={{ color: "var(--accent)" }}>Open to</div>
           <ul className="flex flex-col gap-3">
             {openTo.map((item) => (
               <li
                 key={item}
                 className="flex items-start gap-3"
-                style={{ color: "var(--text-secondary)", fontSize: "0.97rem" }}
+                style={{ color: "var(--fg-2)", fontSize: "0.97rem" }}
               >
-                <span style={{ color: "var(--accent-warm)", flexShrink: 0 }}>▸</span>
+                <span style={{ color: "var(--highlight)", flexShrink: 0 }}>▸</span>
                 <span>{item}</span>
               </li>
             ))}

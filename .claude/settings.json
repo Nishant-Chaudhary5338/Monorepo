@@ -1,4 +1,63 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(python3)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/audit)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/about)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "Bash(mkdir -p ~/Desktop/tribehq/.claude/skills ~/Desktop/tribehq/.claude/commands)",
+      "Bash(cp /Users/nishantchaudhary/Desktop/my-turborepo/.claude/skills/browser-qa.md ~/Desktop/tribehq/.claude/skills/)",
+      "Bash(cp /Users/nishantchaudhary/Desktop/my-turborepo/.claude/commands/fix-types.md ~/Desktop/tribehq/.claude/commands/)",
+      "Bash(cp /Users/nishantchaudhary/Desktop/my-turborepo/.claude/commands/new-component.md ~/Desktop/tribehq/.claude/commands/)",
+      "Bash(cp /Users/nishantchaudhary/Desktop/my-turborepo/.claude/commands/review-component.md ~/Desktop/tribehq/.claude/commands/)",
+      "Bash(cp /Users/nishantchaudhary/Desktop/my-turborepo/.claude/commands/save-memory.md ~/Desktop/tribehq/.claude/commands/)",
+      "Bash(ls public/brand/)",
+      "Bash(ls public/fonts/)",
+      "Bash(ls public/founders/)",
+      "Bash(ls scripts/)",
+      "Bash(ls tests/lighthouse/)",
+      "Bash(cat > *)",
+      "Bash(PORT=3002 pnpm dev)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/vercel/ai/main/examples/mcp/package.json\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/modelcontextprotocol/inspector/main/client/src/components/ui/combobox.tsx\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/modelcontextprotocol/inspector/main/client/src/components/ui/input.tsx\")",
+      "Bash(curl -s \"https://api.github.com/search/code?q=PromptArgumentsForm+repo:modelcontextprotocol/inspector\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/modelcontextprotocol/inspector/main/client/src/components/PromptsTab.tsx\")",
+      "Bash(NODE_PATH=/tmp/node_modules node /tmp/figma-socket-server.mjs)",
+      "mcp__figma__set_fill_color",
+      "mcp__figma__create_frame",
+      "mcp__figma__create_text",
+      "mcp__figma__create_rectangle",
+      "mcp__figma__set_text_content",
+      "mcp__figma__set_layout_mode",
+      "mcp__figma__set_padding",
+      "mcp__figma__set_item_spacing",
+      "mcp__figma__move_node",
+      "mcp__figma__resize_node",
+      "mcp__figma__set_fill_color",
+      "mcp__figma__set_stroke_color",
+      "mcp__figma__set_corner_radius",
+      "mcp__figma__get_document_info",
+      "mcp__figma__join_channel",
+      "mcp__figma__get_node_info",
+      "mcp__figma__set_multiple_text_contents",
+      "mcp__figma__delete_node",
+      "mcp__figma__set_axis_align",
+      "mcp__figma__set_layout_sizing"
+    ],
+    "additionalDirectories": [
+      "/Users/nishantchaudhary/Desktop/tribehq/.claude",
+      "/Users/nishantchaudhary/Desktop/tribehq/.claude/skills",
+      "/Users/nishantchaudhary/Desktop/tribehq"
+    ]
+  },
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true,
+    "example-skills@anthropic-agent-skills": true
+  },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
       "source": {
@@ -12,9 +71,5 @@
         "repo": "jezweb/claude-skills"
       }
     }
-  },
-  "enabledPlugins": {
-    "document-skills@anthropic-agent-skills": true,
-    "example-skills@anthropic-agent-skills": true
   }
 }
