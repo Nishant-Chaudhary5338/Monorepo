@@ -2,9 +2,9 @@
 title: "Rebuilding Samsung TV Plus's Frontend: Plugin-Based MFE with Vite Module Federation"
 description: "My manager's brief: make it plugin-based, isolated — adding a plugin shouldn't touch what's running, and a feature change shouldn't trigger full regression. Here's the architecture that delivered it."
 slug: "plugin-onboarding-vite-module-federation"
-coverImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop"
 coverImageAlt: "iMac monitor displaying a design system with component library panels open"
-ogImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop"
 date: "2026-05-03"
 lastUpdated: "2026-05-03"
 author: "Nishant Chaudhary"
@@ -223,7 +223,7 @@ useEffect(() => {
 
 [INTERNAL-LINK: React context patterns across module boundaries -> supporting article on React context and module federation]
 
-![Two monitors displaying React source code in VS Code with the React logo in a browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Two monitors displaying React source code in VS Code with the React logo in a browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 ---
 
@@ -481,7 +481,7 @@ Without this, Vite generates relative import paths in the plugin's chunks. When 
 
 > **Citation Capsule:** Five failure modes surface consistently when shipping Vite Module Federation in a multi-team environment: React fragmentation from missing `singleton: true` with `requiredVersion: false`; Vite dev-mode incompatibility with federation (use `vite preview` for remotes); CSS bleed from multiple Tailwind preflight resets; dev-mode CORS on cross-origin remote URLs; and incorrect `base` URL causing relative asset paths to resolve against the shell's origin. None are obvious from the documentation. All are fixable in under an hour once you know what to look for.
 
-![Designer's desk with color swatches and an iPad showing interface sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Designer's desk with color swatches and an iPad showing interface sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 [INTERNAL-LINK: Tailwind CSS in micro-frontend architectures -> supporting article on shared design systems across MFE remotes]
 
@@ -556,7 +556,7 @@ If you've built or are building a Vite Module Federation platform and disagree w
         "@type": "Person",
         "name": "Nishant Chaudhary"
       },
-      "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop",
+      "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop",
       "keywords": ["micro-frontends", "Vite", "Module Federation", "Samsung TV Plus", "frontend architecture", "plugin-based architecture"]
     },
     {

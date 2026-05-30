@@ -76,6 +76,26 @@ const ArticlePage = () => {
 
   useEffect(() => { window.scrollTo(0, 0); }, [slug]);
 
+  // Per-page SEO: update title, description, and canonical for each article
+  useEffect(() => {
+    if (!meta) return;
+    const prevTitle = document.title;
+    const metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    const prevDesc = metaDesc?.getAttribute("content") ?? "";
+    const prevCanon = canonical?.getAttribute("href") ?? "";
+
+    document.title = `${meta.title} — Nishant Chaudhary`;
+    metaDesc?.setAttribute("content", meta.description);
+    canonical?.setAttribute("href", `https://nishantchaudhary.dev/writing/${meta.slug}`);
+
+    return () => {
+      document.title = prevTitle;
+      metaDesc?.setAttribute("content", prevDesc);
+      canonical?.setAttribute("href", prevCanon);
+    };
+  }, [meta]);
+
   const handleScroll = useCallback(() => {
     const y = window.scrollY;
     const docH = document.documentElement.scrollHeight - window.innerHeight;
@@ -144,11 +164,15 @@ const ArticlePage = () => {
         </Link>
       </div>
 
-      {/* Cover image */}
+      {/* Cover image — LCP element: no lazy, high priority, explicit dims to prevent CLS */}
       <div style={{ width: "100%", height: "clamp(220px, 35vw, 480px)", overflow: "hidden", position: "relative" }}>
         <img
           src={meta.coverImage}
           alt={meta.coverImageAlt}
+          width={1200}
+          height={630}
+          fetchPriority="high"
+          decoding="async"
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, var(--bg) 100%)" }} />
@@ -280,6 +304,26 @@ const ArticlePage = () => {
               components={{
                 h2: ({ children }) => <h2 id={headingId(children)}>{children}</h2>,
                 h3: ({ children }) => <h3 id={headingId(children)}>{children}</h3>,
+                img: ({ src, alt }) => {
+                  let w: number | undefined;
+                  let h: number | undefined;
+                  try {
+                    const u = new URL(src ?? "");
+                    w = u.searchParams.has("w") ? Number(u.searchParams.get("w")) : undefined;
+                    h = u.searchParams.has("h") ? Number(u.searchParams.get("h")) : undefined;
+                  } catch { /* relative URL — no params */ }
+                  return (
+                    <img
+                      src={src}
+                      alt={alt ?? ""}
+                      width={w}
+                      height={h}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ maxWidth: "100%", height: "auto" }}
+                    />
+                  );
+                },
               }}
             >
               {cleanContent ?? ""}

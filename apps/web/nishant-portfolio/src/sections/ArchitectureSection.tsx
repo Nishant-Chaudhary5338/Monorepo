@@ -177,7 +177,7 @@ const ArchitectureSection = () => {
   }, []);
 
   return (
-    <section id="architecture" style={{ padding: "120px 0", borderTop: "1px solid var(--border)" }}>
+    <section id="architecture" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
       <div className="site-container">
         <div className="section-header">
           <div className="num">// 02 · System</div>
@@ -190,12 +190,7 @@ const ArchitectureSection = () => {
           </div>
         </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr min(380px, 35%)",
-          gap: 48,
-          alignItems: "stretch",
-        }}>
+        <div className="arch-grid">
           {/* Diagram panel */}
           <div style={{
             background: "var(--glass)",

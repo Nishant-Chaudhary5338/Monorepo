@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import gsap from "gsap";
 import { Link } from "react-router-dom";
 
 interface Project {
@@ -115,11 +116,16 @@ function ProjectPane({ project }: { project: Project }) {
               Read case study →
             </Link>
           )}
+          {!project.liveLink && !project.caseStudyLink && (
+            <a href="#contact" className="mono-link" style={{ textDecoration: "none" }}>
+              Get in touch about this →
+            </a>
+          )}
         </div>
       </div>
 
       {/* Title + description + metrics */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr min(320px, 38%)", gap: 40, alignItems: "start" }}>
+      <div className="project-pane-grid">
         <div>
           <h3
             style={{ font: "var(--h3)", letterSpacing: "-0.015em", marginBottom: 16 }}
@@ -144,7 +150,7 @@ function ProjectPane({ project }: { project: Project }) {
           border: "1px solid var(--border)",
         }}>
           {project.metrics.map(({ v, l }) => (
-            <div key={l} className="glass" style={{ padding: "18px 16px" }}>
+            <div key={l} className="glass" style={{ padding: "16px" }}>
               <div style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
@@ -169,6 +175,22 @@ function ProjectPane({ project }: { project: Project }) {
 
 const ShowcaseSection = () => {
   const [activeIdx, setActiveIdx] = useState(0);
+  const paneRef = useRef<HTMLDivElement>(null);
+
+  const handleTabClick = (idx: number) => {
+    if (idx === activeIdx) return;
+    gsap.to(paneRef.current, {
+      opacity: 0, y: 6, duration: 0.15, ease: "power2.in",
+      onComplete: () => {
+        setActiveIdx(idx);
+        gsap.fromTo(
+          paneRef.current,
+          { opacity: 0, y: 6 },
+          { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }
+        );
+      },
+    });
+  };
 
   return (
     <section id="work" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
@@ -188,7 +210,7 @@ const ShowcaseSection = () => {
             <button
               key={p.num}
               className={`project-tab${activeIdx === i ? " active" : ""}`}
-              onClick={() => setActiveIdx(i)}
+              onClick={() => handleTabClick(i)}
             >
               {p.num} · {p.shortTitle}
             </button>
@@ -196,7 +218,9 @@ const ShowcaseSection = () => {
         </div>
 
         {/* Active project pane */}
-        <ProjectPane project={PROJECTS[activeIdx]} />
+        <div ref={paneRef}>
+          <ProjectPane project={PROJECTS[activeIdx]} />
+        </div>
 
         {/* Footer */}
         <div style={{

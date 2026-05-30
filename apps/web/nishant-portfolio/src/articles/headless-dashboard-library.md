@@ -2,9 +2,9 @@
 title: "interactive-dashboard-library: The Headless Dashboard Framework I Built for Our React Monorepo"
 description: "I built interactive-dashboard-library from scratch — a headless React dashboard framework with drag, resize, responsive widget views, and pluggable persistence. Here's the full technical story."
 slug: "headless-dashboard-library"
-coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=webp&q=80&w=1200&h=630&fit=crop"
 coverImageAlt: "Multiple data dashboards displayed on screens showing charts, KPIs, and analytics panels"
-ogImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=webp&q=80&w=1200&h=630&fit=crop"
 date: "2026-05-03"
 lastUpdated: "2026-05-03"
 author: "Nishant Chaudhary"
@@ -33,7 +33,7 @@ Each team reinventing drag, resize, and persistence is expensive. But that's not
 
 What makes this pattern so persistent? It's because each team's dashboard feels unique from the inside. The monitoring team's needs seem different from the analytics team's. They are different at the data layer. At the structural layer — drag, resize, layout, polling, persistence — they're the same problem wearing different clothes every time.
 
-![Developer hands typing code on a laptop with multiple browser tabs showing interactive UI components](https://images.unsplash.com/photo-1555099962-4199c345e5dd?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Developer hands typing code on a laptop with multiple browser tabs showing interactive UI components](https://images.unsplash.com/photo-1555099962-4199c345e5dd?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > **Citation Capsule:** In 2018, Stripe's "Developer Coefficient" report found that developers spend 42% of their working time on technical debt and bad code, representing approximately $85 billion per year in lost productivity globally ([Stripe, 2018](https://stripe.com/files/reports/the-developer-coefficient.pdf)). At monorepo scale, duplicated dashboard infrastructure is one of the most predictable sources of that waste. Multiple teams building the same structural layer independently isn't a product investment — it's scheduled debt accumulation.
 
@@ -51,7 +51,7 @@ In April 2025, WebAIM found that 94.8% of the top 1 million homepages have at le
 
 In 2025, TypeScript became the number-one most used language on GitHub by contributor count, with 66% year-over-year contributor growth ([GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)). The `WidgetRegistration` contract reflects that: strict types, a small surface, and nothing optional that shouldn't be. The interface is intentionally narrow.
 
-![Dark server rack with blinking blue LEDs representing distributed state and data flow architecture](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Dark server rack with blinking blue LEDs representing distributed state and data flow architecture](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 ```typescript
 interface WidgetRegistration {
@@ -260,7 +260,7 @@ Four template presets ship with the library: analytics, monitoring, sales, and e
 
 In 2025, 80% of developers use AI tools in their development workflow, with 50.6% using them daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)). Libraries that structure their documentation for programmatic consumption aren't chasing a trend. They're building for the way most developers already work.
 
-![Abstract AI neural network visualization with glowing nodes and connections on dark background](https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Abstract AI neural network visualization with glowing nodes and connections on dark background](https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 [UNIQUE INSIGHT] Every hook ships with full JSDoc `@example` blocks. Not for a docs site. For AI coding tools that surface these examples inline when a developer types `useWidgetData`. Teams writing their first custom widget get correct, idiomatic code on the first try, more often than not. Documentation structured for programmatic extraction is the next competitive edge for any shared library. Most teams are still writing docs for humans browsing a site, and missing the developer who never opens a browser tab.
 

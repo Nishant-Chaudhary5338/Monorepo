@@ -18,7 +18,7 @@ const PRINCIPLES = [
 const ProcessPrinciples = () => (
   <>
     {/* Process */}
-    <section id="process" style={{ padding: "120px 0", borderTop: "1px solid var(--border)" }}>
+    <section id="process" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
       <div className="site-container">
         <div className="section-header">
           <div className="num">// 06 · Process</div>
@@ -31,19 +31,9 @@ const ProcessPrinciples = () => (
 
         <div style={{ position: "relative" }}>
           {/* gradient pipeline spine */}
-          <div style={{
-            position: "absolute",
-            top: 22, left: "4%", right: "4%",
-            height: 1,
-            background: "linear-gradient(90deg, var(--accent) 0%, var(--data) 100%)",
-          }} />
+          <div className="process-spine" />
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gap: 12,
-            position: "relative",
-          }}>
+          <div className="process-steps">
             {PROCESS_STEPS.map((s, i) => (
               <div key={s.k} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
                 <span style={{
@@ -74,7 +64,7 @@ const ProcessPrinciples = () => (
     </section>
 
     {/* Principles */}
-    <section id="principles" style={{ padding: "120px 0", borderTop: "1px solid var(--border)" }}>
+    <section id="principles" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
       <div className="site-container">
         <div className="section-header">
           <div className="num">// 07 · Principles</div>
@@ -86,13 +76,7 @@ const ProcessPrinciples = () => (
           <div className="sub">Six rules, learned the hard way.</div>
         </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 1,
-          background: "var(--border)",
-          border: "1px solid var(--border)",
-        }}>
+        <div className="principles-grid">
           {PRINCIPLES.map((p) => (
             <div
               key={p.k}

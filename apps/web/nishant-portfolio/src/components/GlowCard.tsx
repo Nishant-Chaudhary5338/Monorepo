@@ -35,9 +35,9 @@ const GlowCard = ({ card, index, children }: GlowCardProps) => {
     >
       <div className="glow"></div>
       <div className="flex items-center gap-1 mb-5">
-        {Array.from({ length: 5 }, (_, i) => (
-          <img key={i} src="/images/star.png" alt="star" className="size-5" />
-        ))}
+        <span role="img" aria-label="5 out of 5 stars" style={{ fontSize: "1.1rem", letterSpacing: "0.05em", color: "var(--data)" }}>
+          ★★★★★
+        </span>
       </div>
       <div className="mb-5">
         <p className="text-lg" style={{ color: "var(--fg-2)" }}>{card.review}</p>

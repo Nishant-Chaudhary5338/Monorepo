@@ -2,9 +2,9 @@
 title: "Building shared-packages/ui: The Shared React Component Library for Our Monorepo"
 description: "45 components, 79 test files, 4 apps live. How I built shared-packages/ui — typed, accessible, AI-native — as the UI standard for a company-wide React monorepo migration."
 slug: "production-grade-ui-library-react-monorepo"
-coverImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop"
 coverImageAlt: "iMac monitor displaying a design system with Colors, Component Library, and Widget Templates panels"
-ogImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop"
 date: "2026-05-03"
 lastUpdated: "2026-05-03"
 author: "Nishant Chaudhary"
@@ -37,7 +37,7 @@ The real problem wasn't the component count. It was that business logic had crep
 
 There were no tests. Not one. Every team had convinced themselves that UI components were "too visual to test," which meant nobody caught regressions until a designer spotted them in staging. Migrating these apps into a shared monorepo without first establishing a shared UI layer would have just combined the chaos into one place.
 
-![Two monitors displaying React.js source code in VS Code alongside the React logo on a localhost browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Two monitors displaying React.js source code in VS Code alongside the React logo on a localhost browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > A 2023 Sparkbox study found that teams with a shared design system are 47% faster than teams building from scratch. Design teams see a 38% efficiency gain and development teams a 31% gain ([Smashing Magazine composite study, 2022](https://www.smashingmagazine.com/2022/09/formula-roi-design-system/)). The investment is paid once and amortized across every team that adopts the system.
 
@@ -71,7 +71,7 @@ The `workspace:*` pattern keeps the library always local. In `package.json` for 
 
 No npm publish step, no version drift, no "which version is production using?" questions. The app always runs whatever is checked into the monorepo at that moment.
 
-![Developer's monitors lit in cyan and orange displaying colorful HTML class attribute code at night](https://images.unsplash.com/photo-1754039984985-ef607d80113a?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Developer's monitors lit in cyan and orange displaying colorful HTML class attribute code at night](https://images.unsplash.com/photo-1754039984985-ef607d80113a?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 <figure>
 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Horizontal bar chart showing design system efficiency gains: build speed +47%, designer efficiency +38%, developer efficiency +31%">
@@ -127,7 +127,7 @@ Storybook has **89,673 GitHub stars** and is used in production by Airbnb, Slack
 
 [UNIQUE INSIGHT] The seven-file structure eliminates a specific and underappreciated friction: onboarding delay. When every component follows the same shape, a developer who has never seen `CommandMenu.tsx` can contribute to it the same day they join. The constraint isn't bureaucracy — it's a shared mental model that scales with each new team.
 
-![Designer's desk with Pantone color swatches and an iPad showing UI component sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Designer's desk with Pantone color swatches and an iPad showing UI component sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > Storybook has 89,673 GitHub stars and is used in production by Airbnb, Slack, Dropbox, Shopify, IBM, Uber, and Coursera ([Storybook.js, 2024](https://storybook.js.org/blog/future-of-storybook-2024/)). Running Storybook as the canonical component explorer eliminates "which component do I use?" questions entirely. Engineers open Storybook, see all 47 stories, and understand the full component surface in minutes.
 
@@ -327,7 +327,7 @@ In 2024, 58% of JavaScript developers used zero dedicated monorepo tools ([State
         "@type": "Person",
         "name": "Nishant Chaudhary"
       },
-      "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop",
+      "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop",
       "keywords": ["React", "TypeScript", "monorepo", "component library", "design system", "Radix UI", "Tailwind CSS"]
     },
     {

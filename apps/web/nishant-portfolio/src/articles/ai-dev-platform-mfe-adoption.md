@@ -2,9 +2,9 @@
 title: "The AI Dev Platform That Made Our MFE Architecture Accessible to Every Engineer"
 description: "The architecture was built. The adoption problem remained. I built a GUI over MCP tools and Express APIs so any engineer — frontend or not — could create, build, test, and deploy plugins without a terminal."
 slug: "ai-dev-platform-mfe-adoption"
-coverImage: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=jpg&q=80&w=1200&h=630&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=webp&q=80&w=1200&h=630&fit=crop"
 coverImageAlt: "Abstract AI neural network with glowing connections representing an intelligent developer platform"
-ogImage: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=webp&q=80&w=1200&h=630&fit=crop"
 date: "2026-05-03"
 lastUpdated: "2026-05-03"
 author: "Nishant Chaudhary"
@@ -255,7 +255,7 @@ Scaffolding and code generation are the headline features. The other capabilitie
 
 **Registry manager.** A CRUD interface for `registry.json`. Add a plugin, enable or disable one, update a URL, delete an entry that's no longer needed. Everything the registry needs, visible and editable in the browser.
 
-![Dark analytics dashboard with multiple data visualisation panels showing plugin registry and build status](https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop)
+![Dark analytics dashboard with multiple data visualisation panels showing plugin registry and build status](https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 [UNIQUE INSIGHT] The registry manager turned out to be more important than I expected. Before it existed, engineers would come to me when they needed to disable a plugin, change its display label, or point it at a different build. With a UI, they could do it themselves — and more importantly, they understood why the change worked. The registry became legible to the whole team, not just to whoever set it up.
 
@@ -349,7 +349,7 @@ Write to me at <a href="mailto:nishantchaudhary5338@gmail.com">nishantchaudhary5
         "@type": "Person",
         "name": "Nishant Chaudhary"
       },
-      "image": "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=jpg&q=80&w=1200&h=630&fit=crop",
+      "image": "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=webp&q=80&w=1200&h=630&fit=crop",
       "keywords": ["developer experience", "AI tooling", "MCP", "micro-frontends", "platform engineering", "React", "Express"]
     },
     {

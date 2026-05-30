@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { caseStudyMeta } from "../case-studies/index";
+import { caseStudyCoverImages } from "../case-studies/covers";
 
 import "highlight.js/styles/github-dark-dimmed.css";
 
@@ -49,11 +50,6 @@ function extractToc(markdown: string): TocEntry[] {
   return entries;
 }
 
-const caseStudyCoverImages: Record<string, string> = {
-  "headless-dashboard-library": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop",
-  "ui-component-library": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=jpg&q=80&w=1200&h=630&fit=crop",
-};
-
 const CaseStudyPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [content, setContent] = useState<string | null>(null);
@@ -73,6 +69,26 @@ const CaseStudyPage = () => {
   }, [slug]);
 
   useEffect(() => { window.scrollTo(0, 0); }, [slug]);
+
+  // Per-page SEO: update title, description, and canonical for each case study
+  useEffect(() => {
+    if (!meta) return;
+    const prevTitle = document.title;
+    const metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    const prevDesc = metaDesc?.getAttribute("content") ?? "";
+    const prevCanon = canonical?.getAttribute("href") ?? "";
+
+    document.title = `${meta.title} Case Study — Nishant Chaudhary`;
+    metaDesc?.setAttribute("content", meta.description);
+    canonical?.setAttribute("href", `https://nishantchaudhary.dev/work/${meta.slug}`);
+
+    return () => {
+      document.title = prevTitle;
+      metaDesc?.setAttribute("content", prevDesc);
+      canonical?.setAttribute("href", prevCanon);
+    };
+  }, [meta]);
 
   const handleScroll = useCallback(() => {
     const y = window.scrollY;
@@ -142,10 +158,18 @@ const CaseStudyPage = () => {
         </Link>
       </div>
 
-      {/* Cover image */}
+      {/* Cover image — LCP element: no lazy, high priority, explicit dims to prevent CLS */}
       {coverImage && (
         <div style={{ width: "100%", height: "clamp(220px, 35vw, 480px)", overflow: "hidden", position: "relative" }}>
-          <img src={coverImage} alt={meta.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          <img
+            src={coverImage}
+            alt={meta.title}
+            width={1200}
+            height={630}
+            fetchPriority="high"
+            decoding="async"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, var(--bg) 100%)" }} />
         </div>
       )}
@@ -216,6 +240,26 @@ const CaseStudyPage = () => {
               components={{
                 h2: ({ children }) => <h2 id={headingId(children)}>{children}</h2>,
                 h3: ({ children }) => <h3 id={headingId(children)}>{children}</h3>,
+                img: ({ src, alt }) => {
+                  let w: number | undefined;
+                  let h: number | undefined;
+                  try {
+                    const u = new URL(src ?? "");
+                    w = u.searchParams.has("w") ? Number(u.searchParams.get("w")) : undefined;
+                    h = u.searchParams.has("h") ? Number(u.searchParams.get("h")) : undefined;
+                  } catch { /* relative URL */ }
+                  return (
+                    <img
+                      src={src}
+                      alt={alt ?? ""}
+                      width={w}
+                      height={h}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ maxWidth: "100%", height: "auto" }}
+                    />
+                  );
+                },
               }}
             >
               {cleanContent ?? ""}

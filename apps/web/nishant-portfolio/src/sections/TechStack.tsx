@@ -97,14 +97,7 @@ const TechStack = () => {
             <div
               key={layer.category}
               ref={(el) => { layerRefs.current[index] = el; }}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "4rem minmax(10rem, 18rem) 1fr",
-                gap: "clamp(1rem, 3vw, 2.5rem)",
-                padding: "1.5rem 0",
-                borderBottom: "1px solid var(--border)",
-                alignItems: "start",
-              }}
+              className="stack-layer"
             >
               {/* Layer number */}
               <div
@@ -147,7 +140,7 @@ const TechStack = () => {
               </div>
 
               {/* Items */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 0.55rem", alignItems: "center" }}>
+              <div className="stack-layer-items" style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 0.55rem", alignItems: "center" }}>
                 {layer.items.map((item, i) => (
                   <span key={item} style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
                     <span

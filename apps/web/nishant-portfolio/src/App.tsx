@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import Navbar from "./components/NavBar";
 import Hero from "./sections/Hero";
 import SiteBackground from "./components/SiteBackground";
-import Cursor from "./components/Cursor";
 import LogoShowcase from "./sections/LogoShowcase";
 import FeatureCards from "./sections/FeatureCards";
 import ShowcaseSection from "./sections/ShowcaseSection";
@@ -19,7 +18,6 @@ const ProcessPrinciples = lazy(() => import("./sections/ProcessPrinciples"));
 
 const App = () => (
   <>
-    <Cursor />
     <SiteBackground />
     <div className="dot-grid" style={{ position: "relative", zIndex: 1 }}>
     <div className="noise" aria-hidden="true" />

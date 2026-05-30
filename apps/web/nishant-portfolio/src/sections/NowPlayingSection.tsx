@@ -116,7 +116,7 @@ const NowPlayingSection = () => {
   const showCursor = lines.length > 0 && lastLine?.[1] !== "$ _";
 
   return (
-    <section id="now" style={{ padding: "120px 0", borderTop: "1px solid var(--border)" }}>
+    <section id="now" style={{ paddingBlock: "var(--section-py)", borderTop: "1px solid var(--border)" }}>
       <div className="site-container">
         <div className="section-header">
           <div className="num">// 03 · Now playing</div>
@@ -129,7 +129,7 @@ const NowPlayingSection = () => {
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 24 }}>
+        <div className="now-playing-grid">
           {/* Terminal */}
           <div style={{
             background: "var(--bg-deep)",
