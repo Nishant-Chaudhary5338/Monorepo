@@ -137,16 +137,10 @@ function extractPreloadHelper(): Plugin {
         fs.writeFileSync(absPath, newCode, "utf8");
       }
 
-      // ── 5. Remove `_ as preloadLocalName` from three-vendor's exports ──────
-      const newThreeCode = code
-        .replace(/ as _[,}]/, (m) => (m.endsWith("}") ? "}" : ""))
-        .replace(new RegExp(`${preloadLocalName} as _[,}]`), (m) =>
-          m.endsWith("}") ? "}" : ""
-        );
-
-      if (newThreeCode !== code) {
-        fs.writeFileSync(path.resolve(outDir, threeVendorFile), newThreeCode, "utf8");
-      }
+      // three-vendor still exports `_` — that's fine; nobody imports it from there
+      // anymore (all chunks now import from _preload.js), so the duplicate export
+      // is dead but harmless. Removing it via regex risks corrupting the export
+      // list, so we intentionally leave it in place.
     },
   };
 }
