@@ -43,7 +43,10 @@ const Cursor = () => {
     const animate = () => {
       if (dotRef.current) {
         const half = enlargedRef.current ? 16 : 4;
-        dotRef.current.style.transform = `translate(${pos.current.x - half}px, ${pos.current.y - half}px)`;
+        const dragging = document.documentElement.hasAttribute("data-dragging");
+        const scale = dragging ? 2.4 : 1;
+        dotRef.current.style.transform =
+          `translate(${pos.current.x - half}px, ${pos.current.y - half}px) scale(${scale})`;
       }
       raf.current = requestAnimationFrame(animate);
     };

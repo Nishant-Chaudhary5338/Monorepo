@@ -18,6 +18,6 @@ export const personalInfo: PersonalInfo = {
   phone: "+91 9560025338",
   linkedin: "https://www.linkedin.com/in/nishant-chaudhary/",
   github: "https://github.com/nishantchaudhary5338",
-  tagline: "Building the platforms that let frontend teams ship faster · Micro-frontends · MCP Tooling · Turborepo",
-  bio: "Senior Frontend Engineer at Samsung Electronics with 4+ years of experience architecting micro-frontend platforms, custom MCP tooling, and AI-assisted developer systems. I work where architecture, developer experience, and production scale meet.",
+  tagline: "Senior Frontend Engineer — product interfaces in React & TypeScript, design systems, and the MCP tooling behind them.",
+  bio: "Senior Frontend Engineer at Samsung Electronics with 4+ years building production React and TypeScript interfaces — fast, accessible, detailed — plus the design systems, micro-frontend platforms, and MCP tooling that keep them consistent across teams.",
 };

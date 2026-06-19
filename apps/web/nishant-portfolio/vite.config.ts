@@ -180,7 +180,8 @@ export default defineConfig({
           ) return "three-vendor";
           if (
             id.includes("/node_modules/gsap/") ||
-            id.includes("/node_modules/@gsap/")
+            id.includes("/node_modules/@gsap/") ||
+            id.includes("/node_modules/lenis/")
           ) return "gsap-vendor";
           if (
             id.includes("/node_modules/react-markdown/") ||

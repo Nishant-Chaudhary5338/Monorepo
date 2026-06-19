@@ -68,9 +68,9 @@ export const expCards: ExpCard[] = [
     date: "Nov 2021 – Mar 2023",
     location: "Noida, India",
     highlights: [
-      "Built responsive, pixel-perfect dashboards from Figma/Adobe XD mockups",
-      "Created reusable component libraries with Storybook",
-      "Enhanced accessibility with semantic HTML and a11y best practices",
+      "Shipped pixel-accurate, responsive dashboards from Figma/XD across multiple client products",
+      "Built the reusable component library (Storybook) the team standardized on",
+      "Drove accessibility and semantic markup to WCAG standards across the UI",
     ],
     responsibilities: [
       "Built responsive, pixel-perfect dashboards in React, converting Figma/Adobe XD mockups into production-ready applications with attention to detail",

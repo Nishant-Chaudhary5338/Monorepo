@@ -9,62 +9,63 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "dashcraft — Headless Dashboard Library",
+    description:
+      "Drag-and-drop grids, resizable widgets, and persistent layouts behind five boolean props — teams ship a dashboard without touching their design system. Headless React + TypeScript, published on npm with a live playground and docs.",
+    imgPath: "/images/thumbnails/headless.webp",
+    bgColor: "#16213e",
+    tags: ["React", "TypeScript", "Headless UI", "Zustand", "npm"],
+    link: "https://dashcraft.digitribe.world",
+  },
+  {
+    title: "Code Graph — 3D Code Indexer",
+    description:
+      "Indexes any TS/React monorepo into a live apps → packages → files → components graph with dependency edges, type-health status, and impact analysis — rendered as an interactive 3D force graph. ts-morph engine exposed over CLI and MCP.",
+    imgPath: "/images/thumbnails/ai-driven.webp",
+    bgColor: "#0f3460",
+    tags: ["Three.js", "TypeScript", "ts-morph", "MCP", "Zustand"],
+  },
+  {
     title: "AI-Driven Development System",
     description:
-      "Built a Monorepo architecture with custom MCP tools that automates UI generation, refactoring, and code standardization — reducing 60–70% of repetitive frontend work and improving development speed by ~3x.",
+      "A monorepo tooling layer of custom MCP servers that standardizes how UI is generated, refactored, and reviewed — keeping a large React codebase coherent as it grows and cutting ~60% of repetitive build-out.",
     imgPath: "/images/thumbnails/ai-driven.webp",
     bgColor: "#1a1a2e",
     tags: ["React", "TypeScript", "Monorepo", "MCP", "AI Automation"],
   },
   {
-    title: "Headless Dashboard Framework",
-    description:
-      "Reusable headless UI framework for production-grade dashboards with plug-and-play grid layouts, drag-and-drop, dynamic resizing, API polling, theming, and responsive design.",
-    imgPath: "/images/thumbnails/headless.webp",
-    bgColor: "#16213e",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Design System", "Headless UI"],
-  },
-  {
-    title: "Test Suite & Admin Portal",
-    description:
-      "Web-based test management platform for authoring, scheduling, and monitoring automated test cases across server runners and remote DTV farms with real-time dashboards.",
-    imgPath: "/images/thumbnails/testsuite.webp",
-    bgColor: "#0f3460",
-    tags: ["React", "Vite", "TypeScript", "Dashboard", "Test Automation"],
-  },
-  {
     title: "HLS Video Player",
     description:
-      "High-performance browser-based video player using HLS.js with Web and Service Workers for adaptive streaming, intelligent caching, and real-time playback monitoring.",
+      "Browser video that just plays — adaptive HLS streaming with Web and Service Workers for instant starts, intelligent caching, and smooth quality switching, with real-time playback monitoring.",
     imgPath: "/images/thumbnails/hls.webp",
-    bgColor: "#1a1a2e",
+    bgColor: "#16213e",
     tags: ["HLS.js", "Service Workers", "React", "Streaming", "Performance"],
   },
   {
     title: "Enterprise SSO & E-Commerce",
     description:
-      "Implemented Azure AD SSO and Google OAuth 2.0 for 15,000+ B2B users. Built e-commerce platform with order tracking, bulk ordering, and analytics integration.",
+      "Sign-in and checkout for 25,000+ B2B users — Azure AD and Google OAuth 2.0 SSO with role-based access, plus a bulk-ordering storefront that lifted repeat orders ~22% and cut load time 4.2s → 2.5s.",
     imgPath: "/images/thumbnails/sso_ecom.webp",
-    bgColor: "#16213e",
+    bgColor: "#0f3460",
     tags: ["React", "Azure AD", "OAuth 2.0", "E-Commerce", "B2B"],
   },
   {
-    title: "SAP Integration Platform",
+    title: "Test Suite & Admin Portal",
     description:
-      "SAP web interface integrating SAP Cloud Platform with React via Node.js + Express backend, streamlining enterprise data workflows and operations.",
-    imgPath: "/images/thumbnails/sap_integration.webp",
-    bgColor: "#0f3460",
-    tags: ["React", "SAP", "Node.js", "Express", "Enterprise"],
+      "Web platform for authoring, scheduling, and monitoring automated test runs across server runners and remote DTV farms — real-time dashboards over a React + Vite + TypeScript stack.",
+    imgPath: "/images/thumbnails/testsuite.webp",
+    bgColor: "#1a1a2e",
+    tags: ["React", "Vite", "TypeScript", "Dashboard", "Test Automation"],
   },
 ];
 
 export const words = [
-  { text: "MFE platforms", imgPath: "/images/ideas.svg" },
-  { text: "MCP tooling", imgPath: "/images/concepts.svg" },
+  { text: "product UI", imgPath: "/images/ideas.svg" },
   { text: "design systems", imgPath: "/images/designs.svg" },
-  { text: "AI workflows", imgPath: "/images/code.svg" },
-  { text: "MFE platforms", imgPath: "/images/ideas.svg" },
+  { text: "React + TypeScript", imgPath: "/images/code.svg" },
   { text: "MCP tooling", imgPath: "/images/concepts.svg" },
+  { text: "product UI", imgPath: "/images/ideas.svg" },
   { text: "design systems", imgPath: "/images/designs.svg" },
-  { text: "AI workflows", imgPath: "/images/code.svg" },
+  { text: "React + TypeScript", imgPath: "/images/code.svg" },
+  { text: "MCP tooling", imgPath: "/images/concepts.svg" },
 ];

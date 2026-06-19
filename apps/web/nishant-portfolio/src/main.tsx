@@ -1,9 +1,11 @@
+/* eslint-disable react-refresh/only-export-components -- application entry point, not an HMR component module */
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './index.css';
 import Cursor from './components/Cursor';
+import { RouteTransition } from './redesign/RouteTransition';
 import { ThemeProvider } from './context/ThemeContext';
 import { articleMeta } from './articles/index';
 import { caseStudyCoverImages } from './case-studies/covers';
@@ -45,6 +47,7 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
       <Cursor />
       <BrowserRouter>
+        <RouteTransition />
         <Routes>
           <Route path="/" element={<Suspense fallback={null}><App /></Suspense>} />
           <Route path="/writing/:slug" element={<Suspense fallback={null}><ArticlePage /></Suspense>} />

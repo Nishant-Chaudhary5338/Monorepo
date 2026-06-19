@@ -73,8 +73,8 @@ export interface CounterItem {
 }
 
 export const counterItems: CounterItem[] = [
-  { value: 60, suffix: "s", label: "Plugin onboarding — down from days" },
-  { value: 65, suffix: "%", label: "Frontend workflows automated via MCP" },
-  { value: 30, suffix: "+", label: "Engineers trained on AI-assisted dev" },
-  { value: 6, suffix: "", label: "Product teams on shared headless UI" },
+  { value: 2.5, suffix: "s", label: "Load time — down from 4.2s" },
+  { value: 25, suffix: "k+", label: "B2B users on shipped interfaces" },
+  { value: 65, suffix: "%", label: "Dev workflows automated via MCP" },
+  { value: 6, suffix: "", label: "Teams on the shared design system" },
 ];

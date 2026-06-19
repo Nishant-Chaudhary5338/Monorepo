@@ -1425,3 +1425,22 @@ section { width: 100dvw; }
     transition-duration: 0.01s !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ROUTE TRANSITION (overlay wipe, all routes)
+   ═══════════════════════════════════════════════════════════════ */
+
+.mx-route-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #070711;
+  transform-origin: top;
+  pointer-events: none;
+  animation: mx-route-wipe 0.7s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+
+@keyframes mx-route-wipe {
+  0%   { transform: scaleY(1); }
+  100% { transform: scaleY(0); }
+}
