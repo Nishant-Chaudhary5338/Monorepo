@@ -248,6 +248,35 @@ export const TOOLS_REGISTRY: ToolEntry[] = [
     status: 'partial',
   },
 
+  // ── WebdriverIO ───────────────────────────────────────────────────────────
+  {
+    id: 'wdio-scaffolder',
+    name: 'WDIO Scaffolder',
+    serverName: 'wdio-scaffolder',
+    category: 'WebdriverIO',
+    description: 'Generate production-ready WebdriverIO + TypeScript projects, Page Object classes, spec files, and wdio.conf.ts variants from natural language intent',
+    tools: ['scaffold_project', 'generate_page_object', 'generate_spec', 'generate_config'],
+    status: 'working',
+  },
+  {
+    id: 'wdio-analyzer',
+    name: 'WDIO Analyzer',
+    serverName: 'wdio-analyzer',
+    category: 'WebdriverIO',
+    description: 'Static analysis for WebdriverIO test suites: score selector robustness (1-10), detect anti-patterns, audit POM coverage, and auto-refactor test files',
+    tools: ['analyze_selectors', 'detect_anti_patterns', 'audit_pom_coverage', 'suggest_refactor'],
+    status: 'working',
+  },
+  {
+    id: 'wdio-runner',
+    name: 'WDIO Runner',
+    serverName: 'wdio-runner',
+    category: 'WebdriverIO',
+    description: 'Live browser automation via WebdriverIO: take screenshots, extract selectors from a live DOM, run smoke assertions, and measure Core Web Vitals. Requires Chrome + chromedriver.',
+    tools: ['navigate_and_screenshot', 'extract_selectors', 'run_smoke_test', 'measure_performance'],
+    status: 'working',
+  },
+
   // ── Testing ───────────────────────────────────────────────────────────────
   {
     id: 'generate-tests',

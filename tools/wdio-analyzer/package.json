@@ -1,0 +1,19 @@
+{
+  "name": "wdio-analyzer-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --no-splitting --outDir build && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "dev": "tsup src/index.ts --watch --format esm"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@tools/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}
