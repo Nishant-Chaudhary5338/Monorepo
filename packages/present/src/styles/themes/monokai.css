@@ -1,0 +1,29 @@
+/**
+ * Present — Monokai Theme
+ * Monokai color scheme
+ */
+
+.present-theme-monokai {
+  --present-background: #272822;
+  --present-foreground: #f8f8f2;
+  --present-primary: #a6e22e;
+  --present-secondary: #f92672;
+  --present-accent: #66d9ef;
+  --present-muted: #3e3d32;
+  --present-muted-foreground: #75715e;
+  --present-border: #49483e;
+  --present-ring: #a6e22e;
+  --present-destructive: #f92672;
+  --present-success: #a6e22e;
+  --present-warning: #e6db74;
+  --present-info: #66d9ef;
+
+  --present-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --present-code-font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  --present-slide-width: 960;
+  --present-slide-height: 540;
+  --present-slide-padding: 2rem;
+  --present-border-radius: 8px;
+}
