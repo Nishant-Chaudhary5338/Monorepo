@@ -21,12 +21,11 @@ export function AddStreamDialog({ open, onClose }: Props) {
   const setAddStreamOpen = useAppStore((s) => s.setAddStreamOpen)
 
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50)
-      const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-      document.addEventListener('keydown', handler)
-      return () => document.removeEventListener('keydown', handler)
-    }
+    if (!open) return
+    setTimeout(() => inputRef.current?.focus(), 50)
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
   }, [open, onClose])
 
   if (!open) return null
