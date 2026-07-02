@@ -12,6 +12,11 @@ export interface MorphData {
 
 const FONT = '800 200px "Bricolage Grotesque", system-ui, sans-serif';
 
+// Sampling stride across every text state — must be the SAME for all words so the
+// derived particle count matches (fit() cycles points, but undersampling a larger
+// source would clip the glyphs). Larger stride = fewer particles = cheaper frames.
+const STEP = 7;
+
 function sampleText(text: string, scale: number): number[] {
   const c = document.createElement("canvas");
   const ctx = c.getContext("2d");
@@ -24,7 +29,7 @@ function sampleText(text: string, scale: number): number[] {
   ctx.fillText(text, c.width / 2, c.height / 2);
   const d = ctx.getImageData(0, 0, c.width, c.height).data;
   const pts: number[] = [];
-  const step = 5;
+  const step = STEP;
   for (let y = 0; y < c.height; y += step) {
     for (let x = 0; x < c.width; x += step) {
       if (d[(y * c.width + x) * 4 + 3] > 128) {

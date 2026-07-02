@@ -71,6 +71,7 @@ export function MorphParticles({ data }: { data: MorphData }): ReactElement {
   const white = useMemo(() => new THREE.Color("#EAF1FF"), []);
   const accent = useMemo(() => new THREE.Color(), []);
   const rotY = useRef(0);
+  const frame = useRef(0);
 
   useFrame(() => {
     const pts = pointsRef.current;
@@ -80,6 +81,11 @@ export function MorphParticles({ data }: { data: MorphData }): ReactElement {
     const A = states[from];
     const B = states[to];
     accent.copy(accents[from]).lerp(accents[to], blend);
+
+    // colour morphs slowly — update it on alternate frames to halve the colour
+    // math + buffer upload. Position still updates every frame for crisp motion.
+    frame.current++;
+    const doColor = (frame.current & 1) === 0;
 
     const posAttr = pts.geometry.attributes.position as THREE.BufferAttribute;
     const colAttr = pts.geometry.attributes.color as THREE.BufferAttribute;
@@ -122,16 +128,18 @@ export function MorphParticles({ data }: { data: MorphData }): ReactElement {
       }
 
       // colour morph toward this section's accent, scaled by the particle's tone
-      const tone = tones[i];
-      const tr = white.r + (accent.r - white.r) * tone;
-      const tg = white.g + (accent.g - white.g) * tone;
-      const tb = white.b + (accent.b - white.b) * tone;
-      col[ix] += (tr - col[ix]) * COLOR_EASE;
-      col[iy] += (tg - col[iy]) * COLOR_EASE;
-      col[iz] += (tb - col[iz]) * COLOR_EASE;
+      if (doColor) {
+        const tone = tones[i];
+        const tr = white.r + (accent.r - white.r) * tone;
+        const tg = white.g + (accent.g - white.g) * tone;
+        const tb = white.b + (accent.b - white.b) * tone;
+        col[ix] += (tr - col[ix]) * COLOR_EASE;
+        col[iy] += (tg - col[iy]) * COLOR_EASE;
+        col[iz] += (tb - col[iz]) * COLOR_EASE;
+      }
     }
     posAttr.needsUpdate = true;
-    colAttr.needsUpdate = true;
+    if (doColor) colAttr.needsUpdate = true;
   });
 
   // @types/three dual-version skew: r3f's JSX map type differs from three@0.174's Texture
@@ -146,10 +154,10 @@ export function MorphParticles({ data }: { data: MorphData }): ReactElement {
       </bufferGeometry>
       <pointsMaterial
         map={spriteMap}
-        size={0.14}
+        size={0.115}
         vertexColors
         transparent
-        opacity={0.95}
+        opacity={0.82}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
         sizeAttenuation

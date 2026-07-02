@@ -17,6 +17,7 @@ export function usePerfTier(): PerfTier {
     // deviceMemory is non-standard; narrow instead of using `any`
     const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
     const low = reduce || small || coarse || cores <= 4 || mem <= 4;
-    return { dpr: low ? [1, 1.5] : [1, 2], bloom: !low, low };
+    // Bloom + additive points are fragment-bound — capping dpr is the single biggest win.
+    return { dpr: low ? [1, 1] : [1, 1.5], bloom: !low, low };
   }, []);
 }

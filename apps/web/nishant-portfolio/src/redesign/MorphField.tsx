@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactElement } from "react";
 import { Canvas } from "@react-three/fiber";
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MorphParticles } from "./MorphParticles";
 import { usePerfTier } from "./usePerfTier";
@@ -28,13 +28,14 @@ export function MorphField(): ReactElement {
       <Canvas
         camera={{ position: [0, 0, 30], fov: 50 }}
         dpr={tier.dpr}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        frameloop="always"
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       >
         <MorphParticles data={data} />
         {tier.bloom && (
-          <EffectComposer>
-            <Bloom intensity={1.15} luminanceThreshold={0.04} luminanceSmoothing={0.42} mipmapBlur />
-            <Vignette eskil={false} offset={0.25} darkness={0.85} />
+          <EffectComposer multisampling={0}>
+            {/* single cheap pass — CSS handles the vignette, so no postprocessing Vignette here */}
+            <Bloom intensity={0.85} luminanceThreshold={0.12} luminanceSmoothing={0.5} mipmapBlur radius={0.6} />
           </EffectComposer>
         )}
       </Canvas>
