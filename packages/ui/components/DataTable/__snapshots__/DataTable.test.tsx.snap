@@ -1,0 +1,241 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DataTable > Snapshot > matches snapshot for default render 1`] = `
+<div>
+  <div
+    class="w-full"
+  >
+    <div
+      class="flex flex-wrap items-center justify-between gap-2 pb-3"
+    >
+      <div
+        class="flex flex-wrap items-center gap-2"
+      />
+      <div
+        class="flex flex-wrap items-center gap-2"
+      />
+    </div>
+    <div
+      class="rounded-md border"
+    >
+      <div
+        class="relative w-full overflow-auto"
+      >
+        <table
+          class="w-full caption-bottom text-sm"
+        >
+          <thead
+            class="[&_tr]:border-b"
+          >
+            <tr
+              class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            >
+              <th
+                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group"
+                style="position: relative; z-index: 1; background: hsl(var(--background));"
+              >
+                <div
+                  class="flex items-center gap-1 overflow-hidden"
+                >
+                  <div
+                    class="flex-1 min-w-0"
+                  >
+                    <span
+                      class="truncate"
+                    >
+                      Name
+                    </span>
+                  </div>
+                </div>
+              </th>
+              <th
+                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group"
+                style="position: relative; z-index: 1; background: hsl(var(--background));"
+              >
+                <div
+                  class="flex items-center gap-1 overflow-hidden"
+                >
+                  <div
+                    class="flex-1 min-w-0"
+                  >
+                    <span
+                      class="truncate"
+                    >
+                      Email
+                    </span>
+                  </div>
+                </div>
+              </th>
+              <th
+                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group"
+                style="position: relative; z-index: 1; background: hsl(var(--background));"
+              >
+                <div
+                  class="flex items-center gap-1 overflow-hidden"
+                >
+                  <div
+                    class="flex-1 min-w-0"
+                  >
+                    <span
+                      class="truncate"
+                    >
+                      Role
+                    </span>
+                  </div>
+                </div>
+              </th>
+              <th
+                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group"
+                style="position: relative; z-index: 1; background: hsl(var(--background));"
+              >
+                <div
+                  class="flex items-center gap-1 overflow-hidden"
+                >
+                  <div
+                    class="flex-1 min-w-0"
+                  >
+                    <span
+                      class="truncate"
+                    >
+                      Salary
+                    </span>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="[&_tr:last-child]:border-0"
+          >
+            <tr
+              class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
+            >
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Alice Johnson
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                alice@corp.com
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Engineer
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+                style="text-align: right;"
+              >
+                120000
+              </td>
+            </tr>
+            <tr
+              class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
+            >
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Bob Martinez
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                bob@corp.com
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Designer
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+                style="text-align: right;"
+              >
+                95000
+              </td>
+            </tr>
+            <tr
+              class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
+            >
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Carol White
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                carol@corp.com
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Manager
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+                style="text-align: right;"
+              >
+                140000
+              </td>
+            </tr>
+            <tr
+              class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
+            >
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                David Lee
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                david@corp.com
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Analyst
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+                style="text-align: right;"
+              >
+                88000
+              </td>
+            </tr>
+            <tr
+              class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50"
+            >
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Eva Chen
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                eva@corp.com
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+              >
+                Engineer
+              </td>
+              <td
+                class="p-4 align-middle [&:has([role=checkbox])]:pr-0 py-2 px-3"
+                style="text-align: right;"
+              >
+                105000
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
