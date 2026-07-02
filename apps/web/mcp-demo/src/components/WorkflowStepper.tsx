@@ -111,3 +111,6 @@ export function WorkflowStepper({
     </div>
   )
 }
+
+
+WorkflowStepper.displayName = 'WorkflowStepper';
