@@ -474,7 +474,7 @@ export function suggestFileName(
 
   // Generic names that should be renamed
   const genericNames = ['index', 'utils', 'helpers', 'common', 'lib', 'misc', 'stuff', 'temp', 'untitled', 'test'] as const;
-  if (!genericNames.includes(basename.toLowerCase())) {
+  if (!(genericNames as readonly string[]).includes(basename.toLowerCase())) {
     return null; // Name is already specific
   }
 
@@ -586,7 +586,7 @@ export function areTightlyCoupled(
 export function isKitchenSinkFile(filePath: string): boolean {
   const basename = path.basename(filePath, path.extname(filePath)).toLowerCase();
   const genericNames = ['utils', 'helpers', 'common', 'lib', 'misc', 'index', 'util', 'helper'] as const;
-  return genericNames.includes(basename);
+  return (genericNames as readonly string[]).includes(basename);
 }
 
 /**

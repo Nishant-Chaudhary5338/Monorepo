@@ -221,7 +221,7 @@ export function calculateCoupling(graph: ImportGraph, fileA: string, fileB: stri
   const importsFromA = graph[fileA]?.imports || [];
   const importsFromB = graph[fileB]?.imports || [];
 
-  const score = 0;
+  let score = 0;
 
   for (const imp of importsFromA) {
     if (imp.source.includes(path.basename(fileB, path.extname(fileB)))) {
