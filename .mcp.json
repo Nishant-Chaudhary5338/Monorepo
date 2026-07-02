@@ -4,7 +4,7 @@
       "type": "stdio",
       "command": "node",
       "args": [
-        "/Users/nishantchaudhary/Desktop/my-turborepo/tools/ixd-generator/build/ixd-generator/src/index.js"
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/ixd-generator/build/ixd-generator/src/index.js"
       ]
     },
     "playwright": {
@@ -12,7 +12,8 @@
       "command": "npx",
       "args": [
         "@playwright/mcp@0.0.29",
-        "--storage-state", ".playwright-session.json"
+        "--storage-state",
+        ".playwright-session.json"
       ]
     },
     "playwright-headless": {
@@ -21,13 +22,19 @@
       "args": [
         "@playwright/mcp@0.0.29",
         "--headless",
-        "--storage-state", ".playwright-session.json"
+        "--storage-state",
+        ".playwright-session.json"
       ]
     },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"]
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browserUrl",
+        "http://127.0.0.1:9222"
+      ]
     },
     "figma": {
       "type": "stdio",
@@ -43,6 +50,55 @@
       "command": "node",
       "args": [
         "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/handoff-to-figma/build/handoff-to-figma/src/index.js"
+      ]
+    },
+    "component-factory": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/component-factory/build/component-factory/src/index.js"
+      ]
+    },
+    "generate-tests": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/generate-tests/build/index.js"
+      ]
+    },
+    "component-reviewer": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/component-reviewer/build/component-reviewer/src/index.js"
+      ]
+    },
+    "code-modernizer": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/code-modernizer/build/index.js"
+      ]
+    },
+    "accessibility-checker": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/accessibility-checker/build/index.js"
+      ]
+    },
+    "storybook-generator": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/storybook-generator/build/index.js"
+      ]
+    },
+    "legacy-analyzer": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/nishantchaudhary/Desktop/developer/my-turborepo/tools/legacy-analyzer/build/index.js"
       ]
     }
   }

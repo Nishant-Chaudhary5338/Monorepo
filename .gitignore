@@ -16,3 +16,6 @@ storybook-static
 # Browser automation
 .playwright-session.json
 .chrome-debug-profile/
+
+# Code indexer cache
+.code-graph/
