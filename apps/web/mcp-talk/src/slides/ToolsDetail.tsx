@@ -84,43 +84,49 @@ const categories = [
 export function ToolsDetail() {
   return (
     <div
-      className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden px-10 pt-12"
+      className="relative w-full h-full flex flex-col overflow-hidden px-10 pt-12 pb-10"
       style={{ background: "var(--bg)" }}
     >
       <div className="absolute inset-0 bg-grid opacity-100 pointer-events-none" />
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mono text-xs tracking-[0.3em] uppercase mb-2"
-        style={{ color: "rgba(249,115,22,0.6)" }}
-      >
-        Tool Deep-Dive
-      </motion.p>
+      {/* Header */}
+      <div className="shrink-0 flex flex-col items-center text-center mb-5">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mono text-xs tracking-[0.3em] uppercase mb-3"
+          style={{ color: "rgba(249,115,22,0.6)" }}
+        >
+          Tool Deep-Dive
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-5xl font-black"
+        >
+          What each tool <span className="gradient-flame">actually does</span>
+        </motion.h2>
+      </div>
 
-      <motion.h2
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="text-3xl font-black text-center mb-6"
+      {/* 3-column grid — fills remaining height */}
+      <div
+        className="flex-1 min-h-0 grid grid-cols-3 gap-4 w-full max-w-5xl mx-auto"
+        style={{ gridAutoRows: "1fr" }}
       >
-        What each tool <span className="gradient-flame">actually does</span>
-      </motion.h2>
-
-      <div className="grid grid-cols-3 gap-4 w-full max-w-5xl">
         {categories.map((cat, ci) => (
           <motion.div
             key={cat.label}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + ci * 0.1 }}
-            className="rounded-2xl p-4"
+            className="rounded-2xl p-5 flex flex-col"
             style={{ border: `1px solid ${cat.borderColor}`, background: cat.bg }}
           >
-            <p className="text-xs font-bold mono mb-3" style={{ color: cat.color }}>
+            <p className="text-sm font-bold mono mb-4" style={{ color: cat.color }}>
               {cat.label}
             </p>
-            <div className="space-y-4">
+            <div className="flex-1 flex flex-col justify-between gap-3">
               {cat.tools.map((tool, ti) => (
                 <motion.div
                   key={tool.name}
@@ -130,18 +136,18 @@ export function ToolsDetail() {
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-base">{tool.emoji}</span>
-                    <p className="text-xs font-bold mono" style={{ color: "var(--text)" }}>
+                    <p className="text-sm font-bold mono" style={{ color: "var(--text)" }}>
                       {tool.name}
                     </p>
                   </div>
-                  <p className="text-[11px] leading-relaxed mb-1.5" style={{ color: "var(--muted)" }}>
+                  <p className="text-xs leading-relaxed mb-2" style={{ color: "var(--muted)" }}>
                     {tool.desc}
                   </p>
                   <div
-                    className="rounded px-2 py-1"
+                    className="rounded px-2 py-1.5"
                     style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.05)" }}
                   >
-                    <p className="text-[10px] mono italic" style={{ color: cat.color + "99" }}>
+                    <p className="text-xs mono italic" style={{ color: cat.color + "99" }}>
                       {tool.prompt}
                     </p>
                   </div>

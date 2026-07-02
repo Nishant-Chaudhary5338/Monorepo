@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* ─── Base reset (must be in @layer base so utilities win) ─── */
+@layer base {
+  * { box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+}
+
 /* ─── Signal & Flame design tokens ─────────────────────────── */
 :root {
   --bg:          #07070f;
@@ -17,18 +34,6 @@
   --muted-2:     #475569;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body, #root {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--bg);
-  font-family: 'Inter', sans-serif;
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-}
-
 /* ─── Gradient utilities ────────────────────────────────────── */
 .gradient-flame {
   background: linear-gradient(135deg, #f97316, #fbbf24);
@@ -44,14 +49,7 @@ html, body, #root {
   background-clip: text;
 }
 
-.gradient-signal-flame {
-  background: linear-gradient(135deg, #60a5fa 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Background patterns ───────────────────────────────────── */
+/* ─── Background grid pattern ───────────────────────────────── */
 .bg-grid {
   background-image:
     linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
@@ -62,16 +60,6 @@ html, body, #root {
 /* ─── Glow effects ──────────────────────────────────────────── */
 .glow-flame {
   box-shadow: 0 0 24px rgba(249, 115, 22, 0.15), 0 0 48px rgba(249, 115, 22, 0.06);
-}
-
-.glow-signal {
-  box-shadow: 0 0 24px rgba(96, 165, 250, 0.15), 0 0 48px rgba(96, 165, 250, 0.06);
-}
-
-/* ─── Progress bar ──────────────────────────────────────────── */
-.progress-bar {
-  background: linear-gradient(90deg, #f97316, #fbbf24);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.4);
 }
 
 /* ─── Monospace font ────────────────────────────────────────── */

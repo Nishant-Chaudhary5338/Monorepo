@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export function TitleSlide() {
   return (
     <div
-      className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden"
+      className="relative w-full h-full flex flex-col items-center justify-evenly overflow-hidden px-12 py-16"
       style={{ background: "var(--bg)" }}
     >
       {/* Grid */}
@@ -15,8 +15,8 @@ export function TitleSlide() {
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         className="absolute pointer-events-none"
         style={{
-          width: 480,
-          height: 480,
+          width: 500,
+          height: 500,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(249,115,22,0.14) 0%, transparent 70%)",
           top: "-10%",
@@ -30,8 +30,8 @@ export function TitleSlide() {
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         className="absolute pointer-events-none"
         style={{
-          width: 360,
-          height: 360,
+          width: 400,
+          height: 400,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(96,165,250,0.1) 0%, transparent 70%)",
           bottom: "0%",
@@ -44,77 +44,80 @@ export function TitleSlide() {
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mono text-xs tracking-[0.3em] uppercase mb-5"
+        className="mono text-sm tracking-[0.3em] uppercase"
         style={{ color: "rgba(249,115,22,0.6)" }}
       >
         Model Context Protocol
       </motion.p>
 
-      {/* Wordmark */}
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        className="font-black text-center leading-none"
-        style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)" }}
-      >
-        <span className="gradient-flame">mcp-toolkit</span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.35 }}
-        className="mt-4 text-lg font-medium text-center"
-        style={{ color: "var(--muted)" }}
-      >
-        9 AI tools for every developer workflow
-      </motion.p>
-
-      {/* Divider */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 0.55, duration: 0.6 }}
-        className="mt-8 h-px w-32"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(249,115,22,0.5), transparent)",
-          transformOrigin: "center",
-        }}
-      />
-
-      {/* Author */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.75 }}
-        className="mt-6 flex items-center gap-3"
-      >
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black"
-          style={{
-            background: "linear-gradient(135deg, #f97316, #fbbf24)",
-            color: "#07070f",
-          }}
+      {/* Wordmark + subtitle */}
+      <div className="flex flex-col items-center gap-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-black text-center leading-none"
+          style={{ fontSize: "clamp(4rem, 10vw, 8rem)" }}
         >
-          N
-        </div>
-        <div>
-          <p className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-            Nishant Chaudhary
-          </p>
-          <p className="text-xs mono" style={{ color: "var(--muted)" }}>
-            github.com/Nishant-Chaudhary5338
-          </p>
-        </div>
-      </motion.div>
+          <span className="gradient-flame">mcp-toolkit</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35 }}
+          className="text-xl font-medium text-center"
+          style={{ color: "var(--muted)" }}
+        >
+          9 AI tools for every developer workflow
+        </motion.p>
+      </div>
+
+      {/* Divider + author */}
+      <div className="flex flex-col items-center gap-5">
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.55, duration: 0.6 }}
+          className="h-px w-40"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(249,115,22,0.5), transparent)",
+            transformOrigin: "center",
+          }}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75 }}
+          className="flex items-center gap-3"
+        >
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center text-base font-black"
+            style={{
+              background: "linear-gradient(135deg, #f97316, #fbbf24)",
+              color: "#07070f",
+            }}
+          >
+            N
+          </div>
+          <div>
+            <p className="text-base font-semibold" style={{ color: "var(--text)" }}>
+              Nishant Chaudhary
+            </p>
+            <p className="text-sm mono" style={{ color: "var(--muted)" }}>
+              github.com/Nishant-Chaudhary5338
+            </p>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Keyboard hint */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.4 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-12 text-xs mono"
+        className="text-sm mono"
         style={{ color: "var(--muted-2)" }}
       >
         press → to start

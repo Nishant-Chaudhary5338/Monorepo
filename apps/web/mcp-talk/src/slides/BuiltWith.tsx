@@ -46,7 +46,7 @@ const stack = [
 export function BuiltWith() {
   return (
     <div
-      className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden px-12"
+      className="relative w-full h-full flex flex-col overflow-hidden px-12 pt-12 pb-10"
       style={{ background: "var(--bg)" }}
     >
       <div className="absolute inset-0 bg-grid opacity-100 pointer-events-none" />
@@ -63,42 +63,47 @@ export function BuiltWith() {
         }}
       />
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mono text-xs tracking-[0.3em] uppercase mb-3"
-        style={{ color: "rgba(249,115,22,0.6)" }}
-      >
-        Open Source Stack
-      </motion.p>
+      {/* Header */}
+      <div className="shrink-0 flex flex-col items-center text-center mb-6">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mono text-xs tracking-[0.3em] uppercase mb-3"
+          style={{ color: "rgba(249,115,22,0.6)" }}
+        >
+          Open Source Stack
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-6xl font-black mb-3"
+        >
+          What we build <span className="gradient-flame">on top of</span>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg"
+          style={{ color: "var(--muted)" }}
+        >
+          Every custom tool in mcp-toolkit sits on these open source foundations
+        </motion.p>
+      </div>
 
-      <motion.h2
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="text-5xl font-black text-center mb-3"
+      {/* 2×2 grid — fills remaining height */}
+      <div
+        className="flex-1 min-h-0 grid grid-cols-2 gap-5 w-full max-w-5xl mx-auto"
+        style={{ gridAutoRows: "1fr" }}
       >
-        What we build <span className="gradient-flame">on top of</span>
-      </motion.h2>
-
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="mb-8 text-base text-center"
-        style={{ color: "var(--muted)" }}
-      >
-        Every custom tool in mcp-toolkit sits on these open source foundations
-      </motion.p>
-
-      <div className="grid grid-cols-2 gap-5 w-full max-w-5xl">
         {stack.map((s, i) => (
           <motion.div
             key={s.name}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 + i * 0.1 }}
-            className="rounded-2xl p-7"
+            className="rounded-2xl p-7 flex flex-col"
             style={{
               border: s.highlight
                 ? "1px solid rgba(249,115,22,0.35)"
@@ -109,27 +114,25 @@ export function BuiltWith() {
               boxShadow: s.highlight ? "0 0 24px rgba(249,115,22,0.08)" : "none",
             }}
           >
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{s.icon}</span>
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full mono"
-                  style={{ background: `${s.badgeColor}18`, color: s.badgeColor }}
-                >
-                  {s.badge}
-                </span>
-              </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl">{s.icon}</span>
+              <span
+                className="text-xs font-bold px-2 py-1 rounded-full mono"
+                style={{ background: `${s.badgeColor}18`, color: s.badgeColor }}
+              >
+                {s.badge}
+              </span>
             </div>
-            <p className="text-sm font-black mb-0.5 mono" style={{ color: "var(--text)" }}>
+            <p className="text-base font-black mb-1 mono" style={{ color: "var(--text)" }}>
               {s.name}
             </p>
-            <p className="text-[11px] mb-2" style={{ color: "var(--muted)" }}>
+            <p className="text-sm mb-3" style={{ color: "var(--muted)" }}>
               {s.by}
             </p>
-            <p className="text-xs leading-relaxed" style={{ color: "rgba(226,232,240,0.6)" }}>
+            <p className="text-sm leading-relaxed flex-1" style={{ color: "rgba(226,232,240,0.65)" }}>
               {s.role}
             </p>
-            <p className="mt-2 text-[10px] mono" style={{ color: "var(--muted-2)" }}>
+            <p className="mt-3 text-xs mono" style={{ color: "var(--muted-2)" }}>
               {s.link}
             </p>
           </motion.div>

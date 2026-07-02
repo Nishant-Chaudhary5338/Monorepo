@@ -35,13 +35,13 @@ export default function SlideEngine({ children }: SlideEngineProps) {
   };
 
   return (
+    /* Fixed frame — no fullscreen API, no scroll lock */
     <div
       style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
+        position: "fixed",
+        inset: 0,
         background: "var(--bg)",
+        overflow: "hidden",
       }}
     >
       <AnimatePresence custom={dir} mode="wait">
@@ -52,21 +52,21 @@ export default function SlideEngine({ children }: SlideEngineProps) {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.35, ease: [0.32, 0, 0.67, 0] }}
+          transition={{ duration: 0.3, ease: [0.32, 0, 0.67, 0] }}
           style={{ position: "absolute", inset: 0 }}
         >
           {children[current]}
         </motion.div>
       </AnimatePresence>
 
-      {/* ← → arrows */}
+      {/* ← arrow */}
       {current > 0 && (
         <button
           onClick={() => go(current - 1)}
           style={{
             position: "fixed", left: 16, top: "50%", transform: "translateY(-50%)",
-            zIndex: 9999, width: 40, height: 40, borderRadius: "50%",
-            background: "rgba(13,13,26,0.9)", border: "1px solid rgba(249,115,22,0.2)",
+            zIndex: 9999, width: 36, height: 36, borderRadius: "50%",
+            background: "rgba(7,7,15,0.85)", border: "1px solid rgba(249,115,22,0.2)",
             color: "rgba(249,115,22,0.7)", cursor: "pointer", fontSize: 18,
             display: "flex", alignItems: "center", justifyContent: "center",
           }}
@@ -74,13 +74,15 @@ export default function SlideEngine({ children }: SlideEngineProps) {
           ‹
         </button>
       )}
+
+      {/* → arrow */}
       {current < total - 1 && (
         <button
           onClick={() => go(current + 1)}
           style={{
             position: "fixed", right: 16, top: "50%", transform: "translateY(-50%)",
-            zIndex: 9999, width: 40, height: 40, borderRadius: "50%",
-            background: "rgba(13,13,26,0.9)", border: "1px solid rgba(249,115,22,0.2)",
+            zIndex: 9999, width: 36, height: 36, borderRadius: "50%",
+            background: "rgba(7,7,15,0.85)", border: "1px solid rgba(249,115,22,0.2)",
             color: "rgba(249,115,22,0.7)", cursor: "pointer", fontSize: 18,
             display: "flex", alignItems: "center", justifyContent: "center",
           }}
@@ -92,7 +94,7 @@ export default function SlideEngine({ children }: SlideEngineProps) {
       {/* Dot nav */}
       <div
         style={{
-          position: "fixed", bottom: 20, left: "50%", transform: "translateX(-50%)",
+          position: "fixed", bottom: 18, left: "50%", transform: "translateX(-50%)",
           zIndex: 9999, display: "flex", gap: 6, alignItems: "center",
         }}
       >
@@ -116,9 +118,9 @@ export default function SlideEngine({ children }: SlideEngineProps) {
       {/* Counter */}
       <div
         style={{
-          position: "fixed", bottom: 16, right: 20,
+          position: "fixed", bottom: 14, right: 18,
           zIndex: 9999, fontSize: 11, fontFamily: "JetBrains Mono, monospace",
-          color: "rgba(100,116,139,0.8)", letterSpacing: "0.05em",
+          color: "rgba(100,116,139,0.7)", letterSpacing: "0.05em",
         }}
       >
         {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -129,9 +131,9 @@ export default function SlideEngine({ children }: SlideEngineProps) {
         style={{
           position: "fixed", bottom: 0, left: 0, height: 2,
           width: `${((current + 1) / total) * 100}%`,
-          zIndex: 9999, transition: "width 0.35s ease",
+          zIndex: 9999, transition: "width 0.3s ease",
           background: "linear-gradient(90deg, #f97316, #fbbf24)",
-          boxShadow: "0 0 10px rgba(249,115,22,0.4)",
+          boxShadow: "0 0 8px rgba(249,115,22,0.35)",
         }}
       />
     </div>
