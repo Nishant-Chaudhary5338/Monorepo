@@ -118,7 +118,7 @@ function analyzeFile(filePath: string): TokenViolation[] {
   const lines = content.split('\n');
   const violations: TokenViolation[] = [];
 
-  for (const i = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
     // Skip imports and comments
@@ -265,20 +265,53 @@ function analyzeFile(filePath: string): TokenViolation[] {
 class EnforceDesignTokensServer extends McpServerBase {
 
   constructor() {
-    process.on('SIGINT', async () => {
-      await this.server.close();
-      process.exit(0);
-    });
+    super({ name: 'enforce-design-tokens', version: '2.0.0' });
   }
 
   protected registerTools(): void {
-    
+    this.addTool(
+      'scan_tokens',
+      'Scan files for hardcoded design values (colors, spacing, font sizes, radii, shadows, z-index) that should use design tokens',
+      {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'Path to file or directory to scan' },
+          severity: { type: 'string', enum: ['high', 'medium', 'low', 'all'], default: 'all' },
+        },
+        required: ['path'],
+      },
+      this.handleScan.bind(this)
+    );
 
-    
+    this.addTool(
+      'suggest_tokens',
+      'Suggest design-token replacements for each hardcoded value found',
+      {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'Path to file or directory to scan' },
+        },
+        required: ['path'],
+      },
+      this.handleSuggest.bind(this)
+    );
+
+    this.addTool(
+      'enforce_tokens',
+      'Grade a path on design-token compliance and group violations by file',
+      {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'Path to file or directory to scan' },
+        },
+        required: ['path'],
+      },
+      this.handleEnforce.bind(this)
+    );
   }
 
   private async handleScan(args: unknown) {
-    const { path: targetPath, severity = 'all' } = args;
+    const { path: targetPath, severity = 'all' } = args as { path: string; severity?: string };
     try {
       const isDir = fs.statSync(targetPath).isDirectory();
       const files = isDir ? scanDirectory(targetPath) : [targetPath];
@@ -291,31 +324,30 @@ class EnforceDesignTokensServer extends McpServerBase {
       }
       violations = violations.filter(v => sevOrder[v.severity] <= minSev);
 
-      return this.success({summary: {
-              totalViolations: violations.length,
-              high: violations.filter(v => v.severity === 'high').length,
-              medium: violations.filter(v => v.severity === 'medium').length,
-              low: violations.filter(v => v.severity === 'low').length,
-              byType: {
-                hardcodedColor: violations.filter(v => v.type === 'hardcoded-color').length,
-                hardcodedSpacing: violations.filter(v => v.type === 'hardcoded-spacing').length,
-                hardcodedFontSize: violations.filter(v => v.type === 'hardcoded-font-size').length,
-                hardcodedBorderRadius: violations.filter(v => v.type === 'hardcoded-border-radius').length,
-                hardcodedShadow: violations.filter(v => v.type === 'hardcoded-shadow').length,
-                hardcodedZIndex: violations.filter(v => v.type === 'hardcoded-z-index').length,
-              },
-            },
-            violations,
-          }, null, 2),
-        }],
-      };
+      return this.success({
+        summary: {
+          totalViolations: violations.length,
+          high: violations.filter(v => v.severity === 'high').length,
+          medium: violations.filter(v => v.severity === 'medium').length,
+          low: violations.filter(v => v.severity === 'low').length,
+          byType: {
+            hardcodedColor: violations.filter(v => v.type === 'hardcoded-color').length,
+            hardcodedSpacing: violations.filter(v => v.type === 'hardcoded-spacing').length,
+            hardcodedFontSize: violations.filter(v => v.type === 'hardcoded-font-size').length,
+            hardcodedBorderRadius: violations.filter(v => v.type === 'hardcoded-border-radius').length,
+            hardcodedShadow: violations.filter(v => v.type === 'hardcoded-shadow').length,
+            hardcodedZIndex: violations.filter(v => v.type === 'hardcoded-z-index').length,
+          },
+        },
+        violations,
+      });
     } catch (error) {
       return this.error(error);
     }
   }
 
   private async handleSuggest(args: unknown) {
-    const { path: targetPath } = args;
+    const { path: targetPath } = args as { path: string };
     try {
       const isDir = fs.statSync(targetPath).isDirectory();
       const files = isDir ? scanDirectory(targetPath) : [targetPath];
@@ -333,24 +365,14 @@ class EnforceDesignTokensServer extends McpServerBase {
         type: v.type,
       }));
 
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ success: true, suggestions});
+      return this.success({ suggestions });
     } catch (error) {
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ success: false, error: {
-          error: true,
-          code: error instanceof Error ? error.constructor.name : 'UNKNOWN_ERROR',
-          message: error instanceof Error ? error.message : String(error),
-          suggestion: 'Check input parameters and ensure all required values are provided.',
-          timestamp: new Date().toISOString(),
-        } }, null, 2) }],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 
   private async handleEnforce(args: unknown) {
-    const { path: targetPath } = args;
+    const { path: targetPath } = args as { path: string };
     try {
       const isDir = fs.statSync(targetPath).isDirectory();
       const files = isDir ? scanDirectory(targetPath) : [targetPath];
@@ -369,23 +391,14 @@ class EnforceDesignTokensServer extends McpServerBase {
 
       const grade = violations.length === 0 ? 'A' : violations.length <= 5 ? 'B' : violations.length <= 15 ? 'C' : violations.length <= 30 ? 'D' : 'F';
 
-      return {
-        content: [{
-          type: 'text',
-          text: JSON.stringify({
-            success: true,
-            grade,
-            totalViolations: violations.length,
-            filesAffected: Object.keys(byFile).length,
-            byFile,
-          }, null, 2),
-        }],
-      };
+      return this.success({
+        grade,
+        totalViolations: violations.length,
+        filesAffected: Object.keys(byFile).length,
+        byFile,
+      });
     } catch (error) {
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }, null, 2) }],
-        isError: true,
-      };
+      return this.error(error);
     }
   }
 }
