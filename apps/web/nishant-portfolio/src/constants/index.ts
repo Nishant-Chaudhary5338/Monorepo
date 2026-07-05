@@ -18,9 +18,9 @@ export {
 } from "./skills";
 export type { TechStackIcon, TechStackImg, CounterItem } from "./skills";
 
-// Projects
-export { projects, words } from "./projects";
-export type { Project } from "./projects";
+// Products
+export { products, words } from "./projects";
+export type { Product, ProductProof } from "./projects";
 
 // Abilities & Social
 export {

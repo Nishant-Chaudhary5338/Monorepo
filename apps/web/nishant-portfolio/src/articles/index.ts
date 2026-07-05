@@ -15,6 +15,18 @@ export interface ArticleMeta {
 
 export const articleMeta: ArticleMeta[] = [
   {
+    slug: "on-device-ax-platform-modular-web-development",
+    title: "The AX Platform: Modular, Scalable Web Development That Runs Entirely on Your Machine",
+    status: "published",
+    date: "Jul 2026",
+    readingTime: "12 min read",
+    tags: ["developer-experience", "platform-engineering", "mcp", "ai-tooling", "monorepo"],
+    description: "Developers write code just 16% of the week. I built an on-device AX platform — one core exposed over MCP, CLI, and HTTP — that automates 60–70% of routine frontend work.",
+    coverImage: "https://images.unsplash.com/photo-1759661990336-51bd4b951fea?fm=webp&q=80&w=1200&h=630&fit=crop",
+    coverImageAlt: "A multi-monitor developer workstation glowing with code under neon light, evoking a local, on-device engineering platform",
+    repoUrl: "https://github.com/Nishant-Chaudhary5338/mcp-toolkit",
+  },
+  {
     slug: "production-grade-ui-library-react-monorepo",
     title: "Building shared-packages/ui: The Shared React Component Library for Our Monorepo",
     status: "published",

@@ -1,14 +1,16 @@
-/* eslint-disable react-refresh/only-export-components -- application entry point, not an HMR component module */
-import { StrictMode, lazy, Suspense } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './index.css';
-import Cursor from './components/Cursor';
-import { RouteTransition } from './redesign/RouteTransition';
-import { ThemeProvider } from './context/ThemeContext';
+import App from './App';
 import { articleMeta } from './articles/index';
 import { caseStudyCoverImages } from './case-studies/covers';
+
+// Register GSAP plugins once at the app root — components must NOT re-register
+gsap.registerPlugin(ScrollTrigger);
 
 // Inject <link rel="preload" as="image"> for the LCP cover image before React
 // bootstraps — this starts the Unsplash fetch hundreds of ms earlier than waiting
@@ -37,23 +39,10 @@ import { caseStudyCoverImages } from './case-studies/covers';
   }
 })();
 
-// Lazy-load all route components so Three.js/GSAP only load when actually needed
-const App            = lazy(() => import('./App'));
-const ArticlePage    = lazy(() => import('./pages/ArticlePage'));
-const CaseStudyPage  = lazy(() => import('./pages/CaseStudyPage'));
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <Cursor />
-      <BrowserRouter>
-        <RouteTransition />
-        <Routes>
-          <Route path="/" element={<Suspense fallback={null}><App /></Suspense>} />
-          <Route path="/writing/:slug" element={<Suspense fallback={null}><ArticlePage /></Suspense>} />
-          <Route path="/work/:slug"    element={<Suspense fallback={null}><CaseStudyPage /></Suspense>} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
 );

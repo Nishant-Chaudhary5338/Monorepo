@@ -1,3 +1,10 @@
+export interface ExpMetric {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+}
+
 export interface ExpCard {
   review: string;
   imgPath: string;
@@ -6,6 +13,7 @@ export interface ExpCard {
   company: string;
   date: string;
   location: string;
+  metrics: ExpMetric[];
   highlights: string[];
   responsibilities: string[];
   techStack: string[];
@@ -21,10 +29,19 @@ export const expCards: ExpCard[] = [
     company: "Samsung Electronics",
     date: "Jul 2024 – Present",
     location: "New Delhi, India",
+    metrics: [
+      { value: 60, prefix: "<", suffix: "s", label: "plugin onboarding — down from days" },
+      { value: 65, prefix: "~", suffix: "%", label: "frontend workflows automated" },
+      { value: 30, suffix: "+", label: "engineers trained · 5 teams" },
+      { value: 6, label: "product teams on the UI library" },
+    ],
     highlights: [
-      "Plugin onboarding reduced from days to <60s via Vite Module Federation runtime injection",
-      "~65% of frontend workflows automated via custom MCP servers on Turborepo",
+      "Plugin onboarding: days → <60s (Vite Module Federation runtime injection)",
+      "~65% of frontend workflows automated — custom MCP servers on Turborepo",
       "Trained 30+ engineers across 5 Samsung R&D teams on AI-native development",
+      "Headless UI library powering production dashboards across 6 product teams",
+      "Unified SPA replaced 5 legacy portals — +30% data-fetch, +40% incident reporting",
+      "HLS video player: −30% LCP",
     ],
     responsibilities: [
       "Architected an AI-driven development system using Monorepo architecture and custom MCP tools, automating UI generation, refactoring, and code standardization — reducing 60–70% of repetitive frontend work and improving development speed by ~3x",
@@ -44,10 +61,17 @@ export const expCards: ExpCard[] = [
     company: "Safex Chemicals India Pvt Ltd",
     date: "Mar 2023 – Jun 2024",
     location: "Delhi, India",
+    metrics: [
+      { value: 25000, suffix: "+", label: "B2B users served" },
+      { value: 22, prefix: "~", suffix: "%", label: "more repeat orders" },
+      { value: 30, prefix: "~", suffix: "%", label: "fewer support tickets" },
+      { value: 2.5, suffix: "s", label: "load time — down from 4.2s" },
+    ],
     highlights: [
-      "Implemented Azure AD SSO and Google SSO for 25,000+ B2B customers across 8 departments",
-      "B2B e-commerce: ~22% lift in repeat orders, ~30% drop in support tickets, load time cut from 4.2s to 2.5s",
-      "Consolidated three legacy systems into a single React/Node interface for 500+ users",
+      "25,000+ B2B users — ~22% more repeat orders, ~30% fewer support tickets",
+      "Load time cut 4.2s → 2.5s via lazy loading, code splitting, and bundle work",
+      "SAP web platform for 500+ users across 8 departments, replacing 3 legacy systems",
+      "LMS with video streaming and quizzes serving 1,500+ employees",
     ],
     responsibilities: [
       "Implemented Azure AD SSO (MSAL) and Google SSO (OAuth 2.0) with JWT-based RBAC across 6 user roles for secure, seamless authentication",
@@ -67,10 +91,14 @@ export const expCards: ExpCard[] = [
     company: "DevsLane",
     date: "Nov 2021 – Mar 2023",
     location: "Noida, India",
+    metrics: [
+      { value: 8, suffix: "+", label: "client products shipped" },
+      { value: 40, suffix: "+", label: "components in the shared library" },
+    ],
     highlights: [
-      "Shipped pixel-accurate, responsive dashboards from Figma/XD across multiple client products",
-      "Built the reusable component library (Storybook) the team standardized on",
-      "Drove accessibility and semantic markup to WCAG standards across the UI",
+      "8+ client products shipped, pixel-perfect from Figma/XD",
+      "Reusable component library the team standardized on — 40+ components in Storybook",
+      "Accessibility to WCAG 2.1 AA across the UI: semantic markup, keyboard nav",
     ],
     responsibilities: [
       "Built responsive, pixel-perfect dashboards in React, converting Figma/Adobe XD mockups into production-ready applications with attention to detail",

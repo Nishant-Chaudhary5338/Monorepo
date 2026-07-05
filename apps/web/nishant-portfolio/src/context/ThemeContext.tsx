@@ -11,18 +11,15 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme") as Theme | null;
-      return saved ?? "dark";
-    }
-    return "dark";
+    if (typeof window === "undefined") return "dark";
+    const saved = localStorage.getItem("nishant-theme") as Theme | null;
+    if (saved) return saved;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    localStorage.setItem("theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("nishant-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
