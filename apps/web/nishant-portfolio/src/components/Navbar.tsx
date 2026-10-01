@@ -1,86 +1,131 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { navLinks, personalInfo } from "../constants";
-import { useActiveSection } from "../hooks/useActiveSection";
-import { cn } from "../lib/cn";
-import { container } from "../lib/styles";
-import { ThemeToggle } from "./ThemeToggle";
+import { useTheme } from "../context/ThemeContext";
 
-interface NavbarProps {
-  // Content pages show a single way back instead of the section links.
-  back?: { label: string; to: string };
-}
-
-const SECTION_IDS = navLinks.map((l) => l.id);
-
-const bar = cn("sticky top-0 z-50 bg-canvas border-b transition-colors duration-150");
-const inner = cn(container, "flex h-14 items-center justify-between gap-6");
-const navItem = "text-sm text-fg-2 transition-colors duration-150 hover:text-fg";
-const mobilePanel = cn(container, "flex flex-col gap-1 pb-4 lg:hidden");
-const mobileItem = "block py-2 text-base text-fg-2 hover:text-fg";
-
-export default function Navbar({ back }: NavbarProps): ReactNode {
+const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const active = useActiveSection(back ? [] : SECTION_IDS);
+  const { theme, toggleTheme } = useTheme();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = (): void => setScrolled(window.scrollY > 8);
-    onScroll();
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const sectionLinks = navLinks.map((link) => (
-    <a
-      key={link.id}
-      href={`/#${link.id}`}
-      aria-current={active === link.id ? "true" : undefined}
-      className={cn(navItem, active === link.id && "text-accent")}
-    >
-      {link.name}
-    </a>
-  ));
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent): void => {
+      if (e.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  const isDark = theme === "dark";
 
   return (
-    <header className={cn(bar, scrolled ? "border-line" : "border-transparent")}>
-      <div className={inner}>
-        <Link to="/" className="text-sm font-medium text-fg">{personalInfo.name}</Link>
+    <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <a href="/" className="navbar-logo" aria-label="Home">
+        N<span className="navbar-logo-dash"> —</span>
+      </a>
 
-        {back ? (
-          <div className="flex items-center gap-4">
-            <Link to={back.to} className={navItem}>← {back.label}</Link>
-            <ThemeToggle />
-          </div>
-        ) : (
-          <>
-            <nav aria-label="Sections" className="hidden items-center gap-6 lg:flex">{sectionLinks}</nav>
-            <div className="flex items-center gap-2">
-              <a href={`mailto:${personalInfo.email}`} className={cn(navItem, "px-2")}>Email</a>
-              <ThemeToggle />
-              <button
-                type="button"
-                className="px-2 py-1 text-sm text-fg-2 hover:text-fg lg:hidden"
-                aria-expanded={menuOpen}
-                aria-controls="mobile-menu"
-                onClick={() => setMenuOpen((open) => !open)}
-              >
-                {menuOpen ? "Close" : "Menu"}
-              </button>
-            </div>
-          </>
-        )}
+      <nav className="hidden lg:block">
+        <ul className="nav-links">
+          {navLinks.map((link) => (
+            <li key={link.link}>
+              <a href={link.link}>{link.name}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className="flex items-center gap-4">
+        <button
+          className="theme-toggle"
+          role="switch"
+          aria-checked={isDark ? "true" : "false"}
+          aria-label="Toggle color theme"
+          onClick={toggleTheme}
+        >
+          <span className="toggle-knob" />
+        </button>
+
+        <a
+          href={personalInfo.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden lg:inline-flex btn-ghost text-sm"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          ref={menuButtonRef}
+          className="lg:hidden flex flex-col gap-1.5 p-1"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+        >
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="block w-5 h-px"
+              style={{
+                background: "var(--text-secondary)",
+                transition: "transform 250ms, opacity 150ms",
+                transform:
+                  i === 0 && menuOpen ? "rotate(45deg) translate(3px, 3px)"
+                  : i === 2 && menuOpen ? "rotate(-45deg) translate(3px, -3px)"
+                  : "",
+                opacity: i === 1 && menuOpen ? 0 : 1,
+              }}
+            />
+          ))}
+        </button>
       </div>
 
-      {!back && menuOpen && (
-        <nav id="mobile-menu" aria-label="Sections" className={mobilePanel}>
+      {menuOpen && (
+        <div
+          className="absolute top-full left-0 right-0 lg:hidden py-6 px-6 flex flex-col gap-4"
+          style={{
+            background: "var(--bg-overlay)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            borderBottom: "1px solid var(--border-subtle)",
+          }}
+        >
           {navLinks.map((link) => (
-            <a key={link.id} href={`/#${link.id}`} className={mobileItem} onClick={() => setMenuOpen(false)}>
+            <a
+              key={link.link}
+              href={link.link}
+              style={{
+                fontFamily: "'DM Sans', 'DM Sans Fallback', sans-serif",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                color: "var(--text-secondary)",
+              }}
+              onClick={() => setMenuOpen(false)}
+            >
               {link.name}
             </a>
           ))}
-        </nav>
+          <div className="flex gap-3 mt-2 pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+            <a
+              href="#contact"
+              className="btn-primary flex-1 justify-center"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span>Say Hello</span>
+            </a>
+          </div>
+        </div>
       )}
     </header>
   );
-}
+};
+
+export default Navbar;

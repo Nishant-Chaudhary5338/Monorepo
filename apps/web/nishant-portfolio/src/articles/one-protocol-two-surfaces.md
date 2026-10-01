@@ -49,7 +49,7 @@ The fix isn't a better prompt. It's giving the AI a *programmatic, live* connect
 
 > **Citation Capsule:** In 2025, Stack Overflow found 80% of developers use AI tools in their workflows, with 50.6% relying on them daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)). Yet the tools still generate "culturally wrong" code for teams because they can't read team-specific conventions. MCP solves this by giving the AI a programmatic, live connection to your actual source of truth — not a stale prompt.
 
-<!-- [INTERNAL-LINK: Vite Module Federation micro-frontend platform → plugin-onboarding-vite-module-federation] -->
+Related: [Vite Module Federation micro-frontend platform](/writing/plugin-onboarding-vite-module-federation).
 
 ---
 
@@ -69,7 +69,7 @@ That last sentence — "JSON-RPC over stdio" — is the seed of the whole post. 
 
 The TypeScript SDK (`@modelcontextprotocol/sdk`) gets you to a working server in about twenty lines. Everything I describe below is built on it.
 
-<!-- [INTERNAL-LINK: @repo/ui shared component library → production-grade-ui-library-react-monorepo] -->
+Related: [@repo/ui shared component library](/writing/production-grade-ui-library-react-monorepo).
 
 ---
 
@@ -112,7 +112,7 @@ The one outlier is `typescript-enforcer`, which uses the low-level `Server` clas
 
 Plus a **separate MFE-aware server** that lives outside the turborepo and gets its own section because it's a different beast — domain-specific tools for the micro-frontend platform from my last post. Twelve tools that know about plugin scaffolding, registry registration, and the federated build pipeline.
 
-<!-- [INTERNAL-LINK: @repo/ui shared component library → production-grade-ui-library-react-monorepo] -->
+Related: [@repo/ui shared component library](/writing/production-grade-ui-library-react-monorepo).
 
 ---
 
@@ -242,7 +242,7 @@ This is the architectural pattern worth internalizing: **MCP tools are best when
 
 The bigger lesson, the one I want this section to carry: **domain-specific MCP servers are the next interesting frontier.** General-purpose AI coding tools will keep getting better at generic React. They will not get better at *your* React, at *your* MFE platform, at *your* registry's specific tagging conventions. That's the layer you have to build. The MFE-aware server is what that layer looks like.
 
-<!-- [INTERNAL-LINK: MFE platform architecture → plugin-onboarding-vite-module-federation] -->
+Related: [MFE platform architecture](/writing/plugin-onboarding-vite-module-federation).
 
 ---
 
@@ -377,7 +377,7 @@ async callTool(toolName: string, args: Record<string, unknown>): Promise<MCPResp
 
 A few things in there are worth dwelling on.
 
-[PERSONAL EXPERIENCE] The 50ms delay between sending `initialized` and sending `tools/call` is empirical. Without it, some servers — the ones that load larger in-memory state at startup, like `monorepo-manager` — drop the `tools/call` message because the handler isn't fully ready. With it, every server I have works reliably. Fifty milliseconds is the kind of magic number that should be a reasoned timeout based on a server-readiness signal; in practice it's a setTimeout. I'm not proud of this, but I've shipped things I'm less proud of.
+The 50ms delay between sending `initialized` and sending `tools/call` is empirical. Without it, some servers — the ones that load larger in-memory state at startup, like `monorepo-manager` — drop the `tools/call` message because the handler isn't fully ready. With it, every server I have works reliably. Fifty milliseconds is the kind of magic number that should be a reasoned timeout based on a server-readiness signal; in practice it's a setTimeout. I'm not proud of this, but I've shipped things I'm less proud of.
 
 The 120-second timeout is generous because some tools — `lighthouse-runner`, `quality-pipeline` against a large package — take real time. The kill-on-timeout cleanup is non-negotiable; without it you accumulate zombie Node processes during long-running CLI sessions.
 
@@ -421,7 +421,7 @@ Phase 3: RE-REVIEW — only the fixed components, in parallel
                     output: scan-report.json at monorepo root
 ```
 
-[PERSONAL EXPERIENCE] Each phase uses a worker-pool — a `runInParallel` helper, not `Promise.all`, because we want to cap concurrency at CPU count rather than spawning N child processes for N components. On the design system's 60-component package, this finishes in under two minutes. Sequentially through Cline, the same operation would take an hour and require an engineer to babysit it.
+Each phase uses a worker-pool — a `runInParallel` helper, not `Promise.all`, because we want to cap concurrency at CPU count rather than spawning N child processes for N components. On the design system's 60-component package, this finishes in under two minutes. Sequentially through Cline, the same operation would take an hour and require an engineer to babysit it.
 
 This is the moment the dual-surface pattern paid for itself. The same `component-reviewer` and `component-fixer` MCP servers that Cline calls one tool at a time are now driving an automated parallel pipeline that an engineer triggers with one command. Same code paths. Same servers. Different surface.
 
@@ -484,7 +484,7 @@ The split-by-operational-concern rule from section 3 is a generalization of what
 
 ### b) Tools too broad to call
 
-[PERSONAL EXPERIENCE] `monorepo-manager` has three handler methods that exist in the source but were never registered as tools: `handleRunAcrossPackages`, `handleFindSharedDeps`, `handleSyncConfig`. I built them. I tested them. I removed their registration before shipping.
+`monorepo-manager` has three handler methods that exist in the source but were never registered as tools: `handleRunAcrossPackages`, `handleFindSharedDeps`, `handleSyncConfig`. I built them. I tested them. I removed their registration before shipping.
 
 The reason: they were too broad. "Run a command across all packages" is a tool whose signature could mean anything; the AI couldn't reliably decide *when* to call it. "Find shared dependencies" sounded useful but its output wasn't actionable — the AI couldn't do anything with the result that was better than what `find_dependents` already enabled.
 
@@ -500,7 +500,7 @@ The fix: return *plans* and *patches*, not artifacts. The tool writes the files 
 
 I tried this once. A tool that, given a vague description, would call an LLM to refine the description before doing its work. It felt like progress — "smarter tools!" — until I realized I'd built a system where the AI host's reasoning was running on top of *another* AI's reasoning, with no way to inspect or constrain the inner one. Latency doubled. Determinism collapsed. Debug logs became unintelligible.
 
-[UNIQUE INSIGHT] I removed it. **MCP servers should be deterministic.** The AI host is the only place reasoning belongs. Servers do; AI decides. Cross that line and you get systems where it's impossible to tell which layer is responsible for any given behavior.
+I removed it. **MCP servers should be deterministic.** The AI host is the only place reasoning belongs. Servers do; AI decides. Cross that line and you get systems where it's impossible to tell which layer is responsible for any given behavior.
 
 > **Citation Capsule:** MCP servers should be deterministic processing layers. The AI host is the only place where reasoning belongs. Mixing LLM calls into MCP server handlers creates an uninspectable double-reasoning system — latency doubles, debug logs become meaningless, and it's impossible to tell which layer produced any given output. Servers do; AI decides. That boundary is the architecture.
 
@@ -538,7 +538,7 @@ A few things, with the benefit of having shipped most of it.
 
 > **Citation Capsule:** Domain-specific MCP servers — ones that understand your platform, your registry, your federated build pipeline — are the next competitive edge for engineering teams. General-purpose AI coding tools will get better at generic React. They won't get better at your React. In 2025, 80% of developers use AI tools daily ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)); the teams that win are the ones that taught the AI their specific conventions.
 
-<!-- [INTERNAL-LINK: headless dashboard library @repo/dashcraft → headless-dashboard-library] -->
+Related: [headless dashboard library @repo/dashcraft](/writing/headless-dashboard-library).
 
 ---
 

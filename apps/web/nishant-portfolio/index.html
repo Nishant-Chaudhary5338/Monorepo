@@ -2,43 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230F0F0E'/><text x='16' y='22.5' font-family='ui-sans-serif,system-ui,sans-serif' font-size='19' font-weight='600' fill='%23EDEBE6' text-anchor='middle'>N</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%235B4EE8'/><text x='16' y='23' font-family='ui-sans-serif,system-ui,sans-serif' font-size='20' font-weight='700' fill='white' text-anchor='middle'>N</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0F0F0E" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#5B4EE8" />
+    <meta name="color-scheme" content="light dark" />
     <script>
-      // Set the theme before first paint: saved choice, else OS preference, else dark.
       (function () {
-        var theme = "dark";
         try {
-          theme = localStorage.getItem("nishant-theme") ||
-            (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-        } catch (e) {}
-        document.documentElement.setAttribute("data-theme", theme);
+          var saved = localStorage.getItem("nishant-theme");
+          var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
       })();
     </script>
+    <link rel="preload" href="/fonts/playfair-hero-900i.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin />
 
-    <title>Nishant Chaudhary | Senior Frontend Engineer, React and TypeScript</title>
-    <meta name="description" content="Senior Frontend Engineer at Samsung. Fast, accessible React and TypeScript apps for large teams, plus the design systems and open-source AI tooling that keep them consistent. Open to remote roles with EU teams." />
+    <!-- ── Primary SEO ─────────────────────────────────────────── -->
+    <title>Nishant Chaudhary | Senior Frontend Engineer and LLM Evaluation Specialist</title>
+    <meta name="description" content="Senior Frontend Engineer at Samsung. Fast, accessible React and TypeScript apps for large teams, plus design systems and AI developer tooling. I also design benchmark tasks, rubrics and verifiers for evaluating frontier AI models. Open to remote roles with EU teams." />
     <meta name="author" content="Nishant Chaudhary" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="%SITE_URL%/" />
 
+    <!-- ── Open Graph ───────────────────────────────────────────── -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="%SITE_URL%/" />
     <meta property="og:title" content="Nishant Chaudhary, Senior Frontend Engineer" />
-    <meta property="og:description" content="Fast, accessible React and TypeScript apps for large teams, plus the design systems and AI tooling that keep them consistent." />
+    <meta property="og:description" content="React and TypeScript apps for large teams, design systems and AI tooling, plus benchmark and rubric design for frontier model evaluation." />
     <meta property="og:image" content="%SITE_URL%/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Nishant Chaudhary" />
     <meta property="og:locale" content="en_GB" />
 
+    <!-- ── Twitter Card ─────────────────────────────────────────── -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Nishant Chaudhary, Senior Frontend Engineer" />
-    <meta name="twitter:description" content="Fast, accessible React and TypeScript apps for large teams, plus the design systems and AI tooling that keep them consistent." />
+    <meta name="twitter:description" content="React and TypeScript apps for large teams, design systems and AI tooling, plus benchmark and rubric design for frontier model evaluation." />
     <meta name="twitter:image" content="%SITE_URL%/og.png" />
 
+    <!-- ── JSON-LD Person Schema ────────────────────────────────── -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -53,7 +59,7 @@
         "addressLocality": "New Delhi",
         "addressCountry": "IN"
       },
-      "knowsAbout": ["React", "TypeScript", "Accessibility", "Design Systems", "Micro-frontends", "Module Federation", "Next.js", "Turborepo", "MCP"],
+      "knowsAbout": ["React", "TypeScript", "Accessibility", "Design Systems", "Micro-frontends", "Module Federation", "Next.js", "Turborepo", "MCP", "LLM Evaluation", "Benchmark Design", "Rubric Design"],
       "sameAs": [
         "https://www.linkedin.com/in/nishant-chaudhary-170719246/",
         "https://github.com/Nishant-Chaudhary5338",
@@ -66,9 +72,8 @@
     }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <!-- ── Preconnect ──────────────────────────────────────────── -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
   </head>
   <body>
     <div id="root"></div>

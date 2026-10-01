@@ -12,8 +12,6 @@ authorBio: "Nishant Chaudhary is a frontend engineer who built shared-packages/u
 tags: ["react", "typescript", "monorepo", "component-library", "frontend", "design-system"]
 ---
 
-# Building shared-packages/ui: The Shared React Component Library for Our Monorepo
-
 Multiple apps. Multiple separate repos. No shared conventions. One team was on Material UI, another on Chakra, two were copy-pasting shadcn components and immediately editing them. Every `Button` had its own loading state implementation. Every `Modal` closed on a different key. The codebase felt like six different companies had built it simultaneously — because, in a way, they had.
 
 That was the state before the company began migrating towards a React monorepo. I built `shared-packages/ui` as the shared UI foundation for that migration, working solo at my desk with no designer and no dedicated design systems team. This is a practitioner's account of why I built it, how I architected it, and what it took to get 45 components, 79 test files, and 47 Storybook stories shipping to production across four apps — with every new team joining the monorepo adopting it as their UI standard from day one. The source is on [GitHub](https://github.com/Nishant-Chaudhary5338/modern-ui) and all 47 stories are live at [modern-ui-storybook.netlify.app](https://modern-ui-storybook.netlify.app/).
@@ -33,15 +31,13 @@ According to a 2023 Sparkbox controlled study, development teams using a shared 
 
 The real problem wasn't the component count. It was that business logic had crept inside UI components across separate repos. A `DataTable` in one repo knew about authentication permissions. A `Button` in another had auth state baked into its disabled logic. You couldn't reuse either without dragging half that app's dependency tree with you.
 
-[PERSONAL EXPERIENCE] Walking through the repos that were queued for monorepo migration, I counted seven distinct implementations of a loading spinner. Not seven visual variants — seven completely separate components, each written by a different developer at a different time, none of them tested. One used a CSS animation. One used Framer Motion. One was literally a `<div>` spinning via inline styles. None matched the others at 400ms.
+Walking through the repos that were queued for monorepo migration, I counted seven distinct implementations of a loading spinner. Not seven visual variants — seven completely separate components, each written by a different developer at a different time, none of them tested. One used a CSS animation. One used Framer Motion. One was literally a `<div>` spinning via inline styles. None matched the others at 400ms.
 
 There were no tests. Not one. Every team had convinced themselves that UI components were "too visual to test," which meant nobody caught regressions until a designer spotted them in staging. Migrating these apps into a shared monorepo without first establishing a shared UI layer would have just combined the chaos into one place.
 
 ![Two monitors displaying React.js source code in VS Code alongside the React logo on a localhost browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > A 2023 Sparkbox study found that teams with a shared design system are 47% faster than teams building from scratch. Design teams see a 38% efficiency gain and development teams a 31% gain ([Smashing Magazine composite study, 2022](https://www.smashingmagazine.com/2022/09/formula-roi-design-system/)). The investment is paid once and amortized across every team that adopts the system.
-
-[INTERNAL-LINK: monorepo architecture → pillar article on React monorepo setup with Turborepo]
 
 ---
 
@@ -96,8 +92,6 @@ No npm publish step, no version drift, no "which version is production using?" q
 
 > The three-layer stack — Radix UI for accessible primitives, CVA for typed variants, Tailwind CSS v4 for styling — eliminates an entire class of runtime errors. TypeScript strict mode catches invalid variant props at compile time. Radix handles ARIA semantics automatically. With 94.8% of homepages failing WCAG audits ([WebAIM, April 2025](https://webaim.org/projects/million/2025)), building accessibility in at the architecture level isn't optional.
 
-[INTERNAL-LINK: Radix UI accessibility patterns → article on accessible primitives with Radix]
-
 ---
 
 ## The Component File Structure That Scales
@@ -125,13 +119,11 @@ Is this structure overkill for a `Spinner` component? Maybe. But the discipline 
 
 Storybook has **89,673 GitHub stars** and is used in production by Airbnb, Slack, Dropbox, Shopify, IBM, Uber, and Coursera ([Storybook.js official blog, 2024](https://storybook.js.org/blog/future-of-storybook-2024/)). New engineers joining teams on the monorepo spend their first 30 minutes in Storybook, not in Slack asking "what button component should I use?" You can browse all 47 stories live at [modern-ui-storybook.netlify.app](https://modern-ui-storybook.netlify.app/).
 
-[UNIQUE INSIGHT] The seven-file structure eliminates a specific and underappreciated friction: onboarding delay. When every component follows the same shape, a developer who has never seen `CommandMenu.tsx` can contribute to it the same day they join. The constraint isn't bureaucracy — it's a shared mental model that scales with each new team.
+The seven-file structure eliminates a specific and underappreciated friction: onboarding delay. When every component follows the same shape, a developer who has never seen `CommandMenu.tsx` can contribute to it the same day they join. The constraint isn't bureaucracy — it's a shared mental model that scales with each new team.
 
 ![Designer's desk with Pantone color swatches and an iPad showing UI component sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > Storybook has 89,673 GitHub stars and is used in production by Airbnb, Slack, Dropbox, Shopify, IBM, Uber, and Coursera ([Storybook.js, 2024](https://storybook.js.org/blog/future-of-storybook-2024/)). Running Storybook as the canonical component explorer eliminates "which component do I use?" questions entirely. Engineers open Storybook, see all 47 stories, and understand the full component surface in minutes.
-
-[INTERNAL-LINK: Storybook monorepo setup → article on Storybook v10 in a Turborepo]
 
 ---
 
@@ -174,11 +166,9 @@ Inline editing is fully keyboard-accessible. Double-click or `Enter` opens a cel
 
 ### Adoption Results
 
-[PERSONAL EXPERIENCE] The adoption proof came three weeks after DataTable shipped. A team joining the monorepo built a full CRUD dashboard — sortable, filterable, inline-editable, role-gated — from start to pull request in two days. The same feature had taken a full sprint in their old separate repo. They didn't write a single line of table logic. They defined columns, passed data, and configured roles. Done.
+The adoption proof came three weeks after DataTable shipped. A team joining the monorepo built a full CRUD dashboard — sortable, filterable, inline-editable, role-gated — from start to pull request in two days. The same feature had taken a full sprint in their old separate repo. They didn't write a single line of table logic. They defined columns, passed data, and configured roles. Done.
 
 > DataTable in `shared-packages/ui` uses TypeScript module augmentation to extend TanStack's `ColumnMeta` type with `roles`, `editRoles`, `editable`, `editType`, `validate`, and `onCellSave`. Role configuration lives co-located with column definitions. There's no separate permission service. The table reads `meta.roles` at render time and applies visibility and editability constraints automatically.
-
-[INTERNAL-LINK: TanStack Table deep-dive → article on building a full-featured DataTable]
 
 ---
 
@@ -241,8 +231,6 @@ Why does strict TypeScript matter here? In 2024, **67% of JavaScript developers 
 
 > AutoForm generates a complete, accessible, fully-validated form from a Zod schema with no form JSX. The output `onSubmit` callback receives a TypeScript type inferred directly from the schema. In 2024, 67% of JavaScript developers wrote more TypeScript than JavaScript ([State of JavaScript Survey 2024](https://2024.stateofjs.com/en-US/usage/)). AutoForm makes type-safe forms the path of least resistance.
 
-[INTERNAL-LINK: React Hook Form and Zod → article on schema-driven form validation]
-
 ---
 
 ## Built to Be AI-Native, Not Just Human-Readable
@@ -253,13 +241,11 @@ Every component has a `CLAUDE.md` at the library root that serves as a component
 
 The JSDoc `@example` blocks in each component file auto-populate Storybook autodocs. They also give AI tools working code patterns. When an AI tool generates a `DataTable` usage, it finds the `@example` block, sees the `ColumnMeta` interface, and produces columns with proper `roles` and `editType` fields on the first attempt. No back-and-forth.
 
-[UNIQUE INSIGHT] Documentation structured for programmatic consumption is the next frontier for engineering teams. The question isn't whether AI tools will scaffold your UI code — they already do. The question is whether they produce idiomatic, team-consistent code or generic boilerplate someone has to rewrite. A `CLAUDE.md` component map, strict JSDoc examples, and a `component:generate` MCP tool mean the AI produces a first draft that's review-ready, not a starting point.
+Documentation structured for programmatic consumption is the next frontier for engineering teams. The question isn't whether AI tools will scaffold your UI code — they already do. The question is whether they produce idiomatic, team-consistent code or generic boilerplate someone has to rewrite. A `CLAUDE.md` component map, strict JSDoc examples, and a `component:generate` MCP tool mean the AI produces a first draft that's review-ready, not a starting point.
 
 The library ships four MCP agentic tools: `component:generate` scaffolds all seven files for a new component from a name and description. `component:fix` resolves broken imports and missing dependencies. `component:improve` adds variants and Storybook stories. `component:review` audits TypeScript errors, test gaps, and accessibility issues.
 
 > `shared-packages/ui` includes a `CLAUDE.md` component map with Do/Don't rules and a `component:generate` MCP tool that scaffolds all seven component files. JSDoc `@example` blocks in every component file auto-populate Storybook autodocs and serve as in-context patterns for AI scaffolding. The result: AI tools produce team-idiomatic code, not generic React boilerplate.
-
-[INTERNAL-LINK: AI-native documentation → article on structuring component docs for AI tools]
 
 ---
 
@@ -296,8 +282,6 @@ Yes — tsup builds dual ESM/CJS with splitting enabled. Each component compiles
 ### What keeps teams from forking components when they hit limitations?
 
 The composition surface. Every Radix-based component accepts an `asChild` prop for polymorphism. CVA variants are extendable without touching the source. For genuinely custom cases, teams compose from primitives — they don't fork. The `CLAUDE.md` Do/Don't rules explicitly say: extend via props or composition, never modify the shared package for a single use-case.
-
-[INTERNAL-LINK: Radix asChild and composition patterns → article on polymorphic component design]
 
 ---
 

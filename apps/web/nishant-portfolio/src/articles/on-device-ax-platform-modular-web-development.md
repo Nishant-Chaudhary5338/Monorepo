@@ -43,7 +43,7 @@ AI was supposed to fix this, and for individuals it partly does. But there's a p
 
 So I stopped thinking about "an AI coding assistant" and started thinking about the whole surface an engineer touches to ship a change. That surface is the product.
 
-<!-- [INTERNAL-LINK: micro-frontend plugin platform → plugin-onboarding-vite-module-federation] -->
+Related: [micro-frontend plugin platform](/writing/plugin-onboarding-vite-module-federation).
 
 ---
 
@@ -59,7 +59,7 @@ This matters because trust in AI output is genuinely low. In the 2025 Stack Over
 
 So the design rule for every capability is: **make it callable, make it deterministic, and make it read from the source of truth.** If a tool satisfies those three, it serves the engineer through a button and the agent through MCP with zero divergence. The reasoning stays in the human or the model; the tool just does the thing, the same way every time.
 
-<!-- [INTERNAL-LINK: teaching the AI your team's conventions → one-protocol-two-surfaces] -->
+Related: [teaching the AI your team's conventions](/writing/one-protocol-two-surfaces).
 
 ---
 
@@ -107,7 +107,7 @@ Every capability in the platform is built once and exposed three ways. This is t
 
 The insight underneath this is boring and load-bearing: **MCP isn't AI-specific — it's just JSON-RPC.** Once a capability is a well-shaped, deterministic function, the transport is a detail. I go deep on that pattern in a [separate post on the MCP toolkit](https://www.npmjs.com/package/mcp-react-toolkit); the short version is that the public [`mcp-react-toolkit`](https://www.npmjs.com/package/mcp-react-toolkit) package — 60+ tools with 27 CLI wrappers — is the open-source distillation of this core. The AX platform is what happens when you wire that core into an editor and a running application.
 
-<!-- [INTERNAL-LINK: the dual-surface CLI pattern → one-protocol-two-surfaces] -->
+Related: [the dual-surface CLI pattern](/writing/one-protocol-two-surfaces).
 
 ---
 
@@ -131,13 +131,13 @@ app.post('/api/generate-crud', async (req, res) => {
 
 The console is a thin React panel. It renders a form, POSTs to the endpoint, and shows the result. Scaffold a plugin, generate a CRUD page from a data shape, add a route, run a build, manage the plugin registry — all without a terminal. That's what let the backend engineer from the intro ship in under a minute.
 
-[PERSONAL EXPERIENCE] The endpoints are deliberately thin proxies. The Express handler validates input with Zod, calls the core, and returns a JSON summary — files touched, next suggested step — never the generated file contents. Early on I returned full file bodies in the response, and the console tried to render thousand-line blobs while the agent surface re-emitted them and doubled its context cost. Return plans and patches; let the filesystem hold the artifact. That one rule fixed both surfaces at once.
+The endpoints are deliberately thin proxies. The Express handler validates input with Zod, calls the core, and returns a JSON summary — files touched, next suggested step — never the generated file contents. Early on I returned full file bodies in the response, and the console tried to render thousand-line blobs while the agent surface re-emitted them and doubled its context cost. Return plans and patches; let the filesystem hold the artifact. That one rule fixed both surfaces at once.
 
 Onboarding time is the metric I watch here, because platform research is blunt about it: onboarding time and developer satisfaction are the earliest, truest signals of whether an internal platform is actually usable. Ours went from "read the doc, ask a frontend engineer, ~a day" to **under a minute** for a new plugin, on the back of the same Vite Module Federation runtime injection that lets the shell hot-load a plugin without a redeploy.
 
 ![Syntax-highlighted code on a black terminal screen, suggesting a CLI-first developer toolchain](https://images.unsplash.com/photo-1743090660977-babf07732432?fm=webp&q=80&w=1200&h=630&fit=crop)
 
-<!-- [INTERNAL-LINK: how the GUI drove adoption → ai-dev-platform-mfe-adoption] -->
+Related: [how the GUI drove adoption](/writing/ai-dev-platform-mfe-adoption).
 
 ---
 
@@ -156,9 +156,9 @@ $ code-graph blast-radius packages/ui/src/tokens.ts
 
 > **Citation Capsule:** By 2026, Gartner projects **80% of large software engineering organizations will have platform engineering teams**, up from 45% in 2022 ([Gartner, Platform Engineering](https://www.gartner.com/en/articles/what-is-platform-engineering)). The discipline's core principle is treating the internal platform as a product and developers as its customers — which means the platform must make the codebase legible to its users before it can automate work on it.
 
-[UNIQUE INSIGHT] The indexer isn't a feature bolted onto the platform — it's the substrate every other tool reads from. A code generator that doesn't know the dependency graph produces plausible files in the wrong place. Give the tools a map first, and the automation stops being a guess.
+The indexer isn't a feature bolted onto the platform — it's the substrate every other tool reads from. A code generator that doesn't know the dependency graph produces plausible files in the wrong place. Give the tools a map first, and the automation stops being a guess.
 
-<!-- [INTERNAL-LINK: cache invalidation across a monorepo → turborepo-cache-invalidation-patterns] -->
+Related: [cache invalidation across a monorepo](/writing/turborepo-cache-invalidation-patterns).
 
 ---
 
@@ -191,11 +191,11 @@ The results I can point to:
 - **30+ engineers across 5 teams** at Samsung R&D trained on the platform and agentic workflows — including engineers who don't consider themselves frontend developers.
 - **6 product teams** running production dashboards on the headless UI library the platform generates against.
 
-[ORIGINAL DATA] The number I care about most isn't automation percentage — it's that the skeptics adopted it. The engineers who actively distrust AI got the same speed-up as the believers, because the CLI and HTTP surfaces don't require you to trust a model at all. A deterministic button that scaffolds a plugin correctly is trustworthy in a way a chat prompt never will be. That's the force-multiplier math: impact per engineer, multiplied by every engineer you can bring along — not just the ones who already liked AI.
+The number I care about most isn't automation percentage — it's that the skeptics adopted it. The engineers who actively distrust AI got the same speed-up as the believers, because the CLI and HTTP surfaces don't require you to trust a model at all. A deterministic button that scaffolds a plugin correctly is trustworthy in a way a chat prompt never will be. That's the force-multiplier math: impact per engineer, multiplied by every engineer you can bring along — not just the ones who already liked AI.
 
 > **Citation Capsule:** The AX platform automates 60–70% of routine frontend workflows and cut plugin onboarding to under a minute, adopted by 30+ engineers across 5 teams. The design that made skeptics adopt it: deterministic CLI and HTTP surfaces that require no trust in a model, so an engineer who distrusts AI gets the same speed-up as one who embraces it. Adoption, not automation percentage, is the real signal.
 
-<!-- [INTERNAL-LINK: the headless dashboard library it generates → headless-dashboard-library] -->
+Related: [the headless dashboard library it generates](/writing/headless-dashboard-library).
 
 ---
 

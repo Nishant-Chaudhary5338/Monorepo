@@ -12,8 +12,6 @@ authorBio: "Nishant Chaudhary is a Senior Frontend Engineer at Samsung Electroni
 tags: ["turborepo", "monorepo", "react", "build-systems", "developer-experience"]
 ---
 
-# Turborepo at team scale: cache invalidation patterns I wish I'd known
-
 This started with a Slack message from a teammate: *"Why did my PR rebuild all 12 apps? I only changed a comment in `@repo/utils`."*
 
 Good question. That was the moment I realized we understood Turborepo well enough to set it up, but not well enough to reason about it. There's a gap between "turbo works" and "turbo works predictably," and that gap lives almost entirely in cache invalidation.

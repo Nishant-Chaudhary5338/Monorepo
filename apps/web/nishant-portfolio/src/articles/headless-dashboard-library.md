@@ -29,15 +29,13 @@ The problem wasn't duplication alone — it was compounding incompatibility. In 
 
 Each team reinventing drag, resize, and persistence is expensive. But that's not the main problem. The main problem is that independently built implementations can't interoperate. A widget from one app runs a different event model than one from another. Saved layouts use different JSON shapes and can't be shared. A drag bug discovered in one codebase exists identically in three others and won't get fixed in any of them except by accident.
 
-[PERSONAL EXPERIENCE] The apps I was looking at spanned monitoring dashboards, content analytics, QC pipelines, and incident tracking — plus customer-facing product dashboards. Different data, identical structural requirements. Every team was building the same thing under different constraints and arriving at subtly incompatible solutions. The irony wasn't subtle once you saw it clearly.
+The apps I was looking at spanned monitoring dashboards, content analytics, QC pipelines, and incident tracking — plus customer-facing product dashboards. Different data, identical structural requirements. Every team was building the same thing under different constraints and arriving at subtly incompatible solutions. The irony wasn't subtle once you saw it clearly.
 
 What makes this pattern so persistent? It's because each team's dashboard feels unique from the inside. The monitoring team's needs seem different from the analytics team's. They are different at the data layer. At the structural layer — drag, resize, layout, polling, persistence — they're the same problem wearing different clothes every time.
 
 ![Developer hands typing code on a laptop with multiple browser tabs showing interactive UI components](https://images.unsplash.com/photo-1555099962-4199c345e5dd?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 > **Citation Capsule:** In 2018, Stripe's "Developer Coefficient" report found that developers spend 42% of their working time on technical debt and bad code, representing approximately $85 billion per year in lost productivity globally ([Stripe, 2018](https://stripe.com/files/reports/the-developer-coefficient.pdf)). At monorepo scale, duplicated dashboard infrastructure is one of the most predictable sources of that waste. Multiple teams building the same structural layer independently isn't a product investment — it's scheduled debt accumulation.
-
-<!-- [INTERNAL-LINK: shared packages in a pnpm monorepo → pillar on monorepo architecture] -->
 
 ## The Headless Architecture Decision
 
@@ -102,21 +100,17 @@ A team registers a custom widget alongside the eleven built-ins and immediately 
 
 > **Citation Capsule:** TypeScript became GitHub's number-one language by contributor count in 2025, with 66% year-over-year growth ([GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)). The `WidgetRegistration` contract — small and strict by design — is the boundary between library concerns (interaction, state, persistence) and product concerns (data, display, domain logic). Small contracts compose; large ones leak.
 
-<!-- [INTERNAL-LINK: headless UI patterns with Radix → supporting article] -->
-
 ## How Does Responsive Widget Sizing Work?
 
 Responsive widget breakpoints are one of the features I'm most pleased with. Each widget has three distinct view states based on how large the user has resized it — not the viewport, but the widget itself. One dashboard can serve multiple stakeholders without building separate dashboards.
 
 At its initial or compact size, a widget shows only key details: summary numbers, a status indicator, a single KPI. At around 500px width, charts and trends appear. The user gets a sparkline or bar chart alongside the headline numbers. At around 800px width, the widget expands to full tables, additional charts, and the complete data picture.
 
-[ORIGINAL DATA] This breakpoint system was the feature that made designers think differently about dashboard layouts. Before the library existed, designers had no reason to design interactive, resizable dashboards — the engineering cost was prohibitive every time. Once the framework existed, they started proposing layouts that take advantage of the resize behavior as a first-class design tool.
+This breakpoint system was the feature that made designers think differently about dashboard layouts. Before the library existed, designers had no reason to design interactive, resizable dashboards — the engineering cost was prohibitive every time. Once the framework existed, they started proposing layouts that take advantage of the resize behavior as a first-class design tool.
 
 Why does this matter beyond aesthetics? Consider a monitoring dashboard showing incident data. A senior engineer might expand a widget to full table view for a deep investigation. A manager scanning the same dashboard leaves the same widget at compact view for a quick status check. Same widget, same data endpoint, entirely different information density — controlled entirely by the user's resize behavior. No configuration required. No separate dashboard variants to maintain.
 
 Users can also delete unwanted widgets entirely and configure each widget in real time. The settings panel lets users choose the data endpoint and set the polling interval without leaving the dashboard. That means one dashboard template can serve a monitoring use case and an analytics use case just by pointing widgets at different endpoints.
-
-<!-- [INTERNAL-LINK: widget breakpoint patterns in React → supporting article on container queries] -->
 
 ## Zustand State Management: The React Dashboard Problem Nobody Talks About
 
@@ -174,11 +168,9 @@ The fix: capture every widget's actual DOM position via `getBoundingClientRect()
 
 It's the kind of fix that takes a week to find and a single commit to apply.
 
-[PERSONAL EXPERIENCE] The lesson here is that the difference between a library that ships and a library that ships right is the willingness to sit with hard bugs long enough to understand what's actually happening. The first instinct — memoize, force hardware acceleration, add CSS containment — is almost always wrong. The right fix comes after you stop guessing and start measuring.
+The lesson here is that the difference between a library that ships and a library that ships right is the willingness to sit with hard bugs long enough to understand what's actually happening. The first instinct — memoize, force hardware acceleration, add CSS containment — is almost always wrong. The right fix comes after you stop guessing and start measuring.
 
 > **Citation Capsule:** Zustand's `subscribeWithSelector` pattern and the mode-transition fix are two instances of the same principle: match the tool to the layer of the problem. Global state for inspectable data, DOM measurements for rendering truth, and animation for the bridge between the two. Fine-grained subscriptions ([State of React 2024](https://2024.stateofreact.com/en-US/libraries/state-management/)) aren't just a performance optimization — they're an architectural boundary.
-
-<!-- [INTERNAL-LINK: Zustand subscribeWithSelector patterns → supporting article] -->
 
 ## How Does Data Integration Work Without Coordination Overhead?
 
@@ -220,11 +212,9 @@ const [layout, setLayout] = usePersistence(
 )
 ```
 
-[PERSONAL EXPERIENCE] One consuming app persists layouts to a backend API so dashboards survive device changes. Another uses localStorage for speed. A third uses URL state so users can share specific dashboard configurations as links. All three use the same library. Only the adapter argument differs. That's what a good abstraction boundary looks like in practice.
+One consuming app persists layouts to a backend API so dashboards survive device changes. Another uses localStorage for speed. A third uses URL state so users can share specific dashboard configurations as links. All three use the same library. Only the adapter argument differs. That's what a good abstraction boundary looks like in practice.
 
 > **Citation Capsule:** The pluggable persistence adapter and the event bus are two instances of the same design principle: the library owns the mechanism, not the policy. Teams configure the behavior they need without touching library source code. This pattern generalizes — any shared library that forces a specific storage or communication strategy is trading short-term convenience for long-term inflexibility.
-
-<!-- [INTERNAL-LINK: React polling and data fetching patterns → supporting article] -->
 
 ## Distribution: Inside the Monorepo and Beyond
 
@@ -235,8 +225,6 @@ The internal GitHub package route was a deliberate choice. Not every team at the
 Writing and publishing internal documentation on the company GitHub was part of the same initiative. I didn't just build the library and stop there. I wanted teams to be able to self-serve — understand the API, understand the architecture decisions, and adopt it without needing to sit with me for an hour. The docs followed the same principle as the code: simple flags, narrow interfaces, real examples.
 
 The reception was better than I expected. Teams were receptive, and a few were genuinely surprised that something like this already existed. Designers reacted differently too. Once they knew the framework was there and understood what it could do, they started proposing interactive dashboard designs they'd never have proposed before. The engineering cost of drag, resize, and responsive widget views was now zero for them to spec against. That shift in designer confidence was one of the outcomes I hadn't predicted.
-
-<!-- [INTERNAL-LINK: publishing internal npm packages via GitHub registry → supporting article] -->
 
 ## Built to Be AI-Native, Not Just Human-Readable
 
@@ -262,19 +250,17 @@ In 2025, 80% of developers use AI tools in their development workflow, with 50.6
 
 ![Abstract AI neural network visualization with glowing nodes and connections on dark background](https://images.unsplash.com/photo-1677442135703-1787eea5ce01?fm=webp&q=80&w=1200&h=630&fit=crop)
 
-[UNIQUE INSIGHT] Every hook ships with full JSDoc `@example` blocks. Not for a docs site. For AI coding tools that surface these examples inline when a developer types `useWidgetData`. Teams writing their first custom widget get correct, idiomatic code on the first try, more often than not. Documentation structured for programmatic extraction is the next competitive edge for any shared library. Most teams are still writing docs for humans browsing a site, and missing the developer who never opens a browser tab.
+Every hook ships with full JSDoc `@example` blocks. Not for a docs site. For AI coding tools that surface these examples inline when a developer types `useWidgetData`. Teams writing their first custom widget get correct, idiomatic code on the first try, more often than not. Documentation structured for programmatic extraction is the next competitive edge for any shared library. Most teams are still writing docs for humans browsing a site, and missing the developer who never opens a browser tab.
 
 The same library that teams use in their products has a layer of MCP tools alongside it: `component:generate`, `component:fix`, `component:improve`, `component:review`. These tools use the library's own type system and documentation as the source of truth. The AI tooling and the human tooling share one source of truth. There's no documentation drift, no stale examples, no "the docs say X but the types say Y."
 
 > **Citation Capsule:** When an LLM's output is guaranteed valid by the type system, the integration surface is structurally correct by construction. The library's JSON schemas aren't just configuration objects — they're the API surface for AI-generated dashboards ([Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)). A fully serializable schema with factory defaults is how you make AI-assisted development reliable rather than probabilistic.
 
-<!-- [INTERNAL-LINK: AI-native documentation patterns → future article on AI-friendly library design] -->
-
 ---
 
 **By the Numbers**
 
-[ORIGINAL DATA] — First-party production metrics from `interactive-dashboard-library` across consuming apps and multiple product teams.
+Source: First-party production metrics from `interactive-dashboard-library` across consuming apps and multiple product teams.
 
 | Metric | Value |
 |--------|-------|

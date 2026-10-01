@@ -1,6 +1,6 @@
-# Nishant Chaudhary, Senior Frontend Engineer
+# Nishant Chaudhary, Senior Frontend Engineer and LLM Evaluation Specialist
 
-> Senior Frontend Engineer at Samsung Electronics (2024 to now), based in New Delhi. About five years of production React and TypeScript: enterprise web apps, design systems, micro-frontends, and the AI developer tooling around them. Open to remote roles with EU teams; works 12:00 to 21:00 IST to cover CET core hours.
+> Senior Frontend Engineer at Samsung Electronics (2024 to now), based in New Delhi. About five years of production React and TypeScript: enterprise web apps, design systems, micro-frontends, and the AI developer tooling around them. Also works in AI model evaluation for Handshake, micro1, Snorkel AI and Turing: benchmark task authoring, rubric and grader design, verifier hardening and model failure analysis. Open to remote roles with EU teams; works 12:00 to 21:00 IST to cover CET core hours.
 
 ## Contact
 
@@ -14,7 +14,7 @@
 - Samsung Electronics, Senior Frontend Engineer (Jul 2024 to now): plugin-based micro-frontend platform on Vite Module Federation (new app onboarding from hours to under a minute, six product squads); Vite and Turborepo migration with a shared design system (close to 60% component reuse); 20+ custom MCP servers handling 60 to 70% of routine frontend work; leads a team of five on the TVPlus Test Suite.
 - Safex Chemicals, Web Developer (Mar 2023 to Jun 2024): B2B ordering platform for 25,000+ customers (repeat orders up 22%, support tickets down about 30%); load time from 4.2s to 2.5s; SAP-connected portal for 500+ staff.
 - DevsLane, Frontend Engineer (Nov 2021 to Mar 2023): eight client products from Figma; Storybook library of 40+ accessible components; WCAG 2.1 AA.
-- AI model evaluation for Handshake, micro1 and Snorkel AI (2026 to now): evaluation tasks and graded benchmarks for frontier models.
+- AI model evaluation and benchmark authoring for Handshake, micro1, Snorkel AI and Turing (2026 to now): adversarial benchmark tasks for frontier coding agents, rubrics and verifiers tested against reward hacking, pass@k and trajectory analysis, expert review of SWE tasks built from real pull requests, rubric-graded document tasks, and engineering problem statements with checkable success criteria.
 
 ## Open source
 
@@ -23,6 +23,11 @@
 - [dashcraft](https://dashcraft-site.vercel.app/): headless React dashboard library.
 - [vercel/turborepo #12997](https://github.com/vercel/turborepo/pull/12997): added the with-mcp-servers example (merged).
 
+## Writing on AI evaluation
+
+- [How I write tasks that frontier coding agents fail](/writing/how-i-write-tasks-frontier-coding-agents-fail)
+- [Grading the grader: rubrics and verifiers I can trust](/writing/grading-the-grader-rubrics-and-verifiers)
+
 ## Case studies
 
 - [Shared UI library](/work/ui-component-library): 45-component React library on Radix UI and Tailwind CSS v4, used as the UI standard in a React monorepo.
@@ -30,4 +35,4 @@
 
 ## Skills
 
-React 19, TypeScript (strict), Next.js, Vite, Module Federation, design systems, accessibility (WCAG 2.2 AA), Core Web Vitals, Tailwind CSS v4, Radix UI, Storybook, Turborepo, Node.js, MCP, Playwright, Vitest.
+React 19, TypeScript (strict), Next.js, Vite, Module Federation, design systems, accessibility (WCAG 2.2 AA), Core Web Vitals, Tailwind CSS v4, Radix UI, Storybook, Turborepo, Node.js, MCP, Playwright, Vitest, LLM evaluation, benchmark and rubric design, Python, pytest, Docker.

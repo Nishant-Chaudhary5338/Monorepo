@@ -1,4 +1,21 @@
-export const caseStudyCoverImages: Record<string, string> = {
-  "headless-dashboard-library": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=webp&q=80&w=1200&h=630&fit=crop",
-  "ui-component-library": "https://images.unsplash.com/photo-1558655146-d09347e92766?fm=webp&q=80&w=1200&h=630&fit=crop",
-};
+export interface CoverSet {
+  src: string;
+  srcSet: string;
+  sizes: string;
+  width: number;
+  height: number;
+}
+
+const WIDTHS = [640, 1024, 1600] as const;
+const ASPECT = 840 / 1600;
+
+/** `key` is the file stem under /covers: an article slug, or `work-<slug>` for a case study. */
+export function coverSet(key: string): CoverSet {
+  return {
+    src: `/covers/${key}-1024.webp`,
+    srcSet: WIDTHS.map((w) => `/covers/${key}-${w}.webp ${w}w`).join(", "),
+    sizes: "100vw",
+    width: 1600,
+    height: Math.round(1600 * ASPECT),
+  };
+}

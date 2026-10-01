@@ -9,8 +9,6 @@ authorBio: "Nishant Chaudhary is a frontend engineer who built interactive-dashb
 tags: ["react", "typescript", "dashboard", "zustand", "headless-ui"]
 ---
 
-# interactive-dashboard-library: The Headless Dashboard Framework I Built for Our Office
-
 Nobody asked me to build this. I saw the problem, got tired of watching it compound, and decided to fix it properly.
 
 That's the short version. The longer version is about what it took to build a framework that twelve teams now rely on, why the headless architecture decision turned out to be the right one, and the week-long debugging session that came down to a single commit.
@@ -22,8 +20,6 @@ That's the short version. The longer version is about what it took to build a fr
 > - The framework ships inside the monorepo AND as an internal GitHub package for teams outside it.
 > - In production: 11 built-in widgets, 4 consuming apps, ~12 teams reached, ~9,000 lines of TypeScript.
 
-[IMAGE: A dashboard canvas showing multiple widgets at different sizes - some small with summary numbers, some wide with charts, one full-width with a data table - search terms: "analytics dashboard widgets responsive layout"]
-
 ## The Problem: Static Dashboards, Everywhere, Forever
 
 Walk into any team's codebase and you'd find a dashboard. Monitoring dashboards. Content analytics. QC pipelines. Incident tracking. Each one visually different, each one structurally identical: widgets sitting on a page, showing numbers, doing nothing when you tried to move them.
@@ -32,11 +28,9 @@ Static. All of them.
 
 And behind every one of those dashboards, the same story: somebody had copied a drag-and-drop implementation from a previous project, patched in a resize library that didn't quite fit, built a custom localStorage hook to persist the layout, and called it done. Then the next team did the same thing. Different libraries, different APIs, incompatible widget contracts. No widget built in one project could be dropped into another.
 
-[PERSONAL EXPERIENCE] I counted the implementations across the codebases I had access to. Four distinct drag-and-drop solutions. Three separate resize approaches. Five different ways to serialize dashboard state to storage. None of them talked to each other. The duplication wasn't just aesthetic: it was active maintenance debt. A bug found in one was silently alive in three others.
+I counted the implementations across the codebases I had access to. Four distinct drag-and-drop solutions. Three separate resize approaches. Five different ways to serialize dashboard state to storage. None of them talked to each other. The duplication wasn't just aesthetic: it was active maintenance debt. A bug found in one was silently alive in three others.
 
 I built `interactive-dashboard-library` to fix that. One substrate, built properly, used everywhere.
-
-[INTERNAL-LINK: why headless UI works at scale → component architecture principles]
 
 ## Why Headless? Because Teams Don't Give Up Their Identity
 
@@ -48,7 +42,7 @@ Every product team has a design system. Marketing dashboards use different typog
 
 So I went headless.
 
-[UNIQUE INSIGHT] "Headless" in this context means one specific thing: I own the interaction logic and nothing else. Drag, drop, resize, state management, persistence, polling, widget-to-widget communication — all mine. Visual output — yours. Teams pass Tailwind classes to every surface. They keep their visual identity. They get the interactivity for free.
+"Headless" in this context means one specific thing: I own the interaction logic and nothing else. Drag, drop, resize, state management, persistence, polling, widget-to-widget communication — all mine. Visual output — yours. Teams pass Tailwind classes to every surface. They keep their visual identity. They get the interactivity for free.
 
 The API reflects this. You don't configure a visual theme. You configure behavior:
 
@@ -70,8 +64,6 @@ Register your component, define a default size, optionally provide a settings pa
 
 That was the promise. The reception surprised me. Teams weren't just relieved — they were enthusiastic. Designers started proposing dashboard layouts they'd never have suggested before because they knew interactivity wasn't a dev-time negotiation anymore.
 
-[INTERNAL-LINK: headless component patterns in React → headless UI deep dive]
-
 ## The Killer Feature: Widgets That Know Their Own Size
 
 Here's the thing I'm most proud of, and it's not technically the hardest part to build.
@@ -80,13 +72,11 @@ Every widget has three views, and it switches between them based on how much spa
 
 When a widget is small — the user has resized it down to a compact tile — it shows the key number. The headline metric. Nothing else. When the widget grows to around 500px wide, the chart appears. Trend lines, historical data, visual context. When it hits around 800px, the full table renders alongside additional charts.
 
-[ORIGINAL DATA] The same widget, three different information densities, selected automatically based on real-time size. A monitoring dashboard can have a wall of compact KPI tiles on the left side and one wide stream-health chart on the right. A manager reviewing the dashboard at a glance gets the summary numbers. A developer who needs detail resizes a widget and the detail is there.
+The same widget, three different information densities, selected automatically based on real-time size. A monitoring dashboard can have a wall of compact KPI tiles on the left side and one wide stream-health chart on the right. A manager reviewing the dashboard at a glance gets the summary numbers. A developer who needs detail resizes a widget and the detail is there.
 
 Users also configure widgets in real time: pick the API endpoint, set the polling interval, delete widgets they don't need. One dashboard serves multiple stakeholders without anyone needing a custom build.
 
 This is what turned `interactive-dashboard-library` from a useful DX improvement into something that actually changed how people used the dashboards they were building.
-
-[IMAGE: Side-by-side comparison showing the same widget in three sizes - compact number tile, medium chart view, wide table view - search terms: "responsive widget dashboard resize layout"]
 
 ## The Technical Decisions That Held Up
 
@@ -124,8 +114,6 @@ const [layout, setLayout] = usePersistence(
 
 Swap the adapter, nothing else changes. One consuming app persists to a backend API. Another uses localStorage. A third uses URL state for shareable layouts — users can send a link and the recipient sees the exact dashboard configuration. All three use the same library. The persistence choice is the only variable.
 
-[INTERNAL-LINK: state persistence patterns in React applications → localStorage vs backend state]
-
 ### The Event Bus: Signals Between Independent Widgets
 
 When a filter widget needs to tell a chart widget to refetch with a new date range, you have two options: push that communication through a shared store, or use an event bus.
@@ -158,8 +146,6 @@ const { data, loading, error } = useWidgetData<StreamMetrics>({
 
 The hook handles AbortController cleanup on unmount, cache invalidation, loading and error states, and configurable polling. A monitoring widget polling every 5 seconds and a KPI widget polling every 60 seconds coexist on the same dashboard without any coordination overhead. They're independent. They just work.
 
-[CHART: Timeline chart showing polling intervals across 30 widgets on one dashboard - data: 5s, 10s, 15s, 30s, 60s intervals - source: interactive-dashboard-library internal metrics]
-
 ## Distribution: Inside and Outside the Monorepo
 
 The library lives inside the React monorepo as a workspace package, available to any app in the repo with a single package.json entry. But some teams work in separate repositories — older codebases, different tech stacks at the edges.
@@ -168,15 +154,13 @@ For those teams, I published `interactive-dashboard-library` as an internal GitH
 
 The documentation investment paid off faster than I expected. Teams I'd never spoken to were filing feature requests within two weeks of the internal publish.
 
-[INTERNAL-LINK: monorepo package distribution patterns → workspace package publishing]
-
 ## Adoption and What Changed
 
 Four apps in production. About twelve teams reached. Monitoring dashboards, analytics tools, internal ops apps, and two customer-facing products.
 
 The DX change was immediate: teams stopped rebuilding drag, drop, resize, and persistence. Those conversations just stopped happening. What replaced them were conversations about the actual product — what data to show, how to structure the widget hierarchy, which built-in widget to extend versus building custom.
 
-[PERSONAL EXPERIENCE] The UX change took a few weeks to fully show up. Once teams shipped interactive dashboards to real users, the feedback loop closed quickly. Users resized widgets. They bookmarked shareable layouts. They spent more time in dashboards they'd previously visited to check one number and leave. The interactivity changed how people actually used the tools.
+The UX change took a few weeks to fully show up. Once teams shipped interactive dashboards to real users, the feedback loop closed quickly. Users resized widgets. They bookmarked shareable layouts. They spent more time in dashboards they'd previously visited to check one number and leave. The interactivity changed how people actually used the tools.
 
 Designer creativity increased in a way I hadn't predicted. Before, designers proposed static layouts because they knew interactivity was a negotiation with dev time. After, they proposed layouts that assumed interactivity, because it was free. That shift in what felt possible was the outcome I hadn't explicitly planned for.
 
@@ -202,5 +186,3 @@ The responsive widget views were the hardest feature to spec and the easiest to 
 The mode-transition bug took a week because I was looking for a logical error in code that had no logical errors. The DOM was doing something physically inconsistent between two render modes. Once I accepted that the code was correct and the rendering pipeline was the variable, the empirical fix became obvious.
 
 Nobody asked me to build this. But once it existed, I couldn't imagine how we'd functioned without it.
-
-[INTERNAL-LINK: more personal projects and technical deep dives → writing section]

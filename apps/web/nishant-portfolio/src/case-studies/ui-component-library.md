@@ -9,8 +9,6 @@ authorBio: "Nishant Chaudhary is a frontend engineer who built shared-packages/u
 tags: ["react", "typescript", "component-library", "design-system", "monorepo"]
 ---
 
-# Building shared-packages/ui: A Shared Component Library for a React Monorepo
-
 Before the monorepo, every team lived in its own separate repository. Separate installs, separate component libraries, separate opinions about how a button should look or a modal should close. The codebase wasn't messy in the classic sense — each repo was internally coherent. The mess was at the seams: identical problems solved five different ways, no shared accessibility baseline, no shared dark mode story, and no way to move engineers between teams without a week of orientation into a new UI toolkit.
 
 When the company started migrating to a React monorepo, someone had to build the shared UI foundation every team would adopt as their baseline. That was me. Solo, no designer.
@@ -22,8 +20,6 @@ When the company started migrating to a React monorepo, someone had to build the
 > - Teams joining the monorepo ship complete CRUD dashboards in days, not weeks, writing only business logic.
 > - The library is structured for AI coding tools from the ground up — `CLAUDE.md` component maps, JSDoc `@example` blocks on every public component.
 
-[IMAGE: A diagram showing multiple disconnected app repositories converging into a single monorepo with a shared UI package at the center - monorepo architecture diagram React]
-
 ## Why Every Shared Library Fails (and What I Did Differently)
 
 Shared component libraries fail in a specific, predictable way. Teams adopt them, hit a limitation, fork the component into their own app, and the library slowly becomes irrelevant. Within a year it's a vestigial dependency that nobody trusts but nobody removes.
@@ -31,8 +27,6 @@ Shared component libraries fail in a specific, predictable way. Teams adopt them
 The failure mode isn't a missing component. It's a missing extension model.
 
 If a team can't customize a component without forking it, they'll fork it. If the styling system is opaque, they'll override it with `!important`. If the type system doesn't account for their data shape, they'll cast to `any`. I'd watched this happen with external libraries across those separate repos. Building `shared-packages/ui` meant solving the extension problem first, before writing a single component.
-
-[INTERNAL-LINK: accessibility patterns in shared component libraries → component architecture article]
 
 The answer came down to three choices: Radix UI for the accessibility layer, Class Variance Authority (CVA) for the variant system, and a token architecture that exposed everything as CSS custom properties. These three together meant teams could restyle, re-variant, and re-compose without touching the library source.
 
@@ -50,8 +44,6 @@ I'm deliberate about dependencies. Every package in `shared-packages/ui` has a c
 
 **tsup** outputs both ESM and CJS, with proper tree-shaking. Teams can import a single component and not pull in the rest of the library.
 
-[CHART: Bar chart - Component category breakdown: Forms (8), Data Display (7), Overlay (6), Navigation (5), Layout (5), Feedback (5), Inputs (5), Other (9) - shared-packages/ui internal audit]
-
 ## Building a Design Token System With No Figma
 
 No designer meant I owned the visual language. That could have been a liability. In practice, it became a kind of freedom.
@@ -63,10 +55,6 @@ The file runs to roughly 793 lines. Every token in it is referenced somewhere in
 Dark mode is a `:root.dark` override — complete, not partial. Every semantic token has a dark-mode value. Adding dark mode to the whole library took one day, because the token layer was already designed to support it. A consuming app gets dark mode by adding a class to `<html>`. No per-component work.
 
 The constraint of no Figma was actually useful: decisions that live only in a design file drift from decisions in code. Here, the token file is the source of truth. There's nothing to drift from.
-
-[INTERNAL-LINK: CSS custom properties and Tailwind v4 theming → Tailwind v4 deep-dive article]
-
-[IMAGE: A code snippet showing the @theme inline token block with semantic color tokens and a dark mode override - design token system CSS variables]
 
 ## The Component Structure: Seven Files Per Component
 
@@ -88,8 +76,6 @@ This structure makes the library scannable. A new engineer joining the monorepo 
 79 test files across 45 components means nearly two test files per component on average. Some components are simple enough to fit in one file. Components like `DataTable`, `AutoForm`, and `CommandPalette` have multiple test files covering distinct behaviors.
 
 ## The DataTable: Role-Based Access Control via TypeScript Module Augmentation
-
-[ORIGINAL DATA]
 
 The `DataTable` component ended up being the most technically demanding part of the library. 12 product teams means 12 different table requirements: sorting, filtering, pagination, row selection with bulk actions, column pinning, drag-to-reorder, column resizing, CSV export, server-side mode. I put all of it behind a `features` prop with 22+ opt-in capabilities.
 
@@ -135,13 +121,7 @@ A column visible to `admin`, `editor`, and `viewer` but editable only by `admin`
 
 The inline editing itself — double-click a cell, type, Tab or Enter to save, Escape to cancel — required careful attention to keyboard navigation and screen reader focus order. That last part took longer than the editing logic. It's the kind of thing that looks working until someone tabs into a cell with a keyboard and the focus jumps unexpectedly.
 
-[INTERNAL-LINK: TanStack Table module augmentation pattern → data tables in TypeScript article]
-
-[IMAGE: Screenshot of a DataTable component showing role-gated columns, inline cell editing, and bulk action toolbar - React DataTable RBAC component library]
-
 ## AutoForm: Schema-Driven Forms From a Zod Definition
-
-[UNIQUE INSIGHT]
 
 Most form libraries make you define your schema and your form separately. The schema handles validation. The form handles rendering. They agree on field names only through convention.
 
@@ -164,8 +144,6 @@ Teams can override individual fields via a `fieldConfig` prop when the default r
 
 ## What Adoption Actually Looked Like
 
-[PERSONAL EXPERIENCE]
-
 When a new team joins the monorepo, `shared-packages/ui` is the first thing they install. It's not a suggestion — it's the onboarding baseline. Part of the reason that works is that the abstractions held under real conditions.
 
 A complete CRUD dashboard — filterable and sortable data table, multi-step form with Zod validation, role-gated column visibility — went from started to in code review in a couple of days. Not because the team was fast, but because the library handled everything except the business logic. The form system took a Zod schema and rendered an accessible form. The DataTable took a column definition with RBAC metadata and handled the rest. The team wrote the API calls and the domain logic. That was it.
@@ -185,8 +163,6 @@ JSDoc `@example` blocks on 20+ components get picked up by Storybook's autodoc a
 I also built MCP scaffolding tools that can generate a new component's seven-file structure from a spec. That's the practical version of AI-native design: not just documentation the AI can read, but tooling the AI can invoke.
 
 The gap between what an AI tool knows generically and what it needs to know about a specific codebase closes from the library side. Structured documentation is the lever.
-
-[INTERNAL-LINK: AI-native documentation patterns for component libraries → MCP tooling article]
 
 ## The Numbers
 

@@ -1,41 +1,25 @@
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
-import emailjs from "@emailjs/browser";
+import { useRef, useState, type FormEvent } from "react";
 import { personalInfo } from "../constants";
-import { Section } from "../components/Section";
-import { TextLink } from "../components/TextLink";
-import { cn } from "../lib/cn";
-import { buttonPrimary, textLink } from "../lib/styles";
+import { MagneticButton } from "../components/MagneticButton";
+import { FloatCard } from "../components/FloatCard";
 
 type Status = "idle" | "loading" | "sent" | "error";
 
-const field = cn(
-  "mt-1.5 block w-full px-3 py-2.5",
-  "bg-surface-2 text-base text-fg",
-  "border border-fg-3 rounded-sm",
-);
-const label = "block text-sm text-fg-2";
-
-const STATUS_TEXT: Record<Status, string> = {
-  idle: "",
-  loading: "",
-  sent: "Thanks. Your message is on its way and I'll reply by email.",
-  error: "That didn't send. Please email me directly instead.",
-};
-
-export default function Contact(): ReactNode {
+const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<Status>("idle");
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formRef.current) return;
     setStatus("loading");
     try {
+      const { default: emailjs } = await import("@emailjs/browser");
       await emailjs.sendForm(
         import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
         formRef.current,
-        import.meta.env.VITE_APP_EMAILJS_USER_ID,
+        import.meta.env.VITE_APP_EMAILJS_USER_ID
       );
       setStatus("sent");
       formRef.current.reset();
@@ -46,39 +30,60 @@ export default function Contact(): ReactNode {
   };
 
   return (
-    <Section id="contact" number="05" title="Contact">
-      <a href={`mailto:${personalInfo.email}`} className={cn(textLink, "text-lg break-all")}>
-        {personalInfo.email}
-      </a>
-      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-        <TextLink href={personalInfo.linkedin} mono>LinkedIn</TextLink>
-        <TextLink href={personalInfo.github} mono>GitHub</TextLink>
-        <TextLink href={personalInfo.npm} mono>npm</TextLink>
-      </div>
-      <p className="mt-4 max-w-measure text-base text-fg-2">{personalInfo.availability}</p>
-
-      <form ref={formRef} onSubmit={onSubmit} className="mt-10 flex max-w-md flex-col gap-5">
-        <label className={label}>
-          Name
-          <input name="name" type="text" autoComplete="name" required className={field} />
-        </label>
-        <label className={label}>
-          Email
-          <input name="email" type="email" autoComplete="email" required className={field} />
-        </label>
-        <label className={label}>
-          Message
-          <textarea name="message" rows={5} required className={field} />
-        </label>
-        <div>
-          <button type="submit" className={buttonPrimary} disabled={status === "loading"}>
-            {status === "loading" ? "Sending" : "Send message"}
-          </button>
-          <p role="status" className={cn("mt-3 text-sm", status === "error" ? "text-err" : "text-ok")}>
-            {STATUS_TEXT[status]}
+    <section id="contact" className="section contact-section">
+      <div className="section-wrap">
+        <div className="section-glow" style={{ "--section-glow-color": "var(--accent-ui)", "--section-glow-color-2": "var(--accent-live)" } as React.CSSProperties}>
+          <p className="section-label">
+            <span className="section-label-num">07</span> — CONTACT
           </p>
+          <h2 className="section-title" style={{ marginTop: "var(--space-sm)", marginBottom: "var(--space-lg)" }}>
+            Let's build <em className="pull-quote-gold gradient-text" style={{ fontStyle: "italic" }}>something real.</em>
+          </h2>
         </div>
-      </form>
-    </Section>
+
+        <div className="contact-grid">
+          <FloatCard glow="--accent-live" delay={0}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", alignItems: "flex-start" }}>
+              <a href={`mailto:${personalInfo.email}`} className="contact-link">{personalInfo.email}</a>
+              <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="contact-link">LinkedIn ↗</a>
+              <a href={personalInfo.github} target="_blank" rel="noreferrer" className="contact-link">GitHub ↗</a>
+              <p className="contact-availability">
+                <strong>Open to remote roles with EU teams.</strong> I work 12:00 to 21:00 IST, which covers CET core hours.
+              </p>
+            </div>
+          </FloatCard>
+
+          <FloatCard glow="--accent-ui" delay={0.6}>
+            <form ref={formRef} onSubmit={onSubmit} style={{ display: "grid", gap: "1.25rem" }}>
+              <div className="contact-field">
+                <label htmlFor="contact-name">Name</label>
+                <input id="contact-name" name="name" type="text" required />
+              </div>
+              <div className="contact-field">
+                <label htmlFor="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" required />
+              </div>
+              <div className="contact-field">
+                <label htmlFor="contact-message">Message</label>
+                <textarea id="contact-message" name="message" rows={4} required />
+              </div>
+              <MagneticButton
+                as="button"
+                type="submit"
+                className="btn-primary"
+                disabled={status === "loading"}
+                style={{ justifySelf: "start" }}
+              >
+                <span>
+                  {status === "loading" ? "Sending…" : status === "sent" ? "Sent ✓" : status === "error" ? "Try again" : "Send message →"}
+                </span>
+              </MagneticButton>
+            </form>
+          </FloatCard>
+        </div>
+      </div>
+    </section>
   );
-}
+};
+
+export default Contact;

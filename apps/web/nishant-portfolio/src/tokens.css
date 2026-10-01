@@ -1,0 +1,133 @@
+/* =========================================================================
+   Legacy tokens — kept verbatim for src/pages/ArticlePage.tsx and
+   src/pages/CaseStudyPage.tsx, which reference these custom properties
+   and utility classes directly. Do not delete: the home page redesign in
+   src/index.css uses its own separate --bg-base/--text-primary/etc token
+   set (nidhi-portfolio pattern) so the two systems don't collide, except
+   --border-strong which the new system renames to --border-strong-nd for
+   exactly this reason.
+   ========================================================================= */
+
+:root {
+  /* ---------- Color — surfaces ------------------------------------------
+     Re-pointed at the new nidhi-pattern palette (defined in index.css)
+     so ArticlePage/CaseStudyPage inherit the redesign automatically with
+     zero code changes. Narrower/decorative tokens below (data/highlight/
+     glass/gradients) keep their original indigo-cyan values — low-traffic,
+     code-block-only accents where a small mismatch is cosmetic, not a
+     break, and rewriting every one 1:1 isn't worth the risk. */
+  --bg:              var(--bg-base);
+  --bg-deep:         #04050A;
+  --surface:         var(--bg-surface);
+  --surface-2:       #161827;
+  --surface-3:       #1B1E2E;
+  --glass:           rgba(255,255,255,0.025);
+  --glass-strong:    rgba(255,255,255,0.045);
+
+  /* ---------- Color — line / divider ---------------------------------- */
+  --border:          var(--border-subtle);
+  --border-strong:   var(--border-default);
+  --rule:            rgba(255,255,255,0.06);
+
+  /* ---------- Color — text -------------------------------------------- */
+  --fg:              var(--text-primary);
+  --fg-2:            var(--text-secondary);
+  --fg-muted:        var(--text-muted);
+  --fg-dim:          var(--text-muted);
+
+  /* ---------- The three accents (each has a job) ---------------------- */
+  --accent:          var(--accent-purple);
+  --accent-btn:      var(--accent-purple-dark);
+  --accent-2:        var(--accent-purple-dark);
+  --accent-soft:     rgba(99, 102, 241, 0.12);
+  --accent-line:     rgba(99, 102, 241, 0.40);
+  --accent-glow:     rgba(99, 102, 241, 0.55);
+
+  /* CYAN — data · metrics · live readouts · the "value" color          */
+  --data:            #22D3EE;
+  --data-2:          #67E8F9;
+  --data-soft:       rgba(34, 211, 238, 0.10);
+  --data-line:       rgba(34, 211, 238, 0.40);
+  --data-glow:       rgba(34, 211, 238, 0.45);
+
+  /* ORANGE — impact · standout stat · seldom used                      */
+  --highlight:       #F97316;
+  --highlight-2:     #FB923C;
+  --highlight-soft:  rgba(249, 115, 22, 0.10);
+  --highlight-line:  rgba(249, 115, 22, 0.40);
+
+  /* Status */
+  --ok:              #22C55E;
+  --warn:            #EAB308;
+  --err:             #EF4444;
+
+  /* ---------- Type — families (the three-font triangle) -------------- */
+  --font-display: "Playfair Display", "Playfair Fallback", Georgia, serif;
+  --font-body:    "DM Sans", "DM Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---------- Type — display scale (Space Grotesk, -0.02em) ---------- */
+  --h1: 700 clamp(2.75rem, 5.6vw, 4.75rem)/0.98 var(--font-display);
+  --h2: 700 clamp(2rem, 3.8vw, 3rem)/1.02 var(--font-display);
+  --h3: 600 clamp(1.5rem, 2.2vw, 1.875rem)/1.15 var(--font-display);
+  --h4: 600 1.25rem/1.25 var(--font-display);
+  --h5: 600 1rem/1.3 var(--font-display);
+
+  /* ---------- Type — body (Inter) ----------------------------------- */
+  --p-lg:  400 1.125rem/1.65 var(--font-body);
+  --p:     400 1rem/1.65 var(--font-body);
+  --p-sm:  400 0.875rem/1.6 var(--font-body);
+
+  /* ---------- Type — mono (Geist Mono — labels · stats · live) ------ */
+  --label:  500 0.6875rem/1 var(--font-mono);
+  --label-tracking: 0.16em;
+  --mono:   500 0.8125rem/1.5 var(--font-mono);
+  --code:   500 0.875rem/1.55 var(--font-mono);
+  --metric: 600 clamp(2.25rem, 3.6vw, 3rem)/1 var(--font-mono);
+
+  /* ---------- Spacing scale (8-based, mirrors the dot grid) ---------- */
+  --s-0:0; --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px;
+  --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px;
+
+  /* ---------- Radius — strictly 0 (editorial, intentional) ----------- */
+  --radius-card: 0px;
+  --r-0: 0; --r-1: 0; --r-2: 0; --r-3: 0;
+  --r-pill: 999px;        /* status dots only */
+
+  /* ---------- Decorative gradient line (indigo → cyan) --------------- */
+  --grad-accent:
+    linear-gradient(90deg,
+      var(--accent) 0%,
+      var(--accent) 40%,
+      var(--data) 100%);
+
+  /* ---------- Lamp-light hero glow ----------------------------------- */
+  --lamp-glow:
+    radial-gradient(ellipse 70% 55% at 50% 30%,
+      rgba(99, 102, 241, 0.28) 0%,
+      rgba(34, 211, 238, 0.10) 35%,
+      transparent 70%);
+
+  /* ---------- Elevation — flat + line + glass + glow ----------------- */
+  --elev-glass:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 0 0 1px rgba(255,255,255,0.04);
+  --elev-glow-indigo:
+    0 0 0 1px var(--accent-line) inset,
+    0 0 40px -8px var(--accent-glow);
+  --elev-glow-cyan:
+    0 0 0 1px var(--data-line) inset,
+    0 0 40px -10px var(--data-glow);
+
+  /* ---------- Dot grid texture (8px, subtle) ------------------------ */
+  --dot-grid:
+    radial-gradient(circle at 1px 1px, rgba(148,163,184,0.06) 1px, transparent 0);
+  --dot-grid-size: 8px 8px;
+
+  /* ---------- Motion ------------------------------------------------ */
+  --ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:  120ms;
+  --dur:       260ms;
+  --dur-slow:  500ms;
+}

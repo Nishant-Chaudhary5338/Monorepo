@@ -1,14 +1,19 @@
+// Personal Information
 export { personalInfo } from "./personal";
 export type { PersonalInfo } from "./personal";
 
+// Navigation
 export { navLinks } from "./navigation";
 export type { NavLink } from "./navigation";
 
-export { roles, sideRole } from "./experience";
-export type { ExpRole, SideRole } from "./experience";
+// Experience
+export { expCards } from "./experience";
+export type { ExpCard } from "./experience";
 
-export { products, contributions, STATS_AS_OF } from "./projects";
-export type { Product, ProductLinks, Contribution } from "./projects";
+// Stats
+export { counterItems } from "./skills";
+export type { CounterItem } from "./skills";
 
-export { stackGroups } from "./stack";
-export type { StackGroup } from "./stack";
+// Products
+export { products } from "./projects";
+export type { Product, ProductProof } from "./projects";

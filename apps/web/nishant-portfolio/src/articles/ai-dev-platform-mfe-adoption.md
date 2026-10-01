@@ -35,7 +35,7 @@ This is Part 2. Not the architecture. The adoption.
 
 The new stack had too many unfamiliar surfaces. Turborepo's task graph, pnpm workspace filter syntax, Vite Module Federation's build-then-preview requirement, the registry service, the shared-dependency rules — these aren't things you absorb from a README over a weekend. They're things you learn by spending a week breaking things and reading error messages.
 
-[PERSONAL EXPERIENCE] I watched one engineer spend two hours trying to scaffold a new plugin by hand. He had the docs open. He was following them carefully. He still got the `vite.config.ts` federation config wrong three times, because the `singleton: true` + `requiredVersion: false` + `eager: true` combination isn't obvious until you've been burned by each missing piece once. He eventually got it working. He also never wanted to do it again.
+I watched one engineer spend two hours trying to scaffold a new plugin by hand. He had the docs open. He was following them carefully. He still got the `vite.config.ts` federation config wrong three times, because the `singleton: true` + `requiredVersion: false` + `eager: true` combination isn't obvious until you've been burned by each missing piece once. He eventually got it working. He also never wanted to do it again.
 
 That's the adoption problem. Not that engineers can't learn. They can. It's that the tax on learning is too high when there's actual product work to ship. If scaffolding a new plugin takes two hours of careful documentation-reading plus a good chance of a failed build, most people will avoid creating plugins unless they absolutely have to. The architecture's flexibility is wasted.
 
@@ -61,7 +61,7 @@ The complexity is still there. It's just invisible to the engineer using the pla
 
 > **Citation Capsule:** Developer experience directly affects output. In 2023, McKinsey found that improving developer experience can increase productivity by 20-45% ([McKinsey Developer Velocity](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/yes-you-can-measure-software-developer-productivity), 2023). An AI-assisted dev platform that abstracts CLI complexity behind a GUI compounds that gain by lowering the skill floor: engineers without deep frontend experience can contribute from day one without learning the underlying toolchain.
 
-<!-- [INTERNAL-LINK: Vite Module Federation architecture and registry → plugin-onboarding-vite-module-federation] -->
+Related: [Vite Module Federation architecture and registry](/writing/plugin-onboarding-vite-module-federation).
 
 ---
 
@@ -145,7 +145,7 @@ The Express API server is the bridge. When you click "Create Plugin," the GUI PO
 
 The MCP tools handle the actual work. Each operation has a dedicated tool: scaffolding, building, code generation, audits, deploys. They read from and write to the filesystem. Some of them open VS Code programmatically when work lands in the workspace.
 
-<!-- [INTERNAL-LINK: MCP tool architecture and the dual-surface CLI pattern → one-protocol-two-surfaces] -->
+Related: [MCP tool architecture and the dual-surface CLI pattern](/writing/one-protocol-two-surfaces).
 
 ---
 
@@ -196,7 +196,7 @@ app.post('/api/scaffold', async (req, res) => {
 
 The `scaffoldPlugin` function templates out the entire workspace: `vite.config.ts`, `package.json`, `App.tsx`, `index.html`, one `.tsx` stub per route, Tailwind config, TypeScript config, all wired correctly. The generated `vite.config.ts` has the `singleton: true` + `requiredVersion: false` + `eager: true` trio already in place. The engineer never touches it.
 
-[ORIGINAL DATA] The whole flow — form submission to VS Code opening with the new plugin folder — takes about 30 seconds on a warm pnpm cache. The engineer's first interaction with the new plugin is opening a route stub file in VS Code, not debugging a federation config.
+The whole flow — form submission to VS Code opening with the new plugin folder — takes about 30 seconds on a warm pnpm cache. The engineer's first interaction with the new plugin is opening a route stub file in VS Code, not debugging a federation config.
 
 From there, the shell's revision poller (polling `/api/revision` every 3 seconds) detects the new build and reloads the plugin grid. The new plugin card appears. The engineer clicks it and sees their app running.
 
@@ -210,7 +210,7 @@ The scaffold creates the structure. The code generation fills it in.
 
 The platform has a Code Studio tab. An engineer pastes API documentation or describes a feature in plain English, picks a target route, and clicks Generate. Working React components appear directly in their VS Code within a few seconds.
 
-[PERSONAL EXPERIENCE] The first time I demoed this to a backend engineer on the team, she described a table view for a REST endpoint she owned: "a filterable table showing users, with columns for name, email, role, and created date, sortable by any column." She got back a fully typed React component with the right prop interface, a `useQuery` call stubbed to her endpoint's shape, column definitions, a filter input, and sort handlers. It wasn't perfect — she adjusted two things. But it was 90% there, and she could read and modify it without knowing how to write it from scratch.
+The first time I demoed this to a backend engineer on the team, she described a table view for a REST endpoint she owned: "a filterable table showing users, with columns for name, email, role, and created date, sortable by any column." She got back a fully typed React component with the right prop interface, a `useQuery` call stubbed to her endpoint's shape, column definitions, a filter input, and sort handlers. It wasn't perfect — she adjusted two things. But it was 90% there, and she could read and modify it without knowing how to write it from scratch.
 
 That's the actual value. Not that the AI writes perfect code. It's that the gap between "I can describe what I need" and "I have working code to modify" shrinks from hours to seconds.
 
@@ -237,7 +237,7 @@ The MCP tool knows the plugin's conventions because it reads the scaffold-genera
 
 > **Citation Capsule:** AI-assisted code generation tools reduce time-to-working-code significantly. In 2024, GitHub's survey found developers complete tasks up to 55% faster with AI code tools ([GitHub Octoverse 2024](https://github.blog/news-insights/octoverse/ai-coding-tools-developer-experience/), 2024). The compounding effect is larger when the AI tool knows your platform's conventions — it generates idiomatic code, not generic boilerplate that needs to be rewritten before it fits.
 
-<!-- [INTERNAL-LINK: MCP tool code generation patterns → one-protocol-two-surfaces] -->
+Related: [MCP tool code generation patterns](/writing/one-protocol-two-surfaces).
 
 ---
 
@@ -257,7 +257,7 @@ Scaffolding and code generation are the headline features. The other capabilitie
 
 ![Dark analytics dashboard with multiple data visualisation panels showing plugin registry and build status](https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=webp&q=80&w=1200&h=630&fit=crop)
 
-[UNIQUE INSIGHT] The registry manager turned out to be more important than I expected. Before it existed, engineers would come to me when they needed to disable a plugin, change its display label, or point it at a different build. With a UI, they could do it themselves — and more importantly, they understood why the change worked. The registry became legible to the whole team, not just to whoever set it up.
+The registry manager turned out to be more important than I expected. Before it existed, engineers would come to me when they needed to disable a plugin, change its display label, or point it at a different build. With a UI, they could do it themselves — and more importantly, they understood why the change worked. The registry became legible to the whole team, not just to whoever set it up.
 
 That's a different kind of value than automation. It's transparency.
 
@@ -265,7 +265,7 @@ That's a different kind of value than automation. It's transparency.
 
 ## 7. What this unlocked for the team
 
-[PERSONAL EXPERIENCE] The clearest signal that the platform worked was when a backend engineer who had never written a React component created a working plugin in his second week on the project. He used the scaffold form, described a few views to the code generator, and had something running in the shell before lunch. He never opened a terminal. He never read the Turborepo docs. He didn't need to know what `vite preview` was.
+The clearest signal that the platform worked was when a backend engineer who had never written a React component created a working plugin in his second week on the project. He used the scaffold form, described a few views to the code generator, and had something running in the shell before lunch. He never opened a terminal. He never read the Turborepo docs. He didn't need to know what `vite preview` was.
 
 That's the outcome I was building toward. Not automation for its own sake. Access.
 
@@ -279,7 +279,7 @@ The developer experience improvements compounded in a few specific ways:
 
 > **Citation Capsule:** Teams with strong developer experience infrastructure see measurable onboarding improvements. Research by DORA (DevOps Research and Assessment) found that high-performing teams recover from incidents and onboard new members significantly faster than low performers ([DORA State of DevOps 2024](https://dora.dev/research/2024/dora-report/), 2024). A platform that removes CLI and config knowledge as prerequisites for contribution is the practical implementation of that finding.
 
-<!-- [INTERNAL-LINK: Turborepo cache invalidation patterns at team scale → turborepo-cache-invalidation-patterns] -->
+Related: [Turborepo cache invalidation patterns at team scale](/writing/turborepo-cache-invalidation-patterns).
 
 ---
 
@@ -305,13 +305,13 @@ Build the platform before you need it. Don't wait for adoption to fail.
 
 No. That's the point. Engineers interact only with the React GUI. The Express API and MCP tools are invisible implementation details. An engineer who has never heard of Model Context Protocol can scaffold a plugin, generate code, and run audits without knowing any of that infrastructure exists.
 
-[INTERNAL-LINK: how MCP tools work and the dual-surface CLI pattern → one-protocol-two-surfaces]
+Related: [how MCP tools work and the dual-surface CLI pattern](/writing/one-protocol-two-surfaces).
 
 ### Can the platform handle plugins in separate Git repositories?
 
 The platform as built works within the monorepo. The registry manager can point any plugin's URL at any `remoteEntry.js` location — including externally hosted builds. In that setup, the scaffold and build features don't apply to external plugins, but the registry manager, access control, and deploy versioning still work. According to the [2024 State of JavaScript Survey](https://2024.stateofjs.com/en-US/libraries/monorepo_tools/), 58% of JS developers use zero dedicated monorepo tools, which means many teams encounter this hybrid case.
 
-[INTERNAL-LINK: Vite Module Federation with plugins in separate repos → plugin-onboarding-vite-module-federation]
+Related: [Vite Module Federation with plugins in separate repos](/writing/plugin-onboarding-vite-module-federation).
 
 ### What happens if the Express server is down?
 
@@ -321,7 +321,7 @@ The shell falls back to its static `public/registry.json` file and loads whateve
 
 The code generator produces working code, not production-ready code. I'm deliberate about framing this to the team: the output is a starting point, not a final answer. Engineers review what's generated before committing it. The platform includes the audit feature partly for this reason — run a quality check immediately after generating code to catch obvious issues before they reach PR review. GitHub's research shows developers accept AI suggestions about 30% of the time ([GitHub Copilot productivity research](https://github.blog/news-insights/research/survey-reveals-ais-impact-on-the-developer-experience/), 2024), which aligns with what I see: the value isn't blind acceptance, it's a dramatically shorter path from description to reviewable code.
 
-[INTERNAL-LINK: code quality auditing with MCP tools → one-protocol-two-surfaces]
+Related: [code quality auditing with MCP tools](/writing/one-protocol-two-surfaces).
 
 ---
 

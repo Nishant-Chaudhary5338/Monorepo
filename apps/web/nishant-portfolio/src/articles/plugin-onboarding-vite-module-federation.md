@@ -16,8 +16,6 @@ My manager's brief was specific. Samsung TV Plus needed a plugin-based frontend 
 
 This is the architecture I built in response to that brief. It's a production frontend for Samsung TV Plus, not a side project. The constraints were real, the deployment targets were real, and the QA team's time was real. Every decision here traces back to one of those two requirements.
 
-[INTERNAL-LINK: micro-frontend architecture patterns -> pillar article on React application architecture and scale]
-
 ---
 
 > **Key Takeaways**
@@ -41,13 +39,11 @@ In 2024, 58% of JavaScript developers reported using zero dedicated monorepo too
 
 > **Citation Capsule:** In 2024, 58% of JS developers used zero dedicated monorepo tools ([State of JS Survey 2024](https://2024.stateofjs.com/en-US/libraries/monorepo_tools/)). A plugin-based MFE architecture with a runtime registry and content-MD5 change detection solves both isolation and regression scope — the two requirements that drove the Samsung TV Plus frontend redesign.
 
-[INTERNAL-LINK: when to split a frontend monolith -> supporting article on monolith-to-MFE migration decisions]
-
 ---
 
 ## 2. Why Vite Module Federation?
 
-[UNIQUE INSIGHT] The `@originjs/vite-plugin-federation` vs `@module-federation/vite` question comes up immediately for any Vite-based MFE. In 2025, TypeScript became the top language on GitHub by contributor count, with 66% year-over-year growth ([GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)). Both libraries ship strong TypeScript types now. The operational maturity gap matters more than the TypeScript story.
+The `@originjs/vite-plugin-federation` vs `@module-federation/vite` question comes up immediately for any Vite-based MFE. In 2025, TypeScript became the top language on GitHub by contributor count, with 66% year-over-year growth ([GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)). Both libraries ship strong TypeScript types now. The operational maturity gap matters more than the TypeScript story.
 
 Most production MFE deployments in 2024 and earlier defaulted to Webpack 5's Module Federation plugin. It's mature, well-documented, and battle-tested. If you're already on Webpack, you should probably stay there.
 
@@ -61,8 +57,6 @@ The TV Plus shell and all plugin remotes were already on Vite. Switching the hos
 I shipped on `@originjs/vite-plugin-federation` v1.4.1. At the time of that decision, the official `@module-federation/vite` package was still maturing — fewer production case studies, some integration friction with the Vite plugins already running. The origin.js package was the boring, debuggable choice. It still is for most teams not doing SSR.
 
 > *If you're on Next.js App Router, the picture is different. `@module-federation/nextjs-mf` exists, but the host wiring is its own thing. The architecture below mostly translates; the build config doesn't.*
-
-[INTERNAL-LINK: Webpack vs Vite build performance -> supporting article on migrating from Webpack to Vite]
 
 ---
 
@@ -221,8 +215,6 @@ useEffect(() => {
 
 > **Citation Capsule:** The registry pattern — a mutable JSON document listing live plugins, their `remoteEntry.js` URLs, required roles, and enabled/disabled state — is the keystone of the whole architecture. Changing a plugin's URL in the registry instantly redirects the shell to a different build. Zero downtime, no shell redeploy. Combined with a `globalThis` auth bridge (`globalThis.__tvplus_auth`), plugins share auth state without connecting React context trees across the federation boundary.
 
-[INTERNAL-LINK: React context patterns across module boundaries -> supporting article on React context and module federation]
-
 ![Two monitors displaying React source code in VS Code with the React logo in a browser tab](https://images.unsplash.com/photo-1633356122544-f134324a6cee?fm=webp&q=80&w=1200&h=630&fit=crop)
 
 ---
@@ -231,7 +223,7 @@ useEffect(() => {
 
 This section is the direct answer to my manager's second requirement — "a feature change shouldn't trigger full regression." Saying "the system is isolated" is not enough. QA needs to know exactly what changed and exactly what didn't. That requires evidence, not trust.
 
-[ORIGINAL DATA] The chunk-hash comparison system produces that evidence. Here's how it works.
+The chunk-hash comparison system produces that evidence. Here's how it works.
 
 ### Why Vite's filename hashes aren't enough
 
@@ -309,13 +301,11 @@ Existing plugin remotes require zero re-testing when a new plugin is added. That
 
 > **Citation Capsule:** The chunk-hash comparison system strips 8-character Vite hash suffixes from file content before computing MD5 — neutralizing hash chaining, where one changed dependency rotates hashes across unrelated chunks. After normalization, adding one route to a plugin produces 1 added chunk, 2 modified chunks, and 7 unchanged chunks. The 7 unchanged routes require zero re-testing. That's the isolation guarantee, made verifiable.
 
-[INTERNAL-LINK: Vite build optimization and chunking strategies -> supporting article on Vite chunk splitting and caching]
-
 ---
 
 ## 5. The internal dev platform for the team
 
-[PERSONAL EXPERIENCE] Alongside the main shell, I built a companion internal dev platform for the TV Plus team — an Express API on port 5001 backed by a React web UI. Its job is to make onboarding new plugins and managing the registry a point-and-click operation for engineers who aren't deeply familiar with the MFE internals.
+Alongside the main shell, I built a companion internal dev platform for the TV Plus team — an Express API on port 5001 backed by a React web UI. Its job is to make onboarding new plugins and managing the registry a point-and-click operation for engineers who aren't deeply familiar with the MFE internals.
 
 The "New Plugin" flow: fill in an id, label, port, accent color, and initial routes, then click Create. Under the hood, `POST /api/scaffold` creates the workspace, runs `pnpm install`, builds with Vite, starts `vite preview`, and registers the plugin in `registry.json`. The shell polls `/api/revision` every 3 seconds and reloads the plugin grid when the build completes. From form submission to plugin rendering in the shell: under one minute.
 
@@ -385,15 +375,13 @@ Rollback is the same PATCH pointing at a previous SHA. Sub-minute recovery, no s
 
 > **Citation Capsule:** The internal dev platform scaffolds a new plugin end-to-end: it creates the workspace, runs `pnpm install`, builds with Vite, starts `vite preview`, and registers the plugin in the registry — all from a single form submission. The shell polls `/api/revision` every 3 seconds and reloads when the build completes. From form submission to plugin rendering in the shell: under one minute, zero terminal commands required from the engineer.
 
-[INTERNAL-LINK: CI/CD patterns for micro-frontend deployments -> supporting article on S3 immutable deployments and registry-based activation]
-
 ---
 
 ## 6. The five things that almost broke the platform
 
 Now the part you can't write before you've shipped it.
 
-[PERSONAL EXPERIENCE] Every one of these failures surfaced in the TV Plus environment. None are obvious from the documentation. All are fixable in under an hour once you know what to look for.
+Every one of these failures surfaced in the TV Plus environment. None are obvious from the documentation. All are fixable in under an hour once you know what to look for.
 
 ### a) React fragmentation — and why `requiredVersion: false` is the fix
 
@@ -483,8 +471,6 @@ Without this, Vite generates relative import paths in the plugin's chunks. When 
 
 ![Designer's desk with color swatches and an iPad showing interface sketches](https://images.unsplash.com/photo-1561070791-2526d30994b5?fm=webp&q=80&w=1200&h=630&fit=crop)
 
-[INTERNAL-LINK: Tailwind CSS in micro-frontend architectures -> supporting article on shared design systems across MFE remotes]
-
 ---
 
 ## 7. What this architecture unlocks (and what it costs)
@@ -512,25 +498,17 @@ What gets harder, because nothing is free:
 
 Share as little as possible. Auth context works via the `globalThis` bridge pattern — the shell writes session state to `globalThis.__tvplus_auth` and plugins read from it directly. For other shared state (Redux, Zustand, Jotai), don't try to cross the boundary. State coupling between plugins is a sign the boundary is in the wrong place.
 
-[INTERNAL-LINK: React state management across micro-frontends -> detailed article on cross-boundary state patterns]
-
 ### Does this work if plugins live in separate Git repositories?
 
 Yes. The shell only needs a plugin's `remoteEntry.js` URL in the registry. Where that URL is built from — a monorepo, a separate repo, a third-party CDN — doesn't matter to the shell. In production, CI builds the plugin, uploads to S3, and patches the registry URL. The shell picks it up on the next registry fetch.
-
-[INTERNAL-LINK: multi-repo CI/CD for micro-frontends -> supporting article on S3 deploy pipelines for MFE]
 
 ### Why `vite preview` instead of `vite dev` for remotes?
 
 `@originjs/vite-plugin-federation` requires built artifacts for remotes. Vite dev mode serves files through a different module protocol that federation can't consume. Build the remotes first, then run them with `vite preview`. The shell can still use `vite dev` with full hot reload — only the remotes need to be pre-built.
 
-[INTERNAL-LINK: Vite dev vs preview mode explained -> supporting article on Vite module protocols]
-
 ### How do you handle plugin versioning and rollback in production?
 
 Each plugin build uploads to an immutable S3 path keyed by git SHA. The registry stores the current active URL. Rollback is a single PATCH to the registry pointing at the previous SHA's URL — no shell redeploy, no forced client refresh. Users on the old version keep it until their next page load. Recovery is sub-minute.
-
-[INTERNAL-LINK: zero-downtime frontend deploys -> supporting article on immutable CDN deployments and registry switching]
 
 ---
 

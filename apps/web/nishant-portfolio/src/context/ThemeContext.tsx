@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type Theme = "light" | "dark";
 
@@ -7,35 +7,36 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const STORAGE_KEY = "nishant-theme";
-
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// index.html sets data-theme before first paint (saved choice, else the OS
-// preference, else dark), so React starts from whatever is already showing.
-const initialTheme = (): Theme =>
-  document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
-
-export const ThemeProvider = ({ children }: { children: ReactNode }): ReactNode => {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  // index.html's inline script has already set data-theme before first paint.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document === "undefined") return "light";
+    return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    try {
-      localStorage.setItem(STORAGE_KEY, theme);
-    } catch {
-      // Storage can be blocked (private mode); the theme still applies for this visit.
-    }
+    localStorage.setItem("nishant-theme", theme);
   }, [theme]);
 
-  const toggleTheme = (): void => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider by design
-export const useTheme = (): ThemeContextType => {
+export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within a ThemeProvider");
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
   return context;
 };

@@ -1,36 +1,40 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './index.css';
 import App from './App';
 import { articleMeta } from './articles/index';
-import { caseStudyCoverImages } from './case-studies/covers';
+import { caseStudyMeta } from './case-studies/index';
+import { coverSet } from './case-studies/covers';
 
-// Preload the LCP cover image before React boots, so the Unsplash fetch starts
-// hundreds of ms before the lazy chunk would render the <img>.
+// Register GSAP plugins once at the app root — components must NOT re-register
+gsap.registerPlugin(ScrollTrigger);
+
+// Inject <link rel="preload" as="image"> for the LCP cover before React
+// bootstraps, so the fetch starts ahead of the lazy route chunk and the render.
 (function preloadLcpImage() {
   const path = window.location.pathname;
-  let imgUrl: string | undefined;
-
   const articleSlug = path.match(/^\/writing\/([^/]+)/)?.[1];
-  if (articleSlug) {
-    imgUrl = articleMeta.find((a) => a.slug === articleSlug)?.coverImage;
-  }
-
   const workSlug = path.match(/^\/work\/([^/]+)/)?.[1];
-  if (workSlug) {
-    imgUrl = caseStudyCoverImages[workSlug];
-  }
 
-  if (imgUrl) {
-    const link = Object.assign(document.createElement('link'), {
-      rel: 'preload',
-      as: 'image',
-      href: imgUrl,
-    });
-    document.head.appendChild(link);
-  }
+  let key: string | undefined;
+  if (articleSlug && articleMeta.some((a) => a.slug === articleSlug)) key = articleSlug;
+  if (workSlug && caseStudyMeta.some((c) => c.slug === workSlug)) key = `work-${workSlug}`;
+  if (!key) return;
+
+  const cover = coverSet(key);
+  const link = Object.assign(document.createElement('link'), {
+    rel: 'preload',
+    as: 'image',
+    href: cover.src,
+    imageSrcset: cover.srcSet,
+    imageSizes: cover.sizes,
+  });
+  link.setAttribute('fetchpriority', 'high');
+  document.head.appendChild(link);
 })();
 
 createRoot(document.getElementById('root')!).render(
