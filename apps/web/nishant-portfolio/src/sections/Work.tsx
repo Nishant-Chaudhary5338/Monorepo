@@ -1,161 +1,80 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { products } from "../constants";
-import type { Product } from "../constants/projects";
-import { AnimatedTitle } from "../components/AnimatedTitle";
+import type { ReactNode } from "react";
+import { caseStudyMeta } from "../case-studies";
+import { contributions, products, STATS_AS_OF } from "../constants";
+import type { Product } from "../constants";
+import { RichText } from "../components/RichText";
+import { Section } from "../components/Section";
+import { TextLink } from "../components/TextLink";
+import { cn } from "../lib/cn";
+import { eyebrow, meta } from "../lib/styles";
 
-const ACCENTS = ["--accent-gold", "--accent-purple", "--accent-cyan", "--accent-rose", "--accent-lime"] as const;
-const PILL_CLASS = ["pill-gold", "pill-purple", "pill-cyan", "pill-rose", "pill-lime"] as const;
+const row = "py-6 border-t border-line";
+const rowHead = "flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2";
+const links = "flex flex-wrap gap-x-4 gap-y-1";
+const body = "mt-3 max-w-measure text-base text-fg-2";
+const groupLabel = cn(eyebrow, "mb-3");
+const name = "text-lg font-medium text-fg";
 
-const ProductCard = ({ project, idx }: { project: Product; idx: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const spotRef = useRef<HTMLDivElement>(null);
-  const accent = ACCENTS[idx % ACCENTS.length];
-  const pillClass = PILL_CLASS[idx % PILL_CLASS.length];
+const formatCount = (n: number): string => n.toLocaleString("en-GB");
 
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(el,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 80%" }
-        }
-      );
-    });
-
-    // Floating drift is CSS-driven (see .product-card @keyframes); here we
-    // only add the pointer-tracked 3D tilt — transform-only, rect cached
-    // on enter, no-ops under reduced motion / touch.
-    let cleanupTilt = () => {};
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && !window.matchMedia("(pointer: coarse)").matches) {
-      gsap.set(el, { transformPerspective: 1000 });
-      const rx = gsap.quickTo(el, "rotationX", { duration: 0.5, ease: "power2.out" });
-      const ry = gsap.quickTo(el, "rotationY", { duration: 0.5, ease: "power2.out" });
-      let rect = el.getBoundingClientRect();
-      const onEnter = (): void => { rect = el.getBoundingClientRect(); };
-      const onTiltMove = (e: PointerEvent): void => {
-        const px = (e.clientX - rect.left) / rect.width - 0.5;
-        const py = (e.clientY - rect.top) / rect.height - 0.5;
-        rx(-py * 4);
-        ry(px * 4);
-      };
-      const onLeave = (): void => { rx(0); ry(0); };
-      el.addEventListener("pointerenter", onEnter);
-      el.addEventListener("pointermove", onTiltMove);
-      el.addEventListener("pointerleave", onLeave);
-      cleanupTilt = () => {
-        el.removeEventListener("pointerenter", onEnter);
-        el.removeEventListener("pointermove", onTiltMove);
-        el.removeEventListener("pointerleave", onLeave);
-      };
-    }
-
-    return () => { ctx.revert(); cleanupTilt(); };
-  }, [idx]);
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>): void => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    if (!spotRef.current) return;
-    spotRef.current.style.setProperty("--gx", `${e.clientX - rect.left}px`);
-    spotRef.current.style.setProperty("--gy", `${e.clientY - rect.top}px`);
-  };
-
+function ProductRow({ product }: { product: Product }): ReactNode {
+  const { links: l } = product;
   return (
-    <div className="product-card-float" style={{ animationDelay: `${idx * 0.7}s` }}>
-    <div
-      ref={cardRef}
-      className="product-card glow-card"
-      onMouseMove={onMove}
-      style={{ "--card-accent": `var(${accent})` } as React.CSSProperties}
-    >
-      <div ref={spotRef} className="glow-card__spot" style={{ "--glow-color": `var(${accent})` } as React.CSSProperties} aria-hidden="true" />
-
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.72rem", letterSpacing: "0.1em", textTransform: "uppercase", color: `var(${accent})` }}>
-          {String(idx + 1).padStart(2, "0")} — {project.role}
-        </p>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: "var(--text-muted)" }}>
-          {project.adoption ?? "adoption — TBD"}
-        </span>
-      </div>
-
-      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, fontStyle: "italic", color: "var(--text-primary)", marginBottom: "1rem", lineHeight: 1.1 }}>
-        {project.name}
-      </h3>
-
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(1rem, 1.6vw, 1.2rem)", lineHeight: 1.6, color: "var(--text-secondary)", maxWidth: "56ch", marginBottom: "2rem" }}>
-        {project.outcome}
-      </p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem", marginBottom: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border-subtle)" }}>
+    <li className={row}>
+      <div className={rowHead}>
         <div>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase", color: `var(${accent})`, marginBottom: "0.4rem" }}>For</p>
-          <p style={{ fontSize: "0.88rem", lineHeight: 1.6, color: "var(--text-secondary)" }}>{project.users}</p>
+          <h4 className={name}>{product.name}</h4>
+          <p className={cn(meta, "mt-1")}>{formatCount(product.downloads)} npm downloads in the past year</p>
         </div>
-        <div>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase", color: `var(${accent})`, marginBottom: "0.4rem" }}>Problem</p>
-          <p style={{ fontSize: "0.88rem", lineHeight: 1.6, color: "var(--text-secondary)" }}>{project.problem}</p>
-        </div>
-        <div>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase", color: `var(${accent})`, marginBottom: "0.4rem" }}>Shipped</p>
-          <p style={{ fontSize: "0.88rem", lineHeight: 1.6, color: "var(--text-secondary)" }}>{project.shipped}</p>
+        <div className={links}>
+          {l.live && <TextLink href={l.live} mono>Live</TextLink>}
+          {l.npm && <TextLink href={l.npm} mono>npm</TextLink>}
+          {l.github && <TextLink href={l.github} mono>GitHub</TextLink>}
         </div>
       </div>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
-          {project.tags.map((tag) => (
-            <span key={tag} className={`pill ${pillClass}`}>{tag}</span>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: "1.25rem" }}>
-          {project.proof.live && (
-            <a href={project.proof.live} target="_blank" rel="noreferrer" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", color: `var(${accent})`, textDecoration: "none", borderBottom: `1px solid var(${accent})`, paddingBottom: "1px" }}>
-              Live ↗
-            </a>
-          )}
-          {project.proof.npm && (
-            <a href={project.proof.npm} target="_blank" rel="noreferrer" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", borderBottom: "1px solid var(--border-strong-nd)", paddingBottom: "1px" }}>
-              npm ↗
-            </a>
-          )}
-          {project.proof.github && (
-            <a href={project.proof.github} target="_blank" rel="noreferrer" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", borderBottom: "1px solid var(--border-strong-nd)", paddingBottom: "1px" }}>
-              GitHub ↗
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-    </div>
+      <p className={body}><RichText text={product.summary} /> {product.detail}</p>
+      <p className={cn(meta, "mt-3")}>{product.tags.join(" · ")}</p>
+    </li>
   );
-};
+}
 
-const Work = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-
+export default function Work(): ReactNode {
   return (
-    <section id="work" ref={sectionRef} className="section">
-      <div className="section-wrap">
-        <div className="section-glow" style={{ marginBottom: "var(--space-lg)", "--section-glow-color": "var(--accent-purple)", "--section-glow-color-2": "var(--accent-cyan)" } as React.CSSProperties}>
-          <p className="section-label">
-            <span className="section-label-num">02</span> — SELECTED WORK
-          </p>
-          <AnimatedTitle title="Products that shipped" style={{ marginTop: "var(--space-sm)", marginBottom: "var(--space-md)" }} />
-          <hr className="section-rule" style={{ margin: 0 }} />
-        </div>
+    <Section id="work" number="01" title="Work">
+      <h3 className={groupLabel}>At Samsung</h3>
+      <ul>
+        {caseStudyMeta.map((cs) => (
+          <li key={cs.slug} className={row}>
+            <div className={rowHead}>
+              <div>
+                <h4 className={name}>{cs.name}</h4>
+                <p className={cn(meta, "mt-1")}>Internal library · {cs.years}</p>
+              </div>
+              <TextLink href={`/work/${cs.slug}`} mono>Read the case study</TextLink>
+            </div>
+            <p className={body}><RichText text={cs.summary} /></p>
+          </li>
+        ))}
+      </ul>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
-          {products.map((project, idx) => (
-            <ProductCard key={project.name} project={project} idx={idx} />
-          ))}
-        </div>
-      </div>
-    </section>
+      <h3 className={cn(groupLabel, "mt-14")}>Published on npm</h3>
+      <ul>
+        {products.map((p) => <ProductRow key={p.name} product={p} />)}
+      </ul>
+      <p className={cn(meta, "mt-1")}>Download counts from npm, {STATS_AS_OF}.</p>
+
+      <h3 className={cn(groupLabel, "mt-14")}>Upstream contributions</h3>
+      <ul>
+        {contributions.map((c) => (
+          <li key={c.url} className={cn(row, rowHead)}>
+            <div>
+              <p className="font-mono text-sm text-fg">{c.repo}</p>
+              <p className="mt-1 text-base text-fg-2">{c.title}</p>
+            </div>
+            <TextLink href={c.url} mono>Pull request</TextLink>
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
-};
-
-export default Work;
+}

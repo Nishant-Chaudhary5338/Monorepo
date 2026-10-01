@@ -1,20 +1,14 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './index.css';
 import App from './App';
 import { articleMeta } from './articles/index';
 import { caseStudyCoverImages } from './case-studies/covers';
 
-// Register GSAP plugins once at the app root — components must NOT re-register
-gsap.registerPlugin(ScrollTrigger);
-
-// Inject <link rel="preload" as="image"> for the LCP cover image before React
-// bootstraps — this starts the Unsplash fetch hundreds of ms earlier than waiting
-// for the lazy chunk to load and React to render the <img> tag.
+// Preload the LCP cover image before React boots, so the Unsplash fetch starts
+// hundreds of ms before the lazy chunk would render the <img>.
 (function preloadLcpImage() {
   const path = window.location.pathname;
   let imgUrl: string | undefined;

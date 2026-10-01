@@ -1,26 +1,33 @@
-# Nishant Chaudhary — Senior Frontend Engineer
+# Nishant Chaudhary, Senior Frontend Engineer
 
-> Senior Frontend Engineer at Samsung Electronics (2024–present). Specialist in micro-frontend architecture, design systems, and AI-native developer tooling. 5+ years with React and TypeScript. Open to Staff/Principal remote roles in Europe.
+> Senior Frontend Engineer at Samsung Electronics (2024 to now), based in New Delhi. About five years of production React and TypeScript: enterprise web apps, design systems, micro-frontends, and the AI developer tooling around them. Open to remote roles with EU teams; works 12:00 to 21:00 IST to cover CET core hours.
 
 ## Contact
 
 - [Email](mailto:nishantchaudhary.dev@gmail.com): nishantchaudhary.dev@gmail.com
-- [LinkedIn](https://www.linkedin.com/in/nishant-chaudhary5338): linkedin.com/in/nishant-chaudhary5338
-- [GitHub](https://github.com/nishantchaudhary5338): github.com/nishantchaudhary5338
+- [LinkedIn](https://www.linkedin.com/in/nishant-chaudhary-170719246/)
+- [GitHub](https://github.com/Nishant-Chaudhary5338)
+- [npm](https://www.npmjs.com/~nishant-chaudhary)
 
-## Work
+## Experience
 
-Projects built at Samsung Electronics (2024–present):
+- Samsung Electronics, Senior Frontend Engineer (Jul 2024 to now): plugin-based micro-frontend platform on Vite Module Federation (new app onboarding from hours to under a minute, six product squads); Vite and Turborepo migration with a shared design system (close to 60% component reuse); 20+ custom MCP servers handling 60 to 70% of routine frontend work; leads a team of five on the TVPlus Test Suite.
+- Safex Chemicals, Web Developer (Mar 2023 to Jun 2024): B2B ordering platform for 25,000+ customers (repeat orders up 22%, support tickets down about 30%); load time from 4.2s to 2.5s; SAP-connected portal for 500+ staff.
+- DevsLane, Frontend Engineer (Nov 2021 to Mar 2023): eight client products from Figma; Storybook library of 40+ accessible components; WCAG 2.1 AA.
+- AI model evaluation for Handshake, micro1 and Snorkel AI (2026 to now): evaluation tasks and graded benchmarks for frontier models.
 
-- [Shared UI Library](/work/ui-component-library): 45-component React library on Radix UI + Tailwind CSS v4 serving ~12 product teams. 79 test files, 47 Storybook stories, dual ESM/CJS output.
-- [Headless Dashboard Library](/work/headless-dashboard-library): Solo-built headless framework for layout, drag-drop, resize, widget registration, persistence, and widget-to-widget events. 11 built-in widgets, 4 apps in production.
-- [AI Dev Platform](/work/ai-dev-platform-mfe-adoption): End-to-end agentic frontend workflow automating ~65% of routine work. Scaffolds, reviews, audits, and coordinates deployments.
-- [MCP Toolkit](/work/one-protocol-two-surfaces): ~30 MCP server packages, 60+ registered tools, 27 CLI wrappers powering both Cline AI and CI automation.
+## Open source
+
+- [mcp-react-toolkit](https://www.npmjs.com/package/mcp-react-toolkit): 59 MCP tools for React and TypeScript work.
+- [code-graph-indexer](https://www.npmjs.com/package/code-graph-indexer): dependency graph and blast-radius checks for TypeScript monorepos.
+- [dashcraft](https://dashcraft-site.vercel.app/): headless React dashboard library.
+- [vercel/turborepo #12997](https://github.com/vercel/turborepo/pull/12997): added the with-mcp-servers example (merged).
+
+## Case studies
+
+- [Shared UI library](/work/ui-component-library): 45-component React library on Radix UI and Tailwind CSS v4, used as the UI standard in a React monorepo.
+- [Dashboard library](/work/headless-dashboard-library): headless framework for drag, drop, resize and saved layouts, used in production apps.
 
 ## Skills
 
-React 19, TypeScript (strict), Micro-frontends, Vite Module Federation, Design Systems, Model Context Protocol (MCP), Turborepo monorepo, Next.js, GSAP, Three.js, Node.js
-
-## Optional
-
-This site is a personal portfolio. Content may be used for research and training with attribution. See [robots.txt](/robots.txt) for crawl policy.
+React 19, TypeScript (strict), Next.js, Vite, Module Federation, design systems, accessibility (WCAG 2.2 AA), Core Web Vitals, Tailwind CSS v4, Radix UI, Storybook, Turborepo, Node.js, MCP, Playwright, Vitest.

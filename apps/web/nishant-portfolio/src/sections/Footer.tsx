@@ -1,49 +1,35 @@
-import { personalInfo, navLinks } from "../constants";
+import type { ReactNode } from "react";
+import { personalInfo } from "../constants";
 import { useGeoCV } from "../hooks/useGeoCV";
+import { cn } from "../lib/cn";
+import { container, meta } from "../lib/styles";
 
-const Footer = () => {
+const inner = cn(container, "flex flex-col gap-3 py-8 sm:flex-row sm:items-center sm:justify-between");
+const link = "font-mono text-xs text-fg-3 transition-colors duration-150 hover:text-fg";
+
+const EXTERNAL = [
+  { name: "LinkedIn", href: personalInfo.linkedin },
+  { name: "GitHub", href: personalInfo.github },
+  { name: "npm", href: personalInfo.npm },
+];
+
+export default function Footer(): ReactNode {
+  const { downloadCV } = useGeoCV();
   const year = new Date().getFullYear();
-  const { downloadCV, status } = useGeoCV();
 
   return (
-    <footer style={{ borderTop: "1px solid var(--border-subtle)", background: "var(--bg-surface)", padding: "var(--space-md) 0" }}>
-      <div className="section-wrap" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "var(--space-sm)" }}>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.8rem", letterSpacing: "0.06em", color: "var(--text-muted)" }}>
-          <span style={{ color: "var(--accent-purple)" }}>N —</span>
-        </span>
-
-        <nav style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-md)" }}>
-          {navLinks.map((link) => (
-            <a key={link.link} href={link.link} className="footer-link" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.8rem", letterSpacing: "0.04em" }}>
-              {link.name}
-            </a>
+    <footer className="border-t border-line">
+      <div className={inner}>
+        <p className={meta}>© {year} {personalInfo.name} · {personalInfo.location}</p>
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2">
+          <a href="/#work" className={link}>Work</a>
+          <a href="/#writing" className={link}>Writing</a>
+          {EXTERNAL.map((l) => (
+            <a key={l.name} href={l.href} target="_blank" rel="noopener noreferrer" className={link}>{l.name}</a>
           ))}
-          <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="footer-link" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.8rem", letterSpacing: "0.04em" }}>
-            LinkedIn
-          </a>
-          <a href={personalInfo.github} target="_blank" rel="noreferrer" className="footer-link" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.8rem", letterSpacing: "0.04em" }}>
-            GitHub
-          </a>
-          <a href="https://www.npmjs.com/package/mcp-react-toolkit" target="_blank" rel="noreferrer" className="footer-link" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.8rem", letterSpacing: "0.04em" }}>
-            npm
-          </a>
-          <button
-            type="button"
-            onClick={downloadCV}
-            disabled={status === "loading"}
-            className="footer-link"
-            style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.8rem", letterSpacing: "0.04em", background: "none", border: 0, padding: 0, cursor: "pointer" }}
-          >
-            {status === "done" ? "Resume ✓" : "Resume ↓"}
-          </button>
+          <button type="button" onClick={downloadCV} className={cn(link, "cursor-pointer")}>Resume</button>
         </nav>
-
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: "var(--text-muted)", letterSpacing: "0.04em" }}>
-          © {year} {personalInfo.name} — {personalInfo.location}
-        </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

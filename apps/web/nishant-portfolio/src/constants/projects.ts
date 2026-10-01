@@ -1,72 +1,76 @@
-// Exactly three products, each on the Role · Users · Outcome spine.
-// Everything removed from here lives on as Experience bullets.
-
-export interface ProductProof {
+export interface ProductLinks {
+  live?: string;
   npm?: string;
   github?: string;
-  live?: string;
 }
 
 export interface Product {
   name: string;
-  outcome: string;      // the headline — measured result, not features
-  role: string;
-  users: string;
-  problem: string;
-  shipped: string;
+  summary: string;
+  detail: string;
+  // npm downloads over the 12 months before STATS_AS_OF (api.npmjs.org)
+  downloads: number;
   tags: string[];
-  proof: ProductProof;
-  adoption?: string;    // real downloads/stars/teams — pending, placeholder until provided
+  links: ProductLinks;
 }
+
+export interface Contribution {
+  repo: string;
+  title: string;
+  url: string;
+}
+
+export const STATS_AS_OF = "Oct 2026";
 
 export const products: Product[] = [
   {
     name: "mcp-react-toolkit",
-    outcome: "Cuts repetitive frontend work and keeps a growing codebase coherent.",
-    role: "Creator & maintainer",
-    users: "Frontend engineers on large React monorepos",
-    problem: "Repetitive build-out, drift, and inconsistent review at scale",
-    shipped: "A frontend automation platform — one protocol, two surfaces: 60+ tools, ~30 MCP packages, 27 CLI wrappers",
-    tags: ["MCP", "TypeScript", "Node", "Turborepo", "npm"],
-    proof: {
+    summary: "**59 MCP tools** for everyday React and TypeScript work.",
+    detail:
+      "Component scaffolding, accessibility and dependency audits, test generation and a CRA to Vite migration. Each tool runs as its own MCP server or as a plain CLI script.",
+    downloads: 2689,
+    tags: ["TypeScript", "MCP", "Node", "CLI"],
+    links: {
       npm: "https://www.npmjs.com/package/mcp-react-toolkit",
       github: "https://github.com/Nishant-Chaudhary5338/mcp-toolkit",
     },
   },
   {
     name: "code-graph-indexer",
-    outcome: "Makes any TS/React monorepo legible — “what breaks if I change this?” becomes visible.",
-    role: "Creator & maintainer",
-    users: "Engineers navigating and refactoring big monorepos",
-    problem: "Dependency impact is invisible; refactors ship on hope",
-    shipped: "Live apps → packages → files → components graph with type-health and blast-radius impact analysis; ts-morph engine over CLI + MCP, rendered as an interactive 3D force graph",
-    tags: ["ts-morph", "Three.js", "MCP", "CLI", "npm"],
-    proof: {
+    summary: "See what a change will break before you make it.",
+    detail:
+      "Turns a TypeScript or React monorepo into a dependency graph you can query, with type health and blast-radius checks. Works as a CLI or an MCP server and ships a 3D graph explorer.",
+    downloads: 1114,
+    tags: ["TypeScript", "ts-morph", "MCP", "Three.js"],
+    links: {
       npm: "https://www.npmjs.com/package/code-graph-indexer",
+      github: "https://github.com/Nishant-Chaudhary5338/mcp-code-indexer",
     },
   },
   {
     name: "dashcraft",
-    outcome: "Ship a dashboard without touching your design system.",
-    role: "Creator & maintainer",
-    users: "Teams shipping dashboards who don’t want to rebuild interaction logic",
-    problem: "Drag, resize, and persistence get rebuilt — badly — in every dashboard",
-    shipped: "A headless dashboard framework: drag/resize/persist behind five boolean props, with a live playground and docs",
-    tags: ["React", "TypeScript", "Headless UI", "Zustand", "npm"],
-    proof: {
+    summary: "Interactive dashboards without touching your design system.",
+    detail:
+      "A headless React dashboard library: drag-and-drop grids, resizable widgets and saved layouts behind four boolean props, with no styles of its own.",
+    downloads: 313,
+    tags: ["React", "TypeScript", "Headless UI", "Zustand"],
+    links: {
       live: "https://dashcraft-site.vercel.app/",
       npm: "https://www.npmjs.com/package/dashcraft-core",
+      github: "https://github.com/Nishant-Chaudhary5338/dashcraft",
     },
   },
 ];
 
-export const words = [
-  { text: "product UI", imgPath: "/images/ideas.svg" },
-  { text: "design systems", imgPath: "/images/designs.svg" },
-  { text: "React + TypeScript", imgPath: "/images/code.svg" },
-  { text: "MCP tooling", imgPath: "/images/concepts.svg" },
-  { text: "product UI", imgPath: "/images/ideas.svg" },
-  { text: "design systems", imgPath: "/images/designs.svg" },
-  { text: "React + TypeScript", imgPath: "/images/code.svg" },
-  { text: "MCP tooling", imgPath: "/images/concepts.svg" },
+export const contributions: Contribution[] = [
+  {
+    repo: "vercel/turborepo",
+    title: "Added the with-mcp-servers example (merged)",
+    url: "https://github.com/vercel/turborepo/pull/12997",
+  },
+  {
+    repo: "punkpeye/awesome-mcp-servers",
+    title: "Listed mcp-toolkit and code-graph-indexer (both merged)",
+    url: "https://github.com/punkpeye/awesome-mcp-servers/pull/8724",
+  },
 ];

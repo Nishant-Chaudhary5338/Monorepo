@@ -1,9 +1,10 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { siteMeta } from "./vite.site";
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  plugins: [react(), tailwindcss(), siteMeta(loadEnv(mode, __dirname, "VITE_").VITE_SITE_URL)],
   // Without this, Vite's dep-scanner globs every *.html under the project
   // root (including the static, unwired prototypes in design-mockups/) to
   // seed its dependency pre-bundle. Those reference `three` via an import
@@ -30,9 +31,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string): string | undefined {
-          if (id.includes("gsap")) return "gsap";
-          if (id.includes("/node_modules/react-dom/") || id.includes("/node_modules/react-router")) return "vendor";
-          if (id.includes("/pages/ArticlePage") || id.includes("/pages/CaseStudyPage")) return "content-page";
+          // react and scheduler must share react-dom's chunk: split apart, a clean
+          // npm install builds a bundle whose react-dom initialises against an
+          // undefined React and renders a blank page.
+          if (/\/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom)\//.test(id)) return "vendor";
+          if (id.includes("/src/pages/") || id.includes("/src/content/")) return "content-page";
           if (
             id.includes("/node_modules/react-markdown/") ||
             id.includes("/node_modules/remark") ||
@@ -46,4 +49,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
